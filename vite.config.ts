@@ -10,8 +10,10 @@ import viteCompression from 'vite-plugin-compression';
 const pathResolve = (path: string): string => resolve(process.cwd(), path);
 
 export default defineConfig({
-  base: process.env.NODE_ENV === 'production' ? '/memoo-interface/' : '/',
+  base: process.env.NODE_ENV === 'production' ? '/memoo-interface/' : './',
+  // base: '/',
   envDir: './env',
+  publicDir: process.env.NODE_ENV === 'production' ? '/memoo-interface/' : 'public',
   resolve: {
     alias: {
       '@': pathResolve('src'),

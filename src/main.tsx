@@ -14,7 +14,6 @@ import routeConfig from './router';
 import Loading from './components/Loading';
 
 const isProd = import.meta.env.PROD;
-
 const basename = isProd ? import.meta.env.VITE_APP_BASE : '/';
 const router = createBrowserRouter(routeConfig, {
   basename,
