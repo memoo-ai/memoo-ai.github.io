@@ -1,0 +1,25 @@
+{
+  "root": true,
+  "parserOptions": {
+    "project": ["./tsconfig.json", "./tsconfig.node.json"]
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "alias": [["@", "./src"]]
+    }
+  },
+  "extends": ["alloy", "alloy/react", "alloy/typescript", "prettier"],
+  "plugins": ["prettier"],
+  "env": {
+    "browser": true
+  },
+  "globals": {},
+  "rules": {
+    "prettier/prettier": "error",
+    "no-return-assign": "off"
+  },
+  "ignorePatterns": ["dist", "node_modules", "tailwind.config.js", "postcss.config.js"]
+}
