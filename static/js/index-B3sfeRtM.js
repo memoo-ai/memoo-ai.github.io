@@ -1,0 +1,1 @@
+import{j as e}from"./rainbowkit-D4A4C0pO.js";import"./react-BQSzCOjX.js";const s=()=>e.jsx("div",{className:"mx-[auto] max-w-[94.5rem] pb-[3rem] mt-8",children:e.jsx("div",{className:"md:block hidden ",children:"Not found"})});export{s as default};
