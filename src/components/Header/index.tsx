@@ -21,7 +21,7 @@ export default () => {
     <header className={`${styles.header} flex justify-between items-center z-[999]`}>
       <div className="flex items-center  gap-[3rem]">
         <a href="/">
-          <img src="/logo.svg" alt="Logo" className="w-[200px] h-[70px]" />
+          <img src="./logo.svg" alt="Logo" className="w-[200px] h-[70px]" />
         </a>
       </div>
       <div className="md:flex hidden items-center gap-[2.5rem] mx-auto">

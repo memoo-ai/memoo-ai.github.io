@@ -5,37 +5,37 @@ const Revolutions = [
   {
     title: 'Fair Launch & Standardize Smart Contract Rails',
     desc: 'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    img: '/SVG/img-revolution-1.svg',
+    img: './SVG/img-revolution-1.svg',
     width: 280,
   },
   {
     title: 'Robust Token ValueCapture Flywheel',
     desc: 'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    img: '/SVG/img-revolution-2.svg',
+    img: './SVG/img-revolution-2.svg',
     width: 280,
   },
   {
     title: 'Organic Growth Loop',
     desc: 'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    img: '/SVG/img-revolution-3.svg',
+    img: './SVG/img-revolution-3.svg',
     width: 150,
   },
   {
     title: 'Tools to Stay Updated with the Latest Memecoins',
     desc: 'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    img: '/SVG/img-revolution-4.svg',
+    img: './SVG/img-revolution-4.svg',
     width: 280,
   },
   {
     title: 'Memecoin Metrics',
     desc: 'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    img: '/SVG/img-revolution-5.svg',
+    img: './SVG/img-revolution-5.svg',
     width: 150,
   },
   {
     title: 'AI Powered Infrastructure for Creators',
     desc: 'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    img: '/SVG/img-revolution-6.svg',
+    img: './SVG/img-revolution-6.svg',
     width: 280,
   },
 ];
@@ -45,7 +45,7 @@ export default () => {
       <div className="content-banner-bg" />
       <div className="content-banner flex justify-between ">
         <div className="content-banner-left items pt-[6rem]">
-          <img src="/img-powered-base.png" className="w-[168px] ml-2" />
+          <img src="./img-powered-base.png" className="w-[168px] ml-2" />
           <p className="text-ultimate">The Ultimate Memecoin Infrastructure.</p>
           <p className="text-sub">Enabling the memecoin industry with a wide range of resources, tools & launchpad.</p>
           <div className="flex items-center gap-6 mt-6">
@@ -57,12 +57,12 @@ export default () => {
             </Button>
           </div>
           <div className="flex items-center gap-6 mt-6">
-            <img src="/SVG/icon-twitter.svg" className="w-8 cursor-pointer" alt="" />
-            <img src="/SVG/icon-tg.svg" alt="" className="w-8 cursor-pointer" />
+            <img src="./SVG/icon-twitter.svg" className="w-8 cursor-pointer" alt="" />
+            <img src="./SVG/icon-tg.svg" alt="" className="w-8 cursor-pointer" />
           </div>
         </div>
         <div className="content-banner-right items pt-[3rem]">
-          <img src="/img-content-banner-right.png" alt="" className="w-[510px]" />
+          <img src="./img-content-banner-right.png" alt="" className="w-[510px]" />
         </div>
       </div>
       <div className="content-data py-[100px]">
@@ -73,11 +73,11 @@ export default () => {
           <div className="flex flex-col mx-auto">
             <div className="flex items-center">
               <div className="flex flex-col items-center mr-[120px]">
-                <img src="/SVG/img-security.svg" className="w-[262px] h-[130px] mb-[30px]" />
+                <img src="./SVG/img-security.svg" className="w-[262px] h-[130px] mb-[30px]" />
                 <p>of memecoins on Base chain have security threats.</p>
               </div>
               <div className="flex flex-col items-center">
-                <img src="/SVG/img-malicious.svg" className="w-[313px] h-[130px] mb-[30px]" />
+                <img src="./SVG/img-malicious.svg" className="w-[313px] h-[130px] mb-[30px]" />
                 <p>of memecoins on Base chain have security threats.</p>
               </div>
             </div>
@@ -88,16 +88,16 @@ export default () => {
             <p className="font-Montserrat font-bold ">Memecoins are fun, but the risks are not.</p>
           </div>
           <div className="flex flex-col mx-auto">
-            <img src="/SVG/img-data-desc.svg" className="w-[825px]" />
+            <img src="./SVG/img-data-desc.svg" className="w-[825px]" />
           </div>
         </div>
       </div>
       <div className="content-issues mx-auto flex items-center justify-center gap-[100px] py-[100px]">
-        <img src="/img-issues.png" alt="" className="w-[483px]" />
-        <img src="/img-challenges.png" alt="" className="w-[483px]" />
+        <img src="./img-issues.png" alt="" className="w-[483px]" />
+        <img src="./img-challenges.png" alt="" className="w-[483px]" />
       </div>
       <div className="content-revolution flex flex-col items-center py-[100px]">
-        <img src="/img-revolution.png" alt="" className="w-[540px]" />
+        <img src="./img-revolution.png" alt="" className="w-[540px]" />
         <p className="font-Montserrat font-400 text-[36px] mt-5 mb-8">Revolutionizing the future of memecoins </p>
         <div className="grid grid-cols-3 gap-5">
           {Revolutions.map((item) => (
