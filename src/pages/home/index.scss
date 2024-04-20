@@ -30,19 +30,22 @@
   position: relative;
   padding-bottom: 30px;
   .text-ultimate {
-    font-family : Montserrat Bold;
-    font-weight : bold;
-    font-size : 50px;
-    color : #FFFFFF;
-    width: 400px;
+    font-family: 'Montserrat Bold';
+    font-weight: 700;
+    font-size: 80px;
+    color: #F2F2F2;
+    width: 642px;
     margin-top: 20px;
+    line-height: 85px;
   }
   .text-sub {
-    font-family : OpenSans Semibold;
-    font-size : 21px;
-    color : #FFFFFF;
-    width: 450px;
-    margin-top: 15px;
+    font-family: 'Open Sans';
+    font-size: 24px;
+    color: #F2F2F2;
+    width: 557px;
+    margin-top: 25px;
+    line-height: 32.68px;
+    font-weight: 600;
   }
 }
 .content-data {
@@ -54,6 +57,22 @@
   left: 50%;
   transform: translate(-50%, 0);
   color: #000000;
+  .content-data-title {
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 25px;
+    text-align: left;
+
+  }
+  .content-data-security {
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 20px;
+    text-align: center;
+    width: 280px;
+  }
 
 }
 .content-issues {
@@ -78,7 +97,7 @@
   color: #000000;
 
   .revolution-item {
-    background : #FFFFFF;
+
     width : 405px;
     height : 313px;
     border-radius: 25px;
@@ -90,18 +109,22 @@
       min-width: 87px;
     }
     .p-title {
-      font-family : Montserrat Bold;
-      font-weight : 500;
-      font-size : 20px;
-      text-align: center;
-      margin-top: 30px;
-      line-clamp: 2;
+      font-family: Montserrat;
+font-size: 24px;
+font-weight: 700;
+line-height: 25px;
+text-align: center;
+margin-top: 30px;
+
+
     }
     .p-desc {
-      font-family : OpenSans Semibold;
-      font-size : 16px;
-      width: 280px;
-      text-align: center;
+      font-family: Open Sans;
+font-size: 16px;
+font-weight: 600;
+line-height: 20px;
+text-align: center;
+
       margin-top: 10px;
     }
   }
@@ -113,16 +136,25 @@
   background: #CC0000;
   width: 100vw;
   margin: 0 auto;
-  height: 97px;
+  height: 70px;
   position: relative;
   left: 50%;
   transform: translate(-50%, 0);
   p {
-    width: 360px;
-    font-family : Montserrat Bold;
-    font-weight : 500;
-    font-size : 15px;
-    line-height : 24px;
-    color : #FFFFFF;
+    span {
+      font-weight: 900;
+    }
+    width: 450px;
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 20px;
+    text-align: center;
+    color:#F2F2F2;
   }
+}
+
+.mobile-bg {
+  background: url('/home-mobile-bg.png') no-repeat;
+  background-size: cover;
 }

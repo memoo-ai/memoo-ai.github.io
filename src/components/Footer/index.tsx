@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import styles from './index.module.scss';
+import { IconTwitter, IconTelegram } from '@/components/icons';
 
 interface FooterProps {
   children?: ReactNode;
@@ -11,8 +12,8 @@ const Footer: React.FC<FooterProps> = ({ children }) => {
       <div className={styles['footerLogo']}>
         <img src="./logo.svg" alt="" className="w-[300px] h-[106px]" />
         <div className="flex items-center gap-6 mt-6">
-          <img src="./SVG/icon-twitter.svg" className="w-8 cursor-pointer" alt="" />
-          <img src="./SVG/icon-tg.svg" alt="" className="w-8 cursor-pointer" />
+          <IconTwitter className="cursor-pointer w-8" hoverColor="#2A2C3A" />
+          <IconTelegram className="cursor-pointer w-8" hoverColor="#2A2C3A" />
         </div>
       </div>
       <div className={styles['footerCopyright']}>

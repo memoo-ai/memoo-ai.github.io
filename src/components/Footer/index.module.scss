@@ -20,20 +20,25 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 1rem 5rem;
+  padding: 29px 5rem;
 }  
 
 .footerCopyright {
-  padding: 1rem 5rem;
+  display: flex;
+  padding: 0 5rem;
+  height: 70px;
   width: 100%;
-  border-top: 1px solid #FFFFFF;
+  border-top: 1px solid #F2F2F2;
   padding-top: 10px;
   display: flex;
   align-items: center;
   p {
-    font-family : Montserrat Bold;
-    font-size : 14px;
-    color : #FFFFFF;
+    font-family: Montserrat;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 20px;
+    text-align: center;
     margin: 0 auto;
+    color: #F2F2F2;
   }
 }

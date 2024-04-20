@@ -14,32 +14,32 @@ import {
 // import { walletConnect } from 'wagmi/connectors';
 import { BinanceWallet } from './wallet/binanceWallet';
 import { injected, metaMask, safe, walletConnect } from 'wagmi/connectors';
-// export const projectId = import.meta.env.VITE_PROJECT_ID;
+export const projectId = import.meta.env.VITE_PROJECT_ID;
 // if (!projectId) {
 //   throw new Error('VITE_PROJECT_ID is not set');
 // }
 
-// const connectors = connectorsForWallets(
-//   [
-//     {
-//       groupName: 'Recommended',
-//       wallets: [
-//         injectedWallet,
-//         // rainbowWallet,
-//         // gateWallet, // hide gate for now
-//         okxWallet,
-//         BinanceWallet,
-//         // rabbyWallet,
-//         metaMaskWallet,
-//         walletConnectWallet,
-//       ],
-//     },
-//   ],
-//   {
-//     appName: 'zklink Nova',
-//     projectId: projectId,
-//   },
-// );
+const connectors = connectorsForWallets(
+  [
+    {
+      groupName: 'Recommended',
+      wallets: [
+        injectedWallet,
+        // rainbowWallet,
+        // gateWallet, // hide gate for now
+        okxWallet,
+        // BinanceWallet,
+        // rabbyWallet,
+        metaMaskWallet,
+        // walletConnectWallet,
+      ],
+    },
+  ],
+  {
+    appName: 'Memoo',
+    projectId: projectId,
+  },
+);
 
 const metadata = {
   name: 'MeMoo',
@@ -58,10 +58,10 @@ const chains = [base] as readonly [Chain, ...Chain[]];
 export const wagmiDefaultConfig = createConfig({
   chains: chains,
   connectors: [
-    injected(),
-    metaMask(),
-    safe(),
-    // ...connectors,
+    // injected(),
+    // metaMask(),
+    // safe(),
+    ...connectors,
     // walletConnect({
     //   projectId,
     //   metadata,
