@@ -97,7 +97,7 @@ export default () => {
                 Memecoin Creator
               </Button>
               <Button variant="default" className="font-Montserrat text-lg  w-[298px] h-[53px] uppercase">
-                Memecoin Design
+                Memecoin degen
               </Button>
             </div>
             <div className="flex items-center gap-12 mt-[50px]">
