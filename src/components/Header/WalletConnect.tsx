@@ -54,13 +54,13 @@ export default () => {
                 );
               }
 
-              if (chain.unsupported) {
-                return (
-                  <Button variant="soft" onClick={openChainModal}>
-                    {account.address.slice(0, 6)}...{account.address.slice(-4)}
-                  </Button>
-                );
-              }
+              // if (chain.unsupported) {
+              //   return (
+              //     <Button variant="soft" onClick={openChainModal}>
+              //       {account.address.slice(0, 6)}...{account.address.slice(-4)}
+              //     </Button>
+              //   );
+              // }
 
               return (
                 <div className="flex items-center">

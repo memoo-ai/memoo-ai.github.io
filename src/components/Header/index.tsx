@@ -10,10 +10,9 @@ export interface MenuItem {
 }
 
 export const menus: MenuItem[] = [
-  { name: 'Overview', path: '/' },
   { name: 'MemeGecko', path: '/' },
   { name: 'Launchpad', path: '/' },
-  { name: 'Creator Dashboard', path: '/' },
+  { name: 'Creator', path: '/' },
 ];
 
 export default () => {
@@ -24,7 +23,7 @@ export default () => {
           <img src="./logo.svg" alt="Logo" className="w-[200px] h-[70px]" />
         </a>
       </div>
-      <div className="md:flex hidden items-center gap-[2.5rem] mx-auto">
+      <div className="md:flex hidden items-center gap-[2.5rem] ml-[54px] mr-auto">
         {menus.map((item, index) => (
           <NavLink
             to={item.path}
