@@ -68,3 +68,54 @@ export const IconProfile = ({ className, hoverColor = '#ff0000' }: { className: 
     </svg>
   );
 };
+interface IconProps {
+  className: string;
+  hoverColor?: string;
+  [key: string]: any;
+}
+export const IconSwipeDark = ({ className, hoverColor, ...rest }: IconProps) => {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <svg
+      width="40"
+      height="40"
+      viewBox="0 0 40 40"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      onMouseOver={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className={className}
+      {...rest}
+    >
+      <circle cx="20" cy="20" r="20" fill="#414358" />
+      <path
+        d="M22.5718 31.001C22.2208 30.7965 21.8067 30.6589 21.5319 30.376C18.5124 27.2932 15.5097 24.1913 12.5107 21.0837C11.8236 20.3727 11.8329 19.5069 12.5162 18.8017C15.5116 15.7151 18.5106 12.6342 21.5115 9.5533C21.9423 9.11181 22.4511 8.86909 23.0658 9.0755C23.6024 9.25515 23.8958 9.67371 23.9831 10.2318C24.0778 10.8319 23.7473 11.2658 23.3703 11.6556C20.9971 14.1001 18.6183 16.5369 16.2469 18.9813C15.9461 19.291 15.4763 19.6254 15.4596 19.9675C15.4447 20.2657 15.9479 20.604 16.2413 20.9059C18.6201 23.3676 21.0045 25.8216 23.387 28.2794C23.7919 28.698 24.102 29.1586 23.9534 29.8046C23.7937 30.5021 23.322 30.8978 22.5718 31.001Z"
+        fill={hovered ? '#ff0000' : '#fff'}
+      />
+    </svg>
+  );
+};
+export const IconSwipeLight = ({ className, hoverColor, ...rest }: IconProps) => {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <svg
+      width="40"
+      height="40"
+      viewBox="0 0 40 40"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      onMouseOver={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className={className}
+      {...rest}
+    >
+      <circle cx="20" cy="20" r="20" fill="white" />
+      <path
+        d="M22.5718 31.001C22.2208 30.7965 21.8067 30.6589 21.5319 30.376C18.5124 27.2932 15.5097 24.1913 12.5107 21.0837C11.8236 20.3727 11.8329 19.5069 12.5162 18.8017C15.5116 15.7151 18.5106 12.6342 21.5115 9.5533C21.9423 9.11181 22.4511 8.86909 23.0658 9.0755C23.6024 9.25515 23.8958 9.67371 23.9831 10.2318C24.0778 10.8319 23.7473 11.2658 23.3703 11.6556C20.9971 14.1001 18.6183 16.5369 16.2469 18.9813C15.9461 19.291 15.4763 19.6254 15.4596 19.9675C15.4447 20.2657 15.9479 20.604 16.2413 20.9059C18.6201 23.3676 21.0045 25.8216 23.387 28.2794C23.7919 28.698 24.102 29.1586 23.9534 29.8046C23.7937 30.5021 23.322 30.8978 22.5718 31.001Z"
+        fill={hovered ? '#ff0000' : 'black'}
+      />
+    </svg>
+  );
+};

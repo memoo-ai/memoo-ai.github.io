@@ -166,7 +166,6 @@ export default () => {
             <span>$MOO</span> isn’t minted and traded at the moment. Community rewards may be announced soon.
           </p>
         </div>
-        <Footer />
       </div>
     </div>
   );

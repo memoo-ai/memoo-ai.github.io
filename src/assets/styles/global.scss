@@ -102,3 +102,8 @@
       @apply bg-background text-foreground;
     }
   }
+  .ant-table-tbody {
+    .ant-table-cell {
+      vertical-align: middle;
+    }
+  }

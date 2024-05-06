@@ -1,6 +1,5 @@
 import { Button, DropdownMenu } from '@radix-ui/themes';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { CaretDownIcon } from '@radix-ui/react-icons';
 import { useAccount, useDisconnect } from 'wagmi';
 import { handleCopy } from '@/utils';
 import { IconProfile } from '@/components/icons';

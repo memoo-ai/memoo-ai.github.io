@@ -1,4 +1,4 @@
-import { RouteObject } from 'react-router-dom';
+import type { RouteObject } from 'react-router-dom';
 import { lazy } from 'react';
 
 const routeConfig: RouteObject[] = [
@@ -9,6 +9,14 @@ const routeConfig: RouteObject[] = [
       {
         path: '/',
         Component: lazy(() => import('../pages/home')),
+      },
+      {
+        path: '/gecko',
+        Component: lazy(() => import('../pages/gecko')),
+      },
+      {
+        path: '/launchpad',
+        Component: lazy(() => import('../pages/launchpad')),
       },
     ],
   },

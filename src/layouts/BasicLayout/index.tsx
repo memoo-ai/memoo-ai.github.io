@@ -12,7 +12,7 @@ const BasicLayout: React.FC = () => {
       <div className={styles.content}>
         <Outlet />
       </div>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 };

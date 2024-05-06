@@ -1,4 +1,5 @@
-import React, { ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import React from 'react';
 import styles from './index.module.scss';
 import { IconTwitter, IconTelegram } from '@/components/icons';
 

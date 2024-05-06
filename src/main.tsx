@@ -1,7 +1,7 @@
 import '@radix-ui/themes/styles.css';
 import '@rainbow-me/rainbowkit/styles.css';
 import './assets/styles/global.scss';
-import { StrictMode, Suspense } from 'react';
+import { Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { WagmiProvider } from 'wagmi';
@@ -35,5 +35,4 @@ root.render(
       </RainbowKitProvider>
     </QueryClientProvider>
   </WagmiProvider>,
-  // </StrictMode>,
 );
