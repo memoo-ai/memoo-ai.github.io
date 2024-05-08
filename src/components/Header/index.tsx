@@ -23,7 +23,7 @@ export default () => {
           <img src="./logo.svg" alt="Logo" className="w-[200px] h-[70px]" />
         </a>
       </div>
-      <div className="md:flex hidden items-center gap-[2.5rem] ml-[54px] mr-auto">
+      <div className="md:flex hidden items-center  ml-[54px] mr-auto">
         {menus.map((item, index) => (
           <NavLink
             to={item.path}

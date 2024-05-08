@@ -11,21 +11,25 @@
 }
 
 .navItem {
-  color: #7e7e7e;
+  // color: #7e7e7e;
+  color: #fff;
   font-family: 'Montserrat Bold';
   font-size: 1rem;
   font-style: normal;
   font-weight: 500;
   line-height: 1.375rem; /* 137.5% */
   letter-spacing: -0.03125rem;
-
-  &:hover,
-  &.active {
-    color: #fff;
-  }
+  padding: .8125rem 1.625rem;
+  box-sizing: border-box;
+  border-radius: .625rem;
+  // &:hover,
+  // &.active {
+  //   color: #fff;
+  // }
 }
 
 .active {
   color: #fff;
   font-weight: 700;
+  background: #CC0000;
 }
