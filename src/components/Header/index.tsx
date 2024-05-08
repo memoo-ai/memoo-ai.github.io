@@ -12,7 +12,7 @@ export interface MenuItem {
 export const menus: MenuItem[] = [
   { name: 'MemeGecko', path: '/gecko' },
   { name: 'LaunchPad', path: '/launchpad' },
-  { name: 'Create', path: '/create' },
+  { name: 'Create', path: '/' },
 ];
 
 export default () => {

@@ -1,7 +1,7 @@
 import './index.scss';
 import { Button } from '@/components/ui/button';
 import Footer from '@/components/Footer';
-import { IconTwitter, IconTelegram } from '@/components/icons';
+import { IconTwitter, IconTelegram, IconVector } from '@/components/icons';
 const Revolutions = [
   {
     title: (
@@ -102,15 +102,18 @@ export default () => {
             </div>
             <div className="flex items-center gap-12 mt-[50px]">
               {/* <img src="./SVG/icon-twitter.svg" className="w-8 cursor-pointer" alt="" /> */}
+              <IconVector className="cursor-pointer w-8" />
               <IconTwitter className="cursor-pointer w-8" />
               <IconTelegram className="cursor-pointer w-8" />
             </div>
           </div>
+
           <div className="content-banner-right items pt-[3rem]">
             <img src="./img-content-banner-right.png" alt="" className="w-[510px]" />
           </div>
         </div>
-        <div className="content-data py-[100px]">
+        <div>123132</div>
+        <div className="content-data py-[100px] pl-[90px]">
           <div className="mx-[auto] max-w-[94.5rem] flex  jusitfy-between">
             <div className="flex flex-col text-[#000000] w-[150px]">
               <p className="content-data-title">
