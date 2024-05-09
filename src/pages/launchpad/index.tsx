@@ -7,6 +7,7 @@ import SwipeCard from '@/components/SwipeCard';
 import { Table } from 'antd';
 import { ActiveIdoCard } from './card';
 import type { GetProp, TableProps } from 'antd';
+import { AirDrop } from './airDrop';
 type ColumnsType<T> = TableProps<T>['columns'];
 type TablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;
 
@@ -57,28 +58,37 @@ export default () => {
 
   return (
     <div className="page pb-[70px]">
-      <CommonBanner
-        title="MeMoo LaunchPad. Your Ticket to Meme Stardom."
-        desc="Ignite Your Memes, Ignite Your Success.
+      <AirDrop />
+      <div className="base-container">
+        <CommonBanner
+          title="MeMoo LaunchPad. Your Ticket to Meme Stardom."
+          desc="Ignite Your Memes, Ignite Your Success.
         "
-      />
-      <ActiveIdoCard />
-      <div className="flex items-center justify-between my-[70px]">
-        <p className="text-Montserrat font-bold text-[24px]">Upcoming IDO</p>
+        />
+
+        <ActiveIdoCard />
+        <div>
+          <div className="flex-col">
+            <img src="./temp/" alt="" />
+          </div>
+        </div>
+        <div className="flex items-center justify-between my-[70px]">
+          <p className="text-Montserrat font-bold text-[24px]">Upcoming IDO</p>
+        </div>
+        <Table
+          columns={columns}
+          dataSource={data}
+          pagination={tableParams.pagination}
+          loading={loading}
+          onChange={handleTableChange}
+        />
+        <CommonBanner
+          title="Supercharge Your Meme Creation."
+          desc="Create Your Very Own Meme Token Now."
+          link="/"
+          linkText="BE A CREATOR"
+        />
       </div>
-      <Table
-        columns={columns}
-        dataSource={data}
-        pagination={tableParams.pagination}
-        loading={loading}
-        onChange={handleTableChange}
-      />
-      <CommonBanner
-        title="Supercharge Your Meme Creation."
-        desc="Create Your Very Own Meme Token Now."
-        link="/"
-        linkText="BE A CREATOR"
-      />
     </div>
   );
 };

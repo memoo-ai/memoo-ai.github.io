@@ -1,0 +1,17 @@
+.air-drop {
+  background: #2A2C3A;
+  width: 100vw;
+  overflow-x: auto;
+  position: absolute;
+  left: 0;
+  top: 5.5rem;
+}
+
+/* 隐藏滚动条 */
+.air-drop::-webkit-scrollbar {
+  display: none;
+}
+
+.air-drop .air-drop-item {
+  color: #ffffff;
+}
