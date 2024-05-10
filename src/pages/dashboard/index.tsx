@@ -1,16 +1,20 @@
 import './index.scss';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useEffect, useState } from 'react';
-import { Table } from 'antd';
+import { useCallback, useEffect, useState } from 'react';
+import { DashboardContent } from './dashboardContent';
 import CommonBanner from '@/components/Banner';
 export default () => {
+  const onChange = useCallback(() => {}, []);
+
   return (
     <div>
       <div className="dashboard">
         <div>
           <img className="dashboard_banner_img" src="./dashboard/dashboard_banner.png" alt="" />
         </div>
-        <div className="dashboard_content"> 1231</div>
+        <div className="dashboard_content">
+          <DashboardContent />
+        </div>
+
         <CommonBanner
           title="Exclusive ‘Proof of Creation’ Reward for Creators."
           desc="Exciting Rewards for Exceptional Talent in Meme Creation."
