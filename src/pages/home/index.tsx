@@ -112,7 +112,20 @@ export default () => {
             <img src="./img-content-banner-right.png" alt="" className="w-[510px]" />
           </div>
         </div>
-        <div>123132</div>
+        <div className="flex sections ">
+          <div className="sections-item flex flex-col">
+            <img className="sections-item-img" src="./launchPad/img-ranked.png" alt="" />
+            <p className="sections-item-text">View Creator Ranking</p>
+          </div>
+          <div className="sections-item flex column">
+            <img className="sections-item-img" src="./launchPad/img-vector.png" alt="" />
+            <p className="sections-item-text">Participate in IDO</p>
+          </div>
+          <div className="sections-item flex column">
+            <img className="sections-item-img" src="./launchPad/img-star.png" alt="" />
+            <p className="sections-item-text">Find Your Favourite</p>
+          </div>
+        </div>
         <div className="content-data py-[100px] pl-[90px]">
           <div className="mx-[auto] max-w-[94.5rem] flex  jusitfy-between">
             <div className="flex flex-col text-[#000000] w-[150px]">

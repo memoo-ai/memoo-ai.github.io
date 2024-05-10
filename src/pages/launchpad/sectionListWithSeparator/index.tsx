@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './index.scss';
-export const AirDrop = () => {
+export const sectionListWithSeparator = () => {
   const [airDrops, setAirDrops] = useState<any>([]);
   useEffect(() => {
     const list = new Array(20).fill(undefined).map((_, i) => ({
@@ -12,15 +12,21 @@ export const AirDrop = () => {
   }, []);
 
   return (
-    <div className="flex section">
-      {airDrops.map((item: any) => {
-        return (
-          <div className="air-drop-item mr-2 flex overflow items-center px-[10px] py-[5px]" key={item.id}>
-            <img className="w-10 mr-2" src="./temp/cow.png" alt="" />
-            <span> {item.address}</span>
-          </div>
-        );
-      })}
+    <div className="flex sections">
+      <div className="section-item flex column">
+        <div>
+          <img className="section-item-img" src="./launchPad/img-vector.png" alt="" />
+          <p className="section-item-text">View Creator Ranking</p>
+        </div>
+        <div>
+          <img className="section-item-img" src="./launchPad/img-vector.png" alt="" />
+          <p className="section-item-text">View Creator Ranking</p>
+        </div>
+        <div>
+          <img className="section-item-img" src="./launchPad/img-vector.png" alt="" />
+          <p className="section-item-text">View Creator Ranking</p>
+        </div>
+      </div>
     </div>
   );
 };

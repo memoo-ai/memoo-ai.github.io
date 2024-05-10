@@ -20,15 +20,15 @@
 
 .content-banner-bg {
   height: 714px;
-  background: url('/img-content-banner-bg.png') no-repeat center center;
+  background: url('/img-content-banner-bg.png') no-repeat ;
   width: 100vw;
   position: absolute;
   left:0;
-  background-size: cover;
+  background-size: 100% 100%;
 }
 .content-banner {
   position: relative;
-  padding-bottom: 30px;
+  padding-bottom: 70px;
   .text-ultimate {
     font-family: 'Montserrat Bold';
     font-weight: 700;
@@ -72,6 +72,42 @@
     line-height: 20px;
     text-align: center;
     width: 280px;
+  }
+
+}
+.sections{
+  display: flex;
+  width: 100%;
+  height: 104px;
+  .sections-item{
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    &:nth-child(-n+2)::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 1px;
+      height: 74px;
+      background: #CCCCCC;
+    }
+    .sections-item-img{
+      width: 51.59px;
+      height: 41.29px;
+    }
+    .sections-item-text{
+      font-family: Montserrat;
+font-size: 14px;
+font-weight: 700;
+line-height: 20px;
+text-align: center;
+
+    }
   }
 
 }

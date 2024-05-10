@@ -1,3 +1,20 @@
-.section{
+.sections{
+  display: flex;
+  width: 100%;
+
+  .sections-item{
+    flex: 1;
+    position: relative;
+
+    &:nth-child(-n+2)::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 1px;
+      height: 74px;
+      background: #CCCCCC;
+    }
+  }
 
 }

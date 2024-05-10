@@ -8,6 +8,7 @@ import { Table } from 'antd';
 import { ActiveIdoCard } from './card';
 import type { GetProp, TableProps } from 'antd';
 import { AirDrop } from './airDrop';
+import { sectionListWithSeparator } from './sectionListWithSeparator';
 type ColumnsType<T> = TableProps<T>['columns'];
 type TablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;
 
@@ -65,7 +66,7 @@ export default () => {
           desc="Ignite Your Memes, Ignite Your Success.
         "
         />
-
+        <sectionListWithSeparator />
         <ActiveIdoCard />
         <div>
           <div className="flex-col">
