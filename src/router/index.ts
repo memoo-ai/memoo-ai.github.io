@@ -19,6 +19,10 @@ const routeConfig: RouteObject[] = [
         Component: lazy(() => import('../pages/launchpad')),
       },
       {
+        path: '/dashboard',
+        Component: lazy(() => import('../pages/dashboard')),
+      },
+      {
         path: '/tokenProfile',
         Component: lazy(() => import('../pages/tokenProfile')),
       },
