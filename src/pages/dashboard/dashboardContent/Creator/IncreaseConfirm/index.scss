@@ -1,0 +1,87 @@
+.ant-modal .ant-modal-content {
+  background: #f7f7f7;
+
+  .ant-btn {
+    width: 100%;
+    background: $dashboardBtnBorderColor !important;
+    span {
+      color: $color !important;
+    }
+  }
+}
+.ant-modal .ant-modal-title {
+  font-family: Montserrat;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 29px;
+  text-align: left;
+  background: #f7f7f7;
+}
+
+.increase_unlocked {
+  width: 137px;
+  h3 {
+    width: 94px;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 18px;
+    text-align: left;
+  }
+  p {
+    width: 132px;
+    font-family: Open Sans;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 12px;
+    text-align: left;
+  }
+}
+.unlock {
+  h3 {
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 29px;
+    text-align: right;
+    color: $textColor;
+  }
+  p {
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 21px;
+    text-align: right;
+    color: $textSecondaryColor;
+  }
+}
+.lock {
+  margin-left: 14px;
+}
+.claimable {
+  width: 100%;
+  background: $backgroundColor;
+  border-radius: 7px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 17px 14px;
+  box-sizing: border-box;
+  margin-top: 34px;
+  .claimable_left {
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 21px;
+    text-align: left;
+  }
+  .claimable_right {
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 29px;
+    text-align: right;
+    display: flex;
+    align-items: center;
+  }
+}

@@ -1,8 +1,8 @@
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import WalletConnect from './WalletConnect';
 import styles from './index.module.scss';
 import NavMenu from '@/components/NavMenu';
-import { useState } from 'react';
+// import { useState } from 'react';
 export interface MenuItem {
   name: string;
   path: string;

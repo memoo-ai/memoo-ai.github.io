@@ -1,0 +1,95 @@
+.dashboard_item{
+
+  padding: 18px 21px;
+  box-shadow: 2px 2px 15px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  // margin: 0 21px 21px 0;
+  background: #242842;
+  box-sizing: border-box;
+  .dashboard_item_tag{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .dashboard_item_tag_left{
+      width: 61px;
+      border-radius: 62.5px;
+      background: $tagBgColor;
+      font-family: Montserrat;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 20px;
+      text-align: center;
+      color: $tagColor;
+    }
+    .dashboard_item_tag_right{
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #B53BFF;
+
+      h3{
+        font-family: Montserrat;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 31px;
+        text-align: right;
+        margin-right: 11px;
+      }
+    }
+  }
+  .dashboard_item_info{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 15px 0 10px 0;
+    .dashboard_item_info_img{
+      width: 61px;
+      height: 61px;
+      border-radius: 50%;
+    }
+    .dashboard_item_info_title{
+      h3{
+        font-family: Montserrat;
+        font-size: 18px;
+        font-weight: 800;
+        line-height: 32px;
+        text-align: right;
+        color: $textColor;
+      }
+      p{
+        font-family: Montserrat;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 21px;
+        text-align: right;
+        color: $mainColor;
+      }
+    }
+  }
+  .dashboard_item_content{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .dashboard_item_content_left{
+      font-family: Montserrat;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 31px;
+      text-align: left;
+      color: $textSecondaryColor;
+
+    }
+    .dashboard_item_content_right{
+      font-family: Montserrat;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 31px;
+      text-align: right;
+      color: $textColor;
+
+    }
+  }
+}

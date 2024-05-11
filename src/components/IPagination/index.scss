@@ -1,0 +1,50 @@
+//默认
+.ant-pagination .ant-pagination-item {
+  background: #1F3B4F;
+
+  border-color: #07E993;
+
+  a{
+    font-family: OCR A Extended;
+    font-size: 12px;
+    font-weight: 400;
+    text-align: center;
+    color: #07E993;
+  }
+}
+//选中
+.ant-pagination .ant-pagination-item-active{
+  background: #07E993;
+
+  border-color: #131522;
+
+  a{
+    font-family: OCR A Extended;
+    font-size: 12px;
+    font-weight: 400;
+    text-align: center;
+    color: #1F3B4F;
+  }
+}
+//左右按钮禁用
+.ant-pagination .ant-pagination-disabled .ant-pagination-item-link{
+  background: #1F3B4F;
+  border-color: #07E993;
+  color: #07E993;
+}
+//左右按钮
+.ant-pagination .ant-pagination-next .ant-pagination-item-link,
+.ant-pagination .ant-pagination-prev .ant-pagination-item-link {
+  background: #1F3B4F;
+  border-color: #07E993;
+  color: #07E993;
+}
+// 省略号
+.ant-pagination .ant-pagination-jump-prev .ant-pagination-item-container .ant-pagination-item-ellipsis,
+.ant-pagination .ant-pagination-jump-next .ant-pagination-item-container .ant-pagination-item-ellipsis{
+  color: #07E993;
+}
+// 跳转
+.ant-pagination .ant-pagination-options-quick-jumper{
+  color: #07E993;
+}

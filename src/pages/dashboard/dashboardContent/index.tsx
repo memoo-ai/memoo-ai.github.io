@@ -1,9 +1,9 @@
 import './index.scss';
 import { Tabs as AntTabs } from 'antd';
 import { useCallback, useState } from 'react';
-import { Creator } from '../Creator';
-import { Degen } from '../Degen';
-import { Watchlist } from '../Watchlist';
+import { Creator } from './Creator';
+import { Degen } from './Degen';
+import { Watchlist } from './Watchlist';
 export const DashboardContent = () => {
   const [type, setType] = useState('All');
   const onChange = useCallback((e) => {

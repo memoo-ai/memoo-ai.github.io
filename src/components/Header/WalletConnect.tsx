@@ -1,10 +1,10 @@
 import { Button, DropdownMenu } from '@radix-ui/themes';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount, useDisconnect } from 'wagmi';
-import { handleCopy } from '@/utils';
+// import { handleCopy } from '@/utils';
 import { IconProfile } from '@/components/icons';
 import './walletConnect.scss';
-const explorerURL = import.meta.env.VITE_EXPLORER_URL;
+// const explorerURL = import.meta.env.VITE_EXPLORER_URL;
 
 export default () => {
   const { address, isConnected } = useAccount();
@@ -46,7 +46,7 @@ export default () => {
                   <Button
                     variant="soft"
                     onClick={openConnectModal}
-                    className="cursor-pointer hidden md:block text-center text-lg  md:h-[51px] px-6 md:bg-[#CC0000] md:text-[#FFFFFF] font-bold font-Montserrat"
+                    className="cursor-pointer hidden md:block text-center text-lg  md:h-[51px] px-6 md:bg-[#1F3B4F] md:text-[#07E993] font-bold font-Montserrat"
                   >
                     Connect Wallet
                   </Button>
@@ -63,14 +63,14 @@ export default () => {
 
               return (
                 <div className="flex items-center">
-                  <div className="flex items-center justify-center w-[192px] h-[46px] bg-[#CC0000] rounded-lg mr-4 font-Montserrat font-bold text-[#fff] text-lg">
+                  <div className=" wallet-border flex items-center justify-center w-[192px] h-[46px] bg-[#1F3B4F] rounded-lg mr-4 font-Montserrat font-bold text-[#07E993] text-lg">
                     {account.address.slice(0, 6)}...{account.address.slice(-4)}
                   </div>
                   <DropdownMenu.Root>
                     <DropdownMenu.Trigger>
                       <div>
                         {/* <img src="./icon-profile.svg" alt="" /> */}
-                        <IconProfile className="cursor-pointer" />
+                        <IconProfile className="cursor-pointer wallet-border rounded-[7px]" />
                       </div>
                     </DropdownMenu.Trigger>
 

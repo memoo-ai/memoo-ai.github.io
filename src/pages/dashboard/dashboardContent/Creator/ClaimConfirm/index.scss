@@ -1,0 +1,69 @@
+.ant-modal  .ant-modal-content{
+  background: #F7F7F7;
+
+  .ant-btn{
+    width: 100%;
+    background: $dashboardBtnBorderColor !important;
+    span{
+      color: $color !important;
+    }
+  }
+}
+.ant-modal .ant-modal-title {
+  font-family: Montserrat;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 29px;
+  text-align: left;
+  background: #F7F7F7;
+}
+
+.unlocked {
+  width: 137px;
+}
+.unlock {
+  h3 {
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 29px;
+    text-align: right;
+    color: $textColor;
+  }
+  p {
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 21px;
+    text-align: right;
+    color: $textSecondaryColor;
+  }
+}
+.lock {
+  margin-left: 14px;
+}
+.claimable {
+  width: 100%;
+  background: $backgroundColor;
+  border-radius: 7px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 17px 14px;
+  box-sizing: border-box;
+  margin-top: 34px;
+  .claimable_left {
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 21px;
+    text-align: left;
+  }
+  .claimable_right {
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 29px;
+    text-align: right;
+  }
+}

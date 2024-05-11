@@ -1,10 +1,8 @@
 import './index.scss';
-import { useCallback, useEffect, useState } from 'react';
+// import { useCallback, useEffect, useState } from 'react';
 import { DashboardContent } from './dashboardContent';
 import CommonBanner from '@/components/Banner';
 export default () => {
-  const onChange = useCallback(() => {}, []);
-
   return (
     <div>
       <div className="dashboard">
@@ -14,13 +12,15 @@ export default () => {
         <div className="dashboard_content">
           <DashboardContent />
         </div>
-
-        <CommonBanner
-          title="Exclusive ‘Proof of Creation’ Reward for Creators."
-          desc="Exciting Rewards for Exceptional Talent in Meme Creation."
-          link="/"
-          linkText="BE A CREATOR"
-        />
+        <div className="mb-[70px]">
+          {' '}
+          <CommonBanner
+            title="Exclusive ‘Proof of Creation’ Reward for Creators."
+            desc="Exciting Rewards for Exceptional Talent in Meme Creation."
+            link="/"
+            linkText="BE A CREATOR"
+          />
+        </div>
       </div>
     </div>
   );

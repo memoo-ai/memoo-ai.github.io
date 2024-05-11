@@ -1,6 +1,5 @@
 import './index.scss';
 import { Button } from '@/components/ui/button';
-import Footer from '@/components/Footer';
 import { IconTwitter, IconTelegram, IconVector } from '@/components/icons';
 const Revolutions = [
   {
