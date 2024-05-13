@@ -96,3 +96,12 @@
   border: none !important;
 }
 
+.dashboard_item_create_edit{
+  border: 1px solid $mainColor;
+  border-radius: 7px;
+}
+.draft_hover{
+  &:hover{
+    border: 1px solid green;
+  }
+}

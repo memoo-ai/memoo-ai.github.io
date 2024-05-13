@@ -153,7 +153,16 @@ export const IconDraft = ({ className, ...rest }: IconProps) => {
     </svg>
   );
 };
-export const IconDraftBtn = ({ className, bgColor = '#07E993', color = '#A005FE', ...rest }: IconProps) => {
+export const IconDraftBtn = ({
+  className,
+  hoverBgColor = '#1F3B4F',
+  hoverColor = '#07E993',
+  bgColor = '#07E993',
+  color = '#A005FE',
+  ...rest
+}: IconProps) => {
+  const [hovered, setHovered] = useState(false);
+
   return (
     <svg
       width="39"
@@ -161,17 +170,22 @@ export const IconDraftBtn = ({ className, bgColor = '#07E993', color = '#A005FE'
       viewBox="0 0 39 39"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      onMouseOver={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       className={className}
+      style={{
+        border: hovered ? `1px solid #fff` : 'none',
+      }}
       {...rest}
     >
-      <rect y="0.280762" width="38.5284" height="38.5284" rx="7" fill={bgColor} />
+      <rect y="0.280762" width="38.5284" height="38.5284" rx="7" fill={hovered ? hoverBgColor : bgColor} />
       <path
         d="M19.3025 14.7708C21.5693 14.7708 23.8349 14.7732 26.1017 14.7673C26.3029 14.7673 26.4089 14.7863 26.3922 15.0387C26.2756 16.7761 26.1755 18.5158 26.0684 20.2543C25.9243 22.5953 25.7815 24.9363 25.6338 27.2774C25.5696 28.2931 24.8457 28.9921 23.8313 28.9944C20.8026 29.0016 17.775 29.0016 14.7462 28.9944C13.7128 28.9921 13.0211 28.3109 12.9532 27.2452C12.7913 24.6875 12.6389 22.1285 12.4782 19.5696C12.3853 18.0883 12.2877 16.607 12.1794 15.1257C12.1603 14.8613 12.2103 14.7625 12.5044 14.7637C14.7712 14.7756 17.0368 14.7708 19.3036 14.7708H19.3025Z"
-        fill={color}
+        fill={hovered ? hoverColor : color}
       />
       <path
         d="M19.2929 13.5718C16.9975 13.5718 14.7009 13.5718 12.4055 13.5718C11.9222 13.5718 11.4793 13.4682 11.1852 13.0395C10.7709 12.437 11.059 11.2986 11.9758 11.2593C13.0723 11.2129 14.1699 11.2069 15.2676 11.2117C15.6046 11.2129 15.8117 11.1379 15.9415 10.8009C16.1582 10.2365 16.6189 10.0031 17.2071 10.0019C18.5929 10.0007 19.9787 9.99831 21.3633 10.0019C21.9741 10.0031 22.4396 10.2531 22.6622 10.8461C22.7693 11.1307 22.9372 11.2177 23.242 11.2105C24.1718 11.1879 25.1028 11.1819 26.0327 11.2129C26.3874 11.2248 26.7494 11.3189 27.0875 11.4344C27.4637 11.563 27.5971 12.1917 27.5732 12.5037C27.5328 13.0217 27.2375 13.3384 26.7649 13.4872C26.5625 13.5515 26.3374 13.567 26.122 13.567C23.8456 13.573 21.5693 13.5706 19.2929 13.5706V13.5718Z"
-        fill={color}
+        fill={hovered ? hoverColor : color}
       />
     </svg>
   );
@@ -286,7 +300,15 @@ export const IconIDO = ({ className, ...rest }: IconProps) => {
     </svg>
   );
 };
-export const IconEdit = ({ className, bgColor = '#07E993', color = '#A005FE', ...rest }: IconProps) => {
+export const IconEdit = ({
+  className,
+  hoverBgColor = '#1F3B4F',
+  hoverColor = '#07E993',
+  bgColor = '#07E993',
+  color = '#A005FE',
+  ...rest
+}: IconProps) => {
+  const [hovered, setHovered] = useState(false);
   return (
     <svg
       width="40"
@@ -294,17 +316,19 @@ export const IconEdit = ({ className, bgColor = '#07E993', color = '#A005FE', ..
       viewBox="0 0 40 40"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      onMouseOver={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       className={className}
       {...rest}
     >
-      <rect x="0.892578" y="0.548828" width="38.5737" height="38.5737" rx="7" fill={bgColor} />
+      <rect x="0.892578" y="0.548828" width="38.5737" height="38.5737" rx="7" fill={hovered ? hoverBgColor : bgColor} />
       <path
         d="M26.5027 18.4523C26.1694 18.7576 25.8617 19.0191 25.5759 19.3037C22.6604 22.2204 19.7474 25.1383 16.8392 28.0623C16.6507 28.2508 16.4464 28.3566 16.1885 28.4065C14.4151 28.7507 12.643 29.1059 10.8709 29.4537C10.7748 29.4732 10.675 29.4696 10.5352 29.4793C10.6106 29.0743 10.675 28.7021 10.7492 28.3311C11.0642 26.7682 11.3768 25.204 11.704 23.6435C11.732 23.5085 11.839 23.3759 11.94 23.2737C14.8433 20.3595 17.7515 17.4489 20.6584 14.5371C20.9223 14.2719 21.1875 14.008 21.449 13.7404C21.5463 13.6407 21.6327 13.5896 21.7531 13.7088C23.3112 15.2656 24.8704 16.8213 26.5027 18.4511V18.4523Z"
-        fill={color}
+        fill={hovered ? hoverColor : color}
       />
       <path
         d="M29.8623 15.0211C29.6458 15.2376 29.3928 15.493 29.1374 15.746C28.5998 16.28 28.0573 16.8078 27.5258 17.3479C27.3786 17.4963 27.2801 17.5388 27.1098 17.3673C25.6296 15.8761 24.1421 14.3923 22.6557 12.9084C22.5463 12.7989 22.4672 12.7138 22.6205 12.5629C23.3843 11.8125 24.1384 11.0535 24.8986 10.2982C24.9472 10.2495 25.0129 10.2167 25.0482 10.1924C26.6464 11.7955 28.2361 13.3888 29.8623 15.0199V15.0211Z"
-        fill={color}
+        fill={hovered ? hoverColor : color}
       />
     </svg>
   );
@@ -345,6 +369,7 @@ export const IconClose = ({ className, ...rest }: IconProps) => {
   );
 };
 export const IconAdd = ({ className, ...rest }: IconProps) => {
+  const [hovered, setHovered] = useState(false);
   return (
     <svg
       width="38"
@@ -352,12 +377,21 @@ export const IconAdd = ({ className, ...rest }: IconProps) => {
       viewBox="0 0 38 38"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      onMouseOver={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       className={className}
       {...rest}
     >
-      <circle cx="19.168" cy="19.1689" r="17.8047" fill="#1F3B4F" stroke="#07E993" strokeWidth="2" />
-      <line x1="11" y1="19" x2="27" y2="19" stroke="#07E993" strokeWidth="2" />
-      <line x1="19" y1="27" x2="19" y2="11" stroke="#07E993" strokeWidth="2" />
+      <circle
+        cx="19.168"
+        cy="19.1689"
+        r="17.8047"
+        fill={hovered ? '#07E993' : '#1F3B4F'}
+        stroke="#07E993"
+        strokeWidth="2"
+      />
+      <line x1="11" y1="19" x2="27" y2="19" stroke={hovered ? '#000000' : '#07E993'} strokeWidth="2" />
+      <line x1="19" y1="27" x2="19" y2="11" stroke={hovered ? '#000000' : '#07E993'} strokeWidth="2" />
     </svg>
   );
 };

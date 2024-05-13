@@ -48,3 +48,13 @@
 .ant-pagination .ant-pagination-options-quick-jumper{
   color: #07E993;
 }
+.i_pagination{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  .ant-pagination-options{
+    position: absolute;
+    right: 0;
+  }
+}

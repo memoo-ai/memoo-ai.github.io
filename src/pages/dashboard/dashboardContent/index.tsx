@@ -1,28 +1,29 @@
 import './index.scss';
 import { Tabs as AntTabs } from 'antd';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, FC } from 'react';
 import { Creator } from './Creator';
 import { Degen } from './Degen';
 import { Watchlist } from './Watchlist';
-export const DashboardContent = () => {
+export const DashboardContent: FC<{ onChangeType: (type: string) => void }> = ({ onChangeType, ...rest }) => {
   const [type, setType] = useState('All');
   const onChange = useCallback((e) => {
     setType(e);
-    fetchData();
+    onChangeType(e);
+    // fetchData();
   }, []);
   const items = [
     {
-      key: '1',
+      key: 'Creator',
       label: 'Creator',
       children: <Creator />,
     },
     {
-      key: '2',
+      key: 'Degen',
       label: 'Degen',
       children: <Degen />,
     },
     {
-      key: '3',
+      key: 'Watchlist',
       label: 'Watchlist',
       children: <Watchlist />,
     },

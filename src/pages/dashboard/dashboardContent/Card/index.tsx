@@ -38,7 +38,11 @@ export const Card = ({ data, children }: CardProps) => {
         </div>
       </div>
       <div className="dashboard_item_info">
-        <img className="dashboard_item_info_img" src={data.imgUrl} alt="" />
+        {data.imgUrl ? (
+          <img className="dashboard_item_info_img" src={data.imgUrl} alt="" />
+        ) : (
+          <div className="dashboard_item_info_img" />
+        )}
         <div className="dashboard_item_info_title">
           <h3>1</h3>
           <p>2</p>
@@ -46,15 +50,15 @@ export const Card = ({ data, children }: CardProps) => {
       </div>
       <div className="dashboard_item_content">
         <div className="dashboard_item_content_left">Total Raised</div>
-        <div className="dashboard_item_content_right">6549</div>
+        <div className="dashboard_item_content_right">{data.totalRaised}</div>
       </div>
       <div className="dashboard_item_content">
         <div className="dashboard_item_content_left">Launch Date</div>
-        <div className="dashboard_item_content_right">6549</div>
+        <div className="dashboard_item_content_right">{data.launchDate}</div>
       </div>
       <div className="dashboard_item_content">
         <div className="dashboard_item_content_left">MeMoo Score</div>
-        <div className="dashboard_item_content_right">6549</div>
+        <div className="dashboard_item_content_right">{data.meMooScore}</div>
       </div>
       <div>{children}</div>
     </div>

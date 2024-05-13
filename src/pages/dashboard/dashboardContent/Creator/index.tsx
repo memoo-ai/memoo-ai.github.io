@@ -14,7 +14,9 @@ import {
 } from '@/components/icons';
 import { ClaimConfirm } from './ClaimConfirm';
 import { IncreaseConfirm } from './IncreaseConfirm';
+import { useNavigate } from 'react-router-dom';
 export const Creator = () => {
+  const navigate = useNavigate();
   const data = [
     {
       imgUrl: './temp/1.png',
@@ -27,13 +29,13 @@ export const Creator = () => {
       type: 'All',
     },
     {
-      imgUrl: './temp/1.png',
-      name: 'Doge Killer',
-      tip: 'Saved Draft',
-      chain: 'LEASH',
-      totalRaised: '1.35/2.3E',
-      launchDate: '06 Apr 2024',
-      meMooScore: '70/100',
+      imgUrl: '',
+      name: '',
+      tip: '',
+      chain: '',
+      totalRaised: '',
+      launchDate: '',
+      meMooScore: '',
       type: 'Draft',
     },
     {
@@ -72,7 +74,16 @@ export const Creator = () => {
 
     switch (type) {
       case 'Draft':
-        button = <IconDraftBtn className="DraftBtn" />;
+        button = (
+          <IconDraftBtn
+            className="DraftBtn draft_hover"
+            color={type === 'Draft' ? '#7D83B5' : '#242842'}
+            hoverColor={type === 'Draft' ? '#07E993' : '#242842'}
+            bgColor={type === 'Draft' ? '#383C61' : '#242842'}
+            hoverBgColor={type === 'Draft' ? '#1F3B4F' : '#242842'}
+            style={{ border: type === 'Draft' ? 'none' : '1px solid #07E993' }}
+          />
+        );
         break;
       case 'Queue':
         button = (
@@ -127,7 +138,12 @@ export const Creator = () => {
         </div>
       </div>
       <div className="dashboard_items_items">
-        <div className="dashboard_item_create">
+        <div
+          className="dashboard_item_create"
+          onClick={() => {
+            navigate('/create');
+          }}
+        >
           <IconAdd className="dashboard_item_create_add" />
 
           <p>Create Token</p>
@@ -138,7 +154,14 @@ export const Creator = () => {
             <Card key={index} data={item}>
               <div className="flex justify-between items-center mt-[15px]">
                 <div>{renderButton(item.type)}</div>
-                <IconEdit className="dashboard_item_create_edit" />
+                <IconEdit
+                  className="dashboard_item_create_edit"
+                  color={item.type === 'Draft' ? '#7D83B5' : '#07E993'}
+                  hoverColor={item.type === 'Draft' ? '#07E993' : '#000'}
+                  bgColor={item.type === 'Draft' ? '#383C61' : '#242842'}
+                  hoverBgColor={item.type === 'Draft' ? '#1F3B4F' : '#000'}
+                  style={{ border: item.type === 'Draft' ? 'none' : '1px solid #07E993' }}
+                />
               </div>
             </Card>
           );
