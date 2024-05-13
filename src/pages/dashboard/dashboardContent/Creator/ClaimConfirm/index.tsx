@@ -8,7 +8,7 @@ export const ClaimConfirm = ({ children }) => {
   return (
     <div>
       <Modal
-        title="Claim Tokens"
+        title=""
         open={open}
         onOk={() => {}}
         onCancel={() => {
@@ -19,6 +19,7 @@ export const ClaimConfirm = ({ children }) => {
         footer={null}
         closeIcon={<IconClose className="close" />}
       >
+        <div className="confirm_title">Claim Tokens</div>
         <div className="flex justify-between mt-[39px]">
           <p className="unlocked">Redeem 1st 50% unlocked tokens</p>
           <div className="flex">
@@ -43,7 +44,9 @@ export const ClaimConfirm = ({ children }) => {
           <div className="claimable_left">Claimable LEASH</div>
           <div className="claimable_right">250,000,000</div>
         </div>
-        <Button>CLAIM ALL</Button>
+        <div className="confirm_btn">
+          <Button className="mt-[76px]">CLAIM ALL</Button>
+        </div>
       </Modal>
       {Children.map(children, (child) => {
         if (isValidElement<{ onClick: () => void }>(child)) {

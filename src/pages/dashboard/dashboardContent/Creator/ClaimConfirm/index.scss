@@ -1,5 +1,5 @@
 .ant-modal  .ant-modal-content{
-  background: #F7F7F7;
+  background: #1F3B4F !important;
 
   .ant-btn{
     width: 100%;
@@ -15,11 +15,24 @@
   font-weight: 800;
   line-height: 29px;
   text-align: left;
-  background: #F7F7F7;
+  background: #1F3B4F !important;
 }
-
+.confirm_title{
+  width: 269px;
+  font-family: 404px;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 29px;
+  text-align: left;
+  margin-top: 15px;
+  background: linear-gradient(270deg, #14FCFB 0%, #07E993 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 .unlocked {
   width: 137px;
+  color: $textColor;
 }
 .unlock {
   h3 {
@@ -36,7 +49,7 @@
     font-weight: 600;
     line-height: 21px;
     text-align: right;
-    color: $textSecondaryColor;
+    color: $textColor;
   }
 }
 .lock {
@@ -44,7 +57,8 @@
 }
 .claimable {
   width: 100%;
-  background: $backgroundColor;
+  background: #2B526E !important;
+  color: $textColor;
   border-radius: 7px;
   display: flex;
   justify-content: space-between;
@@ -66,4 +80,8 @@
     line-height: 29px;
     text-align: right;
   }
+}
+.ant-btn{
+  background: $mainColor;
+  color: $mainBgColor;
 }

@@ -9,24 +9,34 @@
     }
   }
 }
-.ant-modal .ant-modal-title {
-  font-family: Montserrat;
+.confirm_title{
+  width: 269px;
+  font-family: 404px;
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 400;
   line-height: 29px;
   text-align: left;
-  background: #f7f7f7;
+  margin-top: 15px;
+  background: linear-gradient(270deg, #14FCFB 0%, #07E993 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .increase_unlocked {
   width: 137px;
+  color: $textColor;
+
   h3 {
-    width: 94px;
+    width: 110px;
     font-family: Montserrat;
     font-size: 16px;
     font-weight: 600;
     line-height: 18px;
     text-align: left;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
   }
   p {
     width: 132px;
@@ -57,6 +67,13 @@
 }
 .lock {
   margin-left: 14px;
+  color: $textColor;
+}
+.progress{
+  color: $textColor;
+  .progress_slider{
+    flex: 1;
+  }
 }
 .claimable {
   width: 100%;
@@ -85,3 +102,4 @@
     align-items: center;
   }
 }
+

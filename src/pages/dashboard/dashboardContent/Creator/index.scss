@@ -74,10 +74,13 @@
   }
 
   &:hover{
-    border-color: green !important;
-
+    border-color: transparent!important;
+    background: $mainColor !important;
     span{
-      color: green;
+      color: #242842 !important;
+    }
+    .QueueBtn{
+      fill: #ff0000 !important;
     }
   }
 }
@@ -100,8 +103,4 @@
   border: 1px solid $mainColor;
   border-radius: 7px;
 }
-.draft_hover{
-  &:hover{
-    border: 1px solid green;
-  }
-}
+

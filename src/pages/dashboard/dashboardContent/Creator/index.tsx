@@ -15,8 +15,11 @@ import {
 import { ClaimConfirm } from './ClaimConfirm';
 import { IncreaseConfirm } from './IncreaseConfirm';
 import { useNavigate } from 'react-router-dom';
+import { useRef, useState } from 'react';
 export const Creator = () => {
   const navigate = useNavigate();
+  const [total, setTotal] = useState(50);
+  const iconRefs = useRef({});
   const data = [
     {
       imgUrl: './temp/1.png',
@@ -71,7 +74,7 @@ export const Creator = () => {
   ];
   const renderButton = (type: string) => {
     let button;
-
+    let LaunchedBtnHoverColor = '#07E993';
     switch (type) {
       case 'Draft':
         button = (
@@ -88,8 +91,12 @@ export const Creator = () => {
       case 'Queue':
         button = (
           <IncreaseConfirm>
-            <Button className="flex items-center justify-between">
-              <IconQueueBtn className="QueueBtn" />
+            <Button
+              className="flex items-center justify-between"
+              onMouseOver={() => iconRefs.current['increase'].setHovered(true)}
+              onMouseLeave={() => iconRefs.current['increase'].setHovered(false)}
+            >
+              <IconQueueBtn className="QueueBtn" ref={(ref) => (iconRefs.current['increase'] = ref)} />
               <span className="ml-[9px]">INCREASE</span>
             </Button>
           </IncreaseConfirm>
@@ -102,8 +109,17 @@ export const Creator = () => {
         button = (
           <ClaimConfirm>
             {' '}
-            <Button className="flex items-center justify-between">
-              <IconLaunchedBtn className="LaunchedBtn" />
+            <Button
+              className="flex items-center justify-between"
+              key="increase"
+              onMouseOver={() => iconRefs.current['LaunchedBtn'].setHovered(true)}
+              onMouseLeave={() => iconRefs.current['LaunchedBtn'].setHovered(false)}
+            >
+              <IconLaunchedBtn
+                className="LaunchedBtn"
+                color={LaunchedBtnHoverColor}
+                ref={(ref) => (iconRefs.current['LaunchedBtn'] = ref)}
+              />
               <span className="ml-[9px]">CLAIM</span>
             </Button>
           </ClaimConfirm>
@@ -159,7 +175,7 @@ export const Creator = () => {
                   color={item.type === 'Draft' ? '#7D83B5' : '#07E993'}
                   hoverColor={item.type === 'Draft' ? '#07E993' : '#000'}
                   bgColor={item.type === 'Draft' ? '#383C61' : '#242842'}
-                  hoverBgColor={item.type === 'Draft' ? '#1F3B4F' : '#000'}
+                  hoverBgColor={item.type === 'Draft' ? '#1F3B4F' : '#07E993'}
                   style={{ border: item.type === 'Draft' ? 'none' : '1px solid #07E993' }}
                 />
               </div>
@@ -167,7 +183,7 @@ export const Creator = () => {
           );
         })}
       </div>
-      <IPagination />
+      <IPagination total={total} />
     </div>
   );
 };
