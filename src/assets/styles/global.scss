@@ -115,6 +115,7 @@
   .ant-modal  .ant-modal-content{
     background: #1F3B4F !important;
   }
+  //checkbox
   .ant-checkbox .ant-checkbox-inner{
     border-color: #07E993 !important;
     background: transparent !important;
@@ -123,6 +124,7 @@
     border: 1px solid #07E993 !important;
     background: #07E993 !important;
   }
+  //进度条
   .ant-slider .ant-slider-track{
     background: #2B526E !important;
   }
@@ -147,7 +149,7 @@
     width: 0;
     height: 0;
   }
-
+  //弹窗按钮
   .confirm_btn{
     .ant-btn{
       background: $mainColor !important;
@@ -156,4 +158,8 @@
         color: $mainBgColor !important;
       }
     }
+  }
+  //表单
+  .ant-form-item .ant-form-item-label{
+    color: #ffffff !important;
   }

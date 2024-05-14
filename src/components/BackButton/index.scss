@@ -1,0 +1,16 @@
+.back_button{
+  display: flex;
+  align-items: center;
+
+  .back_button_text{
+    margin-right: 11px;
+    font-family: OCR A Extended;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.05em;
+    text-align: right;
+    color: #7D83B5;
+
+  }
+}

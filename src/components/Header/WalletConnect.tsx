@@ -46,7 +46,7 @@ export default () => {
                   <Button
                     variant="soft"
                     onClick={openConnectModal}
-                    className="cursor-pointer hidden md:block text-center text-lg  md:h-[51px] px-6 md:bg-[#1F3B4F] md:text-[#07E993] font-bold font-Montserrat"
+                    className="wallet-border cursor-pointer hidden md:block text-center text-lg  md:h-[51px] px-6 md:bg-[#1F3B4F] md:text-[#07E993] font-bold font-Montserrat"
                   >
                     Connect Wallet
                   </Button>
