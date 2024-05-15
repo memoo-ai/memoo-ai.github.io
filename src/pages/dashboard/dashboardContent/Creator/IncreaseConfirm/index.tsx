@@ -1,11 +1,13 @@
 import { useState, Children, cloneElement, isValidElement } from 'react';
 
 import './index.scss';
-import { Modal, Button, Checkbox, Slider, Tooltip } from 'antd';
+import { Modal, Button, Checkbox, Tooltip } from 'antd';
 import { IconClose, IconETH, IconTip } from '@/components/icons';
+import MySlider from '@/components/MySlider';
 export const IncreaseConfirm = ({ children }) => {
   const [open, setOpen] = useState(false);
   const [isAccept, setIsAccept] = useState(false);
+  const [progress, setProgress] = useState(5);
   return (
     <div>
       <Modal
@@ -32,10 +34,17 @@ export const IncreaseConfirm = ({ children }) => {
             <p>Creator can increase initial allocation from 5% to 35%.</p>
           </div>
           <div className="flex-1 flex items-center progress">
-            <div className="mr-[14px]">0.05ETH</div> <Slider className="flex-1 progress_slider" min={5} max={35} />
-            <div className="ml-[14px]">1.4ETH</div>
+            <MySlider
+              min={5}
+              max={35}
+              value={progress}
+              onChange={(value) => {
+                setProgress(value);
+              }}
+            />
           </div>
         </div>
+        <div>{progress}</div>
         <div className="claimable">
           <div className="claimable_left">Pre-Market Acquisition</div>
           <div className="claimable_right">

@@ -161,5 +161,53 @@
   }
   //表单
   .ant-form-item .ant-form-item-label{
-    color: #ffffff !important;
+    text-align: start;
+    > label {
+      color: #ffffff !important;
+      text-align: left;
+    }
+  }
+
+  //输入框
+  .ant-input-affix-wrapper{
+    background: #1F3B4F;
+    border-color: $mainColor;
+
+    &:hover{
+      background: #1F3B4F;
+      border-color: $mainColor;
+    }
+
+    .ant-input-show-count-suffix{
+      color: $mainColor;
+      font-family: OCR A Extended;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 20px;
+      letter-spacing: -0.05em;
+      text-align: right;
+
+    }
+  }
+  //输入框 textarea
+  .ant-input-textarea-show-count .ant-input-data-count{
+    color: $mainColor;
+    font-family: OCR A Extended;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.05em;
+    text-align: right;
+    bottom: 4px;
+    right: 9px;
+  }
+
+  //上传控件
+ .ant-upload.ant-upload-select{
+    border: 1px solid $mainColor !important;
+    border-radius: 7px !important;
+  }
+  .ant-upload{
+    background: #1F3B4F !important;
+    border-radius: 7px !important;
   }

@@ -19,6 +19,7 @@ import { useRef, useState } from 'react';
 export const Creator = () => {
   const navigate = useNavigate();
   const [total, setTotal] = useState(50);
+  const [currentPage, setCurrentPage] = useState(1);
   const iconRefs = useRef({});
   const data = [
     {
@@ -183,7 +184,13 @@ export const Creator = () => {
           );
         })}
       </div>
-      <IPagination total={total} />
+      <IPagination
+        currentPage={currentPage}
+        total={total}
+        onChangePageNumber={(page) => {
+          setCurrentPage(page);
+        }}
+      />
     </div>
   );
 };

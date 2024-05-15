@@ -35,7 +35,7 @@ export default () => {
             linkText: 'LAUNCHPAD',
           });
           break;
-        case 'Watchlist':
+        case 'WATCHLIST':
           setDashboardBannerImg(DashboardBannerImg3);
           setCommonBanner({
             title: 'Let MeMoo Score do the Work for You.',
