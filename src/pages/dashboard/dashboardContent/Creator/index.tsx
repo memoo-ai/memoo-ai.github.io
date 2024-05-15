@@ -9,8 +9,8 @@ import {
   IconLaunchedBtn,
   IconEdit,
   IconAdd,
-  IconAddress,
-  IconETH,
+  // IconAddress,
+  // IconETH,
 } from '@/components/icons';
 import { ClaimConfirm } from './ClaimConfirm';
 import { IncreaseConfirm } from './IncreaseConfirm';
@@ -136,12 +136,12 @@ export const Creator = () => {
   return (
     <div className="dashboard_items">
       <div className="dashboard_top">
-        <div className="dashboard_top_left">
+        {/* <div className="dashboard_top_left">
           <IconAddress className="address" />
           <span className="dashboard_top_left_text">0x4GDD...123e</span>
           <IconETH className="eth" />
           <span className="dashboard_top_left_text">8.2905 E</span>
-        </div>
+        </div> */}
         <div>
           <Tabs defaultValue="All">
             <TabsList>
@@ -164,6 +164,23 @@ export const Creator = () => {
           <IconAdd className="dashboard_item_create_add" />
 
           <p>Create Token</p>
+        </div>
+        <div
+          className="dashboard_item_create"
+          onClick={() => {
+            navigate('/create');
+          }}
+        >
+          <div className="dashboard_item_create_item">
+            <IconAdd className="dashboard_item_create_add" />
+
+            <p>Hunt for Airdrops</p>
+          </div>
+          <div className="dashboard_item_create_item">
+            <IconAdd className="dashboard_item_create_add" />
+
+            <p>Participate in IMOs</p>
+          </div>
         </div>
 
         {data.map((item, index) => {

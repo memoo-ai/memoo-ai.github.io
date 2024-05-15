@@ -124,7 +124,7 @@
     border: 1px solid #07E993 !important;
     background: #07E993 !important;
   }
-  //进度条
+  //滑动进度选择
   .ant-slider .ant-slider-track{
     background: #2B526E !important;
   }
@@ -149,6 +149,7 @@
     width: 0;
     height: 0;
   }
+
   //弹窗按钮
   .confirm_btn{
     .ant-btn{
@@ -211,3 +212,66 @@
     background: #1F3B4F !important;
     border-radius: 7px !important;
   }
+
+
+  .ant-tabs-card{
+    border: none !important;
+  }
+  .ant-tabs-card.ant-tabs-top >.ant-tabs-nav .ant-tabs-tab{
+    background: transparent !important;
+    border: none;
+
+    .ant-tabs-tab-btn{
+      color: $mainBgColor !important;
+      font-family: 404px;
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 20px;
+      text-align: center;
+      background: transparent;
+      // border-bottom: 1px solid $mainColor;
+    }
+
+  }
+
+  .ant-tabs-nav{
+    margin: 0 !important;
+    .ant-tabs-tab-btn{
+      color:$mainColor !important;
+      padding: 12px 0;
+      text-align: center;
+      margin-right: 30px;
+      font-family: 404px;
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 20px;
+      text-align: center;
+    }
+  }
+  .ant-tabs-top >.ant-tabs-nav .ant-tabs-tab-active{
+    .ant-tabs-tab-btn{
+      color:$mainColor !important;
+      margin-right: 30px;
+
+      &::after{
+        color: $mainColor !important;
+      }
+    }
+  }
+  .ant-tabs-top > .ant-tabs-nav .ant-tabs-tab-active .ant-tabs-tab-btn{
+    font-family: 404px;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: center;
+
+  }
+  .ant-tabs-nav .ant-tabs-nav-wrap{
+    background: #000000 !important;
+    padding-left: 5px !important;
+  }
+  .ant-tabs-ink-bar {
+    background-color: $mainColor !important;
+    height: 2px;
+  }
+

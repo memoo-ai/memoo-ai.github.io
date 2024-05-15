@@ -33,7 +33,7 @@ export const DashboardContent: FC<{ onChangeType: (type: string) => void }> = ({
   }, []);
   return (
     <div>
-      <AntTabs onChange={onChange} type="card" items={items} />
+      <AntTabs onChange={onChange} items={items} />
     </div>
   );
 };
