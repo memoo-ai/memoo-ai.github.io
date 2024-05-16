@@ -45,6 +45,7 @@
     "dayjs": "^1.11.10",
     "decimal.js": "^10.4.3",
     "ethers": "^6.11.1",
+    "is-mobile": "^4.0.0",
     "lucide-react": "^0.368.0",
     "next-themes": "^0.3.0",
     "numeral": "^2.0.6",

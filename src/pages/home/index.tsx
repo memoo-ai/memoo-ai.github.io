@@ -68,21 +68,7 @@ const Revolutions = [
 export default () => {
   return (
     <div>
-      <div className="w-[100vw] h-[100vh] bg-[#F5F5F5] flex flex-col items-center md:hidden ml-[-1.5rem] mobile-bg">
-        <img src="./img-oops.png" alt="" className="w-[180px] mt-3" />
-        <p className="font-404px text-[18px] text-[#ffffff] text-center leading-5 my-5">
-          Currently, MeMoo doesn’t support mobile. This site is optimized for PC.
-        </p>
-        <img src="./img-face.png" alt="" className="w-[150px]" />
-        <p className="font-404px text-[18px] text-[#ffffff] text-center leading-5 my-5">Follow Us</p>
-        <div className="flex items-center gap-6 mb-4">
-          <IconTwitter className="cursor-pointer w-8" />
-          <IconTelegram className="cursor-pointer w-8" />
-        </div>
-        <img src="./img-logo-vertical.png" alt="" className="w-[150px] mb-5" />
-        <img src="./img-powered-base.png" className="w-[168px] ml-2" />
-      </div>
-      <div className="hidden md:block mx-[auto] max-w-[94.5rem]">
+      <div className="block mx-[auto] max-w-[94.5rem]">
         <div className="content-banner-bg" />
         <div className="content-banner flex justify-between ">
           <div className="content-banner-left items pt-[6rem]">
@@ -111,7 +97,7 @@ export default () => {
             <img src="./img-content-banner-right.png" alt="" className="w-[510px]" />
           </div>
         </div>
-        <div className="flex sections ">
+        {/* <div className="flex sections ">
           <div className="sections-item flex flex-col">
             <img className="sections-item-img" src="./launchPad/img-ranked.png" alt="" />
             <p className="sections-item-text">View Creator Ranking</p>
@@ -124,7 +110,7 @@ export default () => {
             <img className="sections-item-img" src="./launchPad/img-star.png" alt="" />
             <p className="sections-item-text">Find Your Favourite</p>
           </div>
-        </div>
+        </div> */}
         <div className="content-data py-[100px] pl-[90px]">
           <div className="mx-[auto] max-w-[94.5rem] flex  jusitfy-between">
             <div className="flex flex-col text-[#000000] w-[150px]">
@@ -156,13 +142,23 @@ export default () => {
             </div>
           </div>
         </div>
-        <div className="content-issues mx-auto flex items-start justify-center gap-[100px] py-[100px]">
-          <img src="./img-issues.png" alt="" className="w-[483px]" />
-          <img src="./img-challenges.png" alt="" className="w-[483px]" />
+        <div className="content-issues mx-auto flex items-start justify-center gap-[100px] py-[75px]">
+          <div className="flex flex-col">
+            <p className="content-issue-text mb-[47px]">
+              <span> Memecoin Buyer </span> <br /> <span>Issues</span>
+            </p>
+            <img src="./img-issues.png" alt="" className="w-[483px]" />
+          </div>
+          <div className="flex flex-col">
+            <p className="content-issue-text mb-[59px]">
+              <span>Memecoin Creator </span> <br /> <span>Challenges</span>{' '}
+            </p>
+            <img src="./img-challenges.png" alt="" className="w-[483px]" />
+          </div>
         </div>
         <div className="content-revolution flex flex-col items-center py-[50px]">
           <img src="./img-revolution.png" alt="" className="w-[540px]" />
-          <p className="font-404px font-bold text-[32px] leading-[30px] mt-5 mb-8">
+          <p className="font-OCR font-bold text-[28px] leading-[30px] mt-5 mb-8">
             Revolutionizing the future of memecoins{' '}
           </p>
           <div className="grid grid-cols-3 gap-5">

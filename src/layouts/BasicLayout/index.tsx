@@ -4,15 +4,22 @@ import styles from './index.module.scss';
 import Header from '@/components/Header';
 import Toast from '@/components/Toast';
 import Footer from '@/components/Footer';
+import MobilePage from './mobile';
+import isMobile from 'is-mobile';
 const BasicLayout: React.FC = () => {
   return (
     <div>
-      <Header />
-      <Toast />
-      <div className={styles.content}>
-        <Outlet />
-      </div>
-      <Footer />
+      {isMobile() && <MobilePage />}
+      {!isMobile() && (
+        <>
+          <Header />
+          <Toast />
+          <div className={styles.content}>
+            <Outlet />
+          </div>
+          <Footer />
+        </>
+      )}
     </div>
   );
 };
