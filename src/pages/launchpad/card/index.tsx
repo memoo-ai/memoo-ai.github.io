@@ -1,5 +1,5 @@
 import SwipeCard from '@/components/SwipeCard';
-import { IDO, IDOStatus } from './columns';
+import { IDO, IDOStatus } from '../columns';
 import { useState, useEffect } from 'react';
 export const ActiveIdoCard = () => {
   const [idos, setIdos] = useState<IDO[]>([]);

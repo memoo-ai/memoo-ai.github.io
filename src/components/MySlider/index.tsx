@@ -5,7 +5,7 @@ interface MySliderProps {
   min?: number;
   max?: number;
   step?: number;
-  value?: number;
+  value: number;
   onChange?: (value: number) => void;
 }
 

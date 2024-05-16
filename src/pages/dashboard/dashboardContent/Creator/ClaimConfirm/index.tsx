@@ -3,7 +3,7 @@ import { useState, Children, cloneElement, isValidElement } from 'react';
 import './index.scss';
 import { Modal, Button } from 'antd';
 import { IconLock, IconClose, IconCompleted } from '@/components/icons';
-export const ClaimConfirm = ({ children }) => {
+export const ClaimConfirm = ({ children }: any) => {
   const [open, setOpen] = useState(false);
   return (
     <div>

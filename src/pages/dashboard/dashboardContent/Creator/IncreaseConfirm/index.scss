@@ -11,7 +11,7 @@
 }
 .confirm_title{
   width: 269px;
-  font-family: 404px;
+  font-family: '404px';
   font-size: 24px;
   font-weight: 400;
   line-height: 29px;
@@ -29,7 +29,7 @@
 
   h3 {
     width: 110px;
-    font-family: Montserrat;
+    font-family: '404px';
     font-size: 16px;
     font-weight: 600;
     line-height: 18px;
@@ -40,7 +40,7 @@
   }
   p {
     width: 132px;
-    font-family: Open Sans;
+    font-family: OCR A Extended;
     font-size: 10px;
     font-weight: 600;
     line-height: 12px;
@@ -49,7 +49,7 @@
 }
 .unlock {
   h3 {
-    font-family: Montserrat;
+    font-family: '404px';
     font-size: 24px;
     font-weight: 700;
     line-height: 29px;
@@ -57,7 +57,7 @@
     color: $textColor;
   }
   p {
-    font-family: Montserrat;
+    font-family: '404px';
     font-size: 16px;
     font-weight: 600;
     line-height: 21px;
@@ -81,14 +81,14 @@
   box-sizing: border-box;
   margin-top: 34px;
   .claimable_left {
-    font-family: Montserrat;
+    font-family: '404px';
     font-size: 16px;
     font-weight: 600;
     line-height: 21px;
     text-align: left;
   }
   .claimable_right {
-    font-family: Montserrat;
+    font-family: '404px';
     font-size: 24px;
     font-weight: 800;
     line-height: 29px;

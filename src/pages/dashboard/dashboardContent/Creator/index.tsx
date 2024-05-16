@@ -20,7 +20,7 @@ export const Creator = () => {
   const navigate = useNavigate();
   const [total, setTotal] = useState(50);
   const [currentPage, setCurrentPage] = useState(1);
-  const iconRefs = useRef({});
+  const iconRefs = useRef<any>({});
   const data = [
     {
       imgUrl: './temp/1.png',

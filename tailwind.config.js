@@ -19,7 +19,9 @@ module.exports = {
     extend: {
       fontFamily: {
         'Montserrat': ['Montserrat Bold'],
-        'OpenSans': [' OpenSans Semibold'],
+        'OpenSans': ['OpenSans Semibold'],
+        '404px': ['\"404px\"'],
+        'OCR': ['OCR A Extended']
       },
       colors: {
         green: '#02D488',

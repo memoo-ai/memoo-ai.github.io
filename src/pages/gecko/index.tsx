@@ -59,7 +59,7 @@ export default () => {
     <div className="page pb-[70px]">
       <CommonBanner title="Welcom to MemeGecko. Hunt, Trade, Win." desc="Meme Mania Unleashed. Join the Madness!" />
       <div className="flex items-center justify-between my-[70px]">
-        <p className="text-Montserrat font-bold text-[24px]">Token Listing</p>
+        <p className="text-404px font-bold text-[24px]">Token Listing</p>
         <Tabs defaultValue="account">
           <TabsList>
             <TabsTrigger value="account">Account</TabsTrigger>

@@ -28,6 +28,16 @@
     src: url(../fonts//OpenSans-VariableFont_wght.ttf);
   }
 
+  @font-face {
+    font-family: '404px';
+    src: url(../fonts/404PX_3.TTF);
+  }
+
+  @font-face {
+    font-family: 'OCR A Extended';
+    src: url(../fonts//OCRAEXT_2.TTF);
+  }
+
 
 
   @layer base {
@@ -41,11 +51,11 @@
       --popover: 0 0% 100%;
       --popover-foreground: 222.2 84% 4.9%;
 
-      --primary: 0, 100%, 50%;
-      --primary-foreground: 0, 0%, 95%;
+      --primary: 157, 94%, 47%;
+      --primary-foreground: 277, 99%, 51%;
 
-      --secondary: 0, 0%, 95%;
-      --secondary-foreground: 0, 100%, 50%;
+      --secondary: 277, 100%, 62%;
+      --secondary-foreground: 157, 98%, 55%;
 
       --muted: 210 40% 96.1%;
       --muted-foreground: 215.4 16.3% 46.9%;
@@ -223,7 +233,7 @@
 
     .ant-tabs-tab-btn{
       color: $mainBgColor !important;
-      font-family: 404px;
+      font-family: '404px';
       font-size: 24px;
       font-weight: 400;
       line-height: 20px;
@@ -241,7 +251,7 @@
       padding: 12px 0;
       text-align: center;
       // margin-right: 30px;
-      font-family: 404px;
+      font-family: '404px';
       font-size: 24px;
       font-weight: 400;
       line-height: 20px;
@@ -259,7 +269,7 @@
     }
   }
   .ant-tabs-top > .ant-tabs-nav .ant-tabs-tab-active .ant-tabs-tab-btn{
-    font-family: 404px;
+    font-family: '404px';
     font-size: 24px;
     font-weight: 400;
     line-height: 20px;

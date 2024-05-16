@@ -70,11 +70,11 @@ export default () => {
     <div>
       <div className="w-[100vw] h-[100vh] bg-[#F5F5F5] flex flex-col items-center md:hidden ml-[-1.5rem] mobile-bg">
         <img src="./img-oops.png" alt="" className="w-[180px] mt-3" />
-        <p className="font-Montserrat text-[18px] text-[#ffffff] text-center leading-5 my-5">
+        <p className="font-404px text-[18px] text-[#ffffff] text-center leading-5 my-5">
           Currently, MeMoo doesn’t support mobile. This site is optimized for PC.
         </p>
         <img src="./img-face.png" alt="" className="w-[150px]" />
-        <p className="font-Montserrat text-[18px] text-[#ffffff] text-center leading-5 my-5">Follow Us</p>
+        <p className="font-404px text-[18px] text-[#ffffff] text-center leading-5 my-5">Follow Us</p>
         <div className="flex items-center gap-6 mb-4">
           <IconTwitter className="cursor-pointer w-8" />
           <IconTelegram className="cursor-pointer w-8" />
@@ -92,11 +92,11 @@ export default () => {
               Enabling the memecoin industry with a wide range of resources, tools & launchpad.
             </p>
             <div className="flex items-center gap-3 mt-[50px]">
-              <Button variant="secondary" className="font-Montserrat text-lg  w-[298px] h-[53px] uppercase rounded-lg">
-                Memecoin Creator
+              <Button variant="default" className="font-404px text-lg  w-[298px] h-[53px] uppercase rounded-lg">
+                Create your meme
               </Button>
-              <Button variant="default" className="font-Montserrat text-lg  w-[298px] h-[53px] uppercase">
-                Memecoin degen
+              <Button variant="secondary" className="font-404px text-lg  w-[298px] h-[53px] uppercase">
+                Hunt for airdrops
               </Button>
             </div>
             <div className="flex items-center gap-12 mt-[50px]">
@@ -162,7 +162,7 @@ export default () => {
         </div>
         <div className="content-revolution flex flex-col items-center py-[50px]">
           <img src="./img-revolution.png" alt="" className="w-[540px]" />
-          <p className="font-Montserrat font-bold text-[32px] leading-[30px] mt-5 mb-8">
+          <p className="font-404px font-bold text-[32px] leading-[30px] mt-5 mb-8">
             Revolutionizing the future of memecoins{' '}
           </p>
           <div className="grid grid-cols-3 gap-5">

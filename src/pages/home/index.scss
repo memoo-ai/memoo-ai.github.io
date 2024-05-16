@@ -30,22 +30,24 @@
   position: relative;
   padding-bottom: 70px;
   .text-ultimate {
-    font-family: 'Montserrat Bold';
-    font-weight: 700;
+    font-family: ''404px'';
+    font-weight: 400;
     font-size: 80px;
-    color: #F2F2F2;
-    width: 642px;
-    margin-top: 20px;
+    color: #ffffff;
+    width: 812px;
+    margin-top: 45px;
     line-height: 85px;
   }
   .text-sub {
-    font-family: 'Open Sans';
-    font-size: 24px;
-    color: #F2F2F2;
-    width: 557px;
+    font-family: 'OCR A Extended';
+    font-size: 30px;
+    color: #ffffff;
     margin-top: 25px;
-    line-height: 32.68px;
-    font-weight: 600;
+    line-height: 31px;
+    font-weight: 400;
+    width: 728px;
+    letter-spacing: -0.05em;
+    text-align: left;
   }
 }
 .content-data {
@@ -58,7 +60,7 @@
   transform: translate(-50%, 0);
   color: #000000;
   .content-data-title {
-    font-family: Montserrat;
+    font-family: '404px';
     font-size: 24px;
     font-weight: 700;
     line-height: 25px;
@@ -66,7 +68,7 @@
 
   }
   .content-data-security {
-    font-family: Montserrat;
+    font-family: '404px';
     font-size: 18px;
     font-weight: 700;
     line-height: 20px;
@@ -101,7 +103,7 @@
       height: 41.29px;
     }
     .sections-item-text{
-      font-family: Montserrat;
+      font-family: '404px';
 font-size: 14px;
 font-weight: 700;
 line-height: 20px;
@@ -145,7 +147,7 @@ text-align: center;
       min-width: 87px;
     }
     .p-title {
-      font-family: Montserrat;
+      font-family: '404px';
 font-size: 24px;
 font-weight: 700;
 line-height: 25px;
@@ -155,7 +157,7 @@ margin-top: 30px;
 
     }
     .p-desc {
-      font-family: Open Sans;
+      font-family: OCR A Extended;
 font-size: 16px;
 font-weight: 600;
 line-height: 20px;
@@ -181,7 +183,7 @@ text-align: center;
       font-weight: 900;
     }
     width: 450px;
-    font-family: Montserrat;
+    font-family: '404px';
     font-size: 18px;
     font-weight: 600;
     line-height: 20px;

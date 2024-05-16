@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './index.scss';
-export const sectionListWithSeparator = () => {
+export const SectionListWithSeparator = () => {
   const [airDrops, setAirDrops] = useState<any>([]);
   useEffect(() => {
     const list = new Array(20).fill(undefined).map((_, i) => ({

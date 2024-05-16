@@ -4,7 +4,7 @@ import './index.scss';
 import { Modal, Button, Checkbox, Tooltip } from 'antd';
 import { IconClose, IconETH, IconTip } from '@/components/icons';
 import MySlider from '@/components/MySlider';
-export const IncreaseConfirm = ({ children }) => {
+export const IncreaseConfirm = ({ children }: any) => {
   const [open, setOpen] = useState(false);
   const [isAccept, setIsAccept] = useState(false);
   const [progress, setProgress] = useState(5);

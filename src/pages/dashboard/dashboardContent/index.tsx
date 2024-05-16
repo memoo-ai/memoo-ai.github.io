@@ -6,7 +6,7 @@ import { Degen } from './Degen';
 import { Watchlist } from './Watchlist';
 export const DashboardContent: FC<{ onChangeType: (type: string) => void }> = ({ onChangeType, ...rest }) => {
   const [type, setType] = useState('All');
-  const onChange = useCallback((e) => {
+  const onChange = useCallback((e: any) => {
     setType(e);
     onChangeType(e);
     // fetchData();

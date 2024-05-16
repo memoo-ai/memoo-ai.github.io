@@ -22,8 +22,8 @@ export const columns = [
     render: (name: string, record: IDO) => (
       <div className="flex items-center">
         <img src="" alt="" className="w-[84px] h-[84px] rounded-full mr-5" />
-        <span className="font-Montserrat font-bold text-lg mr-2">{name}</span>
-        <span className="font-Montserrat font-normal text-sm ">{record.symbol}</span>
+        <span className="font-404px font-bold text-lg mr-2">{name}</span>
+        <span className="font-404px font-normal text-sm ">{record.symbol}</span>
       </div>
     ),
   },
@@ -32,20 +32,20 @@ export const columns = [
     dataIndex: 'date',
     key: 'date',
     sorter: true,
-    render: (date: string) => <div className="font-Montserrat font-semibold text-lg ">{date}</div>,
+    render: (date: string) => <div className="font-404px font-semibold text-lg ">{date}</div>,
   },
   {
     title: 'Total Raissed',
     dataIndex: 'totalRaised',
     key: 'totalRaised',
     sorter: true,
-    render: (totalRaised: number) => <span className="font-Montserrat font-semibold text-lg">{totalRaised}E</span>,
+    render: (totalRaised: number) => <span className="font-404px font-semibold text-lg">{totalRaised}E</span>,
   },
   {
     title: 'Action',
     key: 'action',
     render: () => (
-      <Button variant="default" className="w-[136px] h-[50px] uppercase font-Montserrat font-bold text-lg">
+      <Button variant="default" className="w-[136px] h-[50px] uppercase font-404px font-bold text-lg">
         airdrop
       </Button>
     ),
