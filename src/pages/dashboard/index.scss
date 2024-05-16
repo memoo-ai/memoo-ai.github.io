@@ -1,7 +1,12 @@
 .dashboard{
-  .dashboard_banner_img{
-    margin-top: 70px;
+  .dashboard_banner{
+    .dashboard_banner_img{
+      margin-top: 70px;
+      position: absolute;
+      left: 0;
+    }
   }
+
   .dashboard_content{
     margin-top: 70px;
     width: 100%;

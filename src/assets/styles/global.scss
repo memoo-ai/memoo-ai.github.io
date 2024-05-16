@@ -240,7 +240,7 @@
       color:$mainColor !important;
       padding: 12px 0;
       text-align: center;
-      margin-right: 30px;
+      // margin-right: 30px;
       font-family: 404px;
       font-size: 24px;
       font-weight: 400;
@@ -251,7 +251,7 @@
   .ant-tabs-top >.ant-tabs-nav .ant-tabs-tab-active{
     .ant-tabs-tab-btn{
       color:$mainColor !important;
-      margin-right: 30px;
+      // margin-right: 30px;
 
       &::after{
         color: $mainColor !important;
