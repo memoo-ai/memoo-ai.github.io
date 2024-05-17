@@ -92,7 +92,6 @@ export default () => {
               <IconTelegram className="cursor-pointer w-8" />
             </div>
           </div>
-
           <div className="content-banner-right items pt-[3rem]">
             <img src="./img-content-banner-right.png" alt="" className="w-[510px]" />
           </div>
