@@ -112,11 +112,49 @@
       @apply bg-background text-foreground;
     }
   }
+
+  .ant-table-wrapper .ant-table {
+    background: transparent;
+  }
   .ant-table-tbody {
     .ant-table-cell {
       vertical-align: middle;
+      font-family: OCR A Extended;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 20px;
+      letter-spacing: -0.05em;
+      text-align: left;
+      color: #ffffff;
+      background: transparent;
+
     }
+   .ant-table-cell-row-hover {
+    background: #131522 !important;
+   }
   }
+  .ant-table .ant-table-tbody >tr >td {
+    border-bottom: 1px solid #5D64A2;
+  }
+  .ant-table-wrapper .ant-table-thead >tr>th {
+    background: transparent;
+    font-family: OCR A Extended;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.05em;
+    text-align: left;
+    color: #AF8DC4;
+    border-bottom: 1px solid #5D64A2;
+  }
+
+  .ant-table-wrapper .ant-table-thead th.ant-table-column-has-sorters:hover {
+    background: transparent;
+  }
+  .ant-table-wrapper td.ant-table-column-sort {
+    background: transparent;
+  }
+
   .base-container{
     width: 78.875rem;
     margin: 0 auto;

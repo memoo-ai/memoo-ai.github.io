@@ -65,7 +65,7 @@ const Revolutions = [
     width: 280,
   },
 ];
-export default () => {
+const Home = () => {
   return (
     <div>
       <div className="block mx-[auto] max-w-[94.5rem]">
@@ -180,3 +180,5 @@ export default () => {
     </div>
   );
 };
+
+export default Home;

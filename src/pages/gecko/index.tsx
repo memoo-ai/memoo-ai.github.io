@@ -3,28 +3,33 @@ import CommonBanner from '@/components/Banner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useEffect, useState } from 'react';
 import { columns, Token } from './columns';
+import IPagination from '@/components/IPagination';
 
 import { Table } from 'antd';
 import type { GetProp, TableProps } from 'antd';
+import type { PaginationProps } from 'antd';
+import { SorterResult } from 'antd/es/table/interface';
+
 type ColumnsType<T> = TableProps<T>['columns'];
 type TablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;
 
 interface TableParams {
-  pagination?: TablePaginationConfig;
   sortField?: string;
   sortOrder?: string;
 }
-export default () => {
+
+export type GeckoType = 'trending' | 'top';
+const Gecko = () => {
+  const [tab, setTab] = useState<GeckoType>('trending');
   const [data, setData] = useState<Token[]>([]);
   const [loading, setLoading] = useState(false);
-  const [tableParams, setTableParams] = useState<TableParams>({
-    pagination: {
-      current: 1,
-      pageSize: 10,
-      total: 30,
-    },
+  const [pagination, setPagination] = useState<PaginationProps>({
+    current: 1,
+    pageSize: 10,
+    total: 30,
   });
 
+  const [sorters, setSorters] = useState<any>([]);
   const fetchData = async () => {
     const list = new Array(20).fill(undefined).map((_, i) => ({
       id: 'dogwifhat',
@@ -41,38 +46,39 @@ export default () => {
 
   useEffect(() => {
     fetchData();
-  }, [tableParams.pagination?.current, tableParams.pagination?.pageSize]);
+  }, [pagination, sorters]);
 
   const handleTableChange: TableProps['onChange'] = (pagination, filters, sorter) => {
-    setTableParams({
-      pagination,
-      ...sorter,
-    });
-
-    // `dataSource` is useless since `pageSize` changed
-    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
-      setData([]);
-    }
+    setPagination(pagination);
+    setSorters(sorter);
   };
 
   return (
     <div className="page pb-[70px]">
-      <CommonBanner title="Welcom to MemeGecko. Hunt, Trade, Win." desc="Meme Mania Unleashed. Join the Madness!" />
+      <div className="header-banner-bg" />
       <div className="flex items-center justify-between my-[70px]">
-        <p className="text-404px font-bold text-[24px]">Token Listing</p>
-        <Tabs defaultValue="account">
+        <p className="font-404px text-green font-normal text-[38px]">Token Ranking</p>
+        <Tabs value={tab} onValueChange={(value) => setTab(value as GeckoType)}>
           <TabsList>
-            <TabsTrigger value="account">Account</TabsTrigger>
-            <TabsTrigger value="password">Password</TabsTrigger>
+            <TabsTrigger value="trending">Trending</TabsTrigger>
+            <TabsTrigger value="top">Top</TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
       <Table
+        className="common-table mb-10"
         columns={columns}
         dataSource={data}
-        pagination={tableParams.pagination}
+        pagination={false}
         loading={loading}
         onChange={handleTableChange}
+      />
+      <IPagination
+        currentPage={pagination.current ?? 0}
+        total={pagination.total ?? 0}
+        onChangePageNumber={(page) => {
+          setPagination({ ...pagination, current: page });
+        }}
       />
       <CommonBanner
         title="Discover the Next Big Thing on MeMoo LaunchPad."
@@ -83,3 +89,5 @@ export default () => {
     </div>
   );
 };
+
+export default Gecko;

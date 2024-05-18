@@ -65,8 +65,8 @@ export const columns = [
     render: (name: string, record: Token) => (
       <div className="flex items-center">
         <img src="" alt="" className="w-[84px] h-[84px] rounded-full mr-5" />
-        <span className="font-404px font-bold text-lg mr-2">{name}</span>
-        <span className="font-404px font-normal text-sm ">{record.symbol}</span>
+        <span className="font-bold text-lg mr-2">{name}</span>
+        <span className="font-normal text-sm ">{record.symbol}</span>
       </div>
     ),
   },
@@ -75,7 +75,7 @@ export const columns = [
     dataIndex: 'price',
     key: 'price',
     sorter: true,
-    render: (price: number) => <div className="font-404px font-semibold text-lg ">${price}</div>,
+    render: (price: number) => <div className="font-semibold text-lg ">${price}</div>,
   },
   {
     title: '1h',
@@ -83,7 +83,7 @@ export const columns = [
     key: 'priceChangeHourly',
     sorter: true,
     render: (priceChangeHourly: number) => (
-      <span className={`font-404px font-semibold text-lg ${priceChangeHourly < 0 ? 'text-red' : 'text-green'}`}>
+      <span className={`font-semibold text-lg ${priceChangeHourly < 0 ? 'text-red' : 'text-green'}`}>
         {priceChangeHourly > 0 ? '+' : ''}
         {priceChangeHourly * 100}%
       </span>
@@ -95,7 +95,7 @@ export const columns = [
     key: 'priceChangeDaily',
     sorter: true,
     render: (priceChangeDaily: number) => (
-      <span className={`font-404px font-semibold text-lg ${priceChangeDaily < 0 ? 'text-red' : 'text-green'}`}>
+      <span className={`font-semibold text-lg ${priceChangeDaily < 0 ? 'text-red' : 'text-green'}`}>
         {priceChangeDaily > 0 ? '+' : ''}
         {priceChangeDaily * 100}%
       </span>
@@ -106,12 +106,12 @@ export const columns = [
     dataIndex: 'volumeDaily',
     key: 'volumeDaily',
     sorter: true,
-    render: (volumeDaily: number) => <div className="font-404px font-semibold text-lg ">${volumeDaily}</div>,
+    render: (volumeDaily: number) => <div className="font-semibold text-lg ">${volumeDaily}</div>,
   },
   {
     title: 'Market Cap',
     dataIndex: 'marketCap',
     key: 'marketCap',
-    render: (marketCap: number) => <div className="font-404px font-semibold text-lg ">${marketCap}</div>,
+    render: (marketCap: number) => <div className="font-semibold text-lg ">${marketCap}</div>,
   },
 ];

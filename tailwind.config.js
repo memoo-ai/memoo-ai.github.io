@@ -24,8 +24,9 @@ module.exports = {
         'OCR': ['OCR A Extended']
       },
       colors: {
-        green: '#02D488',
+        green: '#07E993',
         red: '##FF0000',
+        purple: '#B53BFF',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

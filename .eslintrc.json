@@ -12,7 +12,7 @@
     }
   },
   "extends": ["alloy", "alloy/react", "alloy/typescript", "prettier"],
-  "plugins": ["prettier"],
+  "plugins": ["prettier","react-refresh"],
   "env": {
     "browser": true
   },
@@ -20,9 +20,10 @@
   "rules": {
     "prettier/prettier": "error",
     "no-return-assign": "off",
-    "no-unused-vars": "warn",
+    "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "off",
-    "@typescript-eslint/consistent-type-imports": "off"
+    "@typescript-eslint/consistent-type-imports": "off",
+    "react-refresh/only-export-components": "warn"
   },
   "ignorePatterns": ["dist", "node_modules", "tailwind.config.js", "postcss.config.js"]
 }
