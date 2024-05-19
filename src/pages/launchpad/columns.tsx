@@ -12,6 +12,8 @@ export interface IDO {
   date: string;
   totalRaised: number;
   status: IDOStatus;
+  target: number;
+  roi: number;
 }
 
 export const columns = [
