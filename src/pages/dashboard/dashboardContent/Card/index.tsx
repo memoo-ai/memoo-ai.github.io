@@ -33,7 +33,9 @@ export const Card = ({ data, children }: CardProps) => {
       <div className="dashboard_item_tag">
         <div className="dashboard_item_tag_left">SAMPLE</div>
         <div className="dashboard_item_tag_right">
-          <h3 className="mr-[11px]">{data.type}</h3>
+          <h3 className="mr-[11px]" style={{ color: data.type === 'Draft' ? '#7d83b5' : '#b53bff' }}>
+            {data.type}
+          </h3>
           <div>{renderIcon(data.type)}</div>
         </div>
       </div>

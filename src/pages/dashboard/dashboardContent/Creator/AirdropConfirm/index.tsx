@@ -22,12 +22,10 @@ export const AirdropConfirm = ({ children }: any) => {
         <div className="confirm_title">Airdrop Unlocked</div>
         <div className="confirm_content">
           <img src="./dashboard/reward.svg" alt="" />
-          <div className="claimable">
-            <IconCompleted className="lock" />
-            <div className="claimable_right">250,000,000</div>
-          </div>
+          <div className="confirm_content_title">WIF has arrived!</div>
+          <div className="confirm_content_describe">Thanks for being part of the Dogwifhat community.</div>
           <div className="confirm_btn">
-            <Button className="mt-[76px]">CLAIM ALL</Button>
+            <Button className="mt-[76px] custom_ant_btn">CLAIM ALL</Button>
           </div>
         </div>
       </Modal>

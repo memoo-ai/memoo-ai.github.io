@@ -10,7 +10,9 @@ import {
   IconQueueBtn,
   IconLaunchedBtn,
 } from '@/components/icons';
+import { useState } from 'react';
 export const Collector = () => {
+  const [tab, setTab] = useState('All');
   const data = [
     {
       imgUrl: './temp/1.png',
@@ -148,7 +150,7 @@ export const Collector = () => {
           <span className="dashboard_top_left_text">8.2905 E</span>
         </div>
         <div>
-          <Tabs defaultValue="All">
+          <Tabs defaultValue="All" onValueChange={(value) => setTab(value)}>
             <TabsList>
               <TabsTrigger value="All">All</TabsTrigger>
               <TabsTrigger value="Draft">Draft</TabsTrigger>

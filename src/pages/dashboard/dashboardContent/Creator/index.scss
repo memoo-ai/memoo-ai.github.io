@@ -113,5 +113,15 @@
 .dashboard_item_create_edit{
   border: 1px solid $mainColor;
   border-radius: 7px;
+
+  &:hover{
+    border-color: transparent !important;
+  }
+}
+.draft{
+
+  &:hover{
+    border-color: $mainColor !important;
+  }
 }
 

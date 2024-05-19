@@ -6,6 +6,10 @@
   // margin: 0 21px 21px 0;
   background: #242842;
   box-sizing: border-box;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
   .dashboard_item_tag{
     display: flex;
     align-items: center;

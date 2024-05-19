@@ -220,13 +220,15 @@ export const Creator = () => {
           );
         })}
       </div>
-      <IPagination
-        currentPage={currentPage}
-        total={total}
-        onChangePageNumber={(page) => {
-          setCurrentPage(page);
-        }}
-      />
+      <div className="mt-[60px]">
+        <IPagination
+          currentPage={currentPage}
+          total={total}
+          onChangePageNumber={(page) => {
+            setCurrentPage(page);
+          }}
+        />
+      </div>
     </div>
   );
 };

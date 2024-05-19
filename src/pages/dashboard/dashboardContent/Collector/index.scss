@@ -143,28 +143,5 @@
 
 }
 
-.ant-btn{
-  width: 197.69px;
-  height: 38.57px;
-  border-color: $dashboardBtnBorderColor !important;
-  display: flex;
-  justify-content: center;
 
-  span{
-    color: $dashboardBtnBorderColor;
-    font-family: '404px';
-    font-size: 14px;
-    font-weight: 800;
-    text-align: left;
-    line-height: 31px;
-  }
-
-  &:hover{
-    border-color: green !important;
-
-    span{
-      color: green;
-    }
-  }
-}
 

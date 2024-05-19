@@ -59,7 +59,7 @@ const Dashboard = () => {
     [dashboardBannerImg, commonBanner],
   );
   return (
-    <div className="page pb-[70px]">
+    <div className="page">
       <div className="header_banner_bg" style={{ backgroundImage: `url(${dashboardBannerImg})` }}>
         {/* <div className="header_banner_text">
           <div className="header_banner_text_title">1</div>
@@ -75,13 +75,14 @@ const Dashboard = () => {
             }}
           />
         </div>
-        <div className="mb-[70px]">
+        <div>
           {' '}
           <CommonBanner
             title={commonBanner.title}
             desc={commonBanner.desc}
             link={commonBanner.link}
             linkText={commonBanner.linkText}
+            bgType={2}
           />
         </div>
       </div>
