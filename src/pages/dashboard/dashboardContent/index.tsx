@@ -2,8 +2,8 @@ import './index.scss';
 import { Tabs as AntTabs } from 'antd';
 import { useCallback, useState, FC } from 'react';
 import { Creator } from './Creator';
-import { Degen } from './Degen';
-import { Watchlist } from './Watchlist';
+import { Collector } from './Collector';
+import { WatchList } from './WatchList';
 export const DashboardContent: FC<{ onChangeType: (type: string) => void }> = ({ onChangeType, ...rest }) => {
   const [type, setType] = useState('All');
   const onChange = useCallback((e: any) => {
@@ -18,14 +18,14 @@ export const DashboardContent: FC<{ onChangeType: (type: string) => void }> = ({
       children: <Creator />,
     },
     {
-      key: 'Degen',
-      label: 'Degen',
-      children: <Degen />,
+      key: 'Collector',
+      label: 'Collector',
+      children: <Collector />,
     },
     {
-      key: 'Watchlist',
-      label: 'Watchlist',
-      children: <Watchlist />,
+      key: 'WatchList',
+      label: 'WatchList',
+      children: <WatchList />,
     },
   ];
   const fetchData = useCallback(() => {

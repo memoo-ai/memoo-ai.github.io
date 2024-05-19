@@ -9,10 +9,12 @@ import {
   IconLaunchedBtn,
   IconEdit,
   IconAdd,
+  IconAirdropBtn,
   // IconAddress,
   // IconETH,
 } from '@/components/icons';
 import { ClaimConfirm } from './ClaimConfirm';
+import { AirdropConfirm } from './AirdropConfirm';
 import { IncreaseConfirm } from './IncreaseConfirm';
 import { useNavigate } from 'react-router-dom';
 import { useRef, useState } from 'react';
@@ -75,7 +77,6 @@ export const Creator = () => {
   ];
   const renderButton = (type: string) => {
     let button;
-    let LaunchedBtnHoverColor = '#07E993';
     switch (type) {
       case 'Draft':
         button = (
@@ -118,7 +119,7 @@ export const Creator = () => {
             >
               <IconLaunchedBtn
                 className="LaunchedBtn"
-                color={LaunchedBtnHoverColor}
+                color="#07E993"
                 ref={(ref) => (iconRefs.current['LaunchedBtn'] = ref)}
               />
               <span className="ml-[9px]">CLAIM</span>
@@ -127,7 +128,24 @@ export const Creator = () => {
         );
         break;
       default:
-        button = '';
+        button = (
+          <AirdropConfirm>
+            {' '}
+            <Button
+              className="flex items-center justify-between"
+              key="increase"
+              onMouseOver={() => iconRefs.current['AirdropBtn'].setHovered(true)}
+              onMouseLeave={() => iconRefs.current['AirdropBtn'].setHovered(false)}
+            >
+              <IconAirdropBtn
+                className="IconAirdropBtn"
+                color="#07E993"
+                ref={(ref) => (iconRefs.current['AirdropBtn'] = ref)}
+              />
+              <span className="ml-[9px]">CLAIM AIRDROP</span>
+            </Button>
+          </AirdropConfirm>
+        );
         break;
     }
 
@@ -142,6 +160,7 @@ export const Creator = () => {
           <IconETH className="eth" />
           <span className="dashboard_top_left_text">8.2905 E</span>
         </div> */}
+        <div />
         <div>
           <Tabs defaultValue="All">
             <TabsList>

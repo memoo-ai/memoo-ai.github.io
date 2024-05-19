@@ -20,8 +20,10 @@ export const ClaimConfirm = ({ children }: any) => {
         closeIcon={<IconClose className="close" />}
       >
         <div className="confirm_title">Claim Tokens</div>
-        <div className="flex justify-between mt-[39px]">
-          <p className="unlocked">Redeem 1st 50% unlocked tokens</p>
+        <div className="flex justify-between mt-[39px] items-center">
+          <div className="unlocked">
+            <span>Redeem 1st 50% unlocked tokens</span> <img src="./dashboard/reward.svg" alt="" />
+          </div>
           <div className="flex">
             <div className="unlock">
               <h3>14 days</h3>
@@ -30,8 +32,10 @@ export const ClaimConfirm = ({ children }: any) => {
             <IconLock className="lock" />
           </div>
         </div>
-        <div className="flex justify-between mt-[39px]">
-          <p className="unlocked">Redeem 1st 50% unlocked tokens</p>
+        <div className="flex justify-between mt-[39px] items-center">
+          <div className="unlocked">
+            <span>Redeem 1st 50% unlocked tokens</span> <img src="./dashboard/reward.svg" alt="" />
+          </div>
           <div className="flex">
             <div className="unlock">
               <h3>14 days</h3>

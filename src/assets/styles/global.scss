@@ -177,7 +177,7 @@
     border: 1px solid #07E993 !important;
     background: #07E993 !important;
   }
-  //滑动进度选择
+
   .ant-slider .ant-slider-track{
     background: #2B526E !important;
   }
@@ -203,7 +203,7 @@
     height: 0;
   }
 
-  //弹窗按钮
+
   .confirm_btn{
     .ant-btn{
       background: $mainColor !important;
@@ -213,7 +213,7 @@
       }
     }
   }
-  //表单
+
   .ant-form-item .ant-form-item-label{
     text-align: start;
     > label {
@@ -222,7 +222,7 @@
     }
   }
 
-  //输入框
+
   .ant-input-affix-wrapper{
     background: #1F3B4F;
     border-color: $mainColor;
@@ -243,7 +243,7 @@
 
     }
   }
-  //输入框 textarea
+
   .ant-input-textarea-show-count .ant-input-data-count{
     color: $mainColor;
     font-family: OCR A Extended;
@@ -256,7 +256,6 @@
     right: 9px;
   }
 
-  //上传控件
  .ant-upload.ant-upload-select{
     border: 1px solid $mainColor !important;
     border-radius: 7px !important;

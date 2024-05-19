@@ -2,11 +2,13 @@ import './index.scss';
 import { useCallback, useState } from 'react';
 import { DashboardContent } from './dashboardContent';
 import CommonBanner from '@/components/Banner';
-import DashboardBannerImg1 from './assets/dashboard_banner.png';
+import DashboardBannerImg1 from './assets/dashboard_banner1.png';
+import DashboardBannerBgImg1 from './assets/dashboard_banner_bg1.png';
 import DashboardBannerImg2 from './assets/dashboard_banner2.png';
 import DashboardBannerImg3 from './assets/dashboard_banner3.png';
-export default function Dashboard() {
+const Dashboard = () => {
   const [dashboardBannerImg, setDashboardBannerImg] = useState(DashboardBannerImg1);
+  const [dashboardBannerBgImg, setDashboardBannerBgImg] = useState(DashboardBannerBgImg1);
   const [commonBanner, setCommonBanner] = useState({
     title: 'Exclusive ‘Proof of Creation’ Reward for Creators.',
     desc: 'Exciting Rewards for Exceptional Talent in Meme Creation.',
@@ -26,7 +28,7 @@ export default function Dashboard() {
             linkText: 'BE A CREATOR',
           });
           break;
-        case 'Degen':
+        case 'Collector':
           setDashboardBannerImg(DashboardBannerImg2);
           setCommonBanner({
             title: 'Don’t Miss Out on Airdrops.',
@@ -35,7 +37,7 @@ export default function Dashboard() {
             linkText: 'LAUNCHPAD',
           });
           break;
-        case 'WATCHLIST':
+        case 'WatchList':
           setDashboardBannerImg(DashboardBannerImg3);
           setCommonBanner({
             title: 'Let MeMoo Score do the Work for You.',
@@ -57,11 +59,15 @@ export default function Dashboard() {
     [dashboardBannerImg, commonBanner],
   );
   return (
-    <div>
-      <div className="dashboard">
-        <div>
-          <img className="dashboard_banner_img" src={dashboardBannerImg} alt="" />
+    <div className="page pb-[70px]">
+      <div className="header_banner_bg" style={{ backgroundImage: `url(${dashboardBannerImg})` }}>
+        {/* <div className="header_banner_text">
+          <div className="header_banner_text_title">1</div>
+          <div className="header_banner_text_description">2</div>
         </div>
+        <img className="w-[100px] h-[200px]" src={dashboardBannerImg} alt="" /> */}
+      </div>
+      <div className="dashboard">
         <div className="dashboard_content">
           <DashboardContent
             onChangeType={(e) => {
@@ -76,10 +82,10 @@ export default function Dashboard() {
             desc={commonBanner.desc}
             link={commonBanner.link}
             linkText={commonBanner.linkText}
-            bgType={2}
           />
         </div>
       </div>
     </div>
   );
-}
+};
+export default Dashboard;

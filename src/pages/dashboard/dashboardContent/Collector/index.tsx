@@ -10,7 +10,7 @@ import {
   IconQueueBtn,
   IconLaunchedBtn,
 } from '@/components/icons';
-export const Degen = () => {
+export const Collector = () => {
   const data = [
     {
       imgUrl: './temp/1.png',

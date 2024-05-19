@@ -1,14 +1,26 @@
-.dashboard{
-  .dashboard_banner{
-    .dashboard_banner_img{
-      margin-top: 70px;
-      position: absolute;
-      left: 0;
-    }
-  }
+.header_banner_bg{
+  width: 100vw;
+  height: 470px;
+  background: url(./header-banner-bg.png) no-repeat;
+  background-size: cover;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  position: relative;
+  padding: 0 5.625rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
+
+  .header_banner_text{
+
+  }
+}
+.dashboard{
+  width: 100%;
   .dashboard_content{
     margin-top: 70px;
     width: 100%;
   }
 }
+

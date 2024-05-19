@@ -1,0 +1,42 @@
+import { useState, Children, cloneElement, isValidElement } from 'react';
+
+import './index.scss';
+import { Modal, Button } from 'antd';
+import { IconLock, IconClose, IconCompleted } from '@/components/icons';
+export const AirdropConfirm = ({ children }: any) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <div>
+      <Modal
+        title=""
+        open={open}
+        onOk={() => {}}
+        onCancel={() => {
+          setOpen(false);
+        }}
+        width={604}
+        destroyOnClose
+        footer={null}
+        closeIcon={<IconClose className="close" />}
+      >
+        <div className="confirm_title">Airdrop Unlocked</div>
+        <div className="confirm_content">
+          <img src="./dashboard/reward.svg" alt="" />
+          <div className="claimable">
+            <IconCompleted className="lock" />
+            <div className="claimable_right">250,000,000</div>
+          </div>
+          <div className="confirm_btn">
+            <Button className="mt-[76px]">CLAIM ALL</Button>
+          </div>
+        </div>
+      </Modal>
+      {Children.map(children, (child) => {
+        if (isValidElement<{ onClick: () => void }>(child)) {
+          return cloneElement(child, { onClick: () => setOpen(true) });
+        }
+        return child;
+      })}
+    </div>
+  );
+};

@@ -10,7 +10,7 @@ import {
   IconQueueBtn,
   IconLaunchedBtn,
 } from '@/components/icons';
-export const Watchlist = () => {
+export const WatchList = () => {
   const data = [
     {
       imgUrl: './temp/1.png',
