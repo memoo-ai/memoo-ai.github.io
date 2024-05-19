@@ -13,6 +13,9 @@ build
 dist-ssr
 *.local
 
+# Lock
+*-lock.*
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
