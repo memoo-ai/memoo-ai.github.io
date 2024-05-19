@@ -55,7 +55,17 @@ const Gecko = () => {
 
   return (
     <div className="page pb-[70px]">
-      <div className="header-banner-bg" />
+      <div className="header-banner-bg">
+        <div className="header-banner-content">
+          <div className="header-banner-left flex  flex-col">
+            <img className="mb-[49px] w-[680px] h-[144px]" src="./gecko/img-left-desc.png" alt="" />
+            <img className="w-[304px] h-[80px]" src="./gecko/img-left-gecko.png" alt="" />
+          </div>
+          <div>
+            <img className="w-[420px] h-[355px]" src="./gecko/img-right-gecko.png" alt="" />
+          </div>
+        </div>
+      </div>
       <div className="flex items-center justify-between my-[70px]">
         <p className="font-404px text-green font-normal text-[38px]">Token Ranking</p>
         <Tabs value={tab} onValueChange={(value) => setTab(value as GeckoType)}>

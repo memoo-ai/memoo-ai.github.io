@@ -5,7 +5,7 @@ import CommonBanner from '@/components/Banner';
 import DashboardBannerImg1 from './assets/dashboard_banner.png';
 import DashboardBannerImg2 from './assets/dashboard_banner2.png';
 import DashboardBannerImg3 from './assets/dashboard_banner3.png';
-export default () => {
+export default function Dashboard() {
   const [dashboardBannerImg, setDashboardBannerImg] = useState(DashboardBannerImg1);
   const [commonBanner, setCommonBanner] = useState({
     title: 'Exclusive ‘Proof of Creation’ Reward for Creators.',
@@ -76,9 +76,10 @@ export default () => {
             desc={commonBanner.desc}
             link={commonBanner.link}
             linkText={commonBanner.linkText}
+            bgType={2}
           />
         </div>
       </div>
     </div>
   );
-};
+}

@@ -1,17 +1,35 @@
+.common-banner-bg {
+  width: 100vw;
+  height: 470px;
+  background-size: cover;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  position: relative;
+}
+.common-banner-bg-1 {
+  background: url(./img-banner-bg-1.png) no-repeat center center;
+}
+.common-banner-bg-2 {
+  background: url(./img-banner-bg-2.png) no-repeat center center;
+}
 .common-banner {
     width: 100%;
+    padding: 0 5.625rem;
+    height: 100%;
     border-radius: 20px;
-    background: #241636;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 100px;
+    padding-top: 166px;
     min-height: 400px;
     margin-top: 70px;
+    > img {
+      height: 134px;
+      margin-bottom: 48px;
+    }
     .common-banner-title {
-        font-family: '404px';
+        font-family: 'Kitty Kat';
         font-size: 48px;
-        font-weight: 700;
         line-height: 50px;
         text-align: center;
         color: #07E993;
@@ -19,9 +37,8 @@
         margin-bottom: 19px;
     }
     .common-banner-desc {
-        font-family: 'OCR A Extended';
+        font-family: 'Kitty Kat';
         font-size: 24px;
-        font-weight: 600;
         line-height: 26px;
         text-align: center;
         height: 65px;

@@ -6,4 +6,13 @@
   margin-left: 50%;
   transform: translateX(-50%);
   position: relative;
+
+  .header-banner-content {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5.625rem;
+    align-items: flex-end;
+    padding-bottom: 58px;
+    height: 100%;
+  }
 }
