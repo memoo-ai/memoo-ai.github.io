@@ -3,7 +3,7 @@ import { Tabs as AntTabs } from 'antd';
 import { useCallback, useState, FC } from 'react';
 import { Creator } from './Creator';
 import { Collector } from './Collector';
-import { WatchList } from './WatchList';
+import { WatchList } from './Watchlist';
 export const DashboardContent: FC<{ onChangeType: (type: string) => void }> = ({ onChangeType, ...rest }) => {
   const [type, setType] = useState('All');
   const onChange = useCallback((e: any) => {
