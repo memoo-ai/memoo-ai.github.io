@@ -81,7 +81,7 @@ export const Creator = () => {
       case 'Draft':
         button = (
           <IconDraftBtn
-            className="DraftBtn draft_hover"
+            className="draft"
             color={type === 'Draft' ? '#7D83B5' : '#242842'}
             hoverColor={type === 'Draft' ? '#07E993' : '#242842'}
             bgColor={type === 'Draft' ? '#383C61' : '#242842'}
@@ -207,14 +207,16 @@ export const Creator = () => {
             <Card key={index} data={item}>
               <div className="flex justify-between items-center mt-[15px]">
                 <div>{renderButton(item.type)}</div>
-                <IconEdit
-                  className="dashboard_item_create_edit"
-                  color={item.type === 'Draft' ? '#7D83B5' : '#07E993'}
-                  hoverColor={item.type === 'Draft' ? '#07E993' : '#000'}
-                  bgColor={item.type === 'Draft' ? '#383C61' : '#242842'}
-                  hoverBgColor={item.type === 'Draft' ? '#1F3B4F' : '#07E993'}
-                  style={{ border: item.type === 'Draft' ? 'none' : '1px solid #07E993' }}
-                />
+                <div className={item.type === 'Draft' ? 'draft' : ''}>
+                  <IconEdit
+                    className="dashboard_item_create_edit"
+                    color={item.type === 'Draft' ? '#7D83B5' : '#07E993'}
+                    hoverColor={item.type === 'Draft' ? '#07E993' : '#000'}
+                    bgColor={item.type === 'Draft' ? '#383C61' : '#242842'}
+                    hoverBgColor={item.type === 'Draft' ? '#1F3B4F' : '#07E993'}
+                    style={{ border: item.type === 'Draft' ? 'none' : '1px solid #07E993' }}
+                  />
+                </div>
               </div>
             </Card>
           );

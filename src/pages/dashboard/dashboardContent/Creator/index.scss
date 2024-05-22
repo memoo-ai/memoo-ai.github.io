@@ -121,7 +121,9 @@
 .draft{
 
   &:hover{
-    border-color: $mainColor !important;
+    border: 1px solid $mainColor !important;
+    border-radius: 8px;
   }
 }
+
 
