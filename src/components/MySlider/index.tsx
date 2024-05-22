@@ -5,11 +5,11 @@ interface MySliderProps {
   min?: number;
   max?: number;
   step?: number;
-  value: number;
+  value?: number;
   onChange?: (value: number) => void;
 }
 
-const MySlider = ({ min = 5, max = 35, step, value, onChange }: MySliderProps) => {
+const MySlider = ({ min = 5, max = 35, step, value = 0, onChange }: MySliderProps) => {
   const handleSliderChange = (newValue: number) => {
     // 根据 Slider 的值计算新的进度值
     const newProgress = newValue / 100;

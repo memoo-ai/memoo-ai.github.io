@@ -1,250 +1,254 @@
 @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
-  @import './reset.scss';
+@tailwind components;
+@tailwind utilities;
+@import './reset.scss';
 
-  @font-face {
-    font-family: 'Montserrat';
-    src: url(../fonts//Montserrat-VariableFont_wght.ttf);
+@font-face {
+  font-family: 'Montserrat';
+  src: url(../fonts//Montserrat-VariableFont_wght.ttf);
+}
+
+@font-face {
+  font-family: 'Montserrat Bold';
+  src: url(../fonts//Montserrat-VariableFont_wght.ttf);
+}
+
+@font-face {
+  font-family: 'OpenSans Semibold';
+  src: url(../fonts//OpenSans-VariableFont_wght.ttf);
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url(../fonts//OpenSans-VariableFont_wght.ttf);
+}
+
+@font-face {
+  font-family: 'OpenSans Bold';
+  src: url(../fonts//OpenSans-VariableFont_wght.ttf);
+}
+
+@font-face {
+  font-family: '404px';
+  src: url(../fonts/404PX_3.TTF);
+}
+
+@font-face {
+  font-family: 'OCR A Extended';
+  src: url(../fonts//OCRAEXT_2.TTF);
+}
+
+@font-face {
+  font-family: 'Kitty Kat';
+  src: url(../fonts/DKFatKittyKat.otf);
+}
+
+
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 157, 94%, 47%;
+    --primary-foreground: 277, 99%, 51%;
+
+    --secondary: 277, 100%, 62%;
+    --secondary-foreground: 157, 98%, 55%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
   }
 
-  @font-face {
-    font-family: 'Montserrat Bold';
-    src: url(../fonts//Montserrat-VariableFont_wght.ttf);
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
   }
 
-  @font-face {
-    font-family: 'OpenSans Semibold';
-    src: url(../fonts//OpenSans-VariableFont_wght.ttf);
+  body {
+    @apply bg-background text-foreground;
   }
+}
 
-  @font-face {
-    font-family: 'Open Sans';
-    src: url(../fonts//OpenSans-VariableFont_wght.ttf);
-  }
+.ant-table-wrapper .ant-table {
+  background: transparent;
+}
 
-  @font-face {
-    font-family: 'OpenSans Bold';
-    src: url(../fonts//OpenSans-VariableFont_wght.ttf);
-  }
-
-  @font-face {
-    font-family: '404px';
-    src: url(../fonts/404PX_3.TTF);
-  }
-
-  @font-face {
-    font-family: 'OCR A Extended';
-    src: url(../fonts//OCRAEXT_2.TTF);
-  }
-
-  @font-face {
-    font-family: 'Kitty Kat';
-    src: url(../fonts/DKFatKittyKat.otf);
-  }
-
-
-
-  @layer base {
-    :root {
-      --background: 0 0% 100%;
-      --foreground: 222.2 84% 4.9%;
-
-      --card: 0 0% 100%;
-      --card-foreground: 222.2 84% 4.9%;
-
-      --popover: 0 0% 100%;
-      --popover-foreground: 222.2 84% 4.9%;
-
-      --primary: 157, 94%, 47%;
-      --primary-foreground: 277, 99%, 51%;
-
-      --secondary: 277, 100%, 62%;
-      --secondary-foreground: 157, 98%, 55%;
-
-      --muted: 210 40% 96.1%;
-      --muted-foreground: 215.4 16.3% 46.9%;
-
-      --accent: 210 40% 96.1%;
-      --accent-foreground: 222.2 47.4% 11.2%;
-
-      --destructive: 0 84.2% 60.2%;
-      --destructive-foreground: 210 40% 98%;
-
-      --border: 214.3 31.8% 91.4%;
-      --input: 214.3 31.8% 91.4%;
-      --ring: 222.2 84% 4.9%;
-
-      --radius: 0.5rem;
-    }
-
-    .dark {
-      --background: 222.2 84% 4.9%;
-      --foreground: 210 40% 98%;
-
-      --card: 222.2 84% 4.9%;
-      --card-foreground: 210 40% 98%;
-
-      --popover: 222.2 84% 4.9%;
-      --popover-foreground: 210 40% 98%;
-
-      --primary: 210 40% 98%;
-      --primary-foreground: 222.2 47.4% 11.2%;
-
-      --secondary: 217.2 32.6% 17.5%;
-      --secondary-foreground: 210 40% 98%;
-
-      --muted: 217.2 32.6% 17.5%;
-      --muted-foreground: 215 20.2% 65.1%;
-
-      --accent: 217.2 32.6% 17.5%;
-      --accent-foreground: 210 40% 98%;
-
-      --destructive: 0 62.8% 30.6%;
-      --destructive-foreground: 210 40% 98%;
-
-      --border: 217.2 32.6% 17.5%;
-      --input: 217.2 32.6% 17.5%;
-      --ring: 212.7 26.8% 83.9%;
-    }
-  }
-
-  @layer base {
-    * {
-      @apply border-border;
-    }
-    body {
-      @apply bg-background text-foreground;
-    }
-  }
-
-  .ant-table-wrapper .ant-table {
-    background: transparent;
-  }
-  .ant-table-tbody {
-    .ant-table-cell {
-      vertical-align: middle;
-      font-family: OCR A Extended;
-      font-size: 18px;
-      font-weight: 400;
-      line-height: 20px;
-      letter-spacing: -0.05em;
-      text-align: left;
-      color: #ffffff;
-      background: transparent;
-
-    }
-   .ant-table-cell-row-hover {
-    background: #131522 !important;
-   }
-  }
-  .ant-table .ant-table-tbody >tr >td {
-    border-bottom: 1px solid #5D64A2;
-  }
-  .ant-table-wrapper .ant-table-thead >tr>th {
-    background: transparent;
+.ant-table-tbody {
+  .ant-table-cell {
+    vertical-align: middle;
     font-family: OCR A Extended;
-    font-size: 12px;
+    font-size: 18px;
     font-weight: 400;
     line-height: 20px;
     letter-spacing: -0.05em;
     text-align: left;
-    color: #AF8DC4;
-    border-bottom: 1px solid #5D64A2;
-  }
-
-  .ant-table-wrapper .ant-table-thead th.ant-table-column-has-sorters:hover {
+    color: #ffffff;
     background: transparent;
-  }
-  .ant-table-wrapper td.ant-table-column-sort {
-    background: transparent;
+
   }
 
-  .base-container{
-    width: 78.875rem;
-    margin: 0 auto;
+  .ant-table-cell-row-hover {
+    background: #131522 !important;
   }
+}
 
-  .ant-modal  .ant-modal-content{
-    background: #1F3B4F !important;
-  }
-  //checkbox
-  .ant-checkbox .ant-checkbox-inner{
-    border-color: #07E993 !important;
-    background: transparent !important;
-  }
-  .ant-checkbox-checked .ant-checkbox-inner{
-    border: 1px solid #07E993 !important;
-    background: #07E993 !important;
-  }
+.ant-table .ant-table-tbody>tr>td {
+  border-bottom: 1px solid #5D64A2;
+}
 
-  .ant-slider .ant-slider-track{
-    background: #2B526E !important;
-  }
-  .ant-slider .ant-slider-handle::after{
-    background-color:#07E993;
-    box-shadow: 0 0 0 3px #2B526E;
-  }
-  .ant-slider .ant-slider-handle:hover::after{
-    background-color:#07E993;
-    box-shadow: 0 0 0 4px #2B526E;
-  }
-  .ant-slider .ant-slider-handle:focus::after{
-    box-shadow: 0 0 0 4px #2B526E;
-  }
-  .ant-tooltip-inner{
-    background: transparent !important;
-    box-shadow: 0 0 0 0 #2B526E !important;
-  }
-  .ant-tooltip-arrow::after,
-  .ant-tooltip-arrow::before{
-    background: transparent !important;
-    width: 0;
-    height: 0;
-  }
+.ant-table-wrapper .ant-table-thead>tr>th {
+  background: transparent;
+  font-family: OCR A Extended;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -0.05em;
+  text-align: left;
+  color: #AF8DC4;
+  border-bottom: 1px solid #5D64A2;
+}
+
+.ant-table-wrapper .ant-table-thead th.ant-table-column-has-sorters:hover {
+  background: transparent;
+}
+
+.ant-table-wrapper td.ant-table-column-sort {
+  background: transparent;
+}
+
+.base-container {
+  width: 78.875rem;
+  margin: 0 auto;
+}
+
+.ant-modal .ant-modal-content {
+  background: #1F3B4F !important;
+}
+
+//checkbox
+.ant-checkbox .ant-checkbox-inner {
+  border-color: #07E993 !important;
+  background: transparent !important;
+}
+
+.ant-checkbox-checked .ant-checkbox-inner {
+  border: 1px solid #07E993 !important;
+  background: #07E993 !important;
+}
+
+.ant-slider .ant-slider-track {
+  background: #2B526E !important;
+}
+
+.ant-slider .ant-slider-handle::after {
+  background-color: #07E993;
+  box-shadow: 0 0 0 3px #2B526E;
+}
+
+.ant-slider .ant-slider-handle:hover::after {
+  background-color: #07E993;
+  box-shadow: 0 0 0 4px #2B526E;
+}
+
+.ant-slider .ant-slider-handle:focus::after {
+  box-shadow: 0 0 0 4px #2B526E;
+}
+
+.ant-tooltip-inner {
+  background: transparent !important;
+  box-shadow: 0 0 0 0 #2B526E !important;
+}
+
+.ant-tooltip-arrow::after,
+.ant-tooltip-arrow::before {
+  background: transparent !important;
+  width: 0;
+  height: 0;
+}
 
 
-  .confirm_btn{
-    .ant-btn{
-      background: $mainColor !important;
+.confirm_btn {
+  .ant-btn {
+    background: $mainColor !important;
 
-      span{
-        color: $mainBgColor !important;
-      }
+    span {
+      color: $mainBgColor !important;
     }
   }
+}
 
-  .ant-form-item .ant-form-item-label{
-    text-align: start;
-    > label {
-      color: #ffffff !important;
-      text-align: left;
-    }
+.ant-form-item .ant-form-item-label {
+  text-align: start;
+
+  >label {
+    color: #ffffff !important;
+    text-align: left;
   }
+}
 
 
-  .ant-input-affix-wrapper{
+.ant-input-affix-wrapper {
+  background: #1F3B4F;
+  border-color: $mainColor;
+  color: #fff;
+
+  &:hover,
+  &:focus-within {
     background: #1F3B4F;
     border-color: $mainColor;
-
-    &:hover{
-      background: #1F3B4F;
-      border-color: $mainColor;
-    }
-
-    .ant-input-show-count-suffix{
-      color: $mainColor;
-      font-family: OCR A Extended;
-      font-size: 12px;
-      font-weight: 400;
-      line-height: 20px;
-      letter-spacing: -0.05em;
-      text-align: right;
-
-    }
   }
 
-  .ant-input-textarea-show-count .ant-input-data-count{
+  .ant-input-show-count-suffix {
     color: $mainColor;
     font-family: OCR A Extended;
     font-size: 12px;
@@ -252,39 +256,53 @@
     line-height: 20px;
     letter-spacing: -0.05em;
     text-align: right;
-    bottom: 4px;
-    right: 9px;
-  }
-
- .ant-upload.ant-upload-select{
-    border: 1px solid $mainColor !important;
-    border-radius: 7px !important;
-  }
-  .ant-upload{
-    background: #1F3B4F !important;
-    border-radius: 7px !important;
-  }
-
-
-  .ant-tabs-card{
-    border: none !important;
-  }
-  .ant-tabs-card.ant-tabs-top >.ant-tabs-nav .ant-tabs-tab{
-    background: transparent !important;
-    border: none;
-
-    .ant-tabs-tab-btn{
-      color: $mainBgColor !important;
-      font-family: '404px';
-      font-size: 24px;
-      font-weight: 400;
-      line-height: 20px;
-      text-align: center;
-      background: transparent;
-      // border-bottom: 1px solid $mainColor;
-    }
 
   }
+}
+
+.ant-input-textarea-show-count .ant-input-data-count {
+  color: $mainColor;
+  font-family: OCR A Extended;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -0.05em;
+  text-align: right;
+  bottom: 4px;
+  right: 9px;
+}
+
+.ant-upload.ant-upload-select {
+  border: 1px solid $mainColor !important;
+  border-radius: 7px !important;
+}
+
+.ant-upload {
+  background: #1F3B4F !important;
+  border-radius: 7px !important;
+}
+
+
+.ant-tabs-card {
+  border: none !important;
+}
+
+.ant-tabs-card.ant-tabs-top>.ant-tabs-nav .ant-tabs-tab {
+  background: transparent !important;
+  border: none;
+
+  .ant-tabs-tab-btn {
+    color: $mainBgColor !important;
+    font-family: '404px';
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: center;
+    background: transparent;
+    // border-bottom: 1px solid $mainColor;
+  }
+
+}
 
   .ant-tabs-nav{
     margin: 0 !important;
@@ -320,27 +338,31 @@
       color:$mainColor !important;
       // margin-right: 30px;
 
-      &::after{
-        color: $mainColor !important;
-      }
+    &::after {
+      color: $mainColor !important;
     }
   }
-  .ant-tabs-top > .ant-tabs-nav .ant-tabs-tab-active .ant-tabs-tab-btn{
-    font-family: '404px';
-    font-size: 24px;
-    font-weight: 400;
-    line-height: 20px;
-    text-align: center;
+}
 
-  }
-  .ant-tabs-nav .ant-tabs-nav-wrap{
-    background: #000000 !important;
-    padding-left: 5px !important;
-  }
-  .ant-tabs-ink-bar {
-    background-color: $mainColor !important;
-    height: 2px;
-  }
-  .border-color-icon{
-    border-color: $mainBgColor;
-  }
+.ant-tabs-top>.ant-tabs-nav .ant-tabs-tab-active .ant-tabs-tab-btn {
+  font-family: '404px';
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 20px;
+  text-align: center;
+
+}
+
+.ant-tabs-nav .ant-tabs-nav-wrap {
+  background: #000000 !important;
+  padding-left: 5px !important;
+}
+
+.ant-tabs-ink-bar {
+  background-color: $mainColor !important;
+  height: 2px;
+}
+
+.border-color-icon {
+  border-color: $mainBgColor;
+}

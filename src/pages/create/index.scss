@@ -1,14 +1,16 @@
-.create_token{
+.create_token {
   padding: 85px 66px 60px 66px;
   border-radius: 20px;
   background: #131522;
   margin-top: 46px;
 
-  .create_token_top{
+  .create_token_top {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    .create_token_top_title{
+    margin-bottom: 59px;
+
+    .create_token_top_title {
       width: 177px;
       height: 29px;
       font-family: '404px';
@@ -23,7 +25,7 @@
 
     }
 
-    .create_token_top_back{
+    .create_token_top_back {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -32,13 +34,53 @@
     }
   }
 
-  .create_token_content{
+  .create_project_title {
+    font-family: '404px';
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 29px;
+    text-align: left;
+    color: #B53BFF;
+    text-transform: uppercase;
+    margin-right: 20px;
+  }
+
+  .create_project_title_span {
+    font-family: OCR A Extended;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 12px;
+    text-align: left;
+    color: #7D83B5;
+  }
+
+  .create_token_content {
     display: flex;
     justify-content: space-between;
-    .create_token_content_form{
+
+    .create_token_content_form {
       width: 661px;
-      .create_token_content_title{
-        .project_info{
+
+      .custom-upload-icon {
+        .ant-upload-select {
+          width: 140px;
+          height: 140px;
+        }
+
+        .ant-upload-list-item-container {
+          width: 140px;
+          height: 140px;
+        }
+      }
+
+      .custom-create-textarea {
+        .ant-input:focus {
+          background: #1F3B4F !important;
+        }
+      }
+
+      .create_token_content_title {
+        .project_info {
           font-family: '404px';
           font-size: 18px;
           font-weight: 400;
@@ -46,7 +88,7 @@
           text-align: left;
           color: #B53BFF;
 
-          > span {
+          >span {
             font-family: OCR A Extended;
             font-size: 10px;
             font-weight: 400;
@@ -58,7 +100,8 @@
         }
       }
     }
-    .create_token_img{
+
+    .create_token_img {
       width: 342px;
       margin: 106px 20px 0 0;
     }
