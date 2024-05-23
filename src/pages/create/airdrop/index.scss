@@ -1,0 +1,18 @@
+.airdrop {
+  display: grid;
+  grid-template-columns: 406px 834px;
+  padding-top: 72px;
+  column-gap: 22px;
+}
+
+.airdrop_left {
+  border-radius: 20px;
+  background: #131522;
+  padding: 17px 23px;
+}
+
+.airdrop_right {
+  border-radius: 20px;
+  background: #131522;
+  padding: 17px 23px;
+}
