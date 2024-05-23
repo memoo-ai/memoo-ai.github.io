@@ -14,7 +14,7 @@ dist-ssr
 *.local
 
 # Lock
-*-lock.*
+*-lock.json
 
 # Editor directories and files
 .vscode/*

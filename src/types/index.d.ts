@@ -57,3 +57,5 @@ export interface tableData {
   blockTimestamp: string;
   amount: string;
 }
+
+declare type TokenCreateStage = 'in-queue' | 'imo' | 'launch' | '1st-claim' | '2st-claim';
