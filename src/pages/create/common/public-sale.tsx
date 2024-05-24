@@ -27,7 +27,7 @@ const PublicSale: FC = () => {
                 Price{' '}
                 {item.tip && (
                   <Popover content={item.tip}>
-                    <img src="/public/create/tip.png" />
+                    <img src="/create/tip.png" />
                   </Popover>
                 )}
               </label>

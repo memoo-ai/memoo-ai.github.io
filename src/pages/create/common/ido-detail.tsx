@@ -16,7 +16,7 @@ const IDODetail: FC = () => {
           value: 'UNCX',
           formatValue: (value: string) => (
             <div className="flex items-center gap-x-2.5">
-              <div className="flex ido_params_token items-center py-1.5 px-5">
+              <div className="flex ido_params_token items-center py-1.5 gap-x-1 px-5">
                 <img src="/create/token-demo.png" />
                 <span className="font-OCR text-white text-sm">{value}</span>
               </div>

@@ -56,7 +56,7 @@ const IMOParticipate: FC = () => {
                 {item.key}{' '}
                 {item.tip && (
                   <Popover content={item.tip}>
-                    <img src="/public/create/tip.png" />
+                    <img src="/create/tip.png" />
                   </Popover>
                 )}
               </label>

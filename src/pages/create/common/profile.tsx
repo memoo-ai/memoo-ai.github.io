@@ -57,7 +57,7 @@ const Profile: FC = () => {
           <ul className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1">
             {[
               { name: 'BadIdea_Ai', icon: '/create/social-twitter.png' },
-              { name: 'BadIdea_Ai', icon: '/create/social-tg.png' },
+              { name: 'BadIdea_Ai01', icon: '/create/social-tg.png' },
             ].map((token) => (
               <li key={token.name} className="flex items-center gap-x-1.5 h-8">
                 <img className="w-5 object-contain" src={token.icon} /> {token.name}
@@ -109,10 +109,10 @@ const Profile: FC = () => {
           <img className="w-10 h-10 object-cover" src="/create/icon-collect.png" />
         </li>
         <li>
-          <img className="w-10 h-10 object-cover" src="/public/create/icon-share.png" />
+          <img className="w-10 h-10 object-cover" src="/create/icon-share.png" />
         </li>
         <li>
-          <img className="w-10 h-10 object-cover" src="/public/create/icon-more.png" />
+          <img className="w-10 h-10 object-cover" src="/create/icon-more.png" />
         </li>
       </ul>
       <div className="head">
