@@ -6,6 +6,7 @@ import './index.scss';
 import { TokenCreateStage } from '@/types';
 import PublicSale from '../common/public-sale';
 import IDODetail from '../common/ido-detail';
+import Banner from '../common/banner';
 
 interface AirdropContext {
   stage: TokenCreateStage;
@@ -29,7 +30,9 @@ export default function Airdrop() {
           <IDODetail />
         </AirdropContext.Provider>
       </div>
-      <div className="airdrop_right flex flex-col">22</div>
+      <div className="airdrop_right flex flex-col">
+        <Banner />
+      </div>
     </div>
   );
 }
