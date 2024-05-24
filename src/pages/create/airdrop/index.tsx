@@ -4,6 +4,7 @@ import IMOParticipate from '../common/imo-participate';
 import Status from '../common/status';
 import './index.scss';
 import { TokenCreateStage } from '@/types';
+import PublicSale from '../common/public-sale';
 
 interface AirdropContext {
   stage: TokenCreateStage;
@@ -21,6 +22,7 @@ export default function Airdrop() {
       <div className="airdrop_left flex flex-col gap-y-3.5">
         <AirdropContext.Provider value={context}>
           <Status />
+          {stage === 'launch' && <PublicSale />}
           {stage === 'imo' && <IMOParticipate />}
           <AirdropClaim />
         </AirdropContext.Provider>

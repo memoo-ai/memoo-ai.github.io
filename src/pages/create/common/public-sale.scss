@@ -1,0 +1,23 @@
+.pubsale {
+  border-radius: 15px;
+  border: 1px solid #07e993;
+  background: #1f3b4f;
+}
+
+.pubsale_btn {
+  border-radius: 7px;
+  border: unset !important;
+  color: #19fda6 !important;
+  background: #b53bff !important;
+  text-align: center;
+  font-family: '404px';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 125% */
+
+  &:disabled {
+    color: #4889b7 !important;
+    background: #2b526e !important;
+  }
+}
