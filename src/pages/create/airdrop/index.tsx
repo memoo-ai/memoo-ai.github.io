@@ -7,6 +7,7 @@ import { TokenCreateStage } from '@/types';
 import PublicSale from '../common/public-sale';
 import IDODetail from '../common/ido-detail';
 import Banner from '../common/banner';
+import Profile from '../common/profile';
 
 interface AirdropContext {
   stage: TokenCreateStage;
@@ -32,6 +33,7 @@ export default function Airdrop() {
       </div>
       <div className="airdrop_right flex flex-col">
         <Banner />
+        <Profile />
       </div>
     </div>
   );
