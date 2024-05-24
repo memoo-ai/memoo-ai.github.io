@@ -1,12 +1,13 @@
-import { useMemo, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import Countdown from './countdown';
 import { TokenCreateStage } from '@/types';
 import './airdrop-claim.scss';
 import { Button, Popover } from 'antd';
 import classNames from 'classnames';
+import { AirdropContext } from '../airdrop';
 
 export default function AirdropClaim() {
-  const [stage, setStage] = useState<TokenCreateStage>('in-queue');
+  const { stage } = useContext(AirdropContext);
 
   const follows = useMemo(
     () => [

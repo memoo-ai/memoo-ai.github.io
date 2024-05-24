@@ -1,6 +1,6 @@
 .airdrop {
   display: grid;
-  grid-template-columns: 406px 834px;
+  grid-template-columns: 406px auto;
   padding-top: 72px;
   column-gap: 22px;
 }
@@ -15,4 +15,5 @@
   border-radius: 20px;
   background: #131522;
   padding: 17px 23px;
+  min-width: 834px;
 }

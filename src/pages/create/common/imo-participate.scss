@@ -1,0 +1,59 @@
+.imo_participate {
+  border-radius: 15px;
+  border: 1px solid #07e993;
+  background: #1f3b4f;
+}
+
+.participate_btn {
+  border-radius: 7px;
+  border: unset !important;
+  color: #19fda6 !important;
+  background: #b53bff !important;
+  text-align: center;
+  font-family: '404px';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 125% */
+
+  &:disabled {
+    color: #4889b7 !important;
+    background: #2b526e !important;
+  }
+}
+
+.imo_countdown {
+  .timefragments {
+    border: 1px solid #19fda6;
+    border-radius: 8px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    > div {
+      time {
+        color: #fff;
+        text-align: center;
+        font-family: 404px;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px; /* 80% */
+        letter-spacing: 2px;
+      }
+      span {
+        color: #07e993;
+        font-family: 404px;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+        letter-spacing: 1.2px;
+      }
+    }
+  }
+  .splitor {
+    display: none;
+  }
+}

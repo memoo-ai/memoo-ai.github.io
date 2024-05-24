@@ -1,6 +1,12 @@
-import { FC, Fragment, useEffect, useMemo, useState } from 'react';
+import classNames from 'classnames';
+import { FC, Fragment, ReactNode, useEffect, useMemo, useState } from 'react';
 
-const Countdown: FC<{ instant: number; onEnded?: (ended: boolean) => void }> = ({ instant, onEnded }) => {
+const Countdown: FC<{
+  className?: string;
+  instant: number;
+  onEnded?: (ended: boolean) => void;
+  format?: (timeFragments: number[]) => (string | ReactNode)[];
+}> = ({ instant, onEnded, format, className }) => {
   const [update, setUpdate] = useState(0);
 
   const remainingTime = useMemo(() => {
@@ -20,15 +26,17 @@ const Countdown: FC<{ instant: number; onEnded?: (ended: boolean) => void }> = (
 
     const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
 
-    return [
-      // `${days}D`,
-      // `${String(hours).padStart(2, '0')}H`,
-      // `${String(minutes).padStart(2, '0')}M`,
-      // `${String(seconds).padStart(2, '0')}S`,
-      `${String(hours).padStart(2, '0')}`,
-      `${String(minutes).padStart(2, '0')}`,
-      `${String(seconds).padStart(2, '0')}`,
-    ];
+    return format
+      ? format([days, hours, minutes, seconds])
+      : [
+          // `${days}D`,
+          // `${String(hours).padStart(2, '0')}H`,
+          // `${String(minutes).padStart(2, '0')}M`,
+          // `${String(seconds).padStart(2, '0')}S`,
+          `${String(hours).padStart(2, '0')}`,
+          `${String(minutes).padStart(2, '0')}`,
+          `${String(seconds).padStart(2, '0')}`,
+        ];
   }, [instant, update, onEnded]);
 
   useEffect(() => {
@@ -49,7 +57,7 @@ const Countdown: FC<{ instant: number; onEnded?: (ended: boolean) => void }> = (
   }, [instant, onEnded]);
 
   return (
-    <div className="countdown">
+    <div className={classNames('countdown', className)}>
       {remainingTime.map((time, index) => (
         <Fragment key={index}>
           <span className="timefragments text-lg text-white font-404px">{time}</span>
