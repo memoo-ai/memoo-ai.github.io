@@ -53,7 +53,7 @@ const IMOParticipate: FC = () => {
           {params.map((item) => (
             <li key={item.key} className="flex justify-between">
               <label className="text-white text-xs font-OCR leading-4 flex items-center gap-x-1.5">
-                Price{' '}
+                {item.key}{' '}
                 {item.tip && (
                   <Popover content={item.tip}>
                     <img src="/public/create/tip.png" />

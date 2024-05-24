@@ -110,3 +110,7 @@ export function sleep(ms: number): Promise<void> {
     setTimeout(resolve, ms);
   });
 }
+
+export function clipAddress(address: string) {
+  return `${address.slice(0, 5)}...${address.slice(-4)}`;
+}

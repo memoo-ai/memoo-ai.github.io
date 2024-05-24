@@ -19,9 +19,11 @@ module.exports = {
         OCR: ['OCR A Extended'],
       },
       colors: {
+        ['bluish-purple']: '#5D64A2',
+        ['bluish-purple-light']: '#7D83B5',
         green: '#07E993',
         ['deep-green']: '#2A6F55',
-        red: '##FF0000',
+        red: '#FF0000',
         purple: '#B53BFF',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
