@@ -1,5 +1,5 @@
 import './index.scss';
-import { IconDraft, IconQueue, IconLaunched, IconIDO } from '@/components/icons';
+import { IconDraft, IconQueue, IconLaunched, IconIMO } from '@/components/icons';
 interface CardProps {
   data: any;
   children: any;
@@ -15,8 +15,8 @@ export const Card = ({ data, children }: CardProps) => {
       case 'Queue':
         icon = <IconQueue className="Queue" />;
         break;
-      case 'IDO':
-        icon = <IconIDO className="IDO" />;
+      case 'IMO':
+        icon = <IconIMO className="IMO" />;
         break;
       case 'Launched':
         icon = <IconLaunched className="Launched" />;

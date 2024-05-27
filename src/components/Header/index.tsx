@@ -13,7 +13,7 @@ export const menus: MenuItem[] = [
   { name: 'MemeGecko', path: '/gecko' },
   { name: 'LaunchPad', path: '/launchpad' },
   { name: 'Create', path: '/' },
-  { name: 'Dashboard', path: '/dashboard' },
+  // { name: 'Dashboard', path: '/dashboard' },
 ];
 
 export default () => {

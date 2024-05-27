@@ -13,9 +13,9 @@ import {
   // IconAddress,
   // IconETH,
 } from '@/components/icons';
-import { ClaimConfirm } from './ClaimConfirm';
-import { AirdropConfirm } from './AirdropConfirm';
-import { IncreaseConfirm } from './IncreaseConfirm';
+import { ClaimConfirm } from '../Confirms/ClaimConfirm';
+import { AirdropConfirm } from '../Confirms/AirdropConfirm';
+import { IncreaseConfirm } from '../Confirms/IncreaseConfirm';
 import { useNavigate } from 'react-router-dom';
 import { useRef, useState } from 'react';
 export const Creator = () => {
@@ -62,7 +62,7 @@ export const Creator = () => {
       totalRaised: '1.35/2.3E',
       launchDate: '06 Apr 2024',
       meMooScore: '70/100',
-      type: 'IDO',
+      type: 'IMO',
     },
     {
       imgUrl: './temp/1.png',
@@ -104,7 +104,7 @@ export const Creator = () => {
           </IncreaseConfirm>
         );
         break;
-      case 'IDO':
+      case 'IMO':
         button = '';
         break;
       case 'Launched':
@@ -167,7 +167,7 @@ export const Creator = () => {
               <TabsTrigger value="All">All</TabsTrigger>
               <TabsTrigger value="Draft">Draft</TabsTrigger>
               <TabsTrigger value="Queue">Queue</TabsTrigger>
-              <TabsTrigger value="IDO">IDO</TabsTrigger>
+              <TabsTrigger value="IMO">IMO</TabsTrigger>
               <TabsTrigger value="Launched">Launched</TabsTrigger>
             </TabsList>
           </Tabs>
@@ -184,18 +184,13 @@ export const Creator = () => {
 
           <p>Create Token</p>
         </div>
-        <div
-          className="dashboard_item_create"
-          onClick={() => {
-            navigate('/create');
-          }}
-        >
-          <div className="dashboard_item_create_item">
+        <div className="dashboard_item_create" onClick={() => navigate('/create')}>
+          <div className="dashboard_item_create_item" onClick={() => navigate('/launchpad')}>
             <IconAdd className="dashboard_item_create_add" />
 
             <p>Hunt for Airdrops</p>
           </div>
-          <div className="dashboard_item_create_item">
+          <div className="dashboard_item_create_item" onClick={() => navigate('/launchpad')}>
             <IconAdd className="dashboard_item_create_add" />
 
             <p>Participate in IMOs</p>
@@ -230,6 +225,9 @@ export const Creator = () => {
             setCurrentPage(page);
           }}
         />
+      </div>
+      <div className="flex justify-center">
+        <img className="w-[172.66px] has-[101.46px] mt-[53px]" src="./dashboard/dashboard_bottom_icon.png" alt="" />
       </div>
     </div>
   );

@@ -74,6 +74,7 @@
   background: transparent !important;
   display: flex;
   justify-content: center;
+  border-radius: 7px !important;
 
   span{
     color: $dashboardBtnBorderColor;
@@ -90,9 +91,7 @@
     span{
       color: #242842 !important;
     }
-    .QueueBtn{
-      fill: #ff0000 !important;
-    }
+
   }
 }
 .ant-tabs-nav{

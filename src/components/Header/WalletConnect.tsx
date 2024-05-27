@@ -2,13 +2,42 @@ import { Button, DropdownMenu } from '@radix-ui/themes';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount, useDisconnect } from 'wagmi';
 // import { handleCopy } from '@/utils';
-import { IconProfile } from '@/components/icons';
+import {
+  IconProfile,
+  IconWalletContentCreator,
+  IconWalletContentCollector,
+  IconWalletContentWatchList,
+  IconWalletContentLogout,
+} from '@/components/icons';
 import './walletConnect.scss';
+import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 // const explorerURL = import.meta.env.VITE_EXPLORER_URL;
-
-export default () => {
+const opts = [
+  {
+    name: 'Creator',
+    path: '/dashboard',
+    type: 'Creator',
+    icon: IconWalletContentCreator,
+  },
+  {
+    name: 'Collector',
+    path: '/dashboard',
+    type: 'Collector',
+    icon: IconWalletContentCollector,
+  },
+  {
+    name: 'WatchList',
+    path: '/dashboard',
+    type: 'WatchList',
+    icon: IconWalletContentWatchList,
+  },
+];
+const WalletConnect = () => {
   const { address, isConnected } = useAccount();
   const { connectors, disconnect } = useDisconnect();
+  const navigate = useNavigate();
+  const iconRefs = useRef<any>({});
   const onDisconnect = async () => {
     if (isConnected || address) {
       for (const connector of connectors) {
@@ -69,46 +98,42 @@ export default () => {
                   <DropdownMenu.Root>
                     <DropdownMenu.Trigger>
                       <div>
-                        {/* <img src="./icon-profile.svg" alt="" /> */}
                         <IconProfile className="cursor-pointer wallet-border rounded-[7px]" />
                       </div>
                     </DropdownMenu.Trigger>
 
-                    <DropdownMenu.Content className="wallet-dropdown-menu bg-[#fff]" align="end" sideOffset={20}>
+                    <DropdownMenu.Content className="wallet-dropdown-menu bg-[#1F3B4F]" align="end" sideOffset={20}>
                       <div className="divider-x" />
-                      <DropdownMenu.Item className="mb-6 hover:bg-[#F2F2F2] py-2 h-10 cursor-pointer">
-                        <div className="flex items-center">
-                          <div className="flex justify-center items-center w-[40px]">
-                            <img src="./icon-profile-user.svg" alt="" className="w-[16.8px] h-[19px] mr-4" />
+
+                      {opts.map((opt) => (
+                        <DropdownMenu.Item
+                          key={opt.type}
+                          className="mb-6 hover:bg-[#07E993] text-[#FFFFFF] hover:text-[#1F3B4F] py-2 h-10 cursor-pointer"
+                          onMouseOver={() => iconRefs.current[opt.type].setHovered(true)}
+                          onMouseLeave={() => iconRefs.current[opt.type].setHovered(false)}
+                          onClick={() => {
+                            navigate(`${opt.path}?type=${opt.type}`);
+                          }}
+                        >
+                          <div className="flex items-center">
+                            <div className="flex justify-center items-center w-[40px]">
+                              <opt.icon ref={(ref) => (iconRefs.current[opt.type] = ref)} />
+                            </div>
+                            <span className="font-404px font-bold text-lg leading-5">{opt.name}</span>
                           </div>
-                          <span className="font-404px font-bold text-lg leading-5 text-[#000]">Profile</span>
-                        </div>
-                      </DropdownMenu.Item>
-                      <DropdownMenu.Item className="hover:bg-[#F2F2F2] mb-6 py-2 h-10  cursor-pointer">
-                        <div className="flex items-center">
-                          <div className="flex justify-center items-center w-[40px]">
-                            <img src="./icon-profile-eye.svg" alt="" className="w-[26.3px] h-[17px] mr-4" />
-                          </div>
-                          <span className="font-404px font-bold text-lg leading-5 text-[#000]">Watchlist</span>
-                        </div>
-                      </DropdownMenu.Item>
-                      <DropdownMenu.Item className="hover:bg-[#F2F2F2] mb-10 py-2 h-10  cursor-pointer">
-                        <div className="flex items-center">
-                          <div className="flex justify-center items-center w-[40px]">
-                            <img src="./icon-profile-setting.svg" alt="" className="w-[22px] h-[22.68px] mr-4" />
-                          </div>
-                          <span className="font-404px font-bold text-lg leading-5 text-[#000]">Settings</span>
-                        </div>
-                      </DropdownMenu.Item>
+                        </DropdownMenu.Item>
+                      ))}
                       <DropdownMenu.Item
                         onClick={onDisconnect}
-                        className="hover:bg-[#F2F2F2] mt-3 py-2 h-10  cursor-pointer"
+                        className="hover:bg-[#07E993] text-[#FFFFFF] hover:text-[#1F3B4F] mt-3 py-2 h-10  cursor-pointer"
+                        onMouseOver={() => iconRefs.current['logout'].setHovered(true)}
+                        onMouseLeave={() => iconRefs.current['logout'].setHovered(false)}
                       >
                         <div className="flex items-center">
                           <div className="flex justify-center items-center w-[40px]">
-                            <img src="./icon-profile-logout.svg" alt="" className="w-[22.2px] h-[22.2px] mr-4" />
+                            <IconWalletContentLogout ref={(ref) => (iconRefs.current['logout'] = ref)} />
                           </div>
-                          <span className="font-404px font-bold text-lg leading-5 text-[#000]">Log Out</span>
+                          <span className="font-404px font-bold text-lg leading-5">Log Out</span>
                         </div>
                       </DropdownMenu.Item>
                     </DropdownMenu.Content>
@@ -122,3 +147,5 @@ export default () => {
     </ConnectButton.Custom>
   );
 };
+
+export default WalletConnect;

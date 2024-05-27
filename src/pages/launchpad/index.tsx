@@ -9,7 +9,7 @@ import { ActiveIdoCard } from './card';
 import type { GetProp, TableProps } from 'antd';
 import IPagination from '@/components/IPagination';
 import type { PaginationProps } from 'antd';
-
+import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 import { AirDrop } from './airDrop';
 import { SectionListWithSeparator } from './sectionListWithSeparator';
 type ColumnsType<T> = TableProps<T>['columns'];
@@ -31,6 +31,15 @@ export default function LaunchPad() {
     total: 30,
   });
   const [sorters, setSorters] = useState<any>([]);
+  const location = useLocation();
+
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const type = query.get('type');
+    if (type) {
+      setTab(type);
+    }
+  }, [location.search]);
 
   const fetchData = async () => {
     const list = new Array(20).fill(undefined).map((_, i) => ({

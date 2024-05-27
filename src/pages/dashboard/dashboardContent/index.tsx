@@ -1,16 +1,26 @@
 import './index.scss';
 import { Tabs as AntTabs } from 'antd';
-import { useCallback, useState, FC } from 'react';
+import { useCallback, useState, FC, useEffect } from 'react';
 import { Creator } from './Creator';
 import { Collector } from './Collector';
 import { WatchList } from './WatchList';
+import { BrowserRouter as Router, useLocation } from 'react-router-dom';
+
 export const DashboardContent: FC<{ onChangeType: (type: string) => void }> = ({ onChangeType, ...rest }) => {
-  const [type, setType] = useState('All');
+  const [activeKey, setActiveKey] = useState('Creator');
+  const location = useLocation();
   const onChange = useCallback((e: any) => {
-    setType(e);
+    setActiveKey(e);
     onChangeType(e);
-    // fetchData();
   }, []);
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const type = query.get('type');
+    if (type) {
+      setActiveKey(type);
+      onChangeType(type);
+    }
+  }, [location.search]);
   const items = [
     {
       key: 'Creator',
@@ -28,12 +38,10 @@ export const DashboardContent: FC<{ onChangeType: (type: string) => void }> = ({
       children: <WatchList />,
     },
   ];
-  const fetchData = useCallback(() => {
-    console.log(type);
-  }, []);
+
   return (
     <div>
-      <AntTabs onChange={onChange} items={items} />
+      <AntTabs activeKey={activeKey} onChange={onChange} items={items} />
     </div>
   );
 };

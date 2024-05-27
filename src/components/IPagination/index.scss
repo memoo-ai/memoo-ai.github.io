@@ -1,7 +1,7 @@
 //default
 .ant-pagination .ant-pagination-item {
   background: #1F3B4F;
-
+  border-radius: .4375rem;
   border-color: #07E993;
 
   a{
@@ -45,6 +45,7 @@
   background: #1F3B4F;
   border-color: #07E993;
   color: #07E993;
+  border-radius: .4375rem;
   &:hover{
     background: #07E993 !important;
     border-color: transparent !important;
@@ -57,6 +58,7 @@
   background: #1F3B4F;
   border-color: #07E993;
   color: #07E993;
+  border-radius: .4375rem;
 
   &:hover{
     background: #07E993;
