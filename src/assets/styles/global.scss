@@ -209,6 +209,50 @@
   box-shadow: 0 0 0 0 #2B526E !important;
 }
 
+.ant-radio-group-solid {
+  border: 1px solid #07E993 !important;
+  border-radius: 5px;
+}
+
+.ant-radio-button-wrapper {
+  height: 46px;
+  line-height: 44px;
+  background: #1F3B4F;
+  border: none;
+
+
+  span {
+    text-transform: uppercase;
+    color: #07E993;
+    font-family: '404px';
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 16px;
+    text-align: center;
+
+  }
+}
+
+.ant-radio-button-wrapper,
+.ant-radio-button-wrapper:first-child,
+.ant-radio-button-wrapper:last-child {
+  width: 169px;
+  border-inline-start: unset;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.ant-radio-button-wrapper:not(:first-child)::before {
+  display: none !important;
+}
+
+.ant-radio-button-wrapper-checked {
+  span {
+
+    color: #A005FE;
+  }
+}
+
 .ant-tooltip-arrow::after,
 .ant-tooltip-arrow::before {
   background: transparent !important;
@@ -304,39 +348,41 @@
 
 }
 
-  .ant-tabs-nav{
-    margin: 0 !important;
-    .ant-tabs-tab-btn{
-      color:$mainBgColor !important;
-      padding: 12px 0;
-      text-align: center;
-      // margin-right: 30px;
-      font-family: '404px';
-      font-size: 24px;
-      font-weight: 400;
-      line-height: 20px;
-      text-align: center;
+.ant-tabs-nav {
+  margin: 0 !important;
 
-      &:hover{
-        color:$mainColor !important;
-        position: relative;
+  .ant-tabs-tab-btn {
+    color: $mainBgColor !important;
+    padding: 12px 0;
+    text-align: center;
+    // margin-right: 30px;
+    font-family: '404px';
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: center;
 
-        &::after{
-          content: '';
-          position: absolute;
-          bottom: -12px;
-          left: 0;
-          width: 100%;
-          height: 2px;
-          background: $mainColor;
-        }
+    &:hover {
+      color: $mainColor !important;
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -12px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: $mainColor;
       }
     }
   }
-  .ant-tabs-top >.ant-tabs-nav .ant-tabs-tab-active{
-    .ant-tabs-tab-btn{
-      color:$mainColor !important;
-      // margin-right: 30px;
+}
+
+.ant-tabs-top>.ant-tabs-nav .ant-tabs-tab-active {
+  .ant-tabs-tab-btn {
+    color: $mainColor !important;
+    // margin-right: 30px;
 
     &::after {
       color: $mainColor !important;
