@@ -1,14 +1,14 @@
 import { createContext, useMemo, useState } from 'react';
-import AirdropClaim from '../common/airdrop-claim';
-import IMOParticipate from '../common/imo-participate';
-import Status from '../common/status';
+import AirdropClaim from './airdrop-claim';
+import IMOParticipate from './imo-participate';
+import Status from './status';
 import './index.scss';
 import { TokenCreateStage } from '@/types';
-import PublicSale from '../common/public-sale';
-import IDODetail from '../common/ido-detail';
-import Banner from '../common/banner';
-import Profile from '../common/profile';
-import Progress from '../common/progress';
+import PublicSale from './public-sale';
+import IDODetail from './ido-detail';
+import Banner from './banner';
+import Profile from './profile';
+import Progress from './progress';
 import { Button } from 'antd';
 
 interface AirdropContext {
