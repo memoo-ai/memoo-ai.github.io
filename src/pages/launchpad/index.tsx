@@ -2,7 +2,7 @@ import './index.scss';
 import CommonBanner from '@/components/Banner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useEffect, useState } from 'react';
-import { columns, IDO, IDOStatus } from './columns';
+import { columns, IDO, columnsAirdrop, IDOStatus } from './columns';
 import SwipeCard from '@/components/SwipeCard';
 import { Table } from 'antd';
 import { ActiveIdoCard } from './card';
@@ -12,6 +12,7 @@ import type { PaginationProps } from 'antd';
 import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 import { AirDrop } from './airDrop';
 import { SectionListWithSeparator } from './sectionListWithSeparator';
+import { getAirdrop, getImo } from '@/api/launchpad';
 type ColumnsType<T> = TableProps<T>['columns'];
 type TablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;
 
@@ -20,10 +21,11 @@ interface TableParams {
   sortField?: string;
   sortOrder?: string;
 }
-export type LuanchpadType = 'imo' | 'airdrop';
+export type LaunchpadType = 'imo' | 'airdrop';
 export default function LaunchPad() {
-  const [tab, setTab] = useState<LuanchpadType>('imo');
+  const [tab, setTab] = useState<LaunchpadType>('imo');
   const [data, setData] = useState<IDO[]>([]);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState<PaginationProps>({
     current: 1,
@@ -42,18 +44,19 @@ export default function LaunchPad() {
   }, [location.search]);
 
   const fetchData = async () => {
-    const list = new Array(20).fill(undefined).map((_, i) => ({
-      id: 'dogwifhat',
-      name: 'DogWifHat',
-      symbol: 'WIF',
-      logo: '',
-      date: '04 Sep 2024',
-      totalRaised: 2.3,
-      status: IDOStatus.upcoming,
-      target: 2,
-      roi: 20.2,
-    }));
-    setData(list);
+    let params = {
+      pageNumber: pagination.current,
+      pageSize: pagination.pageSize,
+    };
+    const { data } = tab === 'imo' ? await getImo(params) : await getAirdrop(params);
+    console.log(data);
+    if (data) {
+      setData(data.records);
+      setPagination({
+        ...pagination,
+        total: data.total_record,
+      });
+    }
   };
 
   useEffect(() => {
@@ -84,7 +87,13 @@ export default function LaunchPad() {
           </div>
         </div>
         <div className="flex items-center justify-between my-[70px]">
-          <Tabs value={tab} onValueChange={(value) => setTab(value as LuanchpadType)}>
+          <Tabs
+            value={tab}
+            onValueChange={(value) => {
+              setTab(value as LaunchpadType);
+              setPagination({ ...pagination, current: 1 });
+            }}
+          >
             <TabsList>
               <TabsTrigger value="imo" className="text-[38px]">
                 Imo
@@ -96,7 +105,7 @@ export default function LaunchPad() {
           </Tabs>
         </div>
         <Table
-          columns={columns}
+          columns={tab === 'imo' ? columns : columnsAirdrop}
           dataSource={data}
           pagination={false}
           loading={loading}

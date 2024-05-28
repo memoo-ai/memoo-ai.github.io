@@ -17,64 +17,30 @@ import { ClaimConfirm } from '../Confirms/ClaimConfirm';
 import { AirdropConfirm } from '../Confirms/AirdropConfirm';
 import { IncreaseConfirm } from '../Confirms/IncreaseConfirm';
 import { useNavigate } from 'react-router-dom';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { getCreator } from '@/api/dashboard';
+import { CreatorStatus, CreatorList } from '../type';
 export const Creator = () => {
   const navigate = useNavigate();
-  const [total, setTotal] = useState(50);
+  const [total, setTotal] = useState(0);
+  const [tab, setTab] = useState<CreatorStatus>('All');
+  const [list, setList] = useState<CreatorList[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const iconRefs = useRef<any>({});
-  const data = [
-    {
-      imgUrl: './temp/1.png',
-      name: 'Doge Killer',
-      tip: 'Saved Draft',
-      chain: 'LEASH',
-      totalRaised: '1.35/2.3E',
-      launchDate: '06 Apr 2024',
-      meMooScore: '70/100',
-      type: 'All',
-    },
-    {
-      imgUrl: '',
-      name: '',
-      tip: '',
-      chain: '',
-      totalRaised: '',
-      launchDate: '',
-      meMooScore: '',
-      type: 'Draft',
-    },
-    {
-      imgUrl: './temp/1.png',
-      name: 'Doge Killer',
-      tip: 'Saved Draft',
-      chain: 'LEASH',
-      totalRaised: '1.35/2.3E',
-      launchDate: '06 Apr 2024',
-      meMooScore: '70/100',
-      type: 'Queue',
-    },
-    {
-      imgUrl: './temp/1.png',
-      name: 'Doge Killer',
-      tip: 'Saved Draft',
-      chain: 'LEASH',
-      totalRaised: '1.35/2.3E',
-      launchDate: '06 Apr 2024',
-      meMooScore: '70/100',
-      type: 'IMO',
-    },
-    {
-      imgUrl: './temp/1.png',
-      name: 'Doge Killer',
-      tip: 'Saved Draft',
-      chain: 'LEASH',
-      totalRaised: '1.35/2.3E',
-      launchDate: '06 Apr 2024',
-      meMooScore: '70/100',
-      type: 'Launched',
-    },
-  ];
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await getCreator({
+          pageNumber: 1,
+          pageSize: 10,
+        });
+        setList(data.records);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    })();
+  }, []);
   const renderButton = (type: string) => {
     let button;
     switch (type) {
@@ -90,7 +56,7 @@ export const Creator = () => {
           />
         );
         break;
-      case 'Queue':
+      case 'QUEUE':
         button = (
           <IncreaseConfirm>
             <Button
@@ -162,7 +128,13 @@ export const Creator = () => {
         </div> */}
         <div />
         <div>
-          <Tabs defaultValue="All">
+          <Tabs
+            defaultValue="All"
+            onValueChange={(value) => {
+              setTab(value as CreatorStatus);
+              // setPagination({ ...pagination, current: 1 });
+            }}
+          >
             <TabsList>
               <TabsTrigger value="All">All</TabsTrigger>
               <TabsTrigger value="Draft">Draft</TabsTrigger>
@@ -184,32 +156,20 @@ export const Creator = () => {
 
           <p>Create Token</p>
         </div>
-        <div className="dashboard_item_create" onClick={() => navigate('/create')}>
-          <div className="dashboard_item_create_item" onClick={() => navigate('/launchpad')}>
-            <IconAdd className="dashboard_item_create_add" />
 
-            <p>Hunt for Airdrops</p>
-          </div>
-          <div className="dashboard_item_create_item" onClick={() => navigate('/launchpad')}>
-            <IconAdd className="dashboard_item_create_add" />
-
-            <p>Participate in IMOs</p>
-          </div>
-        </div>
-
-        {data.map((item, index) => {
+        {list.map((item, index) => {
           return (
             <Card key={index} data={item}>
               <div className="flex justify-between items-center mt-[15px]">
-                <div>{renderButton(item.type)}</div>
-                <div className={item.type === 'Draft' ? 'draft' : ''}>
+                <div>{renderButton(item.status)}</div>
+                <div className={item.status === 'Draft' ? 'draft' : ''}>
                   <IconEdit
                     className="dashboard_item_create_edit"
-                    color={item.type === 'Draft' ? '#7D83B5' : '#07E993'}
-                    hoverColor={item.type === 'Draft' ? '#07E993' : '#000'}
-                    bgColor={item.type === 'Draft' ? '#383C61' : '#242842'}
-                    hoverBgColor={item.type === 'Draft' ? '#1F3B4F' : '#07E993'}
-                    style={{ border: item.type === 'Draft' ? 'none' : '1px solid #07E993' }}
+                    color={item.status === 'Draft' ? '#7D83B5' : '#07E993'}
+                    hoverColor={item.status === 'Draft' ? '#07E993' : '#000'}
+                    bgColor={item.status === 'Draft' ? '#383C61' : '#242842'}
+                    hoverBgColor={item.status === 'Draft' ? '#1F3B4F' : '#07E993'}
+                    style={{ border: item.status === 'Draft' ? 'none' : '1px solid #07E993' }}
                   />
                 </div>
               </div>

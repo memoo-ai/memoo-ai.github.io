@@ -1,7 +1,8 @@
 import './index.scss';
 import { IconDraft, IconQueue, IconLaunched, IconIMO } from '@/components/icons';
+import { CreatorList } from '../type';
 interface CardProps {
-  data: any;
+  data: CreatorList;
   children: any;
 }
 export const Card = ({ data, children }: CardProps) => {
@@ -12,7 +13,7 @@ export const Card = ({ data, children }: CardProps) => {
       case 'Draft':
         icon = <IconDraft className="Draft" />;
         break;
-      case 'Queue':
+      case 'QUEUE':
         icon = <IconQueue className="Queue" />;
         break;
       case 'IMO':
@@ -33,20 +34,20 @@ export const Card = ({ data, children }: CardProps) => {
       <div className="dashboard_item_tag">
         <div className="dashboard_item_tag_left">SAMPLE</div>
         <div className="dashboard_item_tag_right">
-          <h3 className="mr-[11px]" style={{ color: data.type === 'Draft' ? '#7d83b5' : '#b53bff' }}>
-            {data.type}
+          <h3 className="mr-[11px]" style={{ color: data.status === 'Draft' ? '#7d83b5' : '#b53bff' }}>
+            {data.status}
           </h3>
-          <div>{renderIcon(data.type)}</div>
+          <div>{renderIcon(data.status)}</div>
         </div>
       </div>
       <div className="dashboard_item_info">
-        {data.imgUrl ? (
-          <img className="dashboard_item_info_img" src={data.imgUrl} alt="" />
+        {data.icon ? (
+          <img className="dashboard_item_info_img" src={data.icon} alt="" />
         ) : (
           <div className="dashboard_item_info_img" />
         )}
         <div className="dashboard_item_info_title">
-          <h3>1</h3>
+          <h3>{data.tokenName}</h3>
           <p>2</p>
         </div>
       </div>
