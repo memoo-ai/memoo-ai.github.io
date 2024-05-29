@@ -23,7 +23,7 @@ import { CreatorStatus, CreatorList } from '../type';
 export const Creator = () => {
   const navigate = useNavigate();
   const [total, setTotal] = useState(0);
-  const [tab, setTab] = useState<CreatorStatus>('All');
+  const [tab, setTab] = useState<CreatorStatus>('ALL');
   const [list, setList] = useState<CreatorList[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const iconRefs = useRef<any>({});
@@ -32,15 +32,17 @@ export const Creator = () => {
     (async () => {
       try {
         const { data } = await getCreator({
-          pageNumber: 1,
+          pageNumber: currentPage,
           pageSize: 10,
+          status: tab === 'ALL' ? '' : tab,
         });
         setList(data.records);
+        setTotal(data.total_record);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     })();
-  }, []);
+  }, [tab, currentPage]);
   const renderButton = (type: string) => {
     let button;
     switch (type) {
@@ -70,7 +72,7 @@ export const Creator = () => {
           </IncreaseConfirm>
         );
         break;
-      case 'IMO':
+      case 'IDO':
         button = '';
         break;
       case 'Launched':
@@ -129,18 +131,18 @@ export const Creator = () => {
         <div />
         <div>
           <Tabs
-            defaultValue="All"
+            defaultValue="ALL"
             onValueChange={(value) => {
               setTab(value as CreatorStatus);
               // setPagination({ ...pagination, current: 1 });
             }}
           >
             <TabsList>
-              <TabsTrigger value="All">All</TabsTrigger>
+              <TabsTrigger value="ALL">ALL</TabsTrigger>
               <TabsTrigger value="Draft">Draft</TabsTrigger>
-              <TabsTrigger value="Queue">Queue</TabsTrigger>
-              <TabsTrigger value="IMO">IMO</TabsTrigger>
-              <TabsTrigger value="Launched">Launched</TabsTrigger>
+              <TabsTrigger value="QUEUE">Queue</TabsTrigger>
+              <TabsTrigger value="IDO">IMO</TabsTrigger>
+              <TabsTrigger value="Launched">LAUNCHED</TabsTrigger>
             </TabsList>
           </Tabs>
         </div>

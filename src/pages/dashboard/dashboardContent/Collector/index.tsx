@@ -18,64 +18,31 @@ import { AirdropConfirm } from '../Confirms/AirdropConfirm';
 import { IncreaseConfirm } from '../Confirms/IncreaseConfirm';
 import GoLaunchPadACard from '../goLaunchpadCard';
 import { useNavigate } from 'react-router-dom';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { getCollectorAirdrop, getCollectorParticipated } from '@/api/dashboard';
+import { CollectorType, CreatorList } from '../type';
 export const Collector = () => {
   const navigate = useNavigate();
   const [total, setTotal] = useState(50);
+  const [tab, setTab] = useState<CollectorType>('Airdrop');
   const [currentPage, setCurrentPage] = useState(1);
   const iconRefs = useRef<any>({});
-  const data = [
-    {
-      imgUrl: './temp/1.png',
-      name: 'Doge Killer',
-      tip: 'Saved Draft',
-      chain: 'LEASH',
-      totalRaised: '1.35/2.3E',
-      launchDate: '06 Apr 2024',
-      meMooScore: '70/100',
-      type: 'All',
-    },
-    {
-      imgUrl: '',
-      name: '',
-      tip: '',
-      chain: '',
-      totalRaised: '',
-      launchDate: '',
-      meMooScore: '',
-      type: 'Draft',
-    },
-    {
-      imgUrl: './temp/1.png',
-      name: 'Doge Killer',
-      tip: 'Saved Draft',
-      chain: 'LEASH',
-      totalRaised: '1.35/2.3E',
-      launchDate: '06 Apr 2024',
-      meMooScore: '70/100',
-      type: 'Queue',
-    },
-    {
-      imgUrl: './temp/1.png',
-      name: 'Doge Killer',
-      tip: 'Saved Draft',
-      chain: 'LEASH',
-      totalRaised: '1.35/2.3E',
-      launchDate: '06 Apr 2024',
-      meMooScore: '70/100',
-      type: 'IMO',
-    },
-    {
-      imgUrl: './temp/1.png',
-      name: 'Doge Killer',
-      tip: 'Saved Draft',
-      chain: 'LEASH',
-      totalRaised: '1.35/2.3E',
-      launchDate: '06 Apr 2024',
-      meMooScore: '70/100',
-      type: 'Launched',
-    },
-  ];
+  const [list, setList] = useState<CreatorList[]>([]);
+  useEffect(() => {
+    (async () => {
+      try {
+        let params = {
+          pageNumber: currentPage,
+          pageSize: 10,
+        };
+        const { data } = tab === 'Airdrop' ? await getCollectorAirdrop(params) : await getCollectorParticipated(params);
+        setList(data.records);
+        setTotal(data.total_record);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    })();
+  }, [tab, currentPage]);
   const renderButton = (type: string) => {
     let button;
     switch (type) {
@@ -163,7 +130,13 @@ export const Collector = () => {
         </div> */}
         <div />
         <div>
-          <Tabs defaultValue="Airdrop">
+          <Tabs
+            defaultValue="Airdrop"
+            onValueChange={(value) => {
+              setTab(value as CollectorType);
+              // setPagination({ ...pagination, current: 1 });
+            }}
+          >
             <TabsList>
               <TabsTrigger value="Airdrop">Airdrop</TabsTrigger>
               <TabsTrigger value="Participated">Participated</TabsTrigger>
@@ -174,19 +147,19 @@ export const Collector = () => {
       <div className="dashboard_items_items">
         <GoLaunchPadACard />
 
-        {data.map((item, index) => {
+        {list.map((item, index) => {
           return (
             <Card key={index} data={item}>
               <div className="flex justify-between items-center mt-[15px]">
-                <div>{renderButton(item.type)}</div>
-                <div className={item.type === 'Draft' ? 'draft' : ''}>
+                <div>{renderButton(item.status)}</div>
+                <div className={item.status === 'Draft' ? 'draft' : ''}>
                   <IconEdit
                     className="dashboard_item_create_edit"
-                    color={item.type === 'Draft' ? '#7D83B5' : '#07E993'}
-                    hoverColor={item.type === 'Draft' ? '#07E993' : '#000'}
-                    bgColor={item.type === 'Draft' ? '#383C61' : '#242842'}
-                    hoverBgColor={item.type === 'Draft' ? '#1F3B4F' : '#07E993'}
-                    style={{ border: item.type === 'Draft' ? 'none' : '1px solid #07E993' }}
+                    color={item.status === 'Draft' ? '#7D83B5' : '#07E993'}
+                    hoverColor={item.status === 'Draft' ? '#07E993' : '#000'}
+                    bgColor={item.status === 'Draft' ? '#383C61' : '#242842'}
+                    hoverBgColor={item.status === 'Draft' ? '#1F3B4F' : '#07E993'}
+                    style={{ border: item.status === 'Draft' ? 'none' : '1px solid #07E993' }}
                   />
                 </div>
               </div>

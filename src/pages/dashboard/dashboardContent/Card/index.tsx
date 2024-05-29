@@ -32,7 +32,8 @@ export const Card = ({ data, children }: CardProps) => {
   return (
     <div className="dashboard_item">
       <div className="dashboard_item_tag">
-        <div className="dashboard_item_tag_left">SAMPLE</div>
+        <div className="dashboard_item_tag_left" />
+        {/* <div className="dashboard_item_tag_left">SAMPLE</div> */}
         <div className="dashboard_item_tag_right">
           <h3 className="mr-[11px]" style={{ color: data.status === 'Draft' ? '#7d83b5' : '#b53bff' }}>
             {data.status}
@@ -48,7 +49,7 @@ export const Card = ({ data, children }: CardProps) => {
         )}
         <div className="dashboard_item_info_title">
           <h3>{data.tokenName}</h3>
-          <p>2</p>
+          <p>{data.ticker}</p>
         </div>
       </div>
       <div className="dashboard_item_content">

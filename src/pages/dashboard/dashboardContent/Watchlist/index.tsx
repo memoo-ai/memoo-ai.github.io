@@ -3,65 +3,30 @@ import { Card } from '../Card';
 import IPagination from '@/components/IPagination';
 import { IconCollect } from '@/components/icons';
 import { useNavigate } from 'react-router-dom';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import GoLaunchPadACard from '../goLaunchpadCard';
+import { getWatchList } from '@/api/dashboard';
+import { CreatorStatus, CreatorList } from '../type';
 export const WatchList = () => {
   const navigate = useNavigate();
   const [total, setTotal] = useState(50);
   const [currentPage, setCurrentPage] = useState(1);
+  const [list, setList] = useState<CreatorList[]>([]);
   const iconRefs = useRef<any>({});
-  const data = [
-    {
-      imgUrl: './temp/1.png',
-      name: 'Doge Killer',
-      tip: 'Saved Draft',
-      chain: 'LEASH',
-      totalRaised: '1.35/2.3E',
-      launchDate: '06 Apr 2024',
-      meMooScore: '70/100',
-      type: 'All',
-    },
-    {
-      imgUrl: '',
-      name: '',
-      tip: '',
-      chain: '',
-      totalRaised: '',
-      launchDate: '',
-      meMooScore: '',
-      type: 'Draft',
-    },
-    {
-      imgUrl: './temp/1.png',
-      name: 'Doge Killer',
-      tip: 'Saved Draft',
-      chain: 'LEASH',
-      totalRaised: '1.35/2.3E',
-      launchDate: '06 Apr 2024',
-      meMooScore: '70/100',
-      type: 'Queue',
-    },
-    {
-      imgUrl: './temp/1.png',
-      name: 'Doge Killer',
-      tip: 'Saved Draft',
-      chain: 'LEASH',
-      totalRaised: '1.35/2.3E',
-      launchDate: '06 Apr 2024',
-      meMooScore: '70/100',
-      type: 'IMO',
-    },
-    {
-      imgUrl: './temp/1.png',
-      name: 'Doge Killer',
-      tip: 'Saved Draft',
-      chain: 'LEASH',
-      totalRaised: '1.35/2.3E',
-      launchDate: '06 Apr 2024',
-      meMooScore: '70/100',
-      type: 'Launched',
-    },
-  ];
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await getWatchList({
+          pageNumber: currentPage,
+          pageSize: 10,
+        });
+        setList(data.records);
+        setTotal(data.total_record);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    })();
+  }, [currentPage]);
 
   return (
     <div className="dashboard_items">
@@ -71,7 +36,7 @@ export const WatchList = () => {
       </div>
       <div className="dashboard_items_items">
         <GoLaunchPadACard />
-        {data.map((item, index) => {
+        {list.map((item, index) => {
           return (
             <Card key={index} data={item}>
               <div className="flex justify-between items-center mt-[15px]">
