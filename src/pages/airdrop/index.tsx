@@ -11,6 +11,7 @@ import Profile from './profile';
 import Progress from './progress';
 import { Button } from 'antd';
 import { getIDOActiveDetail, getIDOLaunchedDetail, getIDOLaunchedDetailTop10, getIDOQueueDetail } from '@/api/airdrop';
+import { useParams } from 'react-router-dom';
 
 interface AirdropContext {
   stage: TokenCreateStage;
@@ -28,6 +29,7 @@ const Airdrop: FC = () => {
   const [idoLaunchedDetail, setIDOLaunchedDetail] = useState<IDOLaunchedDetail>();
   const [idoLaunchedDetailTop10, setIDOLaunchedDetailTop10] = useState<IDOLaunchedDetailTop10[]>([]);
   const [idoQueueDetail, setIDOQueueDetail] = useState<IDOQueueDetail>();
+  const { ticker = import.meta.env.VITE_DEMO_TICKER } = useParams<{ ticker: string }>();
 
   const context: AirdropContext = useMemo(
     () => ({ stage, idoActiveDetail, idoLaunchedDetail, idoLaunchedDetailTop10, idoQueueDetail }),
@@ -37,7 +39,7 @@ const Airdrop: FC = () => {
   useEffect(() => {
     (async () => {
       // For testin: BigEgg or NewCake
-      const { data } = await getIDOQueueDetail(import.meta.env.VITE_DEMO_TICKER);
+      const { data } = await getIDOQueueDetail(ticker);
       setIDOQueueDetail(data);
 
       if (data.stageTwoClaim) {
@@ -46,14 +48,14 @@ const Airdrop: FC = () => {
         setStage('1st-claim');
       } else if (data.status === 'Launched') {
         const [p1, p2] = await Promise.all([
-          getIDOLaunchedDetail(import.meta.env.VITE_DEMO_TICKER),
-          getIDOLaunchedDetailTop10({ pageNumber: 1, pageSize: 10, ticker: import.meta.env.VITE_DEMO_TICKER }),
+          getIDOLaunchedDetail(ticker),
+          getIDOLaunchedDetailTop10({ pageNumber: 1, pageSize: 10, ticker: ticker }),
         ]);
         setIDOLaunchedDetail(p1.data);
         setIDOLaunchedDetailTop10(p2.data.records);
         setStage('launch');
       } else if (data.status === 'IDO') {
-        const { data } = await getIDOActiveDetail(import.meta.env.VITE_DEMO_TICKER);
+        const { data } = await getIDOActiveDetail(ticker);
         setIDOActiveDetail(data);
         setStage('imo');
       } else {

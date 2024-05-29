@@ -27,7 +27,7 @@ const routeConfig: RouteObject[] = [
         Component: lazy(() => import('../pages/create')),
       },
       {
-        path: '/airdrop',
+        path: '/airdrop/:ticker',
         Component: lazy(() => import('../pages/airdrop')),
       },
       {
