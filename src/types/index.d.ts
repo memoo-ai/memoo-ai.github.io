@@ -59,3 +59,42 @@ export interface tableData {
 }
 
 declare type TokenCreateStage = 'in-queue' | 'imo' | 'launch' | '1st-claim' | '2st-claim';
+
+declare interface ResponseWrapper<T> {
+  code: number;
+  data: T;
+  msg: string;
+}
+
+declare interface IDOActiveDetail {
+  commitment: string;
+  communityActivit: string;
+  communitySize: string;
+  contractAddress: string;
+  createdAt: string;
+  creatorActivity: string;
+  description: string;
+  endsIn: string;
+  fdv: number;
+  holders: string;
+  icon: string;
+  idoDate: string;
+  liquidity: string;
+  lpContractAddress: string;
+  marketCap: string;
+  meMooScore: string;
+  memeTwitterBind: boolean;
+  participants: number;
+  pinnedTwitter: string;
+  platformTwitterBind: boolean;
+  price: number;
+  socialInfo: string;
+  status: string;
+  telegram: string;
+  ticker: string;
+  tokenName: string;
+  totalRaised: string;
+  totalSupply: string;
+  twitter: string;
+  website: string;
+}
