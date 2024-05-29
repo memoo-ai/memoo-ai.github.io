@@ -60,13 +60,18 @@ export interface tableData {
 
 declare type TokenCreateStage = 'in-queue' | 'imo' | 'launch' | '1st-claim' | '2st-claim';
 
+declare interface IDOClaimStage {
+  stageOneClaim: boolean;
+  stageTwoClaim: boolean;
+}
+
 declare interface ResponseWrapper<T> {
   code: number;
   data: T;
   msg: string;
 }
 
-declare interface IDOActiveDetail {
+declare interface IDOActiveDetail extends IDOClaimStage {
   commitment: string;
   communityActivit: string;
   communitySize: string;
@@ -89,7 +94,7 @@ declare interface IDOActiveDetail {
   platformTwitterBind: boolean;
   price: number;
   socialInfo: string;
-  status: string;
+  status: IDOStatus;
   telegram: string;
   ticker: string;
   tokenName: string;
@@ -98,3 +103,93 @@ declare interface IDOActiveDetail {
   twitter: string;
   website: string;
 }
+
+declare interface IDOLaunchedDetail extends IDOClaimStage {
+  allTimeLow: number;
+  claimFlag: boolean;
+  commitment: string;
+  communityActivit: string;
+  communitySize: string;
+  contractAddress: string;
+  count: number;
+  createdAt: string;
+  creatorActivity: string;
+  description: string;
+  fdv: string;
+  holders: string;
+  icon: string;
+  idoDate: string;
+  increase1H: number;
+  increase24H: number;
+  liquidity: string;
+  lpContractAddress: string;
+  lpLock: boolean;
+  marketCap: string;
+  maxSupply: string;
+  meMooScore: string;
+  memeTwitterBind: boolean;
+  participants: number;
+  pinnedTwitter: string;
+  platformTwitterBind: boolean;
+  price: number;
+  socialInfo: string;
+  status: IDOStatus;
+  telegram: string;
+  ticker: string;
+  tokenName: string;
+  totalRaised: string;
+  totalSupply: string;
+  twitter: string;
+  volume24H: number;
+  website: string;
+}
+
+declare interface PageWrapper<T> {
+  limit: number;
+  next_page: number;
+  offset: number;
+  page: number;
+  prev_page: number;
+  records: T[];
+  rowStart: number;
+  total_page: number;
+  total_record: number;
+}
+
+declare interface IDOLaunchedDetailTop10 {
+  address: string;
+  proportion: string;
+}
+
+declare interface IDOQueueDetail extends IDOClaimStage {
+  commitment: string;
+  communityActivit: string;
+  communitySize: string;
+  contractAddress: string;
+  createdAt: string;
+  creatorActivity: string;
+  description: string;
+  endsIn: string;
+  fdv: number;
+  holders: string;
+  icon: string;
+  idoDate: string;
+  liquidity: string;
+  lpContractAddress: string;
+  marketCap: string;
+  meMooScore: string;
+  memeTwitterBind: boolean;
+  pinnedTwitter: string;
+  platformTwitterBind: boolean;
+  socialInfo: string;
+  status: IDOStatus;
+  telegram: string;
+  ticker: string;
+  tokenName: string;
+  totalRaised: string;
+  totalSupply: string;
+  twitter: string;
+  website: string;
+}
+
+declare type IDOStatus = 'Draft' | 'QUEUE' | 'IDO' | 'Launched';

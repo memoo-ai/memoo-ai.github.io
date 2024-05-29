@@ -1,26 +1,66 @@
-import { createContext, useMemo, useState } from 'react';
+import { FC, createContext, useEffect, useMemo, useState } from 'react';
 import AirdropClaim from './airdrop-claim';
 import IMOParticipate from './imo-participate';
 import Status from './status';
 import './index.scss';
-import { TokenCreateStage } from '@/types';
+import { IDOActiveDetail, IDOLaunchedDetail, IDOLaunchedDetailTop10, IDOQueueDetail, TokenCreateStage } from '@/types';
 import PublicSale from './public-sale';
 import IDODetail from './ido-detail';
 import Banner from './banner';
 import Profile from './profile';
 import Progress from './progress';
 import { Button } from 'antd';
+import { getIDOActiveDetail, getIDOLaunchedDetail, getIDOLaunchedDetailTop10, getIDOQueueDetail } from '@/api/airdrop';
 
 interface AirdropContext {
   stage: TokenCreateStage;
+  idoActiveDetail?: IDOActiveDetail;
+  idoLaunchedDetail?: IDOLaunchedDetail;
+  idoLaunchedDetailTop10List?: IDOLaunchedDetailTop10[];
+  idoQueueDetail?: IDOQueueDetail;
 }
 
 export const AirdropContext = createContext<AirdropContext>({ stage: 'in-queue' });
 
-export default function Airdrop() {
+const Airdrop: FC = () => {
   const [stage, setStage] = useState<TokenCreateStage>('in-queue');
+  const [idoActiveDetail, setIDOActiveDetail] = useState<IDOActiveDetail>();
+  const [idoLaunchedDetail, setIDOLaunchedDetail] = useState<IDOLaunchedDetail>();
+  const [idoLaunchedDetailTop10, setIDOLaunchedDetailTop10] = useState<IDOLaunchedDetailTop10[]>([]);
+  const [idoQueueDetail, setIDOQueueDetail] = useState<IDOQueueDetail>();
 
-  const context: AirdropContext = useMemo(() => ({ stage }), [stage]);
+  const context: AirdropContext = useMemo(
+    () => ({ stage, idoActiveDetail, idoLaunchedDetail, idoLaunchedDetailTop10, idoQueueDetail }),
+    [stage, idoActiveDetail, idoLaunchedDetail, idoLaunchedDetailTop10, idoQueueDetail],
+  );
+
+  useEffect(() => {
+    (async () => {
+      // For testin: BigEgg or NewCake
+      const { data } = await getIDOQueueDetail(import.meta.env.VITE_DEMO_TICKER);
+      setIDOQueueDetail(data);
+
+      if (data.stageTwoClaim) {
+        setStage('2st-claim');
+      } else if (data.stageOneClaim) {
+        setStage('1st-claim');
+      } else if (data.status === 'Launched') {
+        const [p1, p2] = await Promise.all([
+          getIDOLaunchedDetail(import.meta.env.VITE_DEMO_TICKER),
+          getIDOLaunchedDetailTop10({ pageNumber: 1, pageSize: 10, ticker: import.meta.env.VITE_DEMO_TICKER }),
+        ]);
+        setIDOLaunchedDetail(p1.data);
+        setIDOLaunchedDetailTop10(p2.data.records);
+        setStage('launch');
+      } else if (data.status === 'IDO') {
+        const { data } = await getIDOActiveDetail(import.meta.env.VITE_DEMO_TICKER);
+        setIDOActiveDetail(data);
+        setStage('imo');
+      } else {
+        setStage('in-queue');
+      }
+    })();
+  }, []);
 
   return (
     <div className="airdrop pb-16">
@@ -54,4 +94,8 @@ export default function Airdrop() {
       </div>
     </div>
   );
-}
+};
+
+Airdrop.displayName = Airdrop.name;
+
+export default Airdrop;

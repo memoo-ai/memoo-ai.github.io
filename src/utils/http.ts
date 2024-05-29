@@ -1,7 +1,8 @@
+/* eslint-disable no-debugger */
 import axios from 'axios';
 
 const http = axios.create({
-  baseURL: import.meta.env.GO_NODE,
+  baseURL: import.meta.env.VITE_GO_NODE,
 });
 
 http.interceptors.request.use((config) => {
