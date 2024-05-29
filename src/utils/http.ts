@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const http = axios.create({
-  baseURL: 'http://8.130.122.217:8080',
+  baseURL: import.meta.env.GO_NODE,
 });
 
 http.interceptors.request.use((config) => {
