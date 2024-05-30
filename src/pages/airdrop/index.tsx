@@ -83,7 +83,7 @@ const Airdrop: FC = () => {
       </div>
       <div className="airdrop_left flex flex-col gap-y-3.5">
         <AirdropContext.Provider value={context}>
-          <Status />
+          {/* <Status /> */}
           {stage === 'launch' && <PublicSale />}
           {stage === 'imo' && <IMOParticipate />}
           <AirdropClaim />
@@ -91,8 +91,10 @@ const Airdrop: FC = () => {
         </AirdropContext.Provider>
       </div>
       <div className="airdrop_right flex flex-col">
-        <Banner />
-        <Profile />
+        <AirdropContext.Provider value={context}>
+          <Banner />
+          <Profile />
+        </AirdropContext.Provider>
       </div>
     </div>
   );

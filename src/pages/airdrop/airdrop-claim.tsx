@@ -1,20 +1,22 @@
-import { useContext, useMemo, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import Countdown from './countdown';
 import { TokenCreateStage } from '@/types';
 import './airdrop-claim.scss';
-import { Button, Popover } from 'antd';
+import { Button, Popover, Spin } from 'antd';
 import classNames from 'classnames';
 import { AirdropContext } from '../airdrop';
+import { follow } from '@/api/airdrop';
 
 export default function AirdropClaim() {
-  const { stage } = useContext(AirdropContext);
+  const { stage, idoQueueDetail } = useContext(AirdropContext);
+  const [following, setFollowing] = useState(false);
 
   const follows = useMemo(
     () => [
-      { user: 'dogekiller', link: '', followed: false },
-      { user: 'MeMoo.ai', link: '', followed: true },
+      { user: idoQueueDetail?.projectTwitter, link: '', followed: idoQueueDetail?.memeTwitterBind },
+      { user: idoQueueDetail?.platformTwitter, link: '', followed: idoQueueDetail?.platformTwitterBind },
     ],
-    [],
+    [idoQueueDetail],
   );
 
   const doingTask = useMemo(() => stage === 'in-queue', [stage]);
@@ -22,6 +24,18 @@ export default function AirdropClaim() {
   const airdropUnlocking = useMemo(() => stage === 'imo', [stage]);
 
   const airdropUnlocked = useMemo(() => stage === 'launch' || stage === '1st-claim' || stage === '2st-claim', [stage]);
+
+  const handleFollow = useCallback(async (twitter?: string) => {
+    try {
+      console.assert(!!twitter, 'twitter is not found');
+      setFollowing(true);
+      await follow(twitter!);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setFollowing(false);
+    }
+  }, []);
 
   return (
     <div className="airdrop_claim px-5 pt-9 pb-5">
@@ -38,7 +52,15 @@ export default function AirdropClaim() {
         <p className="text-deep-green text-xs whitespace-pre-wrap">
           Complete tasks to be{'\n'}eligible for token airdrop.{' '}
         </p>
-        {doingTask && <Countdown instant={Date.now() + 24 * 60 * 60 * 1000} />}
+        {doingTask && (
+          <Countdown
+            instant={
+              idoQueueDetail?.airdropEndsIn && typeof idoQueueDetail?.airdropEndsIn === 'number'
+                ? idoQueueDetail?.airdropEndsIn * 1000
+                : 0
+            }
+          />
+        )}
       </div>
       <ul className="follow_list flex flex-col gap-y-2 mt-4">
         {follows.map((item) => (
@@ -49,9 +71,11 @@ export default function AirdropClaim() {
                 'text-deep-green': airdropUnlocked,
               })}
             >
-              Follow @dogekiller{'\n'}on twitter
+              Follow @{item.user}
+              {'\n'}on twitter
             </p>
             <img
+              onClick={() => (item.followed ? item.followed : handleFollow(item.user))}
               className={classNames('w-5', { 'cursor-pointer': !item.followed, 'opacity-30': airdropUnlocked })}
               src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
             />
@@ -74,7 +98,7 @@ export default function AirdropClaim() {
         </div>
       )}
       <Button
-        disabled={doingTask || airdropUnlocking}
+        disabled={!idoQueueDetail?.claimFlag}
         className={classNames('uppercase w-full claim_btn h-12 font–404px', {
           'mt-20': doingTask,
           'mt-5': airdropUnlocking || airdropUnlocked,
@@ -82,6 +106,7 @@ export default function AirdropClaim() {
       >
         claim
       </Button>
+      <Spin fullscreen spinning={following} />
     </div>
   );
 }

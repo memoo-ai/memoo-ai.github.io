@@ -24,6 +24,10 @@ export const getIDOQueueDetail = (ticker: string) => {
   return http.get<IDOQueueDetail>(`${prefix}/web-oriented/ido-queue-detail`, { params: { ticker } });
 };
 
+export const follow = (twitter: string) => {
+  return http.get<boolean>(`${prefix}/web-oriented/twitter-follow`, { params: { twitter } });
+};
+
 export const imoParticipate = (postBody: { balance: number; ethAmout: number; ticker: string }) => {
   return http.get<string>(`${prefix}/web-oriented/imo-participate`, { data: postBody });
 };

@@ -166,18 +166,19 @@ declare interface IDOQueueDetail extends IDOClaimStage {
   communityActivit: string;
   communitySize: string;
   contractAddress: string;
-  createdAt: string;
+  createdAt: number;
   creatorActivity: string;
   description: string;
   endsIn: string;
   fdv: number;
   holders: string;
   icon: string;
-  idoDate: string;
+  idoDate: number;
   liquidity: string;
   lpContractAddress: string;
   marketCap: string;
   meMooScore: string;
+  banners: string[];
   memeTwitterBind: boolean;
   pinnedTwitter: string;
   platformTwitterBind: boolean;
@@ -187,9 +188,17 @@ declare interface IDOQueueDetail extends IDOClaimStage {
   ticker: string;
   tokenName: string;
   totalRaised: string;
-  totalSupply: string;
+  totalSupply: number;
   twitter: string;
   website: string;
+  projectTwitter: string;
+  platformTwitter: string;
+  airdropEndsIn: number;
+  claimFlag: boolean;
+  creatorAddress: string;
+  creatorTelegram: string;
+  creatorTwitter: string;
+  creatorWebsite: string;
 }
 
 declare type IDOStatus = 'Draft' | 'QUEUE' | 'IDO' | 'Launched';

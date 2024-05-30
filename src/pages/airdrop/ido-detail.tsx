@@ -2,15 +2,18 @@
 import { FC, ReactNode, useContext, useMemo } from 'react';
 import { AirdropContext } from '../airdrop';
 import './ido-detail.scss';
-import { clipAddress } from '@/utils';
+import { clipAddress, formatTs } from '@/utils';
 
 const IDODetail: FC = () => {
-  const { stage } = useContext(AirdropContext);
+  const { stage, idoQueueDetail } = useContext(AirdropContext);
 
   const params = useMemo(() => {
     if (stage === 'launch') {
       return [
-        { key: 'IDO Date', value: '06 Apr 2024' },
+        {
+          key: 'IDO Date',
+          value: formatTs(idoQueueDetail?.idoDate ?? 0),
+        },
         {
           key: 'LP Lock',
           value: 'UNCX',
@@ -25,7 +28,7 @@ const IDODetail: FC = () => {
           ),
         },
         { key: 'Liquidity', value: '$21,000' },
-        { key: 'FDV', value: '$20,000' },
+        { key: 'FDV', value: `$${idoQueueDetail?.fdv ?? 0}` },
         { key: '24h Trading Vol', value: '$20,000' },
         {
           key: '1h',
@@ -37,7 +40,7 @@ const IDODetail: FC = () => {
           value: '+86%',
           formatValue: (value: string): ReactNode => <span className="text-green font-404px">{value}</span>,
         },
-        { key: 'Max Supply', value: '10,000,000,000' },
+        { key: 'Max Supply', value: `$${idoQueueDetail?.totalSupply ?? 0}` },
         {
           key: 'All Time High',
           value: '$20,000',
@@ -68,11 +71,11 @@ const IDODetail: FC = () => {
       ];
     }
     return [
-      { key: 'IDO Date', value: '06 Apr 2024' },
-      { key: 'FDV', value: '$20,000' },
-      { key: 'Max Supply', value: '10,000,000,000' },
+      { key: 'IDO Date', value: formatTs(idoQueueDetail?.idoDate ?? 0) },
+      { key: 'FDV', value: `$${idoQueueDetail?.fdv ?? 0}` },
+      { key: 'Max Supply', value: `$${idoQueueDetail?.totalSupply ?? 0}` },
     ];
-  }, [stage]);
+  }, [stage, idoQueueDetail]);
 
   const top10Holders = useMemo(() => {
     if (stage === 'launch') {
@@ -89,7 +92,7 @@ const IDODetail: FC = () => {
   }, [stage]);
 
   return (
-    <div className="ido_detail px-5 pt-9 pb-5">
+    <div className="ido_detail flex-auto px-5 pt-9 pb-5">
       <ul className="data_list flex flex-col gap-y-6 w-full">
         {params.map((item) => (
           <li key={item.key} className="flex justify-between">
