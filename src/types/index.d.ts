@@ -193,3 +193,69 @@ declare interface IDOQueueDetail extends IDOClaimStage {
 }
 
 declare type IDOStatus = 'Draft' | 'QUEUE' | 'IDO' | 'Launched';
+
+declare interface pageParams {
+  pageNumber: number;
+  pageSize: number;
+  status?: string;
+}
+
+declare interface LaunchpadIMO {
+  endsIn: string;
+  icon: string;
+  meMooScore: string;
+  status: string;
+  ticker: string;
+  tokenName: string;
+  totalRaised: string;
+}
+declare interface LaunchpadAirdrop {
+  icon: string;
+  idoDate: string;
+  meMooScore: string;
+  participants: number;
+  status: string;
+  ticker: string;
+  tokenName: string;
+}
+declare interface LaunchpadIDOCompeted {
+  athRoi: string;
+  icon: string;
+  meMooScore: string;
+  ticker: string;
+  tokenName: string;
+  totalRaised: string;
+}
+
+declare interface DashboardCreator {
+  icon: string;
+  launchDate: number;
+  meMooScore: string;
+  stageOneClaim: boolean;
+  stageTwoClaim: boolean;
+  status: string;
+  ticker: string;
+  tokenName: string;
+  totalRaised: string;
+}
+declare interface TrendingTokens {
+  icon: string;
+  increase1H: number;
+  increase24H: number;
+  marketCap: number;
+  meMooScore: string;
+  price: number;
+  ticker: string;
+  tokenName: string;
+  volume24H: number;
+}
+declare interface TrendingCreators {
+  collectiveHolders: number;
+  collectiveMarketCap: string;
+  profileImageUrl: string;
+  rank: number;
+  rankIcon: string;
+  tokensCreated: number;
+  topTokenMarketCap: string;
+  userName: string;
+}

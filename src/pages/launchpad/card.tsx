@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import './card.scss';
 import { Button } from '@/components/ui/button';
 import { getImoCompleted } from '@/api/launchpad';
+import { useNavigate } from 'react-router-dom';
 
 interface IDOCompleted {
   id: string;
@@ -16,7 +17,7 @@ interface IDOCompleted {
 }
 export const ActiveIdoCard = () => {
   const [idos, setIdos] = useState<IDOCompleted[]>([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     (async () => {
       try {
@@ -55,7 +56,7 @@ export const ActiveIdoCard = () => {
               <span>{ido.totalRaised} ETH</span>
             </div>
             <Button variant="secondary" className="font-404px text-lg  w-full h-[50px] uppercase mt-[74px]">
-              Hunt for airdrops
+              Buy
             </Button>
           </div>
         ))}

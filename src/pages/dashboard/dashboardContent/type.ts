@@ -1,4 +1,4 @@
-export type CreatorStatus = 'ALL' | 'Draft' | 'QUEUE' | 'IMO' | 'LAUNCHED';
+export type CreatorStatus = '' | 'Draft' | 'QUEUE' | 'IDO' | 'Launched';
 export type CollectorType = 'Airdrop' | 'Participated';
 export interface CreatorList {
   id: string;

@@ -5,18 +5,9 @@ import { ArrowUp, ArrowDown } from 'lucide-react';
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
-export interface Token {
-  id: string;
-  name: string;
-  symbol: string;
-  price: number;
-  priceChangeHourly: number;
-  priceChangeDaily: number;
-  volumeDaily: number;
-  marketCap: number;
-}
+import { TrendingTokens } from '@/types';
 
-export const columnsOld: ColumnDef<Token>[] = [
+export const columnsOld: ColumnDef<TrendingTokens>[] = [
   {
     accessorKey: 'name',
     header: 'Name',
@@ -60,13 +51,13 @@ export const columnsOld: ColumnDef<Token>[] = [
 export const columns = [
   {
     title: 'Token',
-    dataIndex: 'name',
-    key: 'name',
-    render: (name: string, record: Token) => (
+    dataIndex: 'tokenName',
+    key: 'tokenName',
+    render: (tokenName: string, record: TrendingTokens) => (
       <div className="flex items-center">
-        <img src="" alt="" className="w-[84px] h-[84px] rounded-full mr-5" />
-        <span className="font-bold text-lg mr-2">{name}</span>
-        <span className="font-normal text-sm ">{record.symbol}</span>
+        <img src={record.icon} alt="" className="w-[84px] h-[84px] rounded-full mr-5" />
+        <span className="font-bold text-lg mr-2">{tokenName}</span>
+        <span className="font-normal text-sm text-[#07E993]">{record.ticker}</span>
       </div>
     ),
   },
@@ -79,34 +70,34 @@ export const columns = [
   },
   {
     title: '1h',
-    dataIndex: 'priceChangeHourly',
-    key: 'priceChangeHourly',
+    dataIndex: 'increase1H',
+    key: 'increase1H',
     sorter: true,
-    render: (priceChangeHourly: number) => (
-      <span className={`font-semibold text-lg ${priceChangeHourly < 0 ? 'text-red' : 'text-green'}`}>
-        {priceChangeHourly > 0 ? '+' : ''}
-        {priceChangeHourly * 100}%
+    render: (increase1H: number) => (
+      <span className={`font-semibold text-lg ${increase1H < 0 ? 'text-red' : 'text-green'}`}>
+        {increase1H > 0 ? '+' : ''}
+        {increase1H * 100}%
       </span>
     ),
   },
   {
     title: '24h',
-    dataIndex: 'priceChangeDaily',
-    key: 'priceChangeDaily',
+    dataIndex: 'increase24H',
+    key: 'increase24H',
     sorter: true,
-    render: (priceChangeDaily: number) => (
-      <span className={`font-semibold text-lg ${priceChangeDaily < 0 ? 'text-red' : 'text-green'}`}>
-        {priceChangeDaily > 0 ? '+' : ''}
-        {priceChangeDaily * 100}%
+    render: (increase24H: number) => (
+      <span className={`font-semibold text-lg ${increase24H < 0 ? 'text-red' : 'text-green'}`}>
+        {increase24H > 0 ? '+' : ''}
+        {increase24H * 100}%
       </span>
     ),
   },
   {
     title: '24h Volume',
-    dataIndex: 'volumeDaily',
-    key: 'volumeDaily',
+    dataIndex: 'volume24H',
+    key: 'volume24H',
     sorter: true,
-    render: (volumeDaily: number) => <div className="font-semibold text-lg ">${volumeDaily}</div>,
+    render: (volume24H: number) => <div className="font-semibold text-lg ">${volume24H}</div>,
   },
   {
     title: 'Market Cap',

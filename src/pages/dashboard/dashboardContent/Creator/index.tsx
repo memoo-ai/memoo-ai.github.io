@@ -1,7 +1,7 @@
 import './index.scss';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card } from '../Card';
-import { Button } from 'antd';
+import { Button, Spin } from 'antd';
 import IPagination from '@/components/IPagination';
 import {
   IconDraftBtn,
@@ -18,43 +18,59 @@ import { AirdropConfirm } from '../Confirms/AirdropConfirm';
 import { IncreaseConfirm } from '../Confirms/IncreaseConfirm';
 import { useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
-import { getCreator } from '@/api/dashboard';
+import { getCreator, deleteToken } from '@/api/dashboard';
 import { CreatorStatus, CreatorList } from '../type';
+import { DashboardCreator } from '@/types';
+
+const pageSize = 11;
 export const Creator = () => {
   const navigate = useNavigate();
   const [total, setTotal] = useState(0);
-  const [tab, setTab] = useState<CreatorStatus>('ALL');
-  const [list, setList] = useState<CreatorList[]>([]);
+  const [update, setUpdate] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [tab, setTab] = useState<CreatorStatus>('');
+  const [list, setList] = useState<DashboardCreator[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const iconRefs = useRef<any>({});
 
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true);
         const { data } = await getCreator({
           pageNumber: currentPage,
-          pageSize: 10,
-          status: tab === 'ALL' ? '' : tab,
+          pageSize,
+          status: tab,
         });
         setList(data.records);
         setTotal(data.total_record);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
       }
     })();
-  }, [tab, currentPage]);
-  const renderButton = (type: string) => {
+  }, [tab, currentPage, update]);
+  const deleteDraft = async (id: string) => {
+    await deleteToken(id);
+  };
+  const renderButton = (item: CreatorList) => {
     let button;
-    switch (type) {
+    switch (item.status) {
       case 'Draft':
         button = (
           <IconDraftBtn
             className="draft"
-            color={type === 'Draft' ? '#7D83B5' : '#242842'}
-            hoverColor={type === 'Draft' ? '#07E993' : '#242842'}
-            bgColor={type === 'Draft' ? '#383C61' : '#242842'}
-            hoverBgColor={type === 'Draft' ? '#1F3B4F' : '#242842'}
-            style={{ border: type === 'Draft' ? 'none' : '1px solid #07E993' }}
+            color={item.status === 'Draft' ? '#7D83B5' : '#242842'}
+            hoverColor={item.status === 'Draft' ? '#07E993' : '#242842'}
+            bgColor={item.status === 'Draft' ? '#383C61' : '#242842'}
+            hoverBgColor={item.status === 'Draft' ? '#1F3B4F' : '#242842'}
+            style={{ border: item.status === 'Draft' ? 'none' : '1px solid #07E993' }}
+            onClick={() => {
+              deleteDraft(item.ticker);
+              setTimeout(() => setUpdate((count) => count + 1), 200);
+            }}
           />
         );
         break;
@@ -73,7 +89,18 @@ export const Creator = () => {
         );
         break;
       case 'IDO':
-        button = '';
+        button = (
+          <IncreaseConfirm>
+            <Button
+              className="flex items-center justify-between"
+              onMouseOver={() => iconRefs.current['increase'].setHovered(true)}
+              onMouseLeave={() => iconRefs.current['increase'].setHovered(false)}
+            >
+              <IconQueueBtn className="QueueBtn" ref={(ref) => (iconRefs.current['increase'] = ref)} />
+              <span className="ml-[9px]">INCREASE</span>
+            </Button>
+          </IncreaseConfirm>
+        );
         break;
       case 'Launched':
         button = (
@@ -131,14 +158,15 @@ export const Creator = () => {
         <div />
         <div>
           <Tabs
-            defaultValue="ALL"
+            defaultValue=""
             onValueChange={(value) => {
               setTab(value as CreatorStatus);
+              setCurrentPage(1);
               // setPagination({ ...pagination, current: 1 });
             }}
           >
             <TabsList>
-              <TabsTrigger value="ALL">ALL</TabsTrigger>
+              <TabsTrigger value="">ALL</TabsTrigger>
               <TabsTrigger value="Draft">Draft</TabsTrigger>
               <TabsTrigger value="QUEUE">Queue</TabsTrigger>
               <TabsTrigger value="IDO">IMO</TabsTrigger>
@@ -158,12 +186,12 @@ export const Creator = () => {
 
           <p>Create Token</p>
         </div>
-
+        <Spin spinning={loading} />
         {list.map((item, index) => {
           return (
             <Card key={index} data={item}>
               <div className="flex justify-between items-center mt-[15px]">
-                <div>{renderButton(item.status)}</div>
+                <div>{renderButton(item)}</div>
                 <div className={item.status === 'Draft' ? 'draft' : ''}>
                   <IconEdit
                     className="dashboard_item_create_edit"
@@ -183,6 +211,7 @@ export const Creator = () => {
         <IPagination
           currentPage={currentPage}
           total={total}
+          pageSize={pageSize}
           onChangePageNumber={(page) => {
             setCurrentPage(page);
           }}

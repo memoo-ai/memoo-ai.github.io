@@ -2,14 +2,15 @@ import './index.scss';
 import CommonBanner from '@/components/Banner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useEffect, useState } from 'react';
-import { columns, Token } from './columns';
+import { columns } from './columns';
 import IPagination from '@/components/IPagination';
 
 import { Table } from 'antd';
 import type { GetProp, TableProps } from 'antd';
 import type { PaginationProps } from 'antd';
 import { SorterResult } from 'antd/es/table/interface';
-
+import { getTrendingTokens, getTopTokens } from '@/api/gecko';
+import { TrendingTokens } from '@/types';
 type ColumnsType<T> = TableProps<T>['columns'];
 type TablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;
 
@@ -21,7 +22,7 @@ interface TableParams {
 export type GeckoType = 'trending' | 'top';
 const Gecko = () => {
   const [tab, setTab] = useState<GeckoType>('trending');
-  const [data, setData] = useState<Token[]>([]);
+  const [data, setData] = useState<TrendingTokens[]>([]);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState<PaginationProps>({
     current: 1,
@@ -31,22 +32,24 @@ const Gecko = () => {
 
   const [sorters, setSorters] = useState<any>([]);
   const fetchData = async () => {
-    const list = new Array(20).fill(undefined).map((_, i) => ({
-      id: 'dogwifhat',
-      name: 'DogWifHat',
-      symbol: 'WIF',
-      price: 0.778,
-      priceChangeHourly: 3400,
-      priceChangeDaily: 100,
-      volumeDaily: 10000000,
-      marketCap: 24000000,
-    }));
-    setData(list);
+    let params = {
+      pageNumber: pagination.current,
+      pageSize: pagination.pageSize,
+    };
+    const { data } = tab === 'trending' ? await getTrendingTokens(params) : await getTopTokens(params);
+    // console.log(data);
+    if (data) {
+      setData(data.records);
+      setPagination({
+        ...pagination,
+        total: data.total_record,
+      });
+    }
   };
 
   useEffect(() => {
     fetchData();
-  }, [pagination, sorters]);
+  }, [pagination.current, sorters, tab]);
 
   const handleTableChange: TableProps['onChange'] = (pagination, filters, sorter) => {
     setPagination(pagination);

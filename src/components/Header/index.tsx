@@ -30,7 +30,9 @@ export default () => {
             to={item.path}
             key={index}
             target={item.target}
-            className={({ isActive }) => `${styles.navItem} ${isActive ? styles.active : undefined}`}
+            className={({ isActive }) =>
+              `${styles.navItem} ${isActive ? styles.active : undefined} ${item.name === 'Create' ? styles.create : ''}`
+            }
           >
             {item.name}
           </NavLink>

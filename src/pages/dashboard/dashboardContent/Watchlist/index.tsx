@@ -7,9 +7,11 @@ import { useRef, useState, useEffect } from 'react';
 import GoLaunchPadACard from '../goLaunchpadCard';
 import { getWatchList } from '@/api/dashboard';
 import { CreatorStatus, CreatorList } from '../type';
+import { cancelCollect } from '@/api/dashboard';
 export const WatchList = () => {
   const navigate = useNavigate();
-  const [total, setTotal] = useState(50);
+  const [total, setTotal] = useState(0);
+  const [update, setUpdate] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [list, setList] = useState<CreatorList[]>([]);
   const iconRefs = useRef<any>({});
@@ -26,7 +28,11 @@ export const WatchList = () => {
         console.error('Error fetching data:', error);
       }
     })();
-  }, [currentPage]);
+  }, [currentPage, update]);
+
+  const cancelCollectTicker = async (ticker: string) => {
+    await cancelCollect(ticker);
+  };
 
   return (
     <div className="dashboard_items">
@@ -40,7 +46,13 @@ export const WatchList = () => {
           return (
             <Card key={index} data={item}>
               <div className="flex justify-between items-center mt-[15px]">
-                <IconCollect />
+                <IconCollect
+                  className="watchList_collect"
+                  onClick={() => {
+                    cancelCollectTicker(item.ticker);
+                    setTimeout(() => setUpdate((count) => count + 1), 200);
+                  }}
+                />
               </div>
             </Card>
           );

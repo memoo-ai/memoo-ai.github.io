@@ -25,16 +25,16 @@ export interface Airdrop {
   tokenName: string;
 }
 
-export const columns = [
+export const columns = (navigate: (path: string) => void) => [
   {
     title: 'Token',
     dataIndex: 'tokenName',
     key: 'tokenName',
-    render: (record: IDO) => (
+    render: (tokenName: string, record: IDO) => (
       <div className="flex items-center">
         <img src={record.icon} alt="" className="w-[84px] h-[84px] rounded-full mr-5" />
-        <span className="font-404px font-bold text-lg mr-2">{record.tokenName}</span>
-        <span className="font-404px font-normal text-sm ">{record.meMooScore}</span>
+        <span className="font-404px font-bold text-lg mr-2 text-[#ffffff]">{tokenName}</span>
+        <span className="font-404px font-normal text-sm text-[#07E993]">{record.ticker}</span>
       </div>
     ),
   },
@@ -55,14 +55,18 @@ export const columns = [
   {
     title: 'Action',
     key: 'action',
-    render: () => (
-      <Button variant="default" className="w-[136px] h-[50px] uppercase font-404px font-bold text-lg">
-        airdrop
+    render: (record: IDO) => (
+      <Button
+        variant="default"
+        className="w-[136px] h-[50px] uppercase font-404px font-bold text-lg"
+        onClick={() => navigate(`/airdrop/${record.ticker}`)}
+      >
+        PARTICIPATE
       </Button>
     ),
   },
 ];
-export const columnsAirdrop = [
+export const columnsAirdrop = (navigate: (path: string) => void) => [
   {
     title: 'Token',
     dataIndex: 'tokenName',
@@ -92,8 +96,12 @@ export const columnsAirdrop = [
   {
     title: 'Action',
     key: 'action',
-    render: () => (
-      <Button variant="default" className="w-[136px] h-[50px] uppercase font-404px font-bold text-lg">
+    render: (record: Airdrop) => (
+      <Button
+        variant="default"
+        className="w-[136px] h-[50px] uppercase font-404px font-bold text-lg"
+        onClick={() => navigate(`/airdrop/${record.ticker}`)}
+      >
         airdrop
       </Button>
     ),

@@ -20,23 +20,26 @@ import GoLaunchPadACard from '../goLaunchpadCard';
 import { useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import { getCollectorAirdrop, getCollectorParticipated } from '@/api/dashboard';
-import { CollectorType, CreatorList } from '../type';
+import { CollectorType } from '../type';
+import { DashboardCreator } from '@/types';
+
+const pageSize = 11;
 export const Collector = () => {
   const navigate = useNavigate();
-  const [total, setTotal] = useState(50);
+  const [total, setTotal] = useState(0);
   const [tab, setTab] = useState<CollectorType>('Airdrop');
   const [currentPage, setCurrentPage] = useState(1);
   const iconRefs = useRef<any>({});
-  const [list, setList] = useState<CreatorList[]>([]);
+  const [list, setList] = useState<DashboardCreator[]>([]);
   useEffect(() => {
     (async () => {
       try {
         let params = {
           pageNumber: currentPage,
-          pageSize: 10,
+          pageSize,
         };
         const { data } = tab === 'Airdrop' ? await getCollectorAirdrop(params) : await getCollectorParticipated(params);
-        setList(data.records);
+        setList(data.records ?? []);
         setTotal(data.total_record);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -147,31 +150,31 @@ export const Collector = () => {
       <div className="dashboard_items_items">
         <GoLaunchPadACard />
 
-        {list.length &&
-          list.map((item, index) => {
-            return (
-              <Card key={index} data={item}>
-                <div className="flex justify-between items-center mt-[15px]">
-                  <div>{renderButton(item.status)}</div>
-                  <div className={item.status === 'Draft' ? 'draft' : ''}>
-                    <IconEdit
-                      className="dashboard_item_create_edit"
-                      color={item.status === 'Draft' ? '#7D83B5' : '#07E993'}
-                      hoverColor={item.status === 'Draft' ? '#07E993' : '#000'}
-                      bgColor={item.status === 'Draft' ? '#383C61' : '#242842'}
-                      hoverBgColor={item.status === 'Draft' ? '#1F3B4F' : '#07E993'}
-                      style={{ border: item.status === 'Draft' ? 'none' : '1px solid #07E993' }}
-                    />
-                  </div>
+        {list.map((item, index) => {
+          return (
+            <Card key={index} data={item}>
+              <div className="flex justify-between items-center mt-[15px]">
+                <div>{renderButton(item.status)}</div>
+                <div className={item.status === 'Draft' ? 'draft' : ''}>
+                  <IconEdit
+                    className="dashboard_item_create_edit"
+                    color={item.status === 'Draft' ? '#7D83B5' : '#07E993'}
+                    hoverColor={item.status === 'Draft' ? '#07E993' : '#000'}
+                    bgColor={item.status === 'Draft' ? '#383C61' : '#242842'}
+                    hoverBgColor={item.status === 'Draft' ? '#1F3B4F' : '#07E993'}
+                    style={{ border: item.status === 'Draft' ? 'none' : '1px solid #07E993' }}
+                  />
                 </div>
-              </Card>
-            );
-          })}
+              </div>
+            </Card>
+          );
+        })}
       </div>
       <div className="mt-[60px]">
         <IPagination
           currentPage={currentPage}
           total={total}
+          pageSize={pageSize}
           onChangePageNumber={(page) => {
             setCurrentPage(page);
           }}

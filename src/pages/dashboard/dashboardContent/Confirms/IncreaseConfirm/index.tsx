@@ -44,7 +44,7 @@ export const IncreaseConfirm = ({ children }: any) => {
             />
           </div>
         </div>
-        <div>{progress}</div>
+
         <div className="claimable">
           <div className="claimable_left">Pre-Market Acquisition</div>
           <div className="claimable_right">

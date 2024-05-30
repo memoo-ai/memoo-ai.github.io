@@ -24,7 +24,7 @@ const Dashboard = () => {
           setCommonBanner({
             title: 'Exclusive ‘Proof of Creation’ Reward for Creators.',
             desc: 'Exciting Rewards for Exceptional Talent in Meme Creation.',
-            link: '/',
+            link: '/create',
             linkText: 'BE A CREATOR',
           });
           break;
@@ -33,7 +33,7 @@ const Dashboard = () => {
           setCommonBanner({
             title: 'Don’t Miss Out on Airdrops.',
             desc: 'Your Chance to Score Free Meme Treasures.',
-            link: '/',
+            link: '/launchpad',
             linkText: 'LAUNCHPAD',
           });
           break;
@@ -42,7 +42,7 @@ const Dashboard = () => {
           setCommonBanner({
             title: 'Let MeMoo Score do the Work for You.',
             desc: 'The Key to Informed Meme Token Decision Making.',
-            link: '/',
+            link: '/gecko',
             linkText: 'MEMOOGECKO',
           });
           break;
@@ -50,7 +50,7 @@ const Dashboard = () => {
           setCommonBanner({
             title: 'Exclusive ‘Proof of Creation’ Reward for Creators.',
             desc: 'Exciting Rewards for Exceptional Talent in Meme Creation.',
-            link: '/',
+            link: '/create',
             linkText: 'BE A CREATOR',
           });
           break;

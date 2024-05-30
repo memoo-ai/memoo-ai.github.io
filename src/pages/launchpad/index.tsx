@@ -12,7 +12,8 @@ import type { PaginationProps } from 'antd';
 import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 import { AirDrop } from './airDrop';
 import { SectionListWithSeparator } from './sectionListWithSeparator';
-import { getAirdrop, getImo } from '@/api/launchpad';
+import { getLaunchpadAirdrop, getLaunchpadImo } from '@/api/launchpad';
+import { useNavigate } from 'react-router-dom';
 type ColumnsType<T> = TableProps<T>['columns'];
 type TablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;
 
@@ -22,10 +23,12 @@ interface TableParams {
   sortOrder?: string;
 }
 export type LaunchpadType = 'imo' | 'airdrop';
+const pageSize = 10;
 export default function LaunchPad() {
   const [tab, setTab] = useState<LaunchpadType>('imo');
   const [data, setData] = useState<IDO[]>([]);
   const [total, setTotal] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState<PaginationProps>({
     current: 1,
@@ -34,7 +37,7 @@ export default function LaunchPad() {
   });
   const [sorters, setSorters] = useState<any>([]);
   const location = useLocation();
-
+  const navigate = useNavigate();
   useEffect(() => {
     const query = new URLSearchParams(location.search);
     const type = query.get('type');
@@ -48,8 +51,8 @@ export default function LaunchPad() {
       pageNumber: pagination.current,
       pageSize: pagination.pageSize,
     };
-    const { data } = tab === 'imo' ? await getImo(params) : await getAirdrop(params);
-    console.log(data);
+    const { data } = tab === 'imo' ? await getLaunchpadImo(params) : await getLaunchpadAirdrop(params);
+    // console.log(data);
     if (data) {
       setData(data.records);
       setPagination({
@@ -61,10 +64,9 @@ export default function LaunchPad() {
 
   useEffect(() => {
     fetchData();
-  }, [pagination, sorters]);
+  }, [pagination.current, sorters, tab]);
 
   const handleTableChange: TableProps['onChange'] = (pagination, filters, sorter) => {
-    setPagination(pagination);
     setSorters(sorter);
   };
 
@@ -91,7 +93,7 @@ export default function LaunchPad() {
             value={tab}
             onValueChange={(value) => {
               setTab(value as LaunchpadType);
-              setPagination({ ...pagination, current: 1 });
+              setCurrentPage(1);
             }}
           >
             <TabsList>
@@ -105,7 +107,7 @@ export default function LaunchPad() {
           </Tabs>
         </div>
         <Table
-          columns={tab === 'imo' ? columns : columnsAirdrop}
+          columns={tab === 'imo' ? columns(navigate) : columnsAirdrop(navigate)}
           dataSource={data}
           pagination={false}
           loading={loading}
@@ -115,6 +117,7 @@ export default function LaunchPad() {
         <IPagination
           currentPage={pagination.current ?? 0}
           total={pagination.total ?? 0}
+          pageSize={pagination.pageSize}
           onChangePageNumber={(page) => {
             setPagination({ ...pagination, current: page });
           }}

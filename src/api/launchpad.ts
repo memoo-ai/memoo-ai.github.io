@@ -1,16 +1,13 @@
 import http from '@/utils/http';
 import { prefix } from '.';
-interface pageParams {
-  pageNumber: number;
-  pageSize: number;
-}
+import { pageParams, LaunchpadIMO, LaunchpadAirdrop, LaunchpadIDOCompeted, PageWrapper } from '@/types';
 
-export const getImo = (params: pageParams) => {
-  return http.get(`${prefix}/web-oriented/imo`, { params });
+export const getLaunchpadImo = (params: pageParams) => {
+  return http.get<PageWrapper<LaunchpadIMO>>(`${prefix}/web-oriented/imo`, { params });
 };
-export const getAirdrop = (params: pageParams) => {
-  return http.get(`${prefix}/web-oriented/airdrop`, { params });
+export const getLaunchpadAirdrop = (params: pageParams) => {
+  return http.get<PageWrapper<LaunchpadAirdrop>>(`${prefix}/web-oriented/airdrop`, { params });
 };
 export const getImoCompleted = (params: pageParams) => {
-  return http.get(`${prefix}/web-oriented/ido-completed`, { params });
+  return http.get<PageWrapper<LaunchpadIDOCompeted>>(`${prefix}/web-oriented/ido-completed`, { params });
 };
