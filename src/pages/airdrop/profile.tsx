@@ -1,14 +1,18 @@
 /* eslint-disable react/no-unstable-nested-components */
-import { FC, useMemo } from 'react';
+import { FC, useContext, useMemo } from 'react';
 import './profile.scss';
+import { AirdropContext } from '.';
+import { extractDomainName, formatTs } from '@/utils';
 
 const Profile: FC = () => {
+  const { idoQueueDetail } = useContext(AirdropContext);
+
   const params = useMemo(() => {
     return [
-      { key: 'Name', value: 'Bad Idea AI' },
-      { key: 'Ticker', value: 'BAD' },
-      { key: 'Contract Address', value: 'NA' },
-      { key: 'LP Contract', value: 'NA' },
+      { key: 'Name', value: idoQueueDetail?.tokenName },
+      { key: 'Ticker', value: idoQueueDetail?.ticker },
+      { key: 'Contract Address', value: idoQueueDetail?.contractAddress || 'NA' },
+      { key: 'LP Contract', value: idoQueueDetail?.lpContractAddress || 'NA' },
       {
         key: 'Tools',
         value: '',
@@ -33,7 +37,7 @@ const Profile: FC = () => {
         ),
       },
     ];
-  }, []);
+  }, [idoQueueDetail]);
 
   const socails = useMemo(() => {
     return [
@@ -42,11 +46,11 @@ const Profile: FC = () => {
         value: '',
         formatValue: (value: string) => (
           <ul className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1">
-            {[{ name: 'badidea.ai' }].map((token) => (
-              <li key={token.name} className="flex items-center gap-x-1.5 h-8">
-                {token.name}
-              </li>
-            ))}
+            <li className="h-8 cursor-pointer">
+              <a href={idoQueueDetail?.website} target="_blank" className="flex items-center gap-x-1.5">
+                {extractDomainName(idoQueueDetail?.website ?? '')}
+              </a>
+            </li>
           </ul>
         ),
       },
@@ -55,14 +59,24 @@ const Profile: FC = () => {
         value: '',
         formatValue: (value: string) => (
           <ul className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1">
-            {[
-              { name: 'BadIdea_Ai', icon: '/create/social-twitter.png' },
-              { name: 'BadIdea_Ai01', icon: '/create/social-tg.png' },
-            ].map((token) => (
-              <li key={token.name} className="flex items-center gap-x-1.5 h-8">
-                <img className="w-5 object-contain" src={token.icon} /> {token.name}
-              </li>
-            ))}
+            <li className="h-8">
+              <a
+                href={`https://x.com/${idoQueueDetail?.twitter}`}
+                target="_blank"
+                className="flex items-center gap-x-1.5"
+              >
+                <img className="w-5 object-contain" src="/create/social-twitter.png" /> {idoQueueDetail?.twitter ?? ''}
+              </a>
+            </li>
+            <li className="h-8">
+              <a
+                href={`https://t.me/${idoQueueDetail?.telegram}`}
+                target="_blank"
+                className="flex items-center gap-x-1.5"
+              >
+                <img className="w-5 object-contain" src="/create/social-tg.png" /> {idoQueueDetail?.telegram ?? ''}
+              </a>
+            </li>
           </ul>
         ),
       },
@@ -100,7 +114,7 @@ const Profile: FC = () => {
         ),
       },
     ];
-  }, []);
+  }, [idoQueueDetail]);
 
   return (
     <div className="profile relative pt-20">
@@ -117,16 +131,12 @@ const Profile: FC = () => {
       </ul>
       <div className="head">
         <h1 className="font-404px text-white leading-7 text-3xl">
-          Bad Idea AI <span className="text-green text-base ml-1">BAD</span>
+          {idoQueueDetail?.tokenName} <span className="text-green text-base ml-1">{idoQueueDetail?.ticker}</span>
         </h1>
-        <time className="mt-2 block font-OCR text-bluish-purple-light text-sm">Created 26 Mar 2024</time>
-        <p className="mt-2 font-OCR text-white text-sm leading-5 max-w-2xl">
-          {`Bad Idea AI emerges as a daring response to the pervasive influence and potential dominance of AI in our
-          lives. It represents a novel blend of Blockchain, AI, and DAOs, conceived as a "Hail Mary" effort to chart a
-          collaborative path for humanity and AI. This initiative springs from a deep concern over AI's growing
-          footprint, from personal assistants to autonomous vehicles, and a bold ambition to co-create our future with
-          AI rather than succumb to its rule.`}
-        </p>
+        <time className="mt-2 block font-OCR text-bluish-purple-light text-sm">
+          Created {formatTs(idoQueueDetail?.createdAt ?? 0)}
+        </time>
+        <p className="mt-2 font-OCR text-white text-sm leading-5 max-w-2xl">{idoQueueDetail?.description}</p>
       </div>
       <div className="content">
         <ul className="basic_list mt-14 flex flex-col gap-y-6">

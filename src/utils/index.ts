@@ -114,3 +114,22 @@ export function sleep(ms: number): Promise<void> {
 export function clipAddress(address: string) {
   return `${address.slice(0, 5)}...${address.slice(-4)}`;
 }
+
+export function formatTs(ts: number) {
+  const date = new Date(ts ?? 0);
+  const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' };
+  return date.toLocaleDateString('en-US', options);
+}
+
+export function extractDomainName(url: string) {
+  const pattern = /^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n]+)/im;
+  const matches = url.match(pattern);
+  if (matches?.[1]) {
+    const domain = matches[1];
+    const parts = domain.split('.');
+    if (parts.length > 1) {
+      return parts[parts.length - 2];
+    }
+  }
+  return null;
+}
