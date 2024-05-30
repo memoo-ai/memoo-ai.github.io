@@ -147,25 +147,26 @@ export const Collector = () => {
       <div className="dashboard_items_items">
         <GoLaunchPadACard />
 
-        {list.map((item, index) => {
-          return (
-            <Card key={index} data={item}>
-              <div className="flex justify-between items-center mt-[15px]">
-                <div>{renderButton(item.status)}</div>
-                <div className={item.status === 'Draft' ? 'draft' : ''}>
-                  <IconEdit
-                    className="dashboard_item_create_edit"
-                    color={item.status === 'Draft' ? '#7D83B5' : '#07E993'}
-                    hoverColor={item.status === 'Draft' ? '#07E993' : '#000'}
-                    bgColor={item.status === 'Draft' ? '#383C61' : '#242842'}
-                    hoverBgColor={item.status === 'Draft' ? '#1F3B4F' : '#07E993'}
-                    style={{ border: item.status === 'Draft' ? 'none' : '1px solid #07E993' }}
-                  />
+        {list.length &&
+          list.map((item, index) => {
+            return (
+              <Card key={index} data={item}>
+                <div className="flex justify-between items-center mt-[15px]">
+                  <div>{renderButton(item.status)}</div>
+                  <div className={item.status === 'Draft' ? 'draft' : ''}>
+                    <IconEdit
+                      className="dashboard_item_create_edit"
+                      color={item.status === 'Draft' ? '#7D83B5' : '#07E993'}
+                      hoverColor={item.status === 'Draft' ? '#07E993' : '#000'}
+                      bgColor={item.status === 'Draft' ? '#383C61' : '#242842'}
+                      hoverBgColor={item.status === 'Draft' ? '#1F3B4F' : '#07E993'}
+                      style={{ border: item.status === 'Draft' ? 'none' : '1px solid #07E993' }}
+                    />
+                  </div>
                 </div>
-              </div>
-            </Card>
-          );
-        })}
+              </Card>
+            );
+          })}
       </div>
       <div className="mt-[60px]">
         <IPagination

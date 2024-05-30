@@ -16,8 +16,8 @@ export const Card = ({ data, children }: CardProps) => {
       case 'QUEUE':
         icon = <IconQueue className="Queue" />;
         break;
-      case 'IMO':
-        icon = <IconIMO className="IMO" />;
+      case 'IDO':
+        icon = <IconIMO className="IDO" />;
         break;
       case 'Launched':
         icon = <IconLaunched className="Launched" />;
