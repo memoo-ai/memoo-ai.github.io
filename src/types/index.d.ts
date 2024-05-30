@@ -195,6 +195,10 @@ declare interface IDOQueueDetail extends IDOClaimStage {
   platformTwitter: string;
   airdropEndsIn: number;
   claimFlag: boolean;
+  creatorAddress: string;
+  creatorTelegram: string;
+  creatorTwitter: string;
+  creatorWebsite: string;
 }
 
 declare type IDOStatus = 'Draft' | 'QUEUE' | 'IDO' | 'Launched';

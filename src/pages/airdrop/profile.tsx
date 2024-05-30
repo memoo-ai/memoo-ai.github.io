@@ -2,7 +2,7 @@
 import { FC, useContext, useMemo } from 'react';
 import './profile.scss';
 import { AirdropContext } from '.';
-import { extractDomainName, formatTs } from '@/utils';
+import { clipAddress, extractDomainName, formatTs } from '@/utils';
 
 const Profile: FC = () => {
   const { idoQueueDetail } = useContext(AirdropContext);
@@ -90,13 +90,12 @@ const Profile: FC = () => {
         ),
         formatValue: (value: string) => (
           <ul className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1 mt-10">
-            {[{ name: 'FuckingBadIdea4770' }, { name: 'Rg7GG...kf9Lj7', icon: '/create/icon-copy.png' }].map(
-              (token) => (
-                <li key={token.name} className="flex items-center gap-x-1.5 h-8">
-                  {token.name} {token.icon && <img className="w-2.5 object-contain" src={token.icon} />}
-                </li>
-              ),
-            )}
+            <li className="flex items-center gap-x-1.5 h-8">
+              {clipAddress(idoQueueDetail?.creatorAddress ?? '')}{' '}
+              <a className="cursor-pointer">
+                <img className="w-2.5 object-contain" src="/create/icon-copy.png" />
+              </a>
+            </li>
           </ul>
         ),
       },
@@ -105,11 +104,15 @@ const Profile: FC = () => {
         value: '',
         formatValue: (value: string) => (
           <ul className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1">
-            {[{ name: 'Robots_Luv', icon: '/create/social-twitter.png' }].map((token) => (
-              <li key={token.name} className="flex items-center gap-x-1.5 h-8">
-                <img className="w-5 object-contain" src={token.icon} /> {token.name}
-              </li>
-            ))}
+            <li className="flex items-center gap-x-1.5 h-8">
+              <a
+                href={`https://x.com/${idoQueueDetail?.creatorTwitter}`}
+                target="_blank"
+                className="flex items-center gap-x-1.5"
+              >
+                <img className="w-5 object-contain" src="/create/social-twitter.png" /> {idoQueueDetail?.creatorTwitter}
+              </a>
+            </li>
           </ul>
         ),
       },
