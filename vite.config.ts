@@ -19,6 +19,14 @@ export default defineConfig({
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
+  server: {
+    proxy: {
+      '/backend/api/v1': {
+        target: 'http://8.130.122.217:8080',
+        changeOrigin: true,
+      },
+    },
+  },
   css: {
     preprocessorOptions: {
       scss: {
