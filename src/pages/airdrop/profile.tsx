@@ -24,10 +24,10 @@ const Profile: FC = () => {
         formatValue: (value: string) => (
           <ul className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1">
             {[
-              { name: 'De.Fi Scanner', icon: '/create/token-demo.png' },
-              { name: 'DEX Screener', icon: '/create/token-demo.png' },
-              { name: 'Bubblemaps', icon: '/create/token-demo.png' },
-              { name: 'GeckoTerminal', icon: '/create/token-demo.png' },
+              { name: 'De.Fi Scanner', icon: '/create/icon-tool-defi-scanner.png' },
+              { name: 'DEX Screener', icon: '/create/icon-tool-dex-screener.png' },
+              { name: 'Bubblemaps', icon: '/create/icon-tool-bubble-maps.png' },
+              { name: 'GeckoTerminal', icon: '/create/icon-tool-gecko-terminal.png' },
             ].map((token) => (
               <li key={token.name} className="flex items-center gap-x-1.5 h-8">
                 <img className="w-5 object-contain" src={token.icon} /> {token.name}
@@ -46,11 +46,13 @@ const Profile: FC = () => {
         value: '',
         formatValue: (value: string) => (
           <ul className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1">
-            <li className="h-8 cursor-pointer">
-              <a href={idoQueueDetail?.website} target="_blank" className="flex items-center gap-x-1.5">
-                {extractDomainName(idoQueueDetail?.website ?? '')}
-              </a>
-            </li>
+            {idoQueueDetail?.website && (
+              <li className="h-8 cursor-pointer">
+                <a href={idoQueueDetail?.website} target="_blank" className="flex items-center gap-x-1.5">
+                  {extractDomainName(idoQueueDetail?.website ?? '')}
+                </a>
+              </li>
+            )}
           </ul>
         ),
       },
@@ -59,24 +61,29 @@ const Profile: FC = () => {
         value: '',
         formatValue: (value: string) => (
           <ul className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1">
-            <li className="h-8">
-              <a
-                href={`https://x.com/${idoQueueDetail?.twitter}`}
-                target="_blank"
-                className="flex items-center gap-x-1.5"
-              >
-                <img className="w-5 object-contain" src="/create/social-twitter.png" /> {idoQueueDetail?.twitter ?? ''}
-              </a>
-            </li>
-            <li className="h-8">
-              <a
-                href={`https://t.me/${idoQueueDetail?.telegram}`}
-                target="_blank"
-                className="flex items-center gap-x-1.5"
-              >
-                <img className="w-5 object-contain" src="/create/social-tg.png" /> {idoQueueDetail?.telegram ?? ''}
-              </a>
-            </li>
+            {idoQueueDetail?.twitter && (
+              <li className="h-8">
+                <a
+                  href={`https://x.com/${idoQueueDetail?.twitter}`}
+                  target="_blank"
+                  className="flex items-center gap-x-1.5"
+                >
+                  <img className="w-5 object-contain" src="/create/social-twitter.png" />{' '}
+                  {idoQueueDetail?.twitter ?? ''}
+                </a>
+              </li>
+            )}
+            {idoQueueDetail?.telegram && (
+              <li className="h-8">
+                <a
+                  href={`https://t.me/${idoQueueDetail?.telegram}`}
+                  target="_blank"
+                  className="flex items-center gap-x-1.5"
+                >
+                  <img className="w-5 object-contain" src="/create/social-tg.png" /> {idoQueueDetail?.telegram ?? ''}
+                </a>
+              </li>
+            )}
           </ul>
         ),
       },
@@ -90,12 +97,14 @@ const Profile: FC = () => {
         ),
         formatValue: (value: string) => (
           <ul className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1 mt-10">
-            <li className="flex items-center gap-x-1.5 h-8">
-              {clipAddress(idoQueueDetail?.creatorAddress ?? '')}{' '}
-              <a className="cursor-pointer">
-                <img className="w-2.5 object-contain" src="/create/icon-copy.png" />
-              </a>
-            </li>
+            {idoQueueDetail?.creatorAddress && (
+              <li className="flex items-center gap-x-1.5 h-8">
+                {clipAddress(idoQueueDetail?.creatorAddress ?? '')}{' '}
+                <a className="cursor-pointer">
+                  <img className="w-2.5 object-contain" src="/create/icon-copy.png" />
+                </a>
+              </li>
+            )}
           </ul>
         ),
       },
@@ -104,15 +113,18 @@ const Profile: FC = () => {
         value: '',
         formatValue: (value: string) => (
           <ul className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1">
-            <li className="flex items-center gap-x-1.5 h-8">
-              <a
-                href={`https://x.com/${idoQueueDetail?.creatorTwitter}`}
-                target="_blank"
-                className="flex items-center gap-x-1.5"
-              >
-                <img className="w-5 object-contain" src="/create/social-twitter.png" /> {idoQueueDetail?.creatorTwitter}
-              </a>
-            </li>
+            {idoQueueDetail?.creatorTwitter && (
+              <li className="flex items-center gap-x-1.5 h-8">
+                <a
+                  href={`https://x.com/${idoQueueDetail?.creatorTwitter}`}
+                  target="_blank"
+                  className="flex items-center gap-x-1.5"
+                >
+                  <img className="w-5 object-contain" src="/create/social-twitter.png" />{' '}
+                  {idoQueueDetail?.creatorTwitter}
+                </a>
+              </li>
+            )}
           </ul>
         ),
       },
