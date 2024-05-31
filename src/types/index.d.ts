@@ -79,7 +79,7 @@ declare interface IDOActiveDetail extends IDOClaimStage {
   createdAt: string;
   creatorActivity: string;
   description: string;
-  endsIn: string;
+  endsIn: number;
   fdv: number;
   holders: string;
   icon: string;
@@ -199,6 +199,8 @@ declare interface IDOQueueDetail extends IDOClaimStage {
   creatorTelegram: string;
   creatorTwitter: string;
   creatorWebsite: string;
+  contributed: number;
+  maxContributed: number;
 }
 
 declare type IDOStatus = 'Draft' | 'QUEUE' | 'IDO' | 'Launched';

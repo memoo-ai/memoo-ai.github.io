@@ -1,17 +1,29 @@
-import { FC, useMemo } from 'react';
+import { FC, useContext, useMemo } from 'react';
 import './imo-participate.scss';
 import Countdown from './countdown';
 import { Button, Popover } from 'antd';
 import classNames from 'classnames';
+import { AirdropContext } from '.';
 
 const IMOParticipate: FC = () => {
+  const { idoActiveDetail, idoQueueDetail } = useContext(AirdropContext);
+
   const params = useMemo(
     () => [
-      { key: 'Price', value: '$0.00003', tip: null },
-      { key: 'Total Raised', value: '1.82/2.3 ETH', tip: '1' },
-      { key: 'Contributed', value: '0.066 ETH', tip: '1' },
+      { key: 'Price', value: `$${idoActiveDetail?.price ?? 0}`, tip: null },
+      { key: 'Total Raised', value: `${idoActiveDetail?.totalRaised ?? 'NA/NA'} ETH`, tip: '1' },
+      {
+        key: 'Contributed',
+        value: `${idoQueueDetail?.contributed ?? 'NA'}/${idoQueueDetail?.maxContributed ?? 'NA'} ETH`,
+        tip: '1',
+      },
     ],
-    [],
+    [idoActiveDetail, idoQueueDetail],
+  );
+
+  const disabled = useMemo(
+    () => (idoQueueDetail ? idoQueueDetail?.contributed >= idoQueueDetail?.maxContributed : true),
+    [idoQueueDetail],
   );
 
   return (
@@ -42,7 +54,7 @@ const IMOParticipate: FC = () => {
                 <span>S</span>
               </div>,
             ]}
-            instant={Date.now() + 24 * 60 * 60 * 1000}
+            instant={(idoActiveDetail?.endsIn ?? 0) * 1000}
           />
           <p className="mt-3 text-white font-OCR leading-5 text-sm">Fair Distribution Policy</p>
           <p className="text-deep-green text-center font-OCR leading-14 text-xs">
@@ -64,7 +76,9 @@ const IMOParticipate: FC = () => {
             </li>
           ))}
         </ul>
-        <Button className={classNames('mt-5 uppercase w-full participate_btn h-12 font–404px', {})}>participate</Button>
+        <Button disabled={disabled} className={classNames('mt-5 uppercase w-full participate_btn h-12 font–404px', {})}>
+          participate
+        </Button>
       </div>
     </div>
   );
