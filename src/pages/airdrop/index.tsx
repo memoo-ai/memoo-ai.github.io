@@ -3,7 +3,14 @@ import AirdropClaim from './airdrop-claim';
 import IMOParticipate from './imo-participate';
 import Status from './status';
 import './index.scss';
-import { IDOActiveDetail, IDOLaunchedDetail, IDOLaunchedDetailTop10, IDOQueueDetail, TokenCreateStage } from '@/types';
+import {
+  Address,
+  IDOActiveDetail,
+  IDOLaunchedDetail,
+  IDOLaunchedDetailTop10,
+  IDOQueueDetail,
+  TokenCreateStage,
+} from '@/types';
 import PublicSale from './public-sale';
 import IDODetail from './ido-detail';
 import Banner from './banner';
@@ -12,6 +19,8 @@ import Progress from './progress';
 import { Button } from 'antd';
 import { getIDOActiveDetail, getIDOLaunchedDetail, getIDOLaunchedDetailTop10, getIDOQueueDetail } from '@/api/airdrop';
 import { useParams } from 'react-router-dom';
+import { useAccount } from 'wagmi';
+import { compareAddrs } from '@/utils';
 
 interface AirdropContext {
   stage: TokenCreateStage;
@@ -19,9 +28,10 @@ interface AirdropContext {
   idoLaunchedDetail?: IDOLaunchedDetail;
   idoLaunchedDetailTop10List?: IDOLaunchedDetailTop10[];
   idoQueueDetail?: IDOQueueDetail;
+  mine: boolean;
 }
 
-export const AirdropContext = createContext<AirdropContext>({ stage: 'in-queue' });
+export const AirdropContext = createContext<AirdropContext>({ stage: 'in-queue', mine: false });
 
 const Airdrop: FC = () => {
   const [stage, setStage] = useState<TokenCreateStage>('in-queue');
@@ -30,10 +40,16 @@ const Airdrop: FC = () => {
   const [idoLaunchedDetailTop10, setIDOLaunchedDetailTop10] = useState<IDOLaunchedDetailTop10[]>([]);
   const [idoQueueDetail, setIDOQueueDetail] = useState<IDOQueueDetail>();
   const { ticker = import.meta.env.VITE_DEMO_TICKER } = useParams<{ ticker: string }>();
+  const { address } = useAccount();
+
+  const mine = useMemo(
+    () => compareAddrs(idoQueueDetail?.creatorAddress as Address, address!),
+    [idoQueueDetail, address],
+  );
 
   const context: AirdropContext = useMemo(
-    () => ({ stage, idoActiveDetail, idoLaunchedDetail, idoLaunchedDetailTop10, idoQueueDetail }),
-    [stage, idoActiveDetail, idoLaunchedDetail, idoLaunchedDetailTop10, idoQueueDetail],
+    () => ({ stage, idoActiveDetail, idoLaunchedDetail, idoLaunchedDetailTop10, idoQueueDetail, mine }),
+    [stage, idoActiveDetail, idoLaunchedDetail, idoLaunchedDetailTop10, idoQueueDetail, mine],
   );
 
   useEffect(() => {
@@ -66,11 +82,13 @@ const Airdrop: FC = () => {
 
   return (
     <div className="airdrop pb-16">
-      <div className="col-span-full	flex flex-col items-center pt-[70px]">
-        <AirdropContext.Provider value={context}>
-          <Progress />
-        </AirdropContext.Provider>
-      </div>
+      {mine && (
+        <div className="col-span-full	flex flex-col items-center pt-[70px]">
+          <AirdropContext.Provider value={context}>
+            <Progress />
+          </AirdropContext.Provider>
+        </div>
+      )}
       <div className="col-span-full pt-[70px] pb-[22px] pl-[428px] flex items-center justify-between">
         <Button type="link" className="flex items-center h-[40px] gap-x-[11px]">
           <img src="/create/icon-edit.svg" />

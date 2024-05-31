@@ -165,7 +165,7 @@ declare interface IDOQueueDetail extends IDOClaimStage {
   commitment: string;
   communityActivit: string;
   communitySize: string;
-  contractAddress: string;
+  contractAddress: Address;
   createdAt: number;
   creatorActivity: string;
   description: string;
@@ -175,7 +175,7 @@ declare interface IDOQueueDetail extends IDOClaimStage {
   icon: string;
   idoDate: number;
   liquidity: string;
-  lpContractAddress: string;
+  lpContractAddress: Address;
   marketCap: string;
   meMooScore: string;
   banners: string[];
@@ -195,7 +195,7 @@ declare interface IDOQueueDetail extends IDOClaimStage {
   platformTwitter: string;
   airdropEndsIn: number;
   claimFlag: boolean;
-  creatorAddress: string;
+  creatorAddress: Address;
   creatorTelegram: string;
   creatorTwitter: string;
   creatorWebsite: string;
@@ -270,3 +270,5 @@ declare interface TrendingCreators {
   topTokenMarketCap: string;
   userName: string;
 }
+
+declare type Address = `0x${string}`;
