@@ -63,12 +63,12 @@ export default function AirdropClaim() {
         )}
       </div>
       <ul className="follow_list flex flex-col gap-y-2 mt-4">
-        {follows.map((item) => (
-          <li key={item.user} className="follow_list_item flex items-center w-full justify-between px-3 py-3.5">
+        {follows.map((item, index) => (
+          <li key={index} className="follow_list_item flex items-center w-full justify-between px-3 py-3.5">
             <p
               className={classNames('leading-5 font-OCR whitespace-pre-wrap', {
-                'text-white': doingTask || airdropUnlocking,
-                'text-deep-green': airdropUnlocked,
+                'text-white': !item.followed,
+                'text-deep-green': item.followed,
               })}
             >
               Follow @{item.user}
@@ -76,7 +76,7 @@ export default function AirdropClaim() {
             </p>
             <img
               onClick={() => (item.followed ? item.followed : handleFollow(item.user))}
-              className={classNames('w-5', { 'cursor-pointer': !item.followed, 'opacity-30': airdropUnlocked })}
+              className={classNames('w-5', { 'cursor-pointer': !item.followed, 'opacity-30': item.followed })}
               src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
             />
           </li>

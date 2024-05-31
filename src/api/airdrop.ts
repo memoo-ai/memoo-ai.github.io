@@ -17,7 +17,7 @@ export const getIDOLaunchedDetail = (ticker: string) => {
 };
 
 export const getIDOLaunchedDetailTop10 = (params: { pageSize: number; pageNumber: number; ticker: string }) => {
-  return http.get<PageWrapper<IDOLaunchedDetailTop10>>(`${prefix}/web-oriented/ido-launched-detail-top10`, { params });
+  return http.get<IDOLaunchedDetailTop10[]>(`${prefix}/web-oriented/ido-launched-detail-top10`, { params });
 };
 
 export const getIDOQueueDetail = (ticker: string) => {

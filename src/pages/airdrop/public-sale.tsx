@@ -1,17 +1,24 @@
-import { FC, useMemo } from 'react';
+import { FC, useContext, useMemo } from 'react';
 import './public-sale.scss';
 import { Button, Popover } from 'antd';
 import classNames from 'classnames';
+import { AirdropContext } from '.';
 
 const PublicSale: FC = () => {
+  const { idoLaunchedDetail, idoQueueDetail } = useContext(AirdropContext);
+
   const params = useMemo(
     () => [
-      { key: 'Market Cap', value: '$973,672.8', tip: null },
-      { key: 'Price', value: '$0.00003', tip: null },
-      { key: 'Total Raised', value: '1.82/2.3 ETH', tip: '1' },
-      { key: 'Contributed', value: '0.066 ETH', tip: '1' },
+      { key: 'Market Cap', value: `$${idoLaunchedDetail?.marketCap}`, tip: null },
+      { key: 'Price', value: `$${idoLaunchedDetail?.price}`, tip: null },
+      { key: 'Total Raised', value: `${idoLaunchedDetail?.totalRaised ?? 'NA/NA'} ETH`, tip: '1' },
+      {
+        key: 'Contributed',
+        value: `${idoQueueDetail?.contributed ?? 'NA'}/${idoQueueDetail?.maxContributed ?? 'NA'} ETH`,
+        tip: '1',
+      },
     ],
-    [],
+    [idoLaunchedDetail, idoQueueDetail],
   );
 
   return (
