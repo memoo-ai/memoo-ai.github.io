@@ -48,8 +48,10 @@ const IDODetail: FC = () => {
             <div className="flex flex-col items-end">
               <span className="text-white text-lg font-OCR leading-5">{value}</span>
               <div className="flex items-center gap-x-2">
-                <time className="font-OCR text-xs text-bluish-purple-light">20 Mar 2024</time>
-                <span className="font-OCR text-xs text-red">-42.9%</span>
+                <time className="font-OCR text-xs text-bluish-purple-light">
+                  {formatTs(idoLaunchedDetail?.allTimeHighTime ?? 0)}
+                </time>
+                <span className="font-OCR text-xs text-red">{idoLaunchedDetail?.allTimeHighTimeIncrease}</span>
               </div>
             </div>
           ),
@@ -61,8 +63,10 @@ const IDODetail: FC = () => {
             <div className="flex flex-col items-end">
               <span className="text-white text-lg font-OCR leading-5">{value}</span>
               <div className="flex items-center gap-x-2">
-                <time className="font-OCR text-xs text-bluish-purple-light">20 Mar 2024</time>
-                <span className="font-OCR text-xs text-green">+42.9%</span>
+                <time className="font-OCR text-xs text-bluish-purple-light">
+                  {formatTs(idoLaunchedDetail?.allTimeLowTime ?? 0)}
+                </time>
+                <span className="font-OCR text-xs text-green">{idoLaunchedDetail?.allTimeLowIncrease}</span>
               </div>
             </div>
           ),

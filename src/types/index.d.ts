@@ -106,7 +106,11 @@ declare interface IDOActiveDetail extends IDOClaimStage {
 
 declare interface IDOLaunchedDetail extends IDOClaimStage {
   allTimeLow: number;
+  allTimeLowTime: number;
+  allTimeLowIncrease: string;
   allTimeHigh: number;
+  allTimeHighTime: number;
+  allTimeHighTimeIncrease: string;
   claimFlag: boolean;
   commitment: string;
   communityActivit: string;
