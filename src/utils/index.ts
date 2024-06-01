@@ -3,6 +3,7 @@ import numeral from 'numeral';
 import Decimal from 'decimal.js';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { Address } from '@/types';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -115,10 +116,14 @@ export function clipAddress(address: string) {
   return `${address.slice(0, 5)}...${address.slice(-4)}`;
 }
 
-export function formatTs(ts: number) {
-  const date = new Date(ts ?? 0);
+export function formatTs(ts: number, unit: 's' | 'ms' = 's') {
+  const date = new Date((ts ?? 0) * (unit === 's' ? 1000 : 1));
   const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' };
   return date.toLocaleDateString('en-US', options);
+}
+
+export function compareAddrs(addrA: Address, addrB: Address) {
+  return new RegExp(addrA, 'i').test(addrB ?? '');
 }
 
 export function extractDomainName(url: string) {
