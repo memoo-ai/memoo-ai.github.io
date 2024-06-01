@@ -24,6 +24,7 @@ export const AirdropConfirm = ({ children }: any) => {
           <img src="./dashboard/reward.svg" alt="" />
           <div className="confirm_content_title">WIF has arrived!</div>
           <div className="confirm_content_describe">Thanks for being part of the Dogwifhat community.</div>
+          <div className="confirm_content_wif">200000 WIF</div>
           <div className="confirm_btn">
             <Button className="mt-[76px] custom_ant_btn">CLAIM ALL</Button>
           </div>

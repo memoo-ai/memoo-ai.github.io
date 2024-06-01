@@ -4,11 +4,7 @@ import { Card } from '../Card';
 import { Button } from 'antd';
 import IPagination from '@/components/IPagination';
 import {
-  IconDraftBtn,
-  IconQueueBtn,
-  IconLaunchedBtn,
-  IconEdit,
-  IconAdd,
+  IconAwaiting,
   IconAirdropBtn,
   // IconAddress,
   // IconETH,
@@ -46,82 +42,7 @@ export const Collector = () => {
       }
     })();
   }, [tab, currentPage]);
-  const renderButton = (type: string) => {
-    let button;
-    switch (type) {
-      case 'Draft':
-        button = (
-          <IconDraftBtn
-            className="draft"
-            color={type === 'Draft' ? '#7D83B5' : '#242842'}
-            hoverColor={type === 'Draft' ? '#07E993' : '#242842'}
-            bgColor={type === 'Draft' ? '#383C61' : '#242842'}
-            hoverBgColor={type === 'Draft' ? '#1F3B4F' : '#242842'}
-            style={{ border: type === 'Draft' ? 'none' : '1px solid #07E993' }}
-          />
-        );
-        break;
-      case 'Queue':
-        button = (
-          <IncreaseConfirm>
-            <Button
-              className="flex items-center justify-between"
-              onMouseOver={() => iconRefs.current['increase'].setHovered(true)}
-              onMouseLeave={() => iconRefs.current['increase'].setHovered(false)}
-            >
-              <IconQueueBtn className="QueueBtn" ref={(ref) => (iconRefs.current['increase'] = ref)} />
-              <span className="ml-[9px]">INCREASE</span>
-            </Button>
-          </IncreaseConfirm>
-        );
-        break;
-      case 'IMO':
-        button = '';
-        break;
-      case 'Launched':
-        button = (
-          <ClaimConfirm>
-            {' '}
-            <Button
-              className="flex items-center justify-between"
-              key="increase"
-              onMouseOver={() => iconRefs.current['LaunchedBtn'].setHovered(true)}
-              onMouseLeave={() => iconRefs.current['LaunchedBtn'].setHovered(false)}
-            >
-              <IconLaunchedBtn
-                className="LaunchedBtn"
-                color="#07E993"
-                ref={(ref) => (iconRefs.current['LaunchedBtn'] = ref)}
-              />
-              <span className="ml-[9px]">CLAIM</span>
-            </Button>
-          </ClaimConfirm>
-        );
-        break;
-      default:
-        button = (
-          <AirdropConfirm>
-            {' '}
-            <Button
-              className="flex items-center justify-between"
-              key="increase"
-              onMouseOver={() => iconRefs.current['AirdropBtn'].setHovered(true)}
-              onMouseLeave={() => iconRefs.current['AirdropBtn'].setHovered(false)}
-            >
-              <IconAirdropBtn
-                className="IconAirdropBtn"
-                color="#07E993"
-                ref={(ref) => (iconRefs.current['AirdropBtn'] = ref)}
-              />
-              <span className="ml-[9px]">CLAIM AIRDROP</span>
-            </Button>
-          </AirdropConfirm>
-        );
-        break;
-    }
 
-    return button;
-  };
   return (
     <div className="dashboard_items">
       <div className="dashboard_top">
@@ -154,17 +75,36 @@ export const Collector = () => {
           return (
             <Card key={index} data={item}>
               <div className="flex justify-between items-center mt-[15px]">
-                <div>{renderButton(item.status)}</div>
-                <div className={item.status === 'Draft' ? 'draft' : ''}>
-                  <IconEdit
-                    className="dashboard_item_create_edit"
-                    color={item.status === 'Draft' ? '#7D83B5' : '#07E993'}
-                    hoverColor={item.status === 'Draft' ? '#07E993' : '#000'}
-                    bgColor={item.status === 'Draft' ? '#383C61' : '#242842'}
-                    hoverBgColor={item.status === 'Draft' ? '#1F3B4F' : '#07E993'}
-                    style={{ border: item.status === 'Draft' ? 'none' : '1px solid #07E993' }}
-                  />
-                </div>
+                {tab === 'Airdrop' ? (
+                  <div>
+                    {item.claimFalg ? (
+                      <AirdropConfirm>
+                        {' '}
+                        <Button
+                          className="flex items-center justify-between"
+                          key="increase"
+                          onMouseOver={() => iconRefs.current['AirdropBtn'].setHovered(true)}
+                          onMouseLeave={() => iconRefs.current['AirdropBtn'].setHovered(false)}
+                        >
+                          <IconAirdropBtn
+                            className="IconAirdropBtn"
+                            color="#07E993"
+                            ref={(ref) => (iconRefs.current['AirdropBtn'] = ref)}
+                          />
+                          <span className="ml-[9px]">CLAIM AIRDROP</span>
+                        </Button>
+                      </AirdropConfirm>
+                    ) : (
+                      <div className="flex">
+                        <IconAwaiting className="IconAwaiting" />{' '}
+                        <span className="font-404px text-[#07E993] ml-[11px]">AWAITING</span>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="font-OCR text-[#7D83B5]">Contributed</div>
+                )}
+                <div className="font-OCR text-[#ffffff]">{item.contributed ? item.contributed : ''}</div>
               </div>
             </Card>
           );

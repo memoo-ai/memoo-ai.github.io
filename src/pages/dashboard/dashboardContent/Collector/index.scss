@@ -114,30 +114,7 @@
           }
         }
       }
-      .dashboard_item_content{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
 
-        .dashboard_item_content_left{
-          font-family: '404px';
-          font-size: 14px;
-          font-weight: 600;
-          line-height: 31px;
-          text-align: left;
-          color: $textSecondaryColor;
-
-        }
-        .dashboard_item_content_right{
-          font-family: '404px';
-          font-size: 18px;
-          font-weight: 600;
-          line-height: 31px;
-          text-align: right;
-          color: $textColor;
-
-        }
-      }
     }
   }
 
