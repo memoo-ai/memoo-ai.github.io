@@ -1,15 +1,18 @@
 /* eslint-disable react/no-unstable-nested-components */
 import { FC, ReactNode, useContext, useMemo } from 'react';
 import { AirdropContext } from '../airdrop';
-import { TokenCreateStage } from '@/types';
+import { IDOStatus, TokenCreateStage } from '@/types';
 import { Button } from 'antd';
 import classNames from 'classnames';
 import './progress.scss';
 import IncreaseAcquisitionModal from './increase-acquisition-modal';
 import ClaimTokensModal from './claim-tokens-modal';
+import { useAccount } from 'wagmi';
+import { compareAddrs } from '@/utils';
 
 const Progress: FC = () => {
-  const { stage } = useContext(AirdropContext);
+  const { stage, idoQueueDetail } = useContext(AirdropContext);
+  const { address } = useAccount();
 
   const items: {
     key: TokenCreateStage;
@@ -20,6 +23,7 @@ const Progress: FC = () => {
     wrapper?: (node: ReactNode) => ReactNode;
     btnText?: string;
     btnIcon?: string;
+    enabled?: boolean;
   }[] = useMemo(
     () => [
       {
@@ -31,6 +35,7 @@ const Progress: FC = () => {
         btnText: 'increase',
         btnIcon: `/create/icon-increase${stage === 'in-queue' ? '-active' : ''}.svg`,
         wrapper: (node: ReactNode) => <IncreaseAcquisitionModal>{node}</IncreaseAcquisitionModal>,
+        enabled: (['QUEUE', 'IDO', 'Launched'] as IDOStatus[]).includes(idoQueueDetail?.status ?? 'Draft'),
       },
       {
         key: 'imo',
@@ -61,6 +66,13 @@ const Progress: FC = () => {
         btnText: 'claim',
         btnIcon: `/create/icon-claim${stage === '1st-claim' ? '-active' : ''}.svg`,
         wrapper: (node: ReactNode) => <ClaimTokensModal stage="1st">{node}</ClaimTokensModal>,
+        enabled:
+          idoQueueDetail?.status === 'Launched' &&
+          (address
+            ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
+                compareAddrs(addr, address),
+              )
+            : false),
       },
       {
         key: '2st-claim',
@@ -79,9 +91,16 @@ const Progress: FC = () => {
         btnText: 'claim',
         btnIcon: `/create/icon-claim${stage === '2st-claim' ? '-active' : ''}.svg`,
         wrapper: (node: ReactNode) => <ClaimTokensModal stage="2nd">{node}</ClaimTokensModal>,
+        enabled:
+          idoQueueDetail?.status === 'Launched' &&
+          (address
+            ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
+                compareAddrs(addr, address),
+              )
+            : false),
       },
     ],
-    [stage],
+    [stage, idoQueueDetail, address],
   );
 
   return (
@@ -115,6 +134,7 @@ const Progress: FC = () => {
                   style={{ visibility: item.btnText ? 'visible' : 'hidden' }}
                   className="memoo_button reverse mt-[19px] px-[19px] h-[38px]"
                   onClick={() => item.onClick?.()}
+                  disabled={!item.enabled}
                 >
                   <div className="flex items-center gap-x-1">
                     {/* {item.btnIcon && <img src={item.btnIcon} />} */}
@@ -127,6 +147,7 @@ const Progress: FC = () => {
                 style={{ visibility: item.btnText ? 'visible' : 'hidden' }}
                 className="memoo_button reverse mt-[19px] px-[19px] h-[38px]"
                 onClick={() => item.onClick?.()}
+                disabled={!item.enabled}
               >
                 <div className="flex items-center gap-x-1">
                   {/* {item.btnIcon && <img src={item.btnIcon} />} */}
