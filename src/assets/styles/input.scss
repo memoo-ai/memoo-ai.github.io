@@ -1,0 +1,19 @@
+.memoo_input {
+  input {
+    color: #fff;
+    font-family: 'OCR A Extended';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 29px; /* 181.25% */
+    letter-spacing: -0.8px;
+
+    &::placeholder {
+      color: #fff;
+    }
+  }
+
+  border: unset;
+  border-radius: 7px;
+  background: #2b526e !important;
+}

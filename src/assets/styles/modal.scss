@@ -1,0 +1,26 @@
+.memoo_modal {
+  .ant-modal-content {
+    border-radius: 15px;
+    border: 1px solid #07e993;
+    background: #1f3b4f;
+    padding: 58px 28px 28px 28px;
+  }
+  .ant-modal-header {
+    background: transparent;
+  }
+  .ant-modal-title {
+    font-family: '404px';
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 29px; /* 120.833% */
+
+    background: linear-gradient(90deg, #07e993 1.89%, #14fcfb 97%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .ant-modal-close .anticon svg path {
+    fill: #07e993;
+  }
+}

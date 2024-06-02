@@ -1,9 +1,11 @@
+/* eslint-disable react/no-unstable-nested-components */
 import { FC, ReactNode, useContext, useMemo } from 'react';
 import { AirdropContext } from '../airdrop';
 import { TokenCreateStage } from '@/types';
 import { Button } from 'antd';
 import classNames from 'classnames';
 import './progress.scss';
+import IncreaseAcquisitionModal from './increase-acquisition-modal';
 
 const Progress: FC = () => {
   const { stage } = useContext(AirdropContext);
@@ -14,6 +16,7 @@ const Progress: FC = () => {
     title: string;
     desc: string;
     onClick?: () => void;
+    wrapper?: (node: ReactNode) => ReactNode;
     btnText?: string;
     btnIcon?: string;
   }[] = useMemo(
@@ -26,6 +29,7 @@ const Progress: FC = () => {
         onClick: () => {},
         btnText: 'increase',
         btnIcon: `/create/icon-increase${stage === 'in-queue' ? '-active' : ''}.svg`,
+        wrapper: (node: ReactNode) => <IncreaseAcquisitionModal>{node}</IncreaseAcquisitionModal>,
       },
       {
         key: 'imo',
@@ -102,19 +106,37 @@ const Progress: FC = () => {
             <p className="mt-1.5 font-OCR text-white leading-4 text-sm text-center break-keep whitespace-pre">
               {item.desc}
             </p>
-            <Button
-              style={{ visibility: item.btnText ? 'visible' : 'hidden' }}
-              className="mt-[19px] px-[19px] h-[38px] btn rounded-[7px]"
-              disabled={!active}
-              onClick={() => item.onClick?.()}
-            >
-              <div className="flex items-center gap-x-1">
-                {item.btnIcon && <img src={item.btnIcon} />}
-                <span className={classNames('btn_text font-404px text-white text-[10px] leading-5')}>
-                  {item.btnText}
-                </span>
-              </div>
-            </Button>
+            {item.wrapper ? (
+              item.wrapper(
+                <Button
+                  style={{ visibility: item.btnText ? 'visible' : 'hidden' }}
+                  className="mt-[19px] px-[19px] h-[38px] btn rounded-[7px]"
+                  // disabled={!active}
+                  onClick={() => item.onClick?.()}
+                >
+                  <div className="flex items-center gap-x-1">
+                    {item.btnIcon && <img src={item.btnIcon} />}
+                    <span className={classNames('btn_text font-404px text-white text-[10px] leading-5')}>
+                      {item.btnText}
+                    </span>
+                  </div>
+                </Button>,
+              )
+            ) : (
+              <Button
+                style={{ visibility: item.btnText ? 'visible' : 'hidden' }}
+                className="mt-[19px] px-[19px] h-[38px] btn rounded-[7px]"
+                disabled={!active}
+                onClick={() => item.onClick?.()}
+              >
+                <div className="flex items-center gap-x-1">
+                  {item.btnIcon && <img src={item.btnIcon} />}
+                  <span className={classNames('btn_text font-404px text-white text-[10px] leading-5')}>
+                    {item.btnText}
+                  </span>
+                </div>
+              </Button>
+            )}
           </li>
         );
       })}

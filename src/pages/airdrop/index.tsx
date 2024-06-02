@@ -97,13 +97,11 @@ const Airdrop: FC = () => {
   return (
     <div className="airdrop pb-16">
       <Spin spinning={loading} fullscreen />
-      {mine && (
-        <div className="col-span-full	flex flex-col items-center pt-[70px]">
-          <AirdropContext.Provider value={context}>
-            <Progress />
-          </AirdropContext.Provider>
-        </div>
-      )}
+      <div className="col-span-full	flex flex-col items-center pt-[70px]">
+        <AirdropContext.Provider value={context}>
+          <Progress />
+        </AirdropContext.Provider>
+      </div>
       <div className="col-span-full pt-[70px] pb-[22px] pl-[428px] flex items-center justify-between">
         <Button type="link" className="flex items-center h-[40px] gap-x-[11px]">
           <img src="/create/icon-edit.svg" />
