@@ -1,7 +1,7 @@
 import './index.scss';
 import BackButton from '@/components/BackButton';
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Cascader,
   Checkbox,
@@ -19,15 +19,26 @@ import {
 } from 'antd';
 import { TextArea } from '@radix-ui/themes';
 import MySlider from '@/components/MySlider';
+import {
+  PreLaunchDurationEnum,
+  saveTokenCraft,
+  confirmTokenCreate,
+  getTokenDetail,
+  checkTickerExists,
+} from '@/api/token';
+import { useSearchParams } from 'react-router-dom';
 const PreLaunchDurationOptions = [
-  { label: 'immediate', value: 'immediate' },
-  { label: '1 day', value: '1day' },
-  { label: '3 days', value: '3days' },
+  { label: 'immediate', value: PreLaunchDurationEnum.IMMEDIATE },
+  { label: '1 day', value: PreLaunchDurationEnum['1DAY'] },
+  { label: '3 days', value: PreLaunchDurationEnum['3DAYS'] },
 ];
 export default function Create() {
+  const [searchParams] = useSearchParams();
   const [isAccept, setIsAccept] = useState(false);
   const [optionalOpen, setOptionalOpen] = useState(false);
   const [form] = Form.useForm();
+  const [saveCraftLoading, setSaveCraftLoading] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
   const normFile = (e: any) => {
     if (Array.isArray(e)) {
       return e;
@@ -40,7 +51,48 @@ export default function Create() {
 
   const onFieldChange = (changedFields: any, allFields: any) => {
     console.log('onFieldsChange', changedFields);
+    form.setFieldValue('tokenIcon', changedFields[0].value);
   };
+
+  useEffect(() => {
+    const ticker = searchParams.get('ticker');
+    console.log('ticker: ', ticker);
+    if (ticker) {
+      getTokenDetail(ticker).then((res) => {
+        if (res?.data) {
+          form.setFieldsValue(res.data);
+        }
+      });
+    } else {
+      form.setFieldsValue({
+        preLaunchDuration: PreLaunchDurationEnum['IMMEDIATE'],
+      });
+    }
+    // form.setFieldsValue({
+    //   tokenName: 'BaseDoge',
+    //   ticker: 'BDG',
+    //   preLaunchDuration: PreLaunchDurationEnum['1DAY'],
+    //   preMarketAcquisition: '2',
+    //   projectDescription: 'test test te st et est es t est se t te st se t tes t ',
+    //   tokenIcon: [],
+    // });
+  }, [searchParams]);
+
+  const handleSaveCraft = async () => {
+    try {
+      setSaveCraftLoading(true);
+      const data = form.getFieldsValue();
+      data.tokenIcon = data.tokenIcon[0].originFileObj;
+      const res = await saveTokenCraft(data);
+      console.log('res: ', res);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setSaveCraftLoading(false);
+    }
+  };
+
+  const handleConfirm = async () => {};
 
   return (
     <div className="create_token">
@@ -97,7 +149,7 @@ export default function Create() {
               }
               valuePropName="fileList"
               getValueFromEvent={normFile}
-              name="icon"
+              name="tokenIcon"
             >
               <Upload
                 listType="picture-card"
@@ -123,6 +175,7 @@ export default function Create() {
                   Project Description <span>*</span>
                 </p>
               }
+              name="projectDescription"
             >
               <Input.TextArea
                 showCount
@@ -246,13 +299,23 @@ export default function Create() {
             </Checkbox>
           </div>
           <div className="flex items-center mt-[48px]">
-            <Button variant="secondary" className="w-[322px] h-[50px] uppercase">
+            <Button
+              variant="secondary"
+              className="w-[322px] h-[50px] uppercase"
+              onClick={handleSaveCraft}
+              loading={saveCraftLoading}
+            >
               <span className="flex items-center">
                 <img src="./token/icon-save-draft.svg" className="w-[14px] mr-[10px]" />
                 save draft
               </span>
             </Button>
-            <Button variant="default" className="w-[322px] h-[50px] uppercase ml-[16px]">
+            <Button
+              variant="default"
+              className="w-[322px] h-[50px] uppercase ml-[16px]"
+              onClick={handleConfirm}
+              loading={confirmLoading}
+            >
               confirm
             </Button>
           </div>
