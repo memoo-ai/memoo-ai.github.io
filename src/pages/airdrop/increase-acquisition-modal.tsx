@@ -20,7 +20,7 @@ const IncreaseAcquisitionModal: FC<{ children: ReactNode }> = ({ children }) => 
             <div className="flex items-end">
               <span className="whitespace-pre-wrap text-base font-OCR text-white leading-[18px]">{`Pre-Market\nAcquisition`}</span>
               <div className="tip_ico_wrapper h-[18px] flex items-center ml-[12px]">
-                <img className="h-[12px] object-contains" src="/create/tip.png" />
+                <img className="h-[12px] object-contain" src="/create/tip.png" />
               </div>
             </div>
             <div className="flex flex-auto items-center gap-x-3">

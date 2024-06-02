@@ -13,6 +13,20 @@
 
   &:hover {
     background: #b53bff !important;
-    color: #19fda6;
+    color: #19fda6 !important;
+  }
+
+  &.reverse {
+    background: #a005fe;
+    color: #07e993;
+    &:hover {
+      background: #19fda6 !important;
+      color: #b53bff !important;
+    }
+  }
+
+  &:disabled {
+    background: #242842 !important;
+    color: #7d83b5 !important;
   }
 }

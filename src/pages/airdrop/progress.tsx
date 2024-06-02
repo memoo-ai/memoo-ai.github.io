@@ -6,6 +6,7 @@ import { Button } from 'antd';
 import classNames from 'classnames';
 import './progress.scss';
 import IncreaseAcquisitionModal from './increase-acquisition-modal';
+import ClaimTokensModal from './claim-tokens-modal';
 
 const Progress: FC = () => {
   const { stage } = useContext(AirdropContext);
@@ -59,6 +60,7 @@ const Progress: FC = () => {
         onClick: () => {},
         btnText: 'claim',
         btnIcon: `/create/icon-claim${stage === '1st-claim' ? '-active' : ''}.svg`,
+        wrapper: (node: ReactNode) => <ClaimTokensModal stage="1st">{node}</ClaimTokensModal>,
       },
       {
         key: '2st-claim',
@@ -76,6 +78,7 @@ const Progress: FC = () => {
         onClick: () => {},
         btnText: 'claim',
         btnIcon: `/create/icon-claim${stage === '2st-claim' ? '-active' : ''}.svg`,
+        wrapper: (node: ReactNode) => <ClaimTokensModal stage="2nd">{node}</ClaimTokensModal>,
       },
     ],
     [stage],
@@ -110,30 +113,24 @@ const Progress: FC = () => {
               item.wrapper(
                 <Button
                   style={{ visibility: item.btnText ? 'visible' : 'hidden' }}
-                  className="mt-[19px] px-[19px] h-[38px] btn rounded-[7px]"
-                  // disabled={!active}
+                  className="memoo_button reverse mt-[19px] px-[19px] h-[38px]"
                   onClick={() => item.onClick?.()}
                 >
                   <div className="flex items-center gap-x-1">
-                    {item.btnIcon && <img src={item.btnIcon} />}
-                    <span className={classNames('btn_text font-404px text-white text-[10px] leading-5')}>
-                      {item.btnText}
-                    </span>
+                    {/* {item.btnIcon && <img src={item.btnIcon} />} */}
+                    <span className={classNames('text-[10px] leading-5')}>{item.btnText}</span>
                   </div>
                 </Button>,
               )
             ) : (
               <Button
                 style={{ visibility: item.btnText ? 'visible' : 'hidden' }}
-                className="mt-[19px] px-[19px] h-[38px] btn rounded-[7px]"
-                disabled={!active}
+                className="memoo_button reverse mt-[19px] px-[19px] h-[38px]"
                 onClick={() => item.onClick?.()}
               >
                 <div className="flex items-center gap-x-1">
-                  {item.btnIcon && <img src={item.btnIcon} />}
-                  <span className={classNames('btn_text font-404px text-white text-[10px] leading-5')}>
-                    {item.btnText}
-                  </span>
+                  {/* {item.btnIcon && <img src={item.btnIcon} />} */}
+                  <span className={classNames('text-[10px] leading-5')}>{item.btnText}</span>
                 </div>
               </Button>
             )}
