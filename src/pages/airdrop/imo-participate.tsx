@@ -4,6 +4,7 @@ import Countdown from './countdown';
 import { Button, Popover } from 'antd';
 import classNames from 'classnames';
 import { AirdropContext } from '.';
+import ImoParticipationModal from './imo-participation-modal';
 
 const IMOParticipate: FC = () => {
   const { idoActiveDetail, idoQueueDetail } = useContext(AirdropContext);
@@ -76,9 +77,14 @@ const IMOParticipate: FC = () => {
             </li>
           ))}
         </ul>
-        <Button disabled={disabled} className={classNames('mt-5 uppercase w-full participate_btn h-12 font–404px', {})}>
-          participate
-        </Button>
+        <ImoParticipationModal>
+          <Button
+            disabled={disabled}
+            className={classNames('mt-5 uppercase w-full participate_btn h-12 font–404px', {})}
+          >
+            participate
+          </Button>
+        </ImoParticipationModal>
       </div>
     </div>
   );

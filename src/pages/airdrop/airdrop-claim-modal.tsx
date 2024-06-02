@@ -25,7 +25,7 @@ const AirdropClaimModal: FC<{ children: ReactNode }> = ({ children }) => {
           <div className="relative mt-[26px]">
             <img
               className="absolute left-[25px] top-[50%] translate-y-[-50%] z-10"
-              src="/public/create/icon-airdrop-unlock.png"
+              src="/create/icon-airdrop-unlock.png"
             />
             <Input
               className="memoo_input h-[66px] font-404px text-white text-[24px] text-center"
