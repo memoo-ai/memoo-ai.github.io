@@ -6,6 +6,7 @@ import { Button, Popover, Spin } from 'antd';
 import classNames from 'classnames';
 import { AirdropContext } from '../airdrop';
 import { follow } from '@/api/airdrop';
+import AirdropClaimModal from './airdrop-claim-modal';
 
 export default function AirdropClaim() {
   const { stage, idoQueueDetail } = useContext(AirdropContext);
@@ -94,18 +95,20 @@ export default function AirdropClaim() {
       {airdropUnlocked && (
         <div className="mt-5 airdrop-unlock flex flex-col items-center gap-y-2">
           <img className="w-5 object-contain" src="/create/icon-airdrop-unlock.png" />
-          <p className="text-white font-404px leading-20 text-2xl">2,000,000 WIF</p>
+          <p className="text-white font-404px leading-20 text-2xl">{Number(2000000).toLocaleString()} WIF</p>
         </div>
       )}
-      <Button
-        disabled={!idoQueueDetail?.claimFlag}
-        className={classNames('uppercase w-full claim_btn h-12 font–404px', {
-          'mt-20': doingTask,
-          'mt-5': airdropUnlocking || airdropUnlocked,
-        })}
-      >
-        claim
-      </Button>
+      <AirdropClaimModal>
+        <Button
+          disabled={!idoQueueDetail?.claimFlag}
+          className={classNames('uppercase w-full claim_btn h-12 font–404px', {
+            'mt-20': doingTask,
+            'mt-5': airdropUnlocking || airdropUnlocked,
+          })}
+        >
+          claim
+        </Button>
+      </AirdropClaimModal>
       <Spin fullscreen spinning={following} />
     </div>
   );
