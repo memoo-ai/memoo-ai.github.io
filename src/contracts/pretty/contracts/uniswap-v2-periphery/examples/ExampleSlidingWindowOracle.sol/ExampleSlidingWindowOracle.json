@@ -1,0 +1,11 @@
+[
+  "constructor(address,uint256,uint8)",
+  "function consult(address,uint256,address) view returns (uint256)",
+  "function factory() view returns (address)",
+  "function granularity() view returns (uint8)",
+  "function observationIndexOf(uint256) view returns (uint8)",
+  "function pairObservations(address,uint256) view returns (uint256, uint256, uint256)",
+  "function periodSize() view returns (uint256)",
+  "function update(address,address)",
+  "function windowSize() view returns (uint256)"
+]

@@ -1,0 +1,7 @@
+[
+  "function approve(address,address,uint256)",
+  "function burn(address,uint256)",
+  "function lockLiquidity(tuple(address,address,uint256,uint256,address,bool,address))",
+  "function transfer(address,address,uint256)",
+  "function transferEth(address,uint256)"
+]

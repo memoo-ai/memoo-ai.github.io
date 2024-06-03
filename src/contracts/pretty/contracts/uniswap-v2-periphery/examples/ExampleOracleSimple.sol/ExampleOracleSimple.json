@@ -1,0 +1,13 @@
+[
+  "constructor(address,address,address)",
+  "function PERIOD() view returns (uint256)",
+  "function blockTimestampLast() view returns (uint32)",
+  "function consult(address,uint256) view returns (uint256)",
+  "function price0Average() view returns (uint224)",
+  "function price0CumulativeLast() view returns (uint256)",
+  "function price1Average() view returns (uint224)",
+  "function price1CumulativeLast() view returns (uint256)",
+  "function token0() view returns (address)",
+  "function token1() view returns (address)",
+  "function update()"
+]

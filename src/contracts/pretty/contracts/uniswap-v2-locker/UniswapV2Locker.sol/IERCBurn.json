@@ -1,0 +1,6 @@
+[
+  "function allowance(address,address) returns (uint256)",
+  "function approve(address,uint256) returns (bool)",
+  "function balanceOf(address) view returns (uint256)",
+  "function burn(uint256)"
+]

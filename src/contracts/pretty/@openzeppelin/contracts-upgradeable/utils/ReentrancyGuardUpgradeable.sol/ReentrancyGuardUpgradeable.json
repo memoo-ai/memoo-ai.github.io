@@ -1,0 +1,6 @@
+[
+  "error InvalidInitialization()",
+  "error NotInitializing()",
+  "error ReentrancyGuardReentrantCall()",
+  "event Initialized(uint64)"
+]

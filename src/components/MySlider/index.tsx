@@ -22,7 +22,7 @@ const MySlider = ({ min = 5, max = 35, step, value = 0, onChange }: MySliderProp
 
   return (
     <div className="flex-1 flex items-center progress">
-      <div className="mr-[14px]">{min / 100}ETH</div>{' '}
+      <div className="mr-[14px]">{min}ETH</div>{' '}
       <Slider
         className="flex-1 progress_slider"
         min={min}
@@ -34,7 +34,7 @@ const MySlider = ({ min = 5, max = 35, step, value = 0, onChange }: MySliderProp
         tipFormatter={(value: any) => `${value}%`}
         tooltip={{ open: true }}
       />
-      <div className="ml-[14px]">{max / 100}ETH</div>
+      <div className="ml-[14px]">{max} ETH</div>
     </div>
   );
 };

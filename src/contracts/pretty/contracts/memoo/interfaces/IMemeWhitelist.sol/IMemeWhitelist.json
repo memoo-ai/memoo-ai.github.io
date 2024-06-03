@@ -1,0 +1,3 @@
+[
+  "function verify(address,address,uint256,bytes32[]) view returns (bool)"
+]

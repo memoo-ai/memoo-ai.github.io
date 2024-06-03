@@ -1,0 +1,8 @@
+[
+  "function addLiquidity(tuple(address,address,address,uint256,uint256,uint256,uint256,address,uint256)) returns (uint256, uint256, uint256)",
+  "function addLiquidityETH(tuple(address,address,uint256,uint256,uint256,address,uint256)) payable returns (uint256, uint256, uint256)",
+  "function approve(address,address,uint256)",
+  "function burn(address,uint256)",
+  "function transfer(address,address,uint256)",
+  "function transferEth(address,uint256)"
+]

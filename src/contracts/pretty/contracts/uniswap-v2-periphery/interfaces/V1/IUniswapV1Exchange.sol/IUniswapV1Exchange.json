@@ -1,0 +1,7 @@
+[
+  "function balanceOf(address) view returns (uint256)",
+  "function ethToTokenSwapInput(uint256,uint256) payable returns (uint256)",
+  "function removeLiquidity(uint256,uint256,uint256,uint256) returns (uint256, uint256)",
+  "function tokenToEthSwapInput(uint256,uint256,uint256) returns (uint256)",
+  "function transferFrom(address,address,uint256) returns (bool)"
+]

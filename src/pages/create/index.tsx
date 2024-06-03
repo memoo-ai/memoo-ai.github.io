@@ -1,7 +1,7 @@
 import './index.scss';
 import BackButton from '@/components/BackButton';
 import { Button } from '@/components/ui/button';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import {
   Cascader,
   Checkbox,
@@ -28,6 +28,8 @@ import {
 } from '@/api/token';
 import { useSearchParams } from 'react-router-dom';
 import { Trash } from 'lucide-react';
+import { useManageContract } from '@/hooks/useManageContract';
+import { parseEther, formatEther } from 'ethers';
 const PreLaunchDurationOptions = [
   { label: 'immediate', value: PreLaunchDurationEnum.IMMEDIATE },
   { label: '1 day', value: PreLaunchDurationEnum['1DAY'] },
@@ -41,6 +43,14 @@ export default function Create() {
   const [saveCraftLoading, setSaveCraftLoading] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [iconUrl, setIconUrl] = useState('');
+  const { config: memooConfig } = useManageContract();
+  console.log('memooConfig: ', memooConfig);
+
+  const totalCap = useMemo(() => {
+    if (!memooConfig) return 0;
+    return Number(formatEther(memooConfig?.memeIdoPrice)) * Number(formatEther(memooConfig?.memeTotalSupply));
+  }, [memooConfig]);
+  console.log('totalCap: ', totalCap);
   const normFile = (e: any) => {
     if (Array.isArray(e)) {
       return e;
@@ -236,7 +246,7 @@ export default function Create() {
               }
               name="preMarketAcquisition"
             >
-              <MySlider min={0} max={30} />
+              <MySlider min={0} max={totalCap} />
             </Form.Item>
             <p className="create_tip_for_acquisition">
               The creator can enhance the initial allocation by purchasing an additional 30%

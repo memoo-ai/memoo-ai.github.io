@@ -1,0 +1,3 @@
+[
+  "function getExchange(address) view returns (address)"
+]
