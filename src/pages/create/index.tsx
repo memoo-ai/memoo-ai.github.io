@@ -27,6 +27,7 @@ import {
   checkTickerExists,
 } from '@/api/token';
 import { useSearchParams } from 'react-router-dom';
+import { Trash } from 'lucide-react';
 const PreLaunchDurationOptions = [
   { label: 'immediate', value: PreLaunchDurationEnum.IMMEDIATE },
   { label: '1 day', value: PreLaunchDurationEnum['1DAY'] },
@@ -39,6 +40,7 @@ export default function Create() {
   const [form] = Form.useForm();
   const [saveCraftLoading, setSaveCraftLoading] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [iconUrl, setIconUrl] = useState('');
   const normFile = (e: any) => {
     if (Array.isArray(e)) {
       return e;
@@ -60,7 +62,8 @@ export default function Create() {
     if (ticker) {
       getTokenDetail(ticker).then((res) => {
         if (res?.data) {
-          form.setFieldsValue(res.data);
+          setIconUrl(res.data.icon);
+          form.setFieldsValue({ ...res.data, tokenIcon: res.data.icon, projectDescription: res.data.description });
         }
       });
     } else {
@@ -93,6 +96,10 @@ export default function Create() {
   };
 
   const handleConfirm = async () => {};
+
+  const handleRemove = () => {
+    setIconUrl('');
+  };
 
   return (
     <div className="create_token">
@@ -151,22 +158,32 @@ export default function Create() {
               getValueFromEvent={normFile}
               name="tokenIcon"
             >
-              <Upload
-                listType="picture-card"
-                accept="image/*"
-                maxCount={1}
-                beforeUpload={() => false}
-                showUploadList={{ showPreviewIcon: false, showRemoveIcon: true }}
-                style={{ width: 140, height: 140 }}
-                className="custom-upload-icon"
-              >
-                <button style={{ border: 0, background: 'none' }} type="button">
-                  <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
-                    <img src="./token/icon-upload.svg" alt="upload" className="w-[30px] h-[30px]" />
-                    <p className="font-OCR text-[10px] text-green leading-4">Upload Image</p>
-                  </div>
-                </button>
-              </Upload>
+              <div className="token-icon-form-item">
+                <div className="icon-url-container">
+                  <img src={iconUrl} alt="" />
+                  <span className="icon-url-actions">
+                    <Trash size={16} onClick={handleRemove} />
+                  </span>
+                </div>
+                {!iconUrl && (
+                  <Upload
+                    listType="picture-card"
+                    accept="image/*"
+                    maxCount={1}
+                    beforeUpload={() => false}
+                    showUploadList={{ showPreviewIcon: false, showRemoveIcon: true }}
+                    style={{ width: 140, height: 140 }}
+                    className="custom-upload-icon"
+                  >
+                    <button style={{ border: 0, background: 'none' }} type="button">
+                      <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
+                        <img src="./token/icon-upload.svg" alt="upload" className="w-[30px] h-[30px]" />
+                        <p className="font-OCR text-[10px] text-green leading-4">Upload Image</p>
+                      </div>
+                    </button>
+                  </Upload>
+                )}
+              </div>
             </Form.Item>
 
             <Form.Item

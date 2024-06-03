@@ -223,4 +223,62 @@
       }
     }
   }
+
+  .token-icon-form-item {
+    display: flex;
+    align-items: center;
+  }
+
+  .icon-url-container {
+    width: 140px;
+    height: 140px;
+    position: relative;
+    padding: 8px;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+
+    &::before {
+      position: absolute;
+      z-index: 1;
+      width: calc(100% - 16px);
+      height: calc(100% - 16px);
+      background-color: rgba(0, 0, 0, 0.45);
+      opacity: 0;
+      transition: all 0.3s;
+      content: " ";
+    }
+
+    &:hover::before {
+      opacity: 1;
+    }
+
+    &:hover {
+      .icon-url-actions {
+        opacity: 1;
+      }
+    }
+
+    .icon-url-actions {
+      position: absolute;
+      inset-inline-start: 0;
+      z-index: 10;
+      width: 100%;
+      white-space: nowrap;
+      text-align: center;
+      opacity: 0;
+      transition: all 0.3s;
+      display: flex;
+      justify-content: center;
+
+      margin: 0 4px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: #fff;
+    }
+  }
 }
