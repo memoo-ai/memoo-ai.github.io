@@ -16,6 +16,7 @@ import {
   Switch,
   TreeSelect,
   Upload,
+  message,
 } from 'antd';
 import { TextArea } from '@radix-ui/themes';
 import MySlider from '@/components/MySlider';
@@ -25,11 +26,17 @@ import {
   confirmTokenCreate,
   getTokenDetail,
   checkTickerExists,
+  getTwitterAccessToken,
 } from '@/api/token';
+import qs from 'qs';
+
 import { useSearchParams } from 'react-router-dom';
 import { Trash } from 'lucide-react';
 import { useManageContract } from '@/hooks/useManageContract';
 import { parseEther, formatEther } from 'ethers';
+const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
+const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
+
 const PreLaunchDurationOptions = [
   { label: 'immediate', value: PreLaunchDurationEnum.IMMEDIATE },
   { label: '1 day', value: PreLaunchDurationEnum['1DAY'] },
@@ -44,7 +51,8 @@ export default function Create() {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [iconUrl, setIconUrl] = useState('');
   const { config: memooConfig } = useManageContract();
-  console.log('memooConfig: ', memooConfig);
+  const [connectTwitterLoading, setConnectTwitterLoading] = useState(false);
+  // console.log('memooConfig: ', memooConfig);
 
   const totalCap = useMemo(() => {
     if (!memooConfig) return 0;
@@ -64,7 +72,33 @@ export default function Create() {
 
   const onFieldChange = (changedFields: any, allFields: any) => {
     console.log('onFieldsChange', changedFields);
-    form.setFieldValue('tokenIcon', changedFields[0].value);
+    const field = changedFields[0]?.name[0];
+    if (field === 'tokenIcon') {
+      form.setFieldValue('tokenIcon', changedFields[0].value);
+    } else if (field === 'banners') {
+      form.setFieldValue('banners', changedFields[0].value);
+    }
+  };
+
+  const connectTwitter = () => {
+    setConnectTwitterLoading(true);
+
+    let clientId = twitterClientId;
+    let state = 'twitter';
+
+    const params = {
+      response_type: 'code',
+      client_id: clientId,
+      redirect_uri: twitterRedirectUri,
+      scope: 'tweet.read%20tweet.write%20like.write%20users.read%20follows.read%20follows.write',
+      state,
+      code_challenge: 'challenge',
+      code_challenge_method: 'plain',
+    };
+    const url = new URL(`https://twitter.com/i/oauth2/authorize`);
+    url.search = qs.stringify(params, { encode: false });
+
+    window.location.href = url.href;
   };
 
   useEffect(() => {
@@ -82,21 +116,22 @@ export default function Create() {
         preLaunchDuration: PreLaunchDurationEnum['IMMEDIATE'],
       });
     }
-    // form.setFieldsValue({
-    //   tokenName: 'BaseDoge',
-    //   ticker: 'BDG',
-    //   preLaunchDuration: PreLaunchDurationEnum['1DAY'],
-    //   preMarketAcquisition: '2',
-    //   projectDescription: 'test test te st et est es t est se t te st se t tes t ',
-    //   tokenIcon: [],
-    // });
   }, [searchParams]);
 
   const handleSaveCraft = async () => {
     try {
+      if (!isAccept) {
+        message.warning('Please accept the terms and conditions.');
+        return;
+      }
+      await form.validateFields();
       setSaveCraftLoading(true);
       const data = form.getFieldsValue();
-      data.tokenIcon = data.tokenIcon[0].originFileObj;
+      if (iconUrl) {
+        data.tokenIcon = iconUrl;
+      } else {
+        data.tokenIcon = data.tokenIcon[0]?.originFileObj;
+      }
       const res = await saveTokenCraft(data);
       console.log('res: ', res);
     } catch (e) {
@@ -170,15 +205,17 @@ export default function Create() {
               name="tokenIcon"
             >
               <div className="token-icon-form-item">
-                <div className="icon-url-container">
-                  <img src={iconUrl} alt="" />
-                  <span className="icon-url-actions">
-                    <Trash size={16} onClick={handleRemove} />
-                  </span>
-                </div>
+                {iconUrl && (
+                  <div className="icon-url-container">
+                    <img src={iconUrl} alt="" />
+                    <span className="icon-url-actions">
+                      <Trash size={16} onClick={handleRemove} />
+                    </span>
+                  </div>
+                )}
                 {!iconUrl && (
                   <Upload
-                    listType="picture-card"
+                    listType="picture"
                     accept="image/*"
                     maxCount={1}
                     beforeUpload={() => false}
@@ -223,7 +260,7 @@ export default function Create() {
             >
               <div className="flex items-center">
                 <img src="./token/icon-twitter.svg" className="w-4 h-4 mr-4" />
-                <Button variant="secondary" className="w-[136px] h-[32px]">
+                <Button variant="secondary" className="w-[136px] h-[32px]" onClick={connectTwitter}>
                   CONNECT
                 </Button>
               </div>
@@ -270,16 +307,25 @@ export default function Create() {
                     label={<p>Upload Project Banner</p>}
                     valuePropName="bannerList"
                     getValueFromEvent={normFile}
-                    name="banner"
+                    name="banners"
                   >
                     <Upload
                       listType="picture-card"
                       accept="image/*"
                       maxCount={1}
                       beforeUpload={() => false}
-                      showUploadList={{ showPreviewIcon: false, showRemoveIcon: true }}
+                      showUploadList={{ showPreviewIcon: true, showRemoveIcon: true }}
                       style={{ width: 140, height: 140 }}
                       className="custom-upload-banner"
+                      previewFile={(file) => {
+                        return new Promise((resolve) => {
+                          const reader = new FileReader();
+                          reader.readAsDataURL(file);
+                          reader.onload = () => {
+                            resolve(reader.result as string);
+                          };
+                        });
+                      }}
                     >
                       <button style={{ border: 0, background: 'none' }} type="button">
                         <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
@@ -318,6 +364,7 @@ export default function Create() {
           </div>
           <div>
             <Checkbox
+              value={isAccept}
               onChange={() => {
                 setIsAccept(!isAccept);
               }}

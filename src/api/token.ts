@@ -17,14 +17,18 @@ export interface ITokenSaveData {
   tokenName: string;
   twitter?: string;
   website?: string;
-  tokenIcon: File;
+  tokenIcon: File | string;
   banners: File;
 }
 
 const getFormData = (data: ITokenSaveData) => {
   const formData = new FormData();
-  formData.append('icon', data.tokenIcon);
-  // formData.append('banners', data.banners);
+  if (data.tokenIcon && data.tokenIcon instanceof File) {
+    formData.append('icon', data.tokenIcon);
+  }
+  if (data.banners && data.banners instanceof File) {
+    formData.append('banners', data.banners);
+  }
   formData.append('preLaunchDuration', data.preLaunchDuration);
   formData.append('preMarketAcquisition', data.preMarketAcquisition);
   formData.append('projectDescription', data.projectDescription || '');
@@ -58,4 +62,16 @@ export const checkTickerExists = (ticker: string) => {
 
 export const getTokenDetail = (ticker: string) => {
   return http.get(`${prefix}/web-oriented/token?ticker=${ticker}`);
+};
+
+export interface GetTwitterAccessTokenParams {
+  code: string;
+  codeVerifier: string;
+  grantType: string;
+  redirectUri: string;
+  refreshToken: string;
+}
+
+export const getTwitterAccessToken = (params: GetTwitterAccessTokenParams) => {
+  return http.get(`${prefix}/web-oriented/request-bearer-token`, { params });
 };
