@@ -3,7 +3,7 @@ import { useState, Children, cloneElement, isValidElement } from 'react';
 import './index.scss';
 import { Modal, Button } from 'antd';
 import { IconLock, IconClose, IconCompleted } from '@/components/icons';
-export const ClaimConfirm = ({ children }: any) => {
+export const ClaimConfirm = ({ creator, children }: any) => {
   const [open, setOpen] = useState(false);
   return (
     <div>
@@ -27,19 +27,19 @@ export const ClaimConfirm = ({ children }: any) => {
           <div className="flex">
             <div className="unlock">
               <h3>14 days</h3>
-              <p>14 days</p>
+              <p>Next Unlock</p>
             </div>
             <IconLock className="lock" />
           </div>
         </div>
         <div className="flex justify-between mt-[39px] items-center">
           <div className="unlocked">
-            <span>Redeem 1st 50% unlocked tokens</span> <img src="./dashboard/reward.svg" alt="" />
+            <span>Redeem 2nd 50% unlocked tokens</span> <img src="./dashboard/reward.svg" alt="" />
           </div>
           <div className="flex">
             <div className="unlock">
               <h3>14 days</h3>
-              <p>14 days</p>
+              <p>Claim Completed</p>
             </div>
             <IconCompleted className="lock" />
           </div>

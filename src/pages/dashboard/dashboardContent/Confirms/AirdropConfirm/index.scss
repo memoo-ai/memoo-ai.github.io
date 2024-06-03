@@ -56,10 +56,27 @@
     color: #FFFFFF;
   }
   .confirm_content_wif{
-    width: 100%;
+    width: 100% !important;
     text-align: center;
+    background: #2B526E;
+    border-radius: 7px;
+    height: 66px;
+    margin-top: 26px;
+    font-family: '404px';
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 66px;
+    color: #FFFFFF;
+    position: relative;
+
+    .airdrop_lock{
+      position: absolute;
+      top: 50%;
+      left: 10px;
+      transform: translateY(-50%);
+    }
   }
-  .confirm_btn{
+  .airdrop_confirm_btn{
     width: 100%;
     .custom_ant_btn{
       &:hover{

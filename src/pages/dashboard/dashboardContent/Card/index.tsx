@@ -1,11 +1,13 @@
 import './index.scss';
 import { IconDraft, IconQueue, IconLaunched, IconIMO } from '@/components/icons';
-import { CreatorList } from '../type';
+import { DashboardCreator } from '@/types';
+import { useNavigate } from 'react-router-dom';
 interface CardProps {
-  data: CreatorList;
+  data: DashboardCreator;
   children: any;
 }
 export const Card = ({ data, children }: CardProps) => {
+  const navigate = useNavigate();
   const renderIcon = (type: string) => {
     let icon;
 
@@ -30,7 +32,14 @@ export const Card = ({ data, children }: CardProps) => {
     return icon;
   };
   return (
-    <div className="dashboard_item">
+    <div
+      className="dashboard_item"
+      onClick={() => {
+        if (data.status !== 'Draft') {
+          navigate(`/airdrop/${data.ticker}`);
+        }
+      }}
+    >
       <div className="dashboard_item_tag">
         <div className="dashboard_item_tag_left" />
         {/* <div className="dashboard_item_tag_left">SAMPLE</div> */}
@@ -64,7 +73,7 @@ export const Card = ({ data, children }: CardProps) => {
         <div className="dashboard_item_content_left">MeMoo Score</div>
         <div className="dashboard_item_content_right">{data.meMooScore}</div>
       </div>
-      <div>{children}</div>
+      <div onClick={(event) => event.stopPropagation()}>{children}</div>
     </div>
   );
 };

@@ -30,10 +30,6 @@ const routeConfig: RouteObject[] = [
         path: '/airdrop/:ticker',
         Component: lazy(() => import('../pages/airdrop')),
       },
-      {
-        path: '/tokenProfile',
-        Component: lazy(() => import('../pages/tokenProfile')),
-      },
     ],
   },
   {

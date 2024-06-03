@@ -9,9 +9,7 @@ import {
   // IconAddress,
   // IconETH,
 } from '@/components/icons';
-import { ClaimConfirm } from '../Confirms/ClaimConfirm';
 import { AirdropConfirm } from '../Confirms/AirdropConfirm';
-import { IncreaseConfirm } from '../Confirms/IncreaseConfirm';
 import GoLaunchPadACard from '../goLaunchpadCard';
 import { useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
@@ -77,7 +75,7 @@ export const Collector = () => {
               <div className="flex justify-between items-center mt-[15px]">
                 {tab === 'Airdrop' ? (
                   <div>
-                    {item.claimFalg ? (
+                    {!item.claimFalg ? (
                       <AirdropConfirm>
                         {' '}
                         <Button

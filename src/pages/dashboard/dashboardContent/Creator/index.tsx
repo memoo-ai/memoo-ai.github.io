@@ -19,7 +19,7 @@ import { IncreaseConfirm } from '../Confirms/IncreaseConfirm';
 import { useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import { getCreator, deleteToken } from '@/api/dashboard';
-import { CreatorStatus, CreatorList } from '../type';
+import { CreatorStatus } from '../type';
 import { DashboardCreator } from '@/types';
 
 const pageSize = 11;
@@ -55,7 +55,7 @@ export const Creator = () => {
   const deleteDraft = async (id: string) => {
     await deleteToken(id);
   };
-  const renderButton = (item: CreatorList) => {
+  const renderButton = (item: DashboardCreator) => {
     let button;
     switch (item.status) {
       case 'Draft':
@@ -76,7 +76,7 @@ export const Creator = () => {
         break;
       case 'QUEUE':
         button = (
-          <IncreaseConfirm>
+          <IncreaseConfirm creator={item}>
             <Button
               className="flex items-center justify-between"
               onMouseOver={() => iconRefs.current['increase'].setHovered(true)}
@@ -90,7 +90,7 @@ export const Creator = () => {
         break;
       case 'IDO':
         button = (
-          <IncreaseConfirm>
+          <IncreaseConfirm creator={item}>
             <Button
               className="flex items-center justify-between"
               onMouseOver={() => iconRefs.current['increase'].setHovered(true)}
@@ -104,7 +104,7 @@ export const Creator = () => {
         break;
       case 'Launched':
         button = (
-          <ClaimConfirm>
+          <ClaimConfirm creator={item}>
             {' '}
             <Button
               className="flex items-center justify-between"
@@ -124,7 +124,7 @@ export const Creator = () => {
         break;
       default:
         button = (
-          <AirdropConfirm>
+          <AirdropConfirm creator={item}>
             {' '}
             <Button
               className="flex items-center justify-between"
@@ -192,7 +192,12 @@ export const Creator = () => {
             <Card key={index} data={item}>
               <div className="flex justify-between items-center mt-[15px]">
                 <div>{renderButton(item)}</div>
-                <div className={item.status === 'Draft' ? 'draft' : ''}>
+                <div
+                  className={item.status === 'Draft' ? 'draft' : ''}
+                  onClick={() => {
+                    navigate(item.status === 'Draft' ? `/create?ticker=${item.ticker}` : `/airdrop/${item.ticker}`);
+                  }}
+                >
                   <IconEdit
                     className="dashboard_item_create_edit"
                     color={item.status === 'Draft' ? '#7D83B5' : '#07E993'}
@@ -200,6 +205,7 @@ export const Creator = () => {
                     bgColor={item.status === 'Draft' ? '#383C61' : '#242842'}
                     hoverBgColor={item.status === 'Draft' ? '#1F3B4F' : '#07E993'}
                     style={{ border: item.status === 'Draft' ? 'none' : '1px solid #07E993' }}
+                    // onClick={navigate(`/airdrop/${item.ticker}`)}
                   />
                 </div>
               </div>

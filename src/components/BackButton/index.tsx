@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 interface BackButtonProps {
   path?: string;
 }
-export default ({ path = '/dashboard', ...rest }: BackButtonProps) => {
+const BackButton = ({ path = '/dashboard', ...rest }: BackButtonProps) => {
   const navigate = useNavigate();
 
   return (
@@ -19,3 +19,4 @@ export default ({ path = '/dashboard', ...rest }: BackButtonProps) => {
     </div>
   );
 };
+export default BackButton;
