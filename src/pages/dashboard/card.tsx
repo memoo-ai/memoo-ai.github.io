@@ -1,7 +1,8 @@
-import './index.scss';
+import './card.scss';
 import { IconDraft, IconQueue, IconLaunched, IconIMO } from '@/components/icons';
 import { DashboardCreator } from '@/types';
 import { useNavigate } from 'react-router-dom';
+import { formatTs } from '@/utils';
 interface CardProps {
   data: DashboardCreator;
   children: any;
@@ -67,7 +68,7 @@ export const Card = ({ data, children }: CardProps) => {
       </div>
       <div className="dashboard_item_content">
         <div className="dashboard_item_content_left">Launch Date</div>
-        <div className="dashboard_item_content_right">{data.launchDate}</div>
+        <div className="dashboard_item_content_right">{formatTs(data.launchDate ?? 0)}</div>
       </div>
       <div className="dashboard_item_content">
         <div className="dashboard_item_content_left">MeMoo Score</div>

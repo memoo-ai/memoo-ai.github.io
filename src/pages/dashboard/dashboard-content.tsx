@@ -1,12 +1,12 @@
 import './index.scss';
 import { Tabs as AntTabs } from 'antd';
 import { useCallback, useState, FC, useEffect } from 'react';
-import { Creator } from './Creator';
-import { Collector } from './Collector';
-import { WatchList } from './WatchList';
+import { Creator } from './creator';
+import { Collector } from './collector';
+import { WatchList } from './watchlist';
 import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 
-export const DashboardContent: FC<{ onChangeType: (type: string) => void }> = ({ onChangeType, ...rest }) => {
+const DashboardContent: FC<{ onChangeType: (type: string) => void }> = ({ onChangeType, ...rest }) => {
   const [activeKey, setActiveKey] = useState('Creator');
   const location = useLocation();
   const onChange = useCallback((e: any) => {
@@ -45,3 +45,4 @@ export const DashboardContent: FC<{ onChangeType: (type: string) => void }> = ({
     </div>
   );
 };
+export default DashboardContent;

@@ -1,7 +1,7 @@
-import './index.scss';
+import './creator.scss';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card } from '../Card';
-import { Button } from 'antd';
+import { Card } from './card';
+import { Button, Spin } from 'antd';
 import IPagination from '@/components/IPagination';
 import {
   IconAwaiting,
@@ -9,18 +9,19 @@ import {
   // IconAddress,
   // IconETH,
 } from '@/components/icons';
-import { AirdropConfirm } from '../Confirms/AirdropConfirm';
-import GoLaunchPadACard from '../goLaunchpadCard';
+import AirdropModal from './airdrop-modal';
+import GoLaunchPadACard from './go-launchpad-card';
 import { useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import { getCollectorAirdrop, getCollectorParticipated } from '@/api/dashboard';
-import { CollectorType } from '../type';
+import { CollectorType } from './type';
 import { DashboardCreator } from '@/types';
 
 const pageSize = 11;
 export const Collector = () => {
   const navigate = useNavigate();
   const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState<CollectorType>('Airdrop');
   const [currentPage, setCurrentPage] = useState(1);
   const iconRefs = useRef<any>({});
@@ -28,6 +29,7 @@ export const Collector = () => {
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true);
         let params = {
           pageNumber: currentPage,
           pageSize,
@@ -35,8 +37,11 @@ export const Collector = () => {
         const { data } = tab === 'Airdrop' ? await getCollectorAirdrop(params) : await getCollectorParticipated(params);
         setList(data.records ?? []);
         setTotal(data.total_record);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
       }
     })();
   }, [tab, currentPage]);
@@ -68,7 +73,7 @@ export const Collector = () => {
       </div>
       <div className="dashboard_items_items">
         <GoLaunchPadACard />
-
+        <Spin spinning={loading} fullscreen />
         {list.map((item, index) => {
           return (
             <Card key={index} data={item}>
@@ -76,7 +81,7 @@ export const Collector = () => {
                 {tab === 'Airdrop' ? (
                   <div>
                     {!item.claimFalg ? (
-                      <AirdropConfirm>
+                      <AirdropModal>
                         {' '}
                         <Button
                           className="flex items-center justify-between"
@@ -91,7 +96,7 @@ export const Collector = () => {
                           />
                           <span className="ml-[9px]">CLAIM AIRDROP</span>
                         </Button>
-                      </AirdropConfirm>
+                      </AirdropModal>
                     ) : (
                       <div className="flex">
                         <IconAwaiting className="IconAwaiting" />{' '}

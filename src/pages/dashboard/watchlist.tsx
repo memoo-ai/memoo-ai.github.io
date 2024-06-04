@@ -1,12 +1,13 @@
-import './index.scss';
-import { Card } from '../Card';
+import './watchlist.scss';
+import { Card } from './card';
 import IPagination from '@/components/IPagination';
 import { IconCollect } from '@/components/icons';
 import { useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
-import GoLaunchPadACard from '../goLaunchpadCard';
+import GoLaunchPadACard from './go-launchpad-card';
 import { getWatchList } from '@/api/dashboard';
-import { CreatorStatus, CreatorList } from '../type';
+import { CreatorStatus, CreatorList } from './type';
+import { Button, Spin } from 'antd';
 import { cancelCollect } from '@/api/dashboard';
 export const WatchList = () => {
   const navigate = useNavigate();
@@ -15,17 +16,22 @@ export const WatchList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [list, setList] = useState<CreatorList[]>([]);
   const iconRefs = useRef<any>({});
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true);
         const { data } = await getWatchList({
           pageNumber: currentPage,
           pageSize: 10,
         });
         setList(data.records);
         setTotal(data.total_record);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
       }
     })();
   }, [currentPage, update]);
@@ -42,6 +48,7 @@ export const WatchList = () => {
       </div>
       <div className="dashboard_items_items">
         <GoLaunchPadACard />
+        <Spin spinning={loading} fullscreen />
         {list.map((item, index) => {
           return (
             <Card key={index} data={item}>

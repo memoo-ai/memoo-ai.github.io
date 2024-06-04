@@ -1,9 +1,9 @@
 import { useState, Children, cloneElement, isValidElement } from 'react';
 
-import './index.scss';
+import './airdrop-modal.scss';
 import { Modal, Button } from 'antd';
 import { IconLock, IconClose, IconCompleted } from '@/components/icons';
-export const AirdropConfirm = ({ children }: any) => {
+const AirdropModal = ({ children }: any) => {
   const [open, setOpen] = useState(false);
   return (
     <div>
@@ -41,3 +41,4 @@ export const AirdropConfirm = ({ children }: any) => {
     </div>
   );
 };
+export default AirdropModal;

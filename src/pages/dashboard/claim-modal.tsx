@@ -1,10 +1,10 @@
 import { useState, Children, cloneElement, isValidElement, useEffect } from 'react';
 
-import './index.scss';
+import './claim-modal.scss';
 import { Modal, Button } from 'antd';
 import { IconLock, IconClose, IconCompleted } from '@/components/icons';
 import { getTokenDetail } from '@/api/token';
-export const ClaimConfirm = ({ creator, children }: any) => {
+const ClaimModal = ({ creator, children }: any) => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -78,3 +78,4 @@ export const ClaimConfirm = ({ creator, children }: any) => {
     </div>
   );
 };
+export default ClaimModal;

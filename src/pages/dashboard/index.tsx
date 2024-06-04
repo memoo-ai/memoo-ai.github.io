@@ -1,6 +1,6 @@
 import './index.scss';
 import { useCallback, useState } from 'react';
-import { DashboardContent } from './dashboardContent';
+import DashboardContent from './dashboard-content';
 import CommonBanner from '@/components/Banner';
 import DashboardBannerImg1 from './assets/dashboard_banner1.png';
 import DashboardBannerBgImg1 from './assets/dashboard_banner_bg1.png';

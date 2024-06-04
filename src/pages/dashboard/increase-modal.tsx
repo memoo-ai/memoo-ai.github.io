@@ -1,12 +1,12 @@
 import { useState, Children, cloneElement, isValidElement, useMemo } from 'react';
 
-import './index.scss';
+import './increase-modal.scss';
 import { Modal, Button, Checkbox, Tooltip } from 'antd';
 import { IconClose, IconETH, IconTip } from '@/components/icons';
 import MySlider from '@/components/MySlider';
-import { parseEther, formatEther } from 'ethers';
+import { formatEther } from 'ethers';
 import { useManageContract } from '@/hooks/useManageContract';
-export const IncreaseConfirm = ({ children }: any) => {
+const IncreaseModal = ({ children }: any) => {
   const [open, setOpen] = useState(false);
   const [isAccept, setIsAccept] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -76,7 +76,7 @@ export const IncreaseConfirm = ({ children }: any) => {
               value={progress}
               onChange={(value) => {
                 setProgress(value);
-                setIdoPrice(value * totalCap);
+                setIdoPrice(Number((value * totalCap).toLocaleString()));
               }}
             />
           </div>
@@ -112,3 +112,5 @@ export const IncreaseConfirm = ({ children }: any) => {
     </div>
   );
 };
+
+export default IncreaseModal;

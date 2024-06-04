@@ -1,6 +1,6 @@
 import './index.scss';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card } from '../Card';
+import { Card } from './card';
 import { Button, Spin } from 'antd';
 import IPagination from '@/components/IPagination';
 import {
@@ -13,13 +13,13 @@ import {
   // IconAddress,
   // IconETH,
 } from '@/components/icons';
-import { ClaimConfirm } from '../Confirms/ClaimConfirm';
-import { AirdropConfirm } from '../Confirms/AirdropConfirm';
-import { IncreaseConfirm } from '../Confirms/IncreaseConfirm';
+import ClaimModal from './claim-modal';
+import AirdropModal from './airdrop-modal';
+import IncreaseModal from './increase-modal';
 import { useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import { getCreator, deleteToken } from '@/api/dashboard';
-import { CreatorStatus } from '../type';
+import { CreatorStatus } from './type';
 import { DashboardCreator } from '@/types';
 
 const pageSize = 11;
@@ -76,7 +76,7 @@ export const Creator = () => {
         break;
       case 'QUEUE':
         button = (
-          <IncreaseConfirm creator={item}>
+          <IncreaseModal creator={item}>
             <Button
               className="flex items-center justify-between"
               onMouseOver={() => iconRefs.current['increase'].setHovered(true)}
@@ -85,12 +85,12 @@ export const Creator = () => {
               <IconQueueBtn className="QueueBtn" ref={(ref) => (iconRefs.current['increase'] = ref)} />
               <span className="ml-[9px]">INCREASE</span>
             </Button>
-          </IncreaseConfirm>
+          </IncreaseModal>
         );
         break;
       case 'IDO':
         button = (
-          <IncreaseConfirm creator={item}>
+          <IncreaseModal creator={item}>
             <Button
               className="flex items-center justify-between"
               onMouseOver={() => iconRefs.current['increase'].setHovered(true)}
@@ -99,12 +99,12 @@ export const Creator = () => {
               <IconQueueBtn className="QueueBtn" ref={(ref) => (iconRefs.current['increase'] = ref)} />
               <span className="ml-[9px]">INCREASE</span>
             </Button>
-          </IncreaseConfirm>
+          </IncreaseModal>
         );
         break;
       case 'Launched':
         button = (
-          <ClaimConfirm creator={item}>
+          <ClaimModal creator={item}>
             {' '}
             <Button
               className="flex items-center justify-between"
@@ -120,12 +120,12 @@ export const Creator = () => {
               />
               <span className="ml-[9px]">CLAIM</span>
             </Button>
-          </ClaimConfirm>
+          </ClaimModal>
         );
         break;
       default:
         button = (
-          <AirdropConfirm creator={item}>
+          <AirdropModal creator={item}>
             {' '}
             <Button
               className="flex items-center justify-between"
@@ -140,7 +140,7 @@ export const Creator = () => {
               />
               <span className="ml-[9px]">CLAIM AIRDROP</span>
             </Button>
-          </AirdropConfirm>
+          </AirdropModal>
         );
         break;
     }
@@ -187,7 +187,7 @@ export const Creator = () => {
 
           <p>Create Token</p>
         </div>
-        <Spin spinning={loading} />
+        <Spin spinning={loading} fullscreen />
         {list.map((item, index) => {
           return (
             <Card key={index} data={item}>
