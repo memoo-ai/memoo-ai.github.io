@@ -50,6 +50,7 @@ export default function Create() {
     if (!memooConfig) return 0;
     return Number(formatEther(memooConfig?.memeIdoPrice)) * Number(formatEther(memooConfig?.memeTotalSupply));
   }, [memooConfig]);
+  console.log('memooConfig: ', memooConfig);
   console.log('totalCap: ', totalCap);
   const normFile = (e: any) => {
     if (Array.isArray(e)) {

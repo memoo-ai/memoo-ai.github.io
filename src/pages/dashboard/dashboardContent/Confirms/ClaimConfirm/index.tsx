@@ -1,10 +1,23 @@
-import { useState, Children, cloneElement, isValidElement } from 'react';
+import { useState, Children, cloneElement, isValidElement, useEffect } from 'react';
 
 import './index.scss';
 import { Modal, Button } from 'antd';
 import { IconLock, IconClose, IconCompleted } from '@/components/icons';
+import { getTokenDetail } from '@/api/token';
 export const ClaimConfirm = ({ creator, children }: any) => {
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await getTokenDetail(creator.ticker);
+        console.log(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    })();
+  }, [creator]);
+
   return (
     <div>
       <Modal

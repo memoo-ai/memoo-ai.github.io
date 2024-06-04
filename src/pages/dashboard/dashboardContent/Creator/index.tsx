@@ -111,7 +111,7 @@ export const Creator = () => {
               key="increase"
               onMouseOver={() => iconRefs.current['LaunchedBtn'].setHovered(true)}
               onMouseLeave={() => iconRefs.current['LaunchedBtn'].setHovered(false)}
-              disabled={!item.stageOneClaim}
+              // disabled={!item.stageOneClaim}
             >
               <IconLaunchedBtn
                 className="LaunchedBtn"
