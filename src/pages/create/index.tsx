@@ -52,11 +52,14 @@ export default function Create() {
   const [iconUrl, setIconUrl] = useState('');
   const { config: memooConfig } = useManageContract();
   const [connectTwitterLoading, setConnectTwitterLoading] = useState(false);
-  // console.log('memooConfig: ', memooConfig);
+  const [twitter, setTwitter] = useState('');
+  const [twitterAccessToken, setTwitterAccessToken] = useState('');
+  console.log('memooConfig: ', memooConfig);
 
   const totalCap = useMemo(() => {
     if (!memooConfig) return 0;
-    return Number(formatEther(memooConfig?.memeIdoPrice)) * Number(formatEther(memooConfig?.memeTotalSupply));
+    const rate = Number(memooConfig.idoCreatorBuyLimit) / 10000;
+    return Number(formatEther(memooConfig?.memeIdoPrice)) * Number(formatEther(memooConfig?.memeTotalSupply)) * rate;
   }, [memooConfig]);
   console.log('memooConfig: ', memooConfig);
   console.log('totalCap: ', totalCap);
@@ -81,6 +84,8 @@ export default function Create() {
   };
 
   const connectTwitter = () => {
+    // TODO: save form data to local; when callback from twitter, the form data will be lost.
+
     setConnectTwitterLoading(true);
 
     let clientId = twitterClientId;
@@ -107,7 +112,10 @@ export default function Create() {
     if (ticker) {
       getTokenDetail(ticker).then((res) => {
         if (res?.data) {
+          // get twitter binded data
           setIconUrl(res.data.icon);
+          setTwitter(res.data.twitter);
+          setTwitterAccessToken(res.data.twitterAccessToken);
           form.setFieldsValue({ ...res.data, tokenIcon: res.data.icon, projectDescription: res.data.description });
         }
       });
@@ -116,32 +124,62 @@ export default function Create() {
         preLaunchDuration: PreLaunchDurationEnum['IMMEDIATE'],
       });
     }
+    const code = searchParams.get('code');
+    const state = searchParams.get('state');
+    if (state === 'twitter' && code) {
+      // call api to bind
+      const params = {
+        code,
+        grantType: 'authorization_code',
+        // clientd: twitterClientId,
+        redirectUri: twitterRedirectUri,
+        codeVerifier: 'challenge',
+        refreshToken: '',
+      };
+      getTwitterAccessToken(params).then((res) => {
+        const { access_token, twitter } = res.data;
+        setTwitterAccessToken(access_token);
+        setTwitter(twitter);
+      });
+    }
   }, [searchParams]);
 
-  const handleSaveCraft = async () => {
+  const handleSave = async (isConfirm: boolean) => {
     try {
       if (!isAccept) {
         message.warning('Please accept the terms and conditions.');
         return;
       }
       await form.validateFields();
-      setSaveCraftLoading(true);
+      // twitter must have been connected
+      if (!twitter || !twitterAccessToken) {
+        message.warning('Please connect project twitter first.');
+        return;
+      }
       const data = form.getFieldsValue();
+      // TODO check ticker if exits
       if (iconUrl) {
         data.tokenIcon = iconUrl;
       } else {
         data.tokenIcon = data.tokenIcon[0]?.originFileObj;
       }
-      const res = await saveTokenCraft(data);
-      console.log('res: ', res);
+      if (isConfirm) {
+        setConfirmLoading(true);
+        const res = await confirmTokenCreate(data);
+        console.log('res: ', res);
+        // Go to dashboard
+      } else {
+        setSaveCraftLoading(true);
+        const res = await saveTokenCraft(data);
+        console.log('res: ', res);
+      }
     } catch (e) {
       console.log(e);
     } finally {
       setSaveCraftLoading(false);
+      setConfirmLoading(false);
     }
   };
-
-  const handleConfirm = async () => {};
 
   const handleRemove = () => {
     setIconUrl('');
@@ -223,7 +261,7 @@ export default function Create() {
                     style={{ width: 140, height: 140 }}
                     className="custom-upload-icon"
                   >
-                    <button style={{ border: 0, background: 'none' }} type="button">
+                    <button style={{ border: 0, background: 'none', width: '100%', height: '100%' }} type="button">
                       <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
                         <img src="./token/icon-upload.svg" alt="upload" className="w-[30px] h-[30px]" />
                         <p className="font-OCR text-[10px] text-green leading-4">Upload Image</p>
@@ -260,9 +298,12 @@ export default function Create() {
             >
               <div className="flex items-center">
                 <img src="./token/icon-twitter.svg" className="w-4 h-4 mr-4" />
-                <Button variant="secondary" className="w-[136px] h-[32px]" onClick={connectTwitter}>
-                  CONNECT
-                </Button>
+                {twitterAccessToken && <img src="./create/icon-authed.svg" />}
+                {!twitterAccessToken && (
+                  <Button variant="secondary" className="w-[136px] h-[32px]" onClick={connectTwitter}>
+                    CONNECT
+                  </Button>
+                )}
               </div>
             </Form.Item>
 
@@ -377,7 +418,7 @@ export default function Create() {
             <Button
               variant="secondary"
               className="w-[322px] h-[50px] uppercase"
-              onClick={handleSaveCraft}
+              onClick={() => handleSave(false)}
               loading={saveCraftLoading}
             >
               <span className="flex items-center">
@@ -388,7 +429,7 @@ export default function Create() {
             <Button
               variant="default"
               className="w-[322px] h-[50px] uppercase ml-[16px]"
-              onClick={handleConfirm}
+              onClick={() => handleSave(true)}
               loading={confirmLoading}
             >
               confirm

@@ -12,7 +12,7 @@ export interface MemooConfig {
   platformFeeCreateMemePayToken: string; // '0x0000000000000000000000000000000000000000';
   memeIdoPrice: string; //  '0.00000001';
   memeTotalSupply: string; // '0';
-  idoCreatorBuyLimit: string;
+  idoCreatorBuyLimit: bigint;
 }
 
 export const useManageContract = () => {

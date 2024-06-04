@@ -22,7 +22,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/backend/api/v1': {
-        target: 'http://8.130.122.217:8080',
+        target: 'https://xapp.memoo.ai',
         changeOrigin: true,
       },
     },

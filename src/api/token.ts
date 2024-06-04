@@ -1,6 +1,6 @@
 import http from '@/utils/http';
 import { prefix } from '.';
-
+import { ApiResponse } from './base';
 export const enum PreLaunchDurationEnum {
   'IMMEDIATE' = 'IMMEDIATE',
   '1DAY' = '1DAY',
@@ -71,7 +71,14 @@ export interface GetTwitterAccessTokenParams {
   redirectUri: string;
   refreshToken: string;
 }
-
-export const getTwitterAccessToken = (params: GetTwitterAccessTokenParams) => {
+export interface GetTwitterAccessTokenData {
+  access_token: string;
+  expires_in: number;
+  refresh_token: string;
+  twitter: string;
+}
+export const getTwitterAccessToken = (
+  params: GetTwitterAccessTokenParams,
+): Promise<ApiResponse<GetTwitterAccessTokenData>> => {
   return http.get(`${prefix}/web-oriented/request-bearer-token`, { params });
 };
