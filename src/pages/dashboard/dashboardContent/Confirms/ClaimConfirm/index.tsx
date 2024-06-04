@@ -20,30 +20,34 @@ export const ClaimConfirm = ({ creator, children }: any) => {
         closeIcon={<IconClose className="close" />}
       >
         <div className="confirm_title">Claim Tokens</div>
-        <div className="flex justify-between mt-[39px] items-center">
-          <div className="unlocked">
-            <span>Redeem 1st 50% unlocked tokens</span> <img src="./dashboard/reward.svg" alt="" />
-          </div>
-          <div className="flex">
-            <div className="unlock">
-              <h3>14 days</h3>
-              <p>Next Unlock</p>
+        {creator.stageOneClaim ? (
+          <div className="flex justify-between mt-[39px] items-center">
+            <div className="unlocked">
+              <span>Redeem 1st 50% unlocked tokens</span> <img src="./dashboard/reward.svg" alt="" />
             </div>
-            <IconLock className="lock" />
-          </div>
-        </div>
-        <div className="flex justify-between mt-[39px] items-center">
-          <div className="unlocked">
-            <span>Redeem 2nd 50% unlocked tokens</span> <img src="./dashboard/reward.svg" alt="" />
-          </div>
-          <div className="flex">
-            <div className="unlock">
-              <h3>14 days</h3>
-              <p>Claim Completed</p>
+            <div className="flex">
+              <div className="unlock">
+                <h3>14 days</h3>
+                <p>Next Unlock</p>
+              </div>
+              <IconLock className="lock" />
             </div>
-            <IconCompleted className="lock" />
           </div>
-        </div>
+        ) : undefined}
+        {creator.stageTwoClaim ? (
+          <div className="flex justify-between mt-[39px] items-center">
+            <div className="unlocked">
+              <span>Redeem 2nd 50% unlocked tokens</span> <img src="./dashboard/reward.svg" alt="" />
+            </div>
+            <div className="flex">
+              <div className="unlock">
+                <h3>14 days</h3>
+                <p>Claim Completed</p>
+              </div>
+              <IconCompleted className="lock" />
+            </div>
+          </div>
+        ) : undefined}
         <div className="claimable">
           <div className="claimable_left">Claimable LEASH</div>
           <div className="claimable_right">250,000,000</div>
