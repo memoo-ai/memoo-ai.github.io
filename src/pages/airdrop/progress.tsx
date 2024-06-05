@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 /* eslint-disable react/no-unstable-nested-components */
 import { FC, ReactNode, useContext, useMemo } from 'react';
 import { AirdropContext } from '../airdrop';
@@ -19,11 +20,6 @@ const Progress: FC = () => {
 
   const maxProportion = useMemo(() => Number(memooConfig?.idoCreatorBuyLimit) / 10000, [memooConfig]);
 
-  const maxIncrease = useMemo(
-    () => parseFloat(formatDecimals(0.5 * (maxProportion / firstProportion))),
-    [firstProportion, maxProportion],
-  );
-
   const firstIncrease = useMemo(() => {
     if (!memooConfig) return 0;
 
@@ -32,6 +28,11 @@ const Progress: FC = () => {
     const result = totalSupplyBN.multipliedBy(idoPriceBN).multipliedBy(firstProportion);
     return parseFloat(formatDecimals(result));
   }, [memooConfig, firstProportion]);
+
+  const maxIncrease = useMemo(
+    () => parseFloat(formatDecimals(firstIncrease * (maxProportion / firstProportion))),
+    [firstProportion, maxProportion, firstIncrease],
+  );
 
   const items: {
     key: TokenCreateStage;
