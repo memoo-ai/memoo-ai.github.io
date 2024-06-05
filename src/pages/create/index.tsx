@@ -27,6 +27,7 @@ import {
   getTokenDetail,
   checkTickerExists,
   getTwitterAccessToken,
+  uploadFile,
 } from '@/api/token';
 import qs from 'qs';
 
@@ -36,7 +37,7 @@ import { useManageContract } from '@/hooks/useManageContract';
 import { parseEther, formatEther } from 'ethers';
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
-
+const FORM_STORAGE_KEY = 'create_token_storage';
 const PreLaunchDurationOptions = [
   { label: 'immediate', value: PreLaunchDurationEnum.IMMEDIATE },
   { label: '1 day', value: PreLaunchDurationEnum['1DAY'] },
@@ -75,16 +76,21 @@ export default function Create() {
 
   const onFieldChange = (changedFields: any, allFields: any) => {
     console.log('onFieldsChange', changedFields);
-    const field = changedFields[0]?.name[0];
-    if (field === 'tokenIcon') {
-      form.setFieldValue('tokenIcon', changedFields[0].value);
-    } else if (field === 'banners') {
-      form.setFieldValue('banners', changedFields[0].value);
+  };
+
+  const handleUpload = (file: File, filed: string) => {
+    if (file) {
+      uploadFile(file).then((res) => {
+        form.setFieldValue(filed, res.data);
+      });
+      return false;
     }
   };
 
   const connectTwitter = () => {
     // TODO: save form data to local; when callback from twitter, the form data will be lost.
+    const formData = form.getFieldsValue();
+    localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(formData));
 
     setConnectTwitterLoading(true);
 
@@ -120,9 +126,20 @@ export default function Create() {
         }
       });
     } else {
-      form.setFieldsValue({
-        preLaunchDuration: PreLaunchDurationEnum['IMMEDIATE'],
-      });
+      const data = localStorage.getItem(FORM_STORAGE_KEY);
+      if (data) {
+        try {
+          const formData = JSON.parse(data);
+          if (!formData.preLaunchDuration) {
+            formData.preLaunchDuration = PreLaunchDurationEnum['IMMEDIATE'];
+          }
+          form.setFieldsValue(formData);
+        } catch (e) {}
+      } else {
+        form.setFieldsValue({
+          preLaunchDuration: PreLaunchDurationEnum['IMMEDIATE'],
+        });
+      }
     }
     const code = searchParams.get('code');
     const state = searchParams.get('state');
@@ -157,6 +174,8 @@ export default function Create() {
         return;
       }
       const data = form.getFieldsValue();
+      data.twitter = twitter;
+      data.accessToken = twitterAccessToken;
       // TODO check ticker if exits
       if (iconUrl) {
         data.tokenIcon = iconUrl;
@@ -240,9 +259,10 @@ export default function Create() {
               }
               valuePropName="fileList"
               getValueFromEvent={normFile}
-              name="tokenIcon"
+              name="icon"
             >
               <div className="token-icon-form-item">
+                {/* <Input style={{ display: 'none' }} /> */}
                 {iconUrl && (
                   <div className="icon-url-container">
                     <img src={iconUrl} alt="" />
@@ -253,10 +273,10 @@ export default function Create() {
                 )}
                 {!iconUrl && (
                   <Upload
-                    listType="picture"
+                    listType="picture-card"
                     accept="image/*"
                     maxCount={1}
-                    beforeUpload={() => false}
+                    beforeUpload={(file) => handleUpload(file, 'icon')}
                     showUploadList={{ showPreviewIcon: false, showRemoveIcon: true }}
                     style={{ width: 140, height: 140 }}
                     className="custom-upload-icon"
@@ -354,7 +374,7 @@ export default function Create() {
                       listType="picture-card"
                       accept="image/*"
                       maxCount={1}
-                      beforeUpload={() => false}
+                      beforeUpload={(file) => handleUpload(file, 'banners')}
                       showUploadList={{ showPreviewIcon: true, showRemoveIcon: true }}
                       style={{ width: 140, height: 140 }}
                       className="custom-upload-banner"
@@ -378,17 +398,18 @@ export default function Create() {
                       </button>
                     </Upload>
                   </Form.Item>
-                  <Form.Item label={<p>Other Links</p>} name="links">
-                    <Input maxLength={20} />
+                  <Form.Item label={<p>Website</p>} name="links">
+                    <Input maxLength={20} className="custom-input" />
                   </Form.Item>
-                  <Form.Item label="Creator's Twitter">
+                  {/* <Form.Item label="Creator's Twitter">
+                    <Input maxLength={20} />
                     <div className="flex items-center">
                       <img src="./token/icon-twitter.svg" className="w-4 h-4 mr-4" />
                       <Button variant="secondary" className="w-[136px] h-[32px]">
                         CONNECT
                       </Button>
                     </div>
-                  </Form.Item>
+                  </Form.Item> */}
                 </div>
               )}
             </div>

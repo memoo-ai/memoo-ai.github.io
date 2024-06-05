@@ -10,6 +10,8 @@ import { useBaseConfig } from './useBaseConfig';
 import { Hash, getContract } from 'viem';
 import { Address } from '@/types';
 import BigNumber from 'bignumber.js';
+import { CHAIN_ID } from '@/constants';
+import { ethers } from 'ethers';
 
 export interface MemooConfig {
   platformFeeCreateMeme: string; // "0.00005"""
@@ -30,9 +32,10 @@ export interface MemooConfig {
 export const useManageContract = () => {
   const [config, setConfig] = useState<MemooConfig>();
   const publicClient = usePublicClient({ config: wagmiConfig });
+
   const { baseConfig } = useBaseConfig();
   const { data: walletClient } = useWalletClient();
-
+  console.log('publicClient: ', publicClient, walletClient);
   const memooConfig = useMemo(() => {
     if (!publicClient || !baseConfig) {
       return;
@@ -45,7 +48,7 @@ export const useManageContract = () => {
         wallet: walletClient,
       },
     });
-  }, [publicClient, baseConfig]);
+  }, [publicClient, baseConfig, walletClient]);
 
   const fetchMemooConfig = useCallback(async () => {
     if (!memooConfig) return;
@@ -62,7 +65,7 @@ export const useManageContract = () => {
     async (address: Address, amount: BigNumber) => {
       if (!memooConfig) return;
       try {
-        const res = await memooConfig.read.idoBuy(address, amount);
+        const res = await memooConfig.read.idoBuy([address, amount]);
 
         return res;
       } catch (error) {
@@ -77,7 +80,7 @@ export const useManageContract = () => {
       console.log(res);
       setConfig(res);
     });
-  }, [memooConfig]);
+  }, [memooConfig, publicClient]);
 
   return {
     config,

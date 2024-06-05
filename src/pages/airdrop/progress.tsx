@@ -44,104 +44,101 @@ const Progress: FC = () => {
     btnText?: string;
     btnIcon?: string;
     enabled?: boolean;
-  }[] = useMemo(
-    () => [
-      {
-        key: 'in-queue',
-        icon: `/create/process-in-queue${stage === 'in-queue' ? '-active' : ''}.svg`,
-        title: 'in queue',
-        desc: 'Complete tasks to be\neligible for airdrop',
-        onClick: () => {},
-        btnText: 'increase',
-        btnIcon: `/create/icon-increase${stage === 'in-queue' ? '-active' : ''}.svg`,
-        wrapper: (node: ReactNode) => (
-          <IncreaseAcquisitionModal
-            maxIncrease={maxIncrease}
-            firstProportion={firstProportion}
-            maxProportion={maxProportion}
-            firstIncrease={firstIncrease}
-          >
-            {node}
-          </IncreaseAcquisitionModal>
-        ),
-        // enabled: (['QUEUE', 'IDO', 'Launched'] as IDOStatus[]).includes(idoQueueDetail?.status ?? 'Draft'),
-        enabled: true,
-      },
-      {
-        key: 'imo',
-        icon: `/create/process-imo${stage === 'imo' ? '-active' : ''}.svg`,
-        title: 'imo',
-        desc: 'Get first access\nbefore public sale',
-      },
-      {
-        key: 'launch',
-        icon: `/create/process-launch${stage === 'launch' ? '-active' : ''}.svg`,
-        title: 'launch',
-        desc: 'Token available\nfor public sale',
-      },
-      {
-        key: '1st-claim',
-        icon: (
-          <div className="relative z-10">
-            <img src="/create/bg-1st-claim.png" />
-            <img
-              className="absolute left-[53px] top-[37px]"
-              src={`/create/process-claim${stage === '1st-claim' ? '-active' : ''}.svg`}
-            />
-          </div>
-        ),
-        title: '1st claim',
-        desc: '1st 50% unlock when\ntoken price hits 0.0005c',
-        onClick: () => {},
-        btnText: 'claim',
-        btnIcon: `/create/icon-claim${stage === '1st-claim' ? '-active' : ''}.svg`,
-        wrapper: (node: ReactNode) => (
-          <ClaimTokensModal tokens={2500000} lockinPeriod={14} stage="1st">
-            {node}
-          </ClaimTokensModal>
-        ),
-        // enabled:
-        //   idoQueueDetail?.status === 'Launched' &&
-        //   (address
-        //     ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
-        //         compareAddrs(addr, address),
-        //       )
-        //     : false),
-        enabled: true,
-      },
-      {
-        key: '2st-claim',
-        icon: (
-          <div className="relative z-10">
-            <img src="/create/bg-2st-claim.png" />
-            <img
-              className="absolute left-[53px] top-[37px]"
-              src={`/create/process-claim${stage === '2st-claim' ? '-active' : ''}.svg`}
-            />
-          </div>
-        ),
-        title: '2st claim',
-        desc: ' Next 50% unlocked\ntokens in 14 days',
-        onClick: () => {},
-        btnText: 'claim',
-        btnIcon: `/create/icon-claim${stage === '2st-claim' ? '-active' : ''}.svg`,
-        wrapper: (node: ReactNode) => (
-          <ClaimTokensModal tokens={2500000} stage="2nd">
-            {node}
-          </ClaimTokensModal>
-        ),
-        // enabled:
-        //   idoQueueDetail?.status === 'Launched' &&
-        //   (address
-        //     ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
-        //         compareAddrs(addr, address),
-        //       )
-        //     : false),
-        enabled: true,
-      },
-    ],
-    [stage, idoQueueDetail, address],
-  );
+  }[] = [
+    {
+      key: 'in-queue',
+      icon: `/create/process-in-queue${stage === 'in-queue' ? '-active' : ''}.svg`,
+      title: 'in queue',
+      desc: 'Complete tasks to be\neligible for airdrop',
+      onClick: () => {},
+      btnText: 'increase',
+      btnIcon: `/create/icon-increase${stage === 'in-queue' ? '-active' : ''}.svg`,
+      wrapper: (node: ReactNode) => (
+        <IncreaseAcquisitionModal
+          maxIncrease={maxIncrease}
+          firstProportion={firstProportion}
+          maxProportion={maxProportion}
+          firstIncrease={firstIncrease}
+        >
+          {node}
+        </IncreaseAcquisitionModal>
+      ),
+      // enabled: (['QUEUE', 'IDO', 'Launched'] as IDOStatus[]).includes(idoQueueDetail?.status ?? 'Draft'),
+      enabled: true,
+    },
+    {
+      key: 'imo',
+      icon: `/create/process-imo${stage === 'imo' ? '-active' : ''}.svg`,
+      title: 'imo',
+      desc: 'Get first access\nbefore public sale',
+    },
+    {
+      key: 'launch',
+      icon: `/create/process-launch${stage === 'launch' ? '-active' : ''}.svg`,
+      title: 'launch',
+      desc: 'Token available\nfor public sale',
+    },
+    {
+      key: '1st-claim',
+      icon: (
+        <div className="relative z-10">
+          <img src="/create/bg-1st-claim.png" />
+          <img
+            className="absolute left-[53px] top-[37px]"
+            src={`/create/process-claim${stage === '1st-claim' ? '-active' : ''}.svg`}
+          />
+        </div>
+      ),
+      title: '1st claim',
+      desc: '1st 50% unlock when\ntoken price hits 0.0005c',
+      onClick: () => {},
+      btnText: 'claim',
+      btnIcon: `/create/icon-claim${stage === '1st-claim' ? '-active' : ''}.svg`,
+      wrapper: (node: ReactNode) => (
+        <ClaimTokensModal tokens={2500000} lockinPeriod={14} stage="1st">
+          {node}
+        </ClaimTokensModal>
+      ),
+      // enabled:
+      //   idoQueueDetail?.status === 'Launched' &&
+      //   (address
+      //     ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
+      //         compareAddrs(addr, address),
+      //       )
+      //     : false),
+      enabled: true,
+    },
+    {
+      key: '2st-claim',
+      icon: (
+        <div className="relative z-10">
+          <img src="/create/bg-2st-claim.png" />
+          <img
+            className="absolute left-[53px] top-[37px]"
+            src={`/create/process-claim${stage === '2st-claim' ? '-active' : ''}.svg`}
+          />
+        </div>
+      ),
+      title: '2st claim',
+      desc: ' Next 50% unlocked\ntokens in 14 days',
+      onClick: () => {},
+      btnText: 'claim',
+      btnIcon: `/create/icon-claim${stage === '2st-claim' ? '-active' : ''}.svg`,
+      wrapper: (node: ReactNode) => (
+        <ClaimTokensModal tokens={2500000} stage="2nd">
+          {node}
+        </ClaimTokensModal>
+      ),
+      // enabled:
+      //   idoQueueDetail?.status === 'Launched' &&
+      //   (address
+      //     ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
+      //         compareAddrs(addr, address),
+      //       )
+      //     : false),
+      enabled: true,
+    },
+  ];
 
   return (
     <ul className="progress flex">
