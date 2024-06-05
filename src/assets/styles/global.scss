@@ -425,9 +425,15 @@ div[data-rk] {
         background: #1F3B4F !important;
         border: 1px solid #07E993;
         width: 26.375rem;
+
         div{
           div{
             div{
+              // max-height: 800px;
+              // overflow: hidden;
+              ::-webkit-scrollbar {
+                width: 0;
+              }
               &:nth-child(2){
                 gap: 0;
                 div:first-child{
@@ -475,6 +481,7 @@ div[data-rk] {
                   }
                 }
               }
+
               &:nth-child(4){
                 display: none;
               }
@@ -485,8 +492,8 @@ div[data-rk] {
           >div{
             > div:nth-child(1){
               div{
-                >div:nth-child(1){
-                  >div:nth-child(1){
+                > div:nth-child(1){
+                  > div:nth-child(1){
                     color: transparent;
                   }
                 }
@@ -500,6 +507,7 @@ div[data-rk] {
                   > div{
                     > div:nth-child(3){
                       background: transparent;
+
                       div:last-child{
                         display: none;
                       }

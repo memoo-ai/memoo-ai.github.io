@@ -13,6 +13,7 @@ import './walletConnect.scss';
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ConnectModalPortal from './connectModalPortal';
+import ConnectModalPortalTop from './connectModalPortalTop';
 // const explorerURL = import.meta.env.VITE_EXPLORER_URL;
 const opts = [
   {
@@ -84,10 +85,29 @@ const WalletConnect = () => {
                   >
                     Connect Wallet
                     {isModalOpen && (
-                      <ConnectModalPortal>
-                        <div className="text-[red]">
-                          <h2>Additional Content</h2>
-                          <p>This content is rendered through a React Portal into the RainbowKit modal.</p>
+                      <ConnectModalPortalTop
+                        onClose={() => {
+                          setIsModalOpen(false);
+                        }}
+                      >
+                        <div className="flex items-center flex-column justify-center mt-[-30px]">
+                          <img className="w-[142.11px] " src="./walletContent/wallet-logo.png" alt="" />
+                        </div>
+                        <div className="connect-to-memoo text-center">Connect to MeMoo</div>
+                      </ConnectModalPortalTop>
+                    )}
+                    {isModalOpen && (
+                      <ConnectModalPortal
+                        onClose={() => {
+                          setIsModalOpen(false);
+                        }}
+                      >
+                        <div>
+                          <p className="w-[320px] font-OCR text-[#ffffff]">
+                            By connecting your wallet and using MeMoo, you agree to our{' '}
+                            <span className="text-[#07E993]">Terms of Service</span> and{' '}
+                            <span className="text-[#07E993]">Privacy Policy.</span>
+                          </p>
                         </div>
                       </ConnectModalPortal>
                     )}
