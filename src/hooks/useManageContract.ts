@@ -62,7 +62,7 @@ export const useManageContract = () => {
     async (address: Address, amount: BigNumber) => {
       if (!memooConfig) return;
       try {
-        const res = await memooConfig.read.idoBuy(address, amount);
+        const res = await memooConfig.read.idoBuy([address, amount]);
 
         return res;
       } catch (error) {
