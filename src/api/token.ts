@@ -17,14 +17,14 @@ export interface ITokenSaveData {
   tokenName: string;
   twitter?: string;
   website?: string;
-  tokenIcon: File | string;
-  banners: File;
+  icon: string;
+  banners: string[];
 }
 
 const getFormData = (data: ITokenSaveData) => {
   const formData = new FormData();
-  if (data.tokenIcon && data.tokenIcon instanceof File) {
-    formData.append('icon', data.tokenIcon);
+  if (data.icon && data.icon instanceof File) {
+    formData.append('icon', data.icon);
   }
   if (data.banners && data.banners instanceof File) {
     formData.append('banners', data.banners);
@@ -40,7 +40,13 @@ const getFormData = (data: ITokenSaveData) => {
 
 export const saveTokenCraft = (data: ITokenSaveData) => {
   const formData = getFormData(data);
-  return http.post(`${prefix}/web-oriented/token`, formData, {
+  return http.post(`${prefix}/web-oriented/token`, data);
+};
+
+export const uploadFile = (file: File) => {
+  const formData = new FormData();
+  formData.set('file', file);
+  return http.post(`${prefix}/web-oriented/file-upload`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -48,12 +54,7 @@ export const saveTokenCraft = (data: ITokenSaveData) => {
 };
 
 export const confirmTokenCreate = (data: ITokenSaveData) => {
-  const formData = getFormData(data);
-  return http.put(`${prefix}/web-oriented/token`, formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  return http.put(`${prefix}/web-oriented/token`, data);
 };
 
 export const checkTickerExists = (ticker: string) => {

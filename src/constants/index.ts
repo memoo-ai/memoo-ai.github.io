@@ -1,3 +1,4 @@
 const nodeType = import.meta.env.VITE_NODE_TYPE;
+const chainId = import.meta.env.VITE_NODE_CHAIN_ID;
 
-export const NOVA_CHAIN_ID = nodeType === 'nexus-goerli' ? 810182 : 810180;
+export const CHAIN_ID = chainId;

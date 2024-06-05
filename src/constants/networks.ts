@@ -64,7 +64,7 @@ const metadata = {
   url: 'https://memoo.io',
   icons: ['../../public/img/favicon.png'],
 };
-const chains = [BsquaredTestnet] as readonly [Chain, ...Chain[]];
+export const chains = [BsquaredTestnet] as readonly [Chain, ...Chain[]];
 export const config = getDefaultConfig({
   appName: 'Memoo',
   projectId: projectId,
@@ -76,7 +76,7 @@ export const wagmiDefaultConfig = createConfig({
   chains: chains,
   connectors: [
     injected(),
-    metaMask(),
+    // metaMask(),
     // safe(),
     ...connectors,
     walletConnect({
