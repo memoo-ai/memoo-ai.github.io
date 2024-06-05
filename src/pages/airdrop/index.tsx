@@ -21,6 +21,7 @@ import { getIDOActiveDetail, getIDOLaunchedDetail, getIDOLaunchedDetailTop10, ge
 import { useParams } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 import { compareAddrs } from '@/utils';
+import { MemooConfig, useManageContract } from '@/hooks/useManageContract';
 
 interface AirdropContext {
   stage: TokenCreateStage;
@@ -30,6 +31,7 @@ interface AirdropContext {
   idoQueueDetail?: IDOQueueDetail;
   mine: boolean;
   ticker: string;
+  memooConfig?: MemooConfig;
 }
 
 export const AirdropContext = createContext<AirdropContext>({
@@ -48,6 +50,7 @@ const Airdrop: FC = () => {
   const { ticker = import.meta.env.VITE_DEMO_TICKER } = useParams<{ ticker: string }>();
   const { address } = useAccount();
   const [loading, setLoading] = useState(false);
+  const { config } = useManageContract();
 
   const mine = useMemo(
     () => compareAddrs(idoQueueDetail?.creatorAddress as Address, address!),
@@ -55,8 +58,17 @@ const Airdrop: FC = () => {
   );
 
   const context: AirdropContext = useMemo(
-    () => ({ stage, idoActiveDetail, idoLaunchedDetail, idoLaunchedDetailTop10, idoQueueDetail, mine, ticker }),
-    [stage, idoActiveDetail, idoLaunchedDetail, idoLaunchedDetailTop10, idoQueueDetail, mine, ticker],
+    () => ({
+      stage,
+      idoActiveDetail,
+      idoLaunchedDetail,
+      idoLaunchedDetailTop10,
+      idoQueueDetail,
+      mine,
+      ticker,
+      memooConfig: config,
+    }),
+    [stage, idoActiveDetail, idoLaunchedDetail, idoLaunchedDetailTop10, idoQueueDetail, mine, ticker, config],
   );
 
   useEffect(() => {

@@ -8,11 +8,30 @@ import './progress.scss';
 import IncreaseAcquisitionModal from './increase-acquisition-modal';
 import ClaimTokensModal from './claim-tokens-modal';
 import { useAccount } from 'wagmi';
-import { compareAddrs } from '@/utils';
+import { compareAddrs, formatDecimals, formatNumberDecimal } from '@/utils';
+import BigNumber from 'bignumber.js';
 
 const Progress: FC = () => {
-  const { stage, idoQueueDetail } = useContext(AirdropContext);
+  const { stage, idoQueueDetail, memooConfig } = useContext(AirdropContext);
   const { address } = useAccount();
+
+  const firstProportion = useMemo(() => Number(memooConfig?.allocation.creator) / 10000, [memooConfig]);
+
+  const maxProportion = useMemo(() => Number(memooConfig?.idoCreatorBuyLimit) / 10000, [memooConfig]);
+
+  const maxIncrease = useMemo(
+    () => parseFloat(formatDecimals(0.5 * (maxProportion / firstProportion))),
+    [firstProportion, maxProportion],
+  );
+
+  const firstIncrease = useMemo(() => {
+    if (!memooConfig) return 0;
+
+    const totalSupplyBN = new BigNumber(memooConfig?.memeTotalSupply).dividedBy(10 ** memooConfig?.memeDefaultDecimals);
+    const idoPriceBN = new BigNumber(memooConfig?.memeIdoPrice).dividedBy(10 ** memooConfig?.memeDefaultDecimals);
+    const result = totalSupplyBN.multipliedBy(idoPriceBN).multipliedBy(firstProportion);
+    return parseFloat(formatDecimals(result));
+  }, [memooConfig, firstProportion]);
 
   const items: {
     key: TokenCreateStage;
@@ -34,8 +53,18 @@ const Progress: FC = () => {
         onClick: () => {},
         btnText: 'increase',
         btnIcon: `/create/icon-increase${stage === 'in-queue' ? '-active' : ''}.svg`,
-        wrapper: (node: ReactNode) => <IncreaseAcquisitionModal>{node}</IncreaseAcquisitionModal>,
-        enabled: (['QUEUE', 'IDO', 'Launched'] as IDOStatus[]).includes(idoQueueDetail?.status ?? 'Draft'),
+        wrapper: (node: ReactNode) => (
+          <IncreaseAcquisitionModal
+            maxIncrease={maxIncrease}
+            firstProportion={firstProportion}
+            maxProportion={maxProportion}
+            firstIncrease={firstIncrease}
+          >
+            {node}
+          </IncreaseAcquisitionModal>
+        ),
+        // enabled: (['QUEUE', 'IDO', 'Launched'] as IDOStatus[]).includes(idoQueueDetail?.status ?? 'Draft'),
+        enabled: true,
       },
       {
         key: 'imo',
@@ -65,14 +94,19 @@ const Progress: FC = () => {
         onClick: () => {},
         btnText: 'claim',
         btnIcon: `/create/icon-claim${stage === '1st-claim' ? '-active' : ''}.svg`,
-        wrapper: (node: ReactNode) => <ClaimTokensModal stage="1st">{node}</ClaimTokensModal>,
-        enabled:
-          idoQueueDetail?.status === 'Launched' &&
-          (address
-            ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
-                compareAddrs(addr, address),
-              )
-            : false),
+        wrapper: (node: ReactNode) => (
+          <ClaimTokensModal tokens={2500000} lockinPeriod={14} stage="1st">
+            {node}
+          </ClaimTokensModal>
+        ),
+        // enabled:
+        //   idoQueueDetail?.status === 'Launched' &&
+        //   (address
+        //     ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
+        //         compareAddrs(addr, address),
+        //       )
+        //     : false),
+        enabled: true,
       },
       {
         key: '2st-claim',
@@ -90,14 +124,19 @@ const Progress: FC = () => {
         onClick: () => {},
         btnText: 'claim',
         btnIcon: `/create/icon-claim${stage === '2st-claim' ? '-active' : ''}.svg`,
-        wrapper: (node: ReactNode) => <ClaimTokensModal stage="2nd">{node}</ClaimTokensModal>,
-        enabled:
-          idoQueueDetail?.status === 'Launched' &&
-          (address
-            ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
-                compareAddrs(addr, address),
-              )
-            : false),
+        wrapper: (node: ReactNode) => (
+          <ClaimTokensModal tokens={2500000} stage="2nd">
+            {node}
+          </ClaimTokensModal>
+        ),
+        // enabled:
+        //   idoQueueDetail?.status === 'Launched' &&
+        //   (address
+        //     ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
+        //         compareAddrs(addr, address),
+        //       )
+        //     : false),
+        enabled: true,
       },
     ],
     [stage, idoQueueDetail, address],

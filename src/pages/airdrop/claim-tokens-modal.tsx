@@ -2,7 +2,12 @@ import { Button, Checkbox, Input, Modal, Progress, Slider } from 'antd';
 import { Children, FC, Fragment, ReactNode, cloneElement, isValidElement, useState } from 'react';
 import './claim-tokens-modal.scss';
 
-const ClaimTokensModal: FC<{ children: ReactNode; stage: '1st' | '2nd' }> = ({ children, stage }) => {
+const ClaimTokensModal: FC<{ children: ReactNode; stage: '1st' | '2nd'; lockinPeriod?: number; tokens: number }> = ({
+  children,
+  stage,
+  lockinPeriod,
+  tokens,
+}) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -26,7 +31,7 @@ const ClaimTokensModal: FC<{ children: ReactNode; stage: '1st' | '2nd' }> = ({ c
               {stage === '1st' && (
                 <>
                   <div className="flex flex-col items-end">
-                    <span className="font-404px text-white text-[24px] leadings-[29px]">14 days</span>
+                    <span className="font-404px text-white text-[24px] leadings-[29px]">{lockinPeriod} days</span>
                     <span className="font-OCR text-white text-base leadings-[21px]">Next Unlock</span>
                   </div>
                   <img className="w-[50px]" src="/create/icon-claim-unlock.png" />
@@ -36,7 +41,7 @@ const ClaimTokensModal: FC<{ children: ReactNode; stage: '1st' | '2nd' }> = ({ c
                 <>
                   <div className="flex flex-col items-end">
                     <span className="font-404px text-white text-[24px] leadings-[29px]">
-                      {Number(250000000).toLocaleString()}
+                      {Number(tokens).toLocaleString()}
                     </span>
                     <span className="font-OCR text-white text-base leadings-[21px]">Claim Completed</span>
                   </div>
@@ -51,7 +56,7 @@ const ClaimTokensModal: FC<{ children: ReactNode; stage: '1st' | '2nd' }> = ({ c
             placeholder="Claimable LEASH"
             suffix={
               <span className="text-[24px] text-white font-404px leading-[22px]">
-                {Number(250000000).toLocaleString()}
+                {Number(tokens).toLocaleString()}
               </span>
             }
           />

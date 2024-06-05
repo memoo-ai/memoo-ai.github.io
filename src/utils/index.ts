@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import toast from 'react-hot-toast';
 import numeral from 'numeral';
 import Decimal from 'decimal.js';
@@ -138,3 +139,11 @@ export function extractDomainName(url: string) {
   }
   return null;
 }
+
+export const formatDecimals = (source: BigNumber.Value, decimals = 10, stripZeros = true): string => {
+  let result = new BigNumber(source).decimalPlaces(decimals, BigNumber.ROUND_HALF_EVEN).toFixed(decimals);
+  if (stripZeros) {
+    result = result.replace(/\.?0+$/, '');
+  }
+  return result;
+};

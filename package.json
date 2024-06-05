@@ -39,6 +39,7 @@
     "@wagmi/core": "^2.6.9",
     "antd": "^5.17.0",
     "axios": "^1.4.0",
+    "bignumber.js": "^9.1.2",
     "class-variance-authority": "^0.7.0",
     "classnames": "^2.5.1",
     "clsx": "^2.1.0",
