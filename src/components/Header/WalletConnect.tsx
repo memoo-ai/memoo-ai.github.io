@@ -10,8 +10,9 @@ import {
   IconWalletContentLogout,
 } from '@/components/icons';
 import './walletConnect.scss';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ConnectModalPortal from './connectModalPortal';
 // const explorerURL = import.meta.env.VITE_EXPLORER_URL;
 const opts = [
   {
@@ -38,6 +39,7 @@ const WalletConnect = () => {
   const { connectors, disconnect } = useDisconnect();
   const navigate = useNavigate();
   const iconRefs = useRef<any>({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const onDisconnect = async () => {
     if (isConnected || address) {
       for (const connector of connectors) {
@@ -74,10 +76,21 @@ const WalletConnect = () => {
                 return (
                   <Button
                     variant="soft"
-                    onClick={openConnectModal}
+                    onClick={() => {
+                      openConnectModal();
+                      setIsModalOpen(true);
+                    }}
                     className="wallet-border cursor-pointer hidden md:block text-center text-lg  md:h-[51px] px-6 md:bg-[#1F3B4F] md:text-[#07E993] font-bold font-404px"
                   >
                     Connect Wallet
+                    {isModalOpen && (
+                      <ConnectModalPortal>
+                        <div className="text-[red]">
+                          <h2>Additional Content</h2>
+                          <p>This content is rendered through a React Portal into the RainbowKit modal.</p>
+                        </div>
+                      </ConnectModalPortal>
+                    )}
                   </Button>
                 );
               }

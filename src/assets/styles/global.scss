@@ -412,3 +412,113 @@
 .border-color-icon {
   border-color: $mainBgColor;
 }
+div[data-rk] {
+  #rk_connect_title {
+    display: none !important;
+  }
+
+
+  > div:nth-child(2) {
+
+    > div {
+      > div {
+        background: #1F3B4F !important;
+        border: 1px solid #07E993;
+        width: 26.375rem;
+        div{
+          div{
+            div{
+              &:nth-child(2){
+                gap: 0;
+                div:first-child{
+                  button{
+                    border-radius: 10px 10px 0 0  !important;
+                    border-bottom: 1px solid #1F3B4F;
+                  }
+                }
+                div:last-child{
+                  button{
+                    border-radius: 0 0 10px 10px !important;
+                    border-top: 1px solid #1F3B4F;
+                  }
+                }
+                div:nth-child(2){
+                  button{
+                    border-radius: 0;
+                    padding: 12px;
+                    div{
+                      div{
+                        // background: #A005FE;
+                        div{
+                          font-family: '404px';
+                          div:nth-child(2){
+                            display: none;
+                          }
+                        }
+                      }
+                    }
+                    background-color: #2B526E;
+                    &:hover{
+                      background: #07E993;
+                      color: #2B526E;
+                      div{
+                        div{
+                          // background: #A005FE;
+                          color: #2B526E;
+                          div{
+                            font-family: '404px';
+                          }
+                        }
+                      }
+                    }
+
+                  }
+                }
+              }
+              &:nth-child(4){
+                display: none;
+              }
+            }
+          }
+        }
+        >div{
+          >div{
+            > div:nth-child(1){
+              div{
+                >div:nth-child(1){
+                  >div:nth-child(1){
+                    color: transparent;
+                  }
+                }
+              }
+              > div{
+                > div:nth-child(3){
+                  background: transparent;
+                  div:last-child{
+                    display: none;
+                  }
+                  > div{
+                    > div:nth-child(3){
+                      background: transparent;
+                      div:last-child{
+                        display: none;
+                      }
+                    }
+                  }
+                  > button{
+                    background: #1f3b4f;
+                    color: #07E993;
+                    border: none;
+                    &:hover{
+                      color: #B53BFF;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

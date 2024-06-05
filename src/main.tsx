@@ -6,7 +6,7 @@ import { createRoot } from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { WagmiProvider } from 'wagmi';
 import { wagmiDefaultConfig } from './constants/networks';
-import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Theme } from '@radix-ui/themes';
 import { ConfigProvider } from 'antd';
@@ -26,15 +26,23 @@ root.render(
   // <StrictMode>
   <WagmiProvider config={wagmiDefaultConfig}>
     <QueryClientProvider client={queryClient}>
-      <RainbowKitProvider>
+      <RainbowKitProvider
+        locale="en-US"
+        modalSize="compact"
+        theme={darkTheme({
+          accentColor: '#07E993',
+          accentColorForeground: '#2e3036',
+          borderRadius: 'small',
+          fontStack: 'system',
+          overlayBlur: 'small',
+        })}
+      >
         <Theme appearance="dark" accentColor="green">
           <ConfigProvider
             theme={{
               token: {
                 colorPrimary: '#07E993',
                 borderRadius: 2,
-
-                // 派生变量，影响范围小
                 colorBgContainer: '#f6ffed',
               },
             }}
