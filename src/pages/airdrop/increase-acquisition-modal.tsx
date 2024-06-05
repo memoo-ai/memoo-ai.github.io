@@ -1,9 +1,29 @@
+/* eslint-disable no-debugger */
 import { Button, Checkbox, Input, Modal, Progress, Slider } from 'antd';
-import { Children, FC, Fragment, ReactNode, cloneElement, isValidElement, useState } from 'react';
+import { Children, FC, Fragment, ReactNode, cloneElement, isValidElement, useEffect, useState } from 'react';
 import './increase-acquisition-modal.scss';
+import { formatDecimals } from '@/utils';
 
-const IncreaseAcquisitionModal: FC<{ children: ReactNode }> = ({ children }) => {
+const IncreaseAcquisitionModal: FC<{
+  children: ReactNode;
+  maxIncrease: number;
+  firstIncrease: number;
+  maxProportion: number;
+  firstProportion: number;
+  onCalculated?: (result: number) => void;
+}> = ({ children, maxIncrease, maxProportion, firstProportion, firstIncrease, onCalculated }) => {
   const [open, setOpen] = useState(false);
+  const [accepted, setAccepted] = useState(false);
+  const [proportion, setProportion] = useState(firstProportion * 100);
+  const [result, setResult] = useState(0);
+
+  useEffect(() => {
+    const increasePercent = proportion / 100;
+    const result = parseFloat(formatDecimals(firstIncrease * (increasePercent / firstProportion)));
+    console.log('increasing proportion:', result);
+    setResult(result);
+    onCalculated?.(result);
+  }, [proportion, firstProportion, firstIncrease]);
 
   return (
     <>
@@ -24,28 +44,40 @@ const IncreaseAcquisitionModal: FC<{ children: ReactNode }> = ({ children }) => 
               </div>
             </div>
             <div className="flex flex-auto items-center gap-x-3">
-              <span className="whitespace-nowrap text-base font-OCR text-white leading-[16px]">0.05 ETH</span>
+              <span className="whitespace-nowrap text-base font-OCR text-white leading-[16px]">
+                {firstIncrease} ETH
+              </span>
               <Slider
                 className="memoo_slider flex-auto"
                 tooltip={{ open: true, rootClassName: 'memoo_slider_tooltip', formatter: (value) => `${value}%` }}
-                max={35}
-                min={5}
+                onChange={(value) => setProportion(value)}
+                max={maxProportion * 100}
+                min={firstProportion * 100}
               />
-              <span className="whitespace-nowrap text-base font-OCR text-white leading-[16px]">2 ETH</span>
+              <span className="whitespace-nowrap text-base font-OCR text-white leading-[16px]">{maxIncrease} ETH</span>
             </div>
           </div>
           <p className="font-OCR text-[#4889B7] whitespace-pre-wrap mt-[7px] mb-[19px]">
-            {`Creator can increase initial\nallocation from 5% to 35%.`}
+            {`Creator can increase initial\nallocation from ${firstProportion * 100}% to ${maxProportion * 100}%.`}
           </p>
           <Input
             className="memoo_input h-[66px]"
-            placeholder="Pre-Market Acquisition"
-            suffix={<span className="text-[24px] text-white font-404px leading-[22px]">{`${2} ETH`}</span>}
+            value="Pre-Market Acquisition"
+            suffix={
+              <span className="text-[24px] text-white font-404px leading-[22px]">{`${formatDecimals(
+                result - firstIncrease,
+              )} ETH`}</span>
+            }
           />
-          <Checkbox className="font-OCR text-[12px] text-[#4889B7] my-[24px]">
+          <Checkbox
+            className="font-OCR text-[12px] text-[#4889B7] my-[24px]"
+            onChange={(e) => setAccepted(e.target.checked)}
+          >
             I accept MeMoo’s <a className="contents text-green">Terms & Conditions.</a>
           </Checkbox>
-          <Button className="memoo_button h-[50px]">Confirm</Button>
+          <Button disabled={!accepted} className="memoo_button h-[50px]">
+            Confirm
+          </Button>
         </div>
       </Modal>
       {Children.map(children, (child) => {
