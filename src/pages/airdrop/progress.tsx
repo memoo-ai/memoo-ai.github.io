@@ -63,8 +63,8 @@ const Progress: FC = () => {
           {node}
         </IncreaseAcquisitionModal>
       ),
-      // enabled: (['QUEUE', 'IDO', 'Launched'] as IDOStatus[]).includes(idoQueueDetail?.status ?? 'Draft'),
-      enabled: true,
+      enabled: (['QUEUE', 'IDO', 'Launched'] as IDOStatus[]).includes(idoQueueDetail?.status ?? 'Draft'),
+      // enabled: true,
     },
     {
       key: 'imo',

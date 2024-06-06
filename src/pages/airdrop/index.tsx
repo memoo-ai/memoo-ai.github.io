@@ -22,6 +22,8 @@ import { useParams } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 import { compareAddrs } from '@/utils';
 import { MemooConfig, useManageContract } from '@/hooks/useManageContract';
+import BigNumber from 'bignumber.js';
+import { TransactionReceipt } from 'viem';
 
 interface AirdropContext {
   stage: TokenCreateStage;
@@ -32,6 +34,13 @@ interface AirdropContext {
   mine: boolean;
   ticker: string;
   memooConfig?: MemooConfig;
+  idoBuy?: (project: `0x${string}`, amount: BigNumber) => Promise<TransactionReceipt | undefined>;
+  unlockMeme?: (project: `0x${string}`) => Promise<TransactionReceipt | undefined>;
+  airdropClaim?: (
+    project: `0x${string}`,
+    claimCount: BigNumber,
+    totalCount: BigNumber,
+  ) => Promise<TransactionReceipt | undefined>;
 }
 
 export const AirdropContext = createContext<AirdropContext>({
@@ -50,7 +59,7 @@ const Airdrop: FC = () => {
   const { ticker = import.meta.env.VITE_DEMO_TICKER } = useParams<{ ticker: string }>();
   const { address } = useAccount();
   const [loading, setLoading] = useState(false);
-  const { config } = useManageContract();
+  const { config, idoBuy, unlockMeme, airdropClaim } = useManageContract();
 
   const mine = useMemo(
     () => compareAddrs(idoQueueDetail?.creatorAddress as Address, address!),
@@ -67,8 +76,23 @@ const Airdrop: FC = () => {
       mine,
       ticker,
       memooConfig: config,
+      idoBuy,
+      unlockMeme,
+      airdropClaim,
     }),
-    [stage, idoActiveDetail, idoLaunchedDetail, idoLaunchedDetailTop10, idoQueueDetail, mine, ticker, config],
+    [
+      stage,
+      idoActiveDetail,
+      idoLaunchedDetail,
+      idoLaunchedDetailTop10,
+      idoQueueDetail,
+      mine,
+      ticker,
+      config,
+      idoBuy,
+      unlockMeme,
+      airdropClaim,
+    ],
   );
 
   useEffect(() => {

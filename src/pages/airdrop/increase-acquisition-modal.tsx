@@ -1,8 +1,20 @@
 /* eslint-disable no-debugger */
-import { Button, Checkbox, Input, Modal, Progress, Slider } from 'antd';
-import { Children, FC, Fragment, ReactNode, cloneElement, isValidElement, useEffect, useState } from 'react';
+import { Button, Checkbox, Input, Modal, Slider, message } from 'antd';
+import {
+  Children,
+  FC,
+  ReactNode,
+  cloneElement,
+  isValidElement,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import './increase-acquisition-modal.scss';
 import { formatDecimals } from '@/utils';
+import { AirdropContext } from '.';
+import BigNumber from 'bignumber.js';
 
 const IncreaseAcquisitionModal: FC<{
   children: ReactNode;
@@ -14,8 +26,10 @@ const IncreaseAcquisitionModal: FC<{
 }> = ({ children, maxIncrease, maxProportion, firstProportion, firstIncrease, onCalculated }) => {
   const [open, setOpen] = useState(false);
   const [accepted, setAccepted] = useState(false);
+  const [confirming, setConfirming] = useState(false);
   const [proportion, setProportion] = useState(firstProportion * 100);
   const [result, setResult] = useState(0);
+  const { idoBuy, idoQueueDetail } = useContext(AirdropContext);
 
   useEffect(() => {
     const increasePercent = proportion / 100;
@@ -24,6 +38,21 @@ const IncreaseAcquisitionModal: FC<{
     setResult(result);
     onCalculated?.(result);
   }, [proportion, firstProportion, firstIncrease]);
+
+  const onConfirm = useCallback(async () => {
+    if (!idoBuy || !idoQueueDetail) return;
+    try {
+      setConfirming(true);
+      await idoBuy(idoQueueDetail.contractAddress, new BigNumber(result));
+      setOpen(false);
+      message.success('Buy Successful');
+    } catch (error) {
+      console.error(error);
+      message.error('Buy Failed');
+    } finally {
+      setConfirming(false);
+    }
+  }, [idoBuy, idoQueueDetail, result]);
 
   return (
     <>
@@ -75,7 +104,7 @@ const IncreaseAcquisitionModal: FC<{
           >
             I accept MeMoo’s <a className="contents text-green">Terms & Conditions.</a>
           </Checkbox>
-          <Button disabled={!accepted} className="memoo_button h-[50px]">
+          <Button disabled={!accepted} className="memoo_button h-[50px]" loading={confirming} onClick={onConfirm}>
             Confirm
           </Button>
         </div>
