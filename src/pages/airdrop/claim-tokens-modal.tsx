@@ -1,6 +1,17 @@
-import { Button, Checkbox, Input, Modal, Progress, Slider } from 'antd';
-import { Children, FC, Fragment, ReactNode, cloneElement, isValidElement, useState } from 'react';
+import { Button, Checkbox, Input, Modal, Progress, Slider, message } from 'antd';
+import {
+  Children,
+  FC,
+  Fragment,
+  ReactNode,
+  cloneElement,
+  isValidElement,
+  useCallback,
+  useContext,
+  useState,
+} from 'react';
 import './claim-tokens-modal.scss';
+import { AirdropContext } from '.';
 
 const ClaimTokensModal: FC<{ children: ReactNode; stage: '1st' | '2nd'; lockinPeriod?: number; tokens: number }> = ({
   children,
@@ -9,6 +20,23 @@ const ClaimTokensModal: FC<{ children: ReactNode; stage: '1st' | '2nd'; lockinPe
   tokens,
 }) => {
   const [open, setOpen] = useState(false);
+  const { unlockMeme, idoQueueDetail } = useContext(AirdropContext);
+  const [confirming, setConfirming] = useState(false);
+
+  const onConfirm = useCallback(async () => {
+    if (!unlockMeme || !idoQueueDetail) return;
+    try {
+      setConfirming(true);
+      await unlockMeme(idoQueueDetail.contractAddress);
+      setOpen(false);
+      message.success('Unlock Successful');
+    } catch (error) {
+      console.error(error);
+      message.error('Unlock Failed');
+    } finally {
+      setConfirming(false);
+    }
+  }, [unlockMeme, idoQueueDetail]);
 
   return (
     <>
@@ -60,7 +88,9 @@ const ClaimTokensModal: FC<{ children: ReactNode; stage: '1st' | '2nd'; lockinPe
               </span>
             }
           />
-          <Button className="memoo_button mt-[77px] h-[50px]">Confirm</Button>
+          <Button loading={confirming} className="memoo_button mt-[77px] h-[50px]" onClick={onConfirm}>
+            Confirm
+          </Button>
         </div>
       </Modal>
       {Children.map(children, (child) => {
