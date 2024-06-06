@@ -277,3 +277,9 @@ declare interface TrendingCreators {
 }
 
 declare type Address = `0x${string}`;
+
+declare interface ProofRes {
+  proof: string[];
+  count: number;
+  address: Address;
+}

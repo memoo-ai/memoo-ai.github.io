@@ -25,6 +25,10 @@ export default defineConfig({
         target: 'https://xapp.memoo.ai',
         changeOrigin: true,
       },
+      '/api/v1/merkel-tree': {
+        target: 'http://8.130.122.217:3001',
+        changeOrigin: true,
+      },
     },
   },
   css: {

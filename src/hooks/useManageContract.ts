@@ -1,3 +1,4 @@
+/* eslint-disable max-params */
 /* eslint-disable no-debugger */
 import Abi from '@/contracts/ugly/contracts/memoo/MemooManage.sol/MemooManage.json';
 import { MemooManage, MemooManageStructs } from '@/contracts/typechain-types/contracts/memoo/MemooManage';
@@ -10,8 +11,9 @@ import { useBaseConfig } from './useBaseConfig';
 import { Hash, getContract } from 'viem';
 import { Address } from '@/types';
 import BigNumber from 'bignumber.js';
-import { CHAIN_ID } from '@/constants';
+import { CHAIN_ID, ZERO_ADDRESS } from '@/constants';
 import { ethers } from 'ethers';
+import { getProof } from '@/api/merkel-tree';
 
 export interface MemooConfig {
   platformFeeCreateMeme: string; // "0.00005"""
@@ -20,6 +22,8 @@ export interface MemooConfig {
   memeTotalSupply: string; // '0';
   idoCreatorBuyLimit: bigint;
   memeDefaultDecimals: number;
+  memeAirdropPrice: number;
+  memePayToken: string;
   allocation: {
     airdrop: bigint;
     creator: bigint;
@@ -32,8 +36,9 @@ export interface MemooConfig {
 export const useManageContract = () => {
   const [config, setConfig] = useState<MemooConfig>();
   const publicClient = usePublicClient({ config: wagmiConfig });
-
+  const [operating, setOperating] = useState(false);
   const { baseConfig } = useBaseConfig();
+  const { address } = useAccount();
   const { data: walletClient } = useWalletClient();
   console.log('publicClient: ', publicClient, walletClient);
   const memooConfig = useMemo(() => {
@@ -62,17 +67,90 @@ export const useManageContract = () => {
   }, [memooConfig]);
 
   const idoBuy = useCallback(
-    async (address: Address, amount: BigNumber) => {
-      if (!memooConfig) return;
+    async (project: Address, amount: BigNumber) => {
+      if (!walletClient || !baseConfig || !config) return;
       try {
-        const res = await memooConfig.read.idoBuy([address, amount]);
+        setOperating(true);
+        if (config.memePayToken !== ZERO_ADDRESS) {
+          // TODO approve
+        }
 
+        const tx = {
+          address: baseConfig.MemooManageContract as Hash,
+          abi: Abi,
+          functionName: 'claim',
+          args: [project, amount],
+          value: amount,
+        } as any;
+        const hash = await walletClient.writeContract(tx);
+        const res = await publicClient?.waitForTransactionReceipt({
+          hash,
+        });
         return res;
       } catch (error) {
         console.error(error);
+      } finally {
+        setOperating(false);
       }
     },
-    [memooConfig],
+    [walletClient, baseConfig, config],
+  );
+
+  const unlockMeme = useCallback(
+    async (project: Address) => {
+      if (!baseConfig || !walletClient) return;
+      try {
+        setOperating(true);
+        const tx = {
+          address: baseConfig.MemooManageContract as Hash,
+          abi: Abi,
+          functionName: 'claim',
+          args: [project],
+        } as any;
+        const hash = await walletClient.writeContract(tx);
+        const res = await publicClient?.waitForTransactionReceipt({
+          hash,
+        });
+        return res;
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setOperating(false);
+      }
+    },
+    [baseConfig, walletClient],
+  );
+
+  const airdropClaim = useCallback(
+    async (project: Address, claimCount: BigNumber, totalCount: BigNumber) => {
+      if (!config || !baseConfig || !walletClient || !address) return;
+      try {
+        setOperating(true);
+        if (config.memePayToken !== ZERO_ADDRESS) {
+          // TODO approve
+        }
+
+        const { data: proofRes } = await getProof(project, address);
+        const priceBN = new BigNumber(config.memeAirdropPrice).dividedToIntegerBy(10 ** config.memeDefaultDecimals);
+        const tx = {
+          address: baseConfig.MemooManageContract as Hash,
+          abi: Abi,
+          functionName: 'claim',
+          args: [project, claimCount, totalCount, claimCount.multipliedBy(priceBN), proofRes.proof],
+          value: claimCount.multipliedBy(priceBN),
+        } as any;
+        const hash = await walletClient.writeContract(tx);
+        const res = await publicClient?.waitForTransactionReceipt({
+          hash,
+        });
+        return res;
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setOperating(false);
+      }
+    },
+    [config, baseConfig, walletClient, address],
   );
 
   useEffect(() => {
@@ -86,5 +164,8 @@ export const useManageContract = () => {
     config,
     fetchMemooConfig,
     idoBuy,
+    unlockMeme,
+    airdropClaim,
+    operating,
   };
 };
