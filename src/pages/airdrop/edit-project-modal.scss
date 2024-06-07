@@ -1,0 +1,59 @@
+.edit-project-modal{
+  .edit-project-modal-form{
+    padding-right: 20px;
+    &::-webkit-scrollbar {
+      width: 10px !important;
+      height: 409px !important;
+     }
+
+     &::-webkit-scrollbar-track {
+      background: #2B526E !important;
+      border-radius: 10px !important;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #07E993 !important;
+      border-radius: 10px !important;
+      height: 200px !important;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #07E993 !important;
+    }
+
+    .project-url-container{
+      width: 100%;
+    }
+
+  }
+  .ant-input-textarea-affix-wrapper.ant-input-affix-wrapper >textarea.ant-input{
+    background: #2B526E;
+    border-radius: 7px;
+  }
+  .ant-form-item .ant-form-item-label{
+    width: 126px !important;
+    font-family: 'OCR A Extended';
+    font-size: 16px;
+    margin-right: 22px;
+    text-align: left;
+  }
+  .ant-form-item .ant-form-item-label >label::after{
+    content: '' !important;
+  }
+  .ant-input-outlined{
+    background: #2B526E !important;
+    border: 1px solid #07E993;
+    border-radius: 7px;
+    color: #ffffff;
+  }
+
+}
+
+.ant-upload-wrapper.ant-upload-picture-card-wrapper .ant-upload.ant-upload-select, .ant-upload-wrapper.ant-upload-picture-circle-wrapper .ant-upload.ant-upload-select{
+  width: 100%;
+
+  .ant-upload{
+    background: #2B526E !important;
+  }
+}
+

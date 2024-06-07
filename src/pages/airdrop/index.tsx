@@ -140,7 +140,7 @@ const Airdrop: FC = () => {
         </AirdropContext.Provider>
       </div>
       <div className="col-span-full pt-[70px] pb-[22px] pl-[428px] flex items-center justify-between">
-        <EditProjectModal>
+        <EditProjectModal ticker={ticker}>
           <Button type="link" className="flex items-center h-[40px] gap-x-[11px]">
             <img src="/create/icon-edit.svg" />
             <span className="text-bluish-purple-light font-OCR leading-5 text-sm">Edit Info</span>
