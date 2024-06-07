@@ -23,6 +23,7 @@ export interface MemooConfig {
   idoCreatorBuyLimit: bigint;
   memeDefaultDecimals: number;
   memeAirdropPrice: number;
+  idoUserBuyLimit: number;
   memePayToken: string;
   allocation: {
     airdrop: bigint;

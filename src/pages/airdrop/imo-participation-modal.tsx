@@ -1,45 +1,80 @@
-import { Button, Checkbox, Input, Modal, Progress, Radio, RadioChangeEvent, Slider } from 'antd';
-import { Children, FC, Fragment, ReactNode, cloneElement, isValidElement, useState } from 'react';
+/* eslint-disable no-debugger */
+import { Button, Checkbox, Input, Modal, Progress, Radio, RadioChangeEvent, Slider, message } from 'antd';
+import {
+  Children,
+  FC,
+  Fragment,
+  ReactNode,
+  cloneElement,
+  isValidElement,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
 import './imo-participation-modal.scss';
+import { AirdropContext } from '.';
+import BigNumber from 'bignumber.js';
+import { formatDecimals } from '@/utils';
+import { DEFAULT_IDO_LIMIT, zeroBN } from '@/constants';
 
-const options = [
-  {
-    label: (
-      <div className="imo_opt">
-        <span>0.01b ETH</span>
-        <span>~2,500,000 TOKEN</span>
-      </div>
-    ),
-    value: '1',
-  },
-  {
-    label: (
-      <div className="imo_opt">
-        <span>0.01b ETH</span>
-        <span>~2,500,000 TOKEN</span>
-      </div>
-    ),
-    value: '2',
-  },
-  {
-    label: (
-      <div className="imo_opt">
-        <span>0.01b ETH</span>
-        <span>~2,500,000 TOKEN</span>
-      </div>
-    ),
-    value: '3',
-  },
-];
+const grades = [1 / 4, 1 / 2, 1];
 
 const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
   const [open, setOpen] = useState(false);
-  const [value3, setValue3] = useState('Apple');
+  const [selected, setSelected] = useState(0);
+  const { memooConfig } = useContext(AirdropContext);
+  const [accepted, setAccepted] = useState(false);
+  const [confirming, setConfirming] = useState(false);
 
-  const onChange3 = ({ target: { value } }: RadioChangeEvent) => {
-    console.log('radio3 checked', value);
-    setValue3(value);
-  };
+  const totalSupplyBN = useMemo(() => {
+    if (!memooConfig) return zeroBN;
+    return new BigNumber(memooConfig.memeTotalSupply).dividedBy(10 ** memooConfig.memeDefaultDecimals);
+  }, [memooConfig]);
+
+  const capped = useMemo(() => {
+    if (!memooConfig) return zeroBN;
+    const idoQuotaBN = new BigNumber(Number(memooConfig.allocation.ido)).dividedBy(10000);
+    const idoPriceBN = new BigNumber(memooConfig.memeIdoPrice).dividedBy(10 ** memooConfig.memeDefaultDecimals);
+    return totalSupplyBN.multipliedBy(idoQuotaBN).multipliedBy(idoPriceBN);
+  }, [memooConfig, totalSupplyBN]);
+
+  const idoUserBuyLimitBN = useMemo(() => {
+    if (!memooConfig) return zeroBN;
+    const bn = new BigNumber(memooConfig.idoUserBuyLimit ?? DEFAULT_IDO_LIMIT).dividedBy(10000);
+    return bn;
+  }, [memooConfig]);
+
+  const maxContributed = useMemo(() => capped.multipliedBy(idoUserBuyLimitBN), [capped]);
+
+  const options = useMemo(() => {
+    // set default
+    setSelected(parseFloat(formatDecimals(capped.multipliedBy(grades[0]).multipliedBy(idoUserBuyLimitBN))));
+
+    return grades.map((g, i) => ({
+      label: (
+        <div key={i} className="imo_opt">
+          <span>{formatDecimals(capped.multipliedBy(g).multipliedBy(idoUserBuyLimitBN))} ETH</span>
+          <span>{formatDecimals(totalSupplyBN.multipliedBy(g).multipliedBy(idoUserBuyLimitBN))} TOKEN</span>
+        </div>
+      ),
+      value: parseFloat(formatDecimals(capped.multipliedBy(g).multipliedBy(idoUserBuyLimitBN))),
+    }));
+  }, [capped, idoUserBuyLimitBN, totalSupplyBN]);
+
+  const onConfirm = useCallback(() => {
+    try {
+      setConfirming(true);
+      // TODO
+      setOpen(false);
+      message.error('Participate Successful');
+    } catch (error) {
+      console.error(error);
+      message.error('Participate Failed');
+    } finally {
+      setConfirming(false);
+    }
+  }, []);
 
   return (
     <>
@@ -58,20 +93,31 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
               <span className="text-white font-OCR text-base leadings-[18px]">Contribute</span>
               <img src="/create/tip.png" />
             </div>
-            <p className="whitespace-pre font-OCR text-white text-base leadings-[18px]">{`Total IDO raise is always\ncapped at ${2.33} ETH`}</p>
+            <p className="whitespace-pre font-OCR text-white text-base leadings-[18px]">{`Total IDO raise is always\ncapped at ${formatDecimals(
+              capped,
+            )} ETH`}</p>
           </div>
           <Radio.Group
-            className="memoo_radio_group mt-[28px] mb-[28px]"
+            className="memoo_radio_group mt-[28px] mb-[28px] grid grid-cols-3"
             options={options}
-            onChange={onChange3}
-            value={value3}
+            onChange={(e) => setSelected(e.target.value)}
+            value={selected}
             optionType="button"
           />
-          <p className="whitespace-pre font-OCR text-[#4889B7] text-[10px] leadings-[14px]">{`Contribution capped at 0.066 ETH per wallet: To counteract potential centralization,\nindividual wallet holding limits will be established, ensuring that every purchasing\nentity's holding is limited to maximum of 1% percentage of the total supply.`}</p>
-          <Checkbox className="font-OCR text-[12px] text-[#4889B7] my-[24px]">
+          <p className="whitespace-pre font-OCR text-[#4889B7] text-[10px] leadings-[14px]">{`Contribution capped at ${formatDecimals(
+            maxContributed,
+          )} ETH per wallet: To counteract potential centralization,\nindividual wallet holding limits will be established, ensuring that every purchasing\nentity's holding is limited to maximum of ${idoUserBuyLimitBN
+            .multipliedBy(100)
+            .toString()}% percentage of the total supply.`}</p>
+          <Checkbox
+            className="font-OCR text-[12px] text-[#4889B7] my-[24px]"
+            onChange={(e) => setAccepted(e.target.checked)}
+          >
             I accept MeMoo’s <a className="contents text-green">Terms & Conditions.</a>
           </Checkbox>
-          <Button className="memoo_button mt-4 h-[50px]">Confirm</Button>
+          <Button disabled={!accepted} className="memoo_button mt-4 h-[50px]" loading={confirming} onClick={onConfirm}>
+            Confirm
+          </Button>
         </div>
       </Modal>
       {Children.map(children, (child) => {
