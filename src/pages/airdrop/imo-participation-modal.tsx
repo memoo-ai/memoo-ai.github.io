@@ -90,10 +90,10 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
         <div className="imo_participation flex flex-col">
           <div className="flex justify-between items-start">
             <div className="flex items-center gap-x-3">
-              <span className="text-white font-OCR text-base leadings-[18px]">Contribute</span>
+              <span className="text-white font-OCR text-base leading-[18px]">Contribute</span>
               <img src="/create/tip.png" />
             </div>
-            <p className="whitespace-pre font-OCR text-white text-base leadings-[18px]">{`Total IDO raise is always\ncapped at ${formatDecimals(
+            <p className="whitespace-pre font-OCR text-white text-base leading-[18px]">{`Total IDO raise is always\ncapped at ${formatDecimals(
               capped,
             )} ETH`}</p>
           </div>
@@ -104,7 +104,7 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
             value={selected}
             optionType="button"
           />
-          <p className="whitespace-pre font-OCR text-[#4889B7] text-[10px] leadings-[14px]">{`Contribution capped at ${formatDecimals(
+          <p className="whitespace-pre font-OCR text-[#4889B7] text-[10px] leading-[14px]">{`Contribution capped at ${formatDecimals(
             maxContributed,
           )} ETH per wallet: To counteract potential centralization,\nindividual wallet holding limits will be established, ensuring that every purchasing\nentity's holding is limited to maximum of ${idoUserBuyLimitBN
             .multipliedBy(100)
