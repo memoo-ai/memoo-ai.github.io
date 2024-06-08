@@ -96,8 +96,26 @@ export const useManageContract = () => {
       const tx = {
         address: baseConfig.MemooManageContract as Hash,
         abi: Abi,
-        functionName: 'claim',
+        functionName: 'unlockMeme',
         args: [project],
+      } as any;
+      const hash = await walletClient.writeContract(tx);
+      const res = await publicClient?.waitForTransactionReceipt({
+        hash,
+      });
+      return res;
+    },
+    [baseConfig, walletClient],
+  );
+
+  const memeUnlockPeriods = useCallback(
+    async (stageIndex: 0 | 1) => {
+      if (!baseConfig || !walletClient) return;
+      const tx = {
+        address: baseConfig.MemooManageContract as Hash,
+        abi: Abi,
+        functionName: 'memeUnlockPeriods',
+        args: [stageIndex],
       } as any;
       const hash = await walletClient.writeContract(tx);
       const res = await publicClient?.waitForTransactionReceipt({
@@ -137,7 +155,7 @@ export const useManageContract = () => {
     // eslint-disable-next-line max-params
     async (name: string, symbol: string, preLaunchSecond: number, amount: number | string | bigint) => {
       if (!walletClient || !baseConfig || !config) return;
-      if (config.memePayToken !== ZERO_ADDRESS) {
+      if (config.payToken !== ZERO_ADDRESS) {
         // TODO approve
       }
       try {
@@ -147,7 +165,7 @@ export const useManageContract = () => {
           abi: Abi,
           functionName: 'createMeme',
           args: [{ name, symbol, preLaunchSecond }, amount],
-          value: config.memePayToken === ZERO_ADDRESS ? amount : 0n,
+          value: config.payToken === ZERO_ADDRESS ? amount : 0n,
         } as any;
         const hash = await walletClient.writeContract(tx);
         const res = await publicClient?.waitForTransactionReceipt({
@@ -174,6 +192,7 @@ export const useManageContract = () => {
     fetchMemooConfig,
     idoBuy,
     unlockMeme,
+    memeUnlockPeriods,
     airdropClaim,
     createMeme,
     createMemeLoading,
