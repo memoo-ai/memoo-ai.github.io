@@ -14,6 +14,15 @@ import { CHAIN_ID, ZERO_ADDRESS } from '@/constants';
 import { ethers } from 'ethers';
 import { getProof } from '@/api/merkel-tree';
 
+export interface DefaultMemooConfig {
+  payToken: string;
+  idoPrice: bigint;
+  airdropPrice: bigint;
+  totalSupply: bigint;
+  defaultDecimals: number;
+  idoUserBuyLimit: bigint;
+}
+
 export interface MemooConfig {
   platformFeeCreateMeme: string; // "0.00005"""
   platformFeeCreateMemePayToken: string; // '0x0000000000000000000000000000000000000000';
@@ -35,6 +44,7 @@ export interface MemooConfig {
 
 export const useManageContract = () => {
   const [config, setConfig] = useState<MemooConfig>();
+  const [defaultConfig, setDefaultConfig] = useState<DefaultMemooConfig>();
   const publicClient = usePublicClient({ config: wagmiConfig });
   // const [operating, setOperating] = useState(false);
   const { baseConfig } = useBaseConfig();
@@ -56,11 +66,28 @@ export const useManageContract = () => {
     });
   }, [publicClient, baseConfig, walletClient]);
 
+  const getDefaultMemooConfig = useCallback(async () => {
+    if (!memooConfig) return;
+    try {
+      const res = (await memooConfig.read.memeDefaultConfig()) as any;
+      const data = {
+        payToken: res[0],
+        idoPrice: res[1],
+        airdropPrice: res[2],
+        totalSupply: res[3],
+        defaultDecimals: res[4],
+        idoUserBuyLimit: res[5],
+      };
+      return data as DefaultMemooConfig;
+    } catch (error) {
+      console.error(error);
+    }
+  }, [memooConfig]);
+
   const fetchMemooConfig = useCallback(async () => {
     if (!memooConfig) return;
     try {
-      const res = await memooConfig.read.memeDefaultConfig();
-
+      const res = (await memooConfig.read.getMemooConfig()) as any;
       return res as MemooConfig;
     } catch (error) {
       console.error(error);
@@ -154,8 +181,8 @@ export const useManageContract = () => {
   const createMeme = useCallback(
     // eslint-disable-next-line max-params
     async (name: string, symbol: string, preLaunchSecond: number, amount: number | string | bigint) => {
-      if (!walletClient || !baseConfig || !config) return;
-      if (config.payToken !== ZERO_ADDRESS) {
+      if (!walletClient || !baseConfig || !defaultConfig) return;
+      if (defaultConfig.payToken !== ZERO_ADDRESS) {
         // TODO approve
       }
       try {
@@ -165,7 +192,7 @@ export const useManageContract = () => {
           abi: Abi,
           functionName: 'createMeme',
           args: [{ name, symbol, preLaunchSecond }, amount],
-          value: config.payToken === ZERO_ADDRESS ? amount : 0n,
+          value: defaultConfig.payToken === ZERO_ADDRESS ? amount : 0n,
         } as any;
         const hash = await walletClient.writeContract(tx);
         const res = await publicClient?.waitForTransactionReceipt({
@@ -177,7 +204,7 @@ export const useManageContract = () => {
         setCreateMemeLoading(false);
       }
     },
-    [walletClient, baseConfig, config, publicClient],
+    [walletClient, baseConfig, defaultConfig, publicClient],
   );
 
   useEffect(() => {
@@ -185,11 +212,18 @@ export const useManageContract = () => {
       console.log(res);
       setConfig(res);
     });
+    getDefaultMemooConfig().then((res) => {
+      if (res) {
+        setDefaultConfig(res);
+      }
+    });
   }, [memooConfig, publicClient]);
 
   return {
     config,
+    defaultConfig,
     fetchMemooConfig,
+    getDefaultMemooConfig,
     idoBuy,
     unlockMeme,
     memeUnlockPeriods,

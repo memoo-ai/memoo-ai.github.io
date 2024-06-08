@@ -38,6 +38,7 @@ import { useManageContract } from '@/hooks/useManageContract';
 import { parseEther, formatEther } from 'ethers';
 import { useMemeFactoryContract } from '@/hooks/useMemeFactoryContract';
 import { ZERO_ADDRESS } from '@/constants';
+
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
 const FORM_STORAGE_KEY = 'create_token_storage';
@@ -55,7 +56,7 @@ export default function Create() {
   const [saveCraftLoading, setSaveCraftLoading] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [iconUrl, setIconUrl] = useState('');
-  const { config: memooConfig, createMeme, createMemeLoading } = useManageContract();
+  const { config: memooConfig, defaultConfig, createMeme, createMemeLoading } = useManageContract();
   const [connectTwitterLoading, setConnectTwitterLoading] = useState(false);
   const [twitter, setTwitter] = useState('');
   const [twitterAccessToken, setTwitterAccessToken] = useState('');
@@ -65,10 +66,10 @@ export default function Create() {
   const navigate = useNavigate();
 
   const totalCapInitial = useMemo(() => {
-    if (!memooConfig) return 0;
+    if (!memooConfig || !defaultConfig) return 0;
     const rate = Number(memooConfig.idoCreatorBuyLimit) / 10000;
-    return Number(formatEther(memooConfig?.idoPrice)) * Number(formatEther(memooConfig?.totalSupply)) * rate;
-  }, [memooConfig]);
+    return Number(formatEther(defaultConfig?.idoPrice)) * Number(formatEther(defaultConfig?.totalSupply)) * rate;
+  }, [memooConfig, defaultConfig]);
   console.log('memooConfig: ', memooConfig);
   console.log('totalCapInitial: ', totalCapInitial);
   const normFile = (e: any) => {
