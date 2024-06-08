@@ -23,8 +23,8 @@ const Progress: FC = () => {
   const firstIncrease = useMemo(() => {
     if (!memooConfig) return 0;
 
-    const totalSupplyBN = new BigNumber(memooConfig?.memeTotalSupply).dividedBy(10 ** memooConfig?.memeDefaultDecimals);
-    const idoPriceBN = new BigNumber(memooConfig?.memeIdoPrice).dividedBy(10 ** memooConfig?.memeDefaultDecimals);
+    const totalSupplyBN = new BigNumber(memooConfig?.totalSupply).dividedBy(10 ** memooConfig?.defaultDecimals);
+    const idoPriceBN = new BigNumber(memooConfig?.idoPrice).dividedBy(10 ** memooConfig?.defaultDecimals);
     const result = totalSupplyBN.multipliedBy(idoPriceBN).multipliedBy(firstProportion);
     return parseFloat(formatDecimals(result));
   }, [memooConfig, firstProportion]);

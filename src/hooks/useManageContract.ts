@@ -17,13 +17,13 @@ import { getProof } from '@/api/merkel-tree';
 export interface MemooConfig {
   platformFeeCreateMeme: string; // "0.00005"""
   platformFeeCreateMemePayToken: string; // '0x0000000000000000000000000000000000000000';
-  memeIdoPrice: string; //  '0.00000001';
-  memeTotalSupply: string; // '0';
+  idoPrice: string; //  '0.00000001';
+  totalSupply: string; // '0';
   idoCreatorBuyLimit: bigint;
-  memeDefaultDecimals: number;
-  memeAirdropPrice: number;
+  defaultDecimals: number;
+  airdropPrice: number;
   idoUserBuyLimit: number;
-  memePayToken: string;
+  payToken: string;
   allocation: {
     airdrop: bigint;
     creator: bigint;
@@ -59,7 +59,7 @@ export const useManageContract = () => {
   const fetchMemooConfig = useCallback(async () => {
     if (!memooConfig) return;
     try {
-      const res = await memooConfig.read.getMemooConfig();
+      const res = await memooConfig.read.memeDefaultConfig();
 
       return res as MemooConfig;
     } catch (error) {
@@ -70,7 +70,7 @@ export const useManageContract = () => {
   const idoBuy = useCallback(
     async (project: Address, amount: BigNumber) => {
       if (!walletClient || !baseConfig || !config) return;
-      if (config.memePayToken !== ZERO_ADDRESS) {
+      if (config.payToken !== ZERO_ADDRESS) {
         // TODO approve
       }
 
@@ -111,12 +111,12 @@ export const useManageContract = () => {
   const airdropClaim = useCallback(
     async (project: Address, claimCount: BigNumber, totalCount: BigNumber) => {
       if (!config || !baseConfig || !walletClient || !address) return;
-      if (config.memePayToken !== ZERO_ADDRESS) {
+      if (config.payToken !== ZERO_ADDRESS) {
         // TODO approve
       }
 
       const { data: proofRes } = await getProof(project, address);
-      const priceBN = new BigNumber(config.memeAirdropPrice).dividedToIntegerBy(10 ** config.memeDefaultDecimals);
+      const priceBN = new BigNumber(config.airdropPrice).dividedToIntegerBy(10 ** config.defaultDecimals);
       const tx = {
         address: baseConfig.MemooManageContract as Hash,
         abi: Abi,

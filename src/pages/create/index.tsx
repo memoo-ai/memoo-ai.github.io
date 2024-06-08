@@ -67,7 +67,7 @@ export default function Create() {
   const totalCapInitial = useMemo(() => {
     if (!memooConfig) return 0;
     const rate = Number(memooConfig.idoCreatorBuyLimit) / 10000;
-    return Number(formatEther(memooConfig?.memeIdoPrice)) * Number(formatEther(memooConfig?.memeTotalSupply)) * rate;
+    return Number(formatEther(memooConfig?.idoPrice)) * Number(formatEther(memooConfig?.totalSupply)) * rate;
   }, [memooConfig]);
   console.log('memooConfig: ', memooConfig);
   console.log('totalCapInitial: ', totalCapInitial);

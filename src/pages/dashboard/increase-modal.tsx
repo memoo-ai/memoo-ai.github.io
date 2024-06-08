@@ -21,8 +21,8 @@ const IncreaseModal = ({ children }: any) => {
   useMemo(() => {
     if (!memooConfig) return 0;
     console.log('memooConfig', memooConfig);
-    let memeIdoPrice = Number(formatEther(memooConfig?.memeIdoPrice));
-    let memeTotalSupply = Number(formatEther(memooConfig?.memeTotalSupply));
+    let memeIdoPrice = Number(formatEther(memooConfig?.idoPrice));
+    let memeTotalSupply = Number(formatEther(memooConfig?.totalSupply));
     let idoCreatorBuyLimit = Number(formatEther(memooConfig?.idoCreatorBuyLimit));
     let creator = Number(formatEther(memooConfig?.allocation?.creator));
     let minPer = Number(creator / formatEther(10000));

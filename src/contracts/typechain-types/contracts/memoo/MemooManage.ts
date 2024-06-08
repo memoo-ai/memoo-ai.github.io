@@ -23,86 +23,32 @@ import type {
   TypedContractMethod,
 } from "../../common";
 
-export declare namespace MemeInfoStructs {
-  export type MemeInfoStruct = {
-    creator: AddressLike;
-    defaultAdmin: AddressLike;
-    pauser: AddressLike;
-    minter: AddressLike;
-    name: string;
-    symbol: string;
-    totalSupply: BigNumberish;
-    decimals: BigNumberish;
+export declare namespace MemooManageStructs {
+  export type MemeConfigStruct = {
     payToken: AddressLike;
     idoPrice: BigNumberish;
     airdropPrice: BigNumberish;
-    preLaunchSecond: BigNumberish;
+    totalSupply: BigNumberish;
+    defaultDecimals: BigNumberish;
+    idoUserBuyLimit: BigNumberish;
   };
 
-  export type MemeInfoStructOutput = [
-    creator: string,
-    defaultAdmin: string,
-    pauser: string,
-    minter: string,
-    name: string,
-    symbol: string,
-    totalSupply: bigint,
-    decimals: bigint,
+  export type MemeConfigStructOutput = [
     payToken: string,
     idoPrice: bigint,
     airdropPrice: bigint,
-    preLaunchSecond: bigint
+    totalSupply: bigint,
+    defaultDecimals: bigint,
+    idoUserBuyLimit: bigint
   ] & {
-    creator: string;
-    defaultAdmin: string;
-    pauser: string;
-    minter: string;
-    name: string;
-    symbol: string;
-    totalSupply: bigint;
-    decimals: bigint;
     payToken: string;
     idoPrice: bigint;
     airdropPrice: bigint;
-    preLaunchSecond: bigint;
+    totalSupply: bigint;
+    defaultDecimals: bigint;
+    idoUserBuyLimit: bigint;
   };
 
-  export type MemeConfigInfoStruct = {
-    memeInfo: MemeInfoStructs.MemeInfoStruct;
-    memooConfig: MemooManageStructs.MemooConfigStruct;
-    creatorTotal: BigNumberish;
-    platformTotal: BigNumberish;
-    memeCreateTimestamp: BigNumberish;
-  };
-
-  export type MemeConfigInfoStructOutput = [
-    memeInfo: MemeInfoStructs.MemeInfoStructOutput,
-    memooConfig: MemooManageStructs.MemooConfigStructOutput,
-    creatorTotal: bigint,
-    platformTotal: bigint,
-    memeCreateTimestamp: bigint
-  ] & {
-    memeInfo: MemeInfoStructs.MemeInfoStructOutput;
-    memooConfig: MemooManageStructs.MemooConfigStructOutput;
-    creatorTotal: bigint;
-    platformTotal: bigint;
-    memeCreateTimestamp: bigint;
-  };
-
-  export type MemeInfoParamsStruct = {
-    name: string;
-    symbol: string;
-    preLaunchSecond: BigNumberish;
-  };
-
-  export type MemeInfoParamsStructOutput = [
-    name: string,
-    symbol: string,
-    preLaunchSecond: bigint
-  ] & { name: string; symbol: string; preLaunchSecond: bigint };
-}
-
-export declare namespace MemooManageStructs {
   export type TokenAllocationStruct = {
     creator: BigNumberish;
     ido: BigNumberish;
@@ -141,11 +87,6 @@ export declare namespace MemooManageStructs {
     platformFeeCreateMeme: BigNumberish;
     platformFeeCreateMemePayToken: AddressLike;
     idoCreatorBuyLimit: BigNumberish;
-    memePayToken: AddressLike;
-    memeIdoPrice: BigNumberish;
-    memeAirdropPrice: BigNumberish;
-    memeTotalSupply: BigNumberish;
-    memeDefaultDecimals: BigNumberish;
     allocation: MemooManageStructs.TokenAllocationStruct;
   };
 
@@ -165,11 +106,6 @@ export declare namespace MemooManageStructs {
     platformFeeCreateMeme: bigint,
     platformFeeCreateMemePayToken: string,
     idoCreatorBuyLimit: bigint,
-    memePayToken: string,
-    memeIdoPrice: bigint,
-    memeAirdropPrice: bigint,
-    memeTotalSupply: bigint,
-    memeDefaultDecimals: bigint,
     allocation: MemooManageStructs.TokenAllocationStructOutput
   ] & {
     memeFactory: string;
@@ -187,13 +123,104 @@ export declare namespace MemooManageStructs {
     platformFeeCreateMeme: bigint;
     platformFeeCreateMemePayToken: string;
     idoCreatorBuyLimit: bigint;
-    memePayToken: string;
-    memeIdoPrice: bigint;
-    memeAirdropPrice: bigint;
-    memeTotalSupply: bigint;
-    memeDefaultDecimals: bigint;
     allocation: MemooManageStructs.TokenAllocationStructOutput;
   };
+
+  export type UnlockPeriodStruct = {
+    index: BigNumberish;
+    periodType: string;
+    value: BigNumberish;
+    unlockRate: BigNumberish;
+  };
+
+  export type UnlockPeriodStructOutput = [
+    index: bigint,
+    periodType: string,
+    value: bigint,
+    unlockRate: bigint
+  ] & { index: bigint; periodType: string; value: bigint; unlockRate: bigint };
+}
+
+export declare namespace MemeInfoStructs {
+  export type MemeInfoStruct = {
+    creator: AddressLike;
+    defaultAdmin: AddressLike;
+    pauser: AddressLike;
+    minter: AddressLike;
+    name: string;
+    symbol: string;
+    totalSupply: BigNumberish;
+    decimals: BigNumberish;
+    payToken: AddressLike;
+    idoPrice: BigNumberish;
+    airdropPrice: BigNumberish;
+    preLaunchSecond: BigNumberish;
+    idoUserBuyLimit: BigNumberish;
+  };
+
+  export type MemeInfoStructOutput = [
+    creator: string,
+    defaultAdmin: string,
+    pauser: string,
+    minter: string,
+    name: string,
+    symbol: string,
+    totalSupply: bigint,
+    decimals: bigint,
+    payToken: string,
+    idoPrice: bigint,
+    airdropPrice: bigint,
+    preLaunchSecond: bigint,
+    idoUserBuyLimit: bigint
+  ] & {
+    creator: string;
+    defaultAdmin: string;
+    pauser: string;
+    minter: string;
+    name: string;
+    symbol: string;
+    totalSupply: bigint;
+    decimals: bigint;
+    payToken: string;
+    idoPrice: bigint;
+    airdropPrice: bigint;
+    preLaunchSecond: bigint;
+    idoUserBuyLimit: bigint;
+  };
+
+  export type MemeConfigInfoStruct = {
+    memeInfo: MemeInfoStructs.MemeInfoStruct;
+    memooConfig: MemooManageStructs.MemooConfigStruct;
+    creatorTotal: BigNumberish;
+    platformTotal: BigNumberish;
+    memeCreateTimestamp: BigNumberish;
+  };
+
+  export type MemeConfigInfoStructOutput = [
+    memeInfo: MemeInfoStructs.MemeInfoStructOutput,
+    memooConfig: MemooManageStructs.MemooConfigStructOutput,
+    creatorTotal: bigint,
+    platformTotal: bigint,
+    memeCreateTimestamp: bigint
+  ] & {
+    memeInfo: MemeInfoStructs.MemeInfoStructOutput;
+    memooConfig: MemooManageStructs.MemooConfigStructOutput;
+    creatorTotal: bigint;
+    platformTotal: bigint;
+    memeCreateTimestamp: bigint;
+  };
+
+  export type MemeInfoParamsStruct = {
+    name: string;
+    symbol: string;
+    preLaunchSecond: BigNumberish;
+  };
+
+  export type MemeInfoParamsStructOutput = [
+    name: string,
+    symbol: string,
+    preLaunchSecond: bigint
+  ] & { name: string; symbol: string; preLaunchSecond: bigint };
 }
 
 export interface MemooManageInterface extends Interface {
@@ -206,6 +233,7 @@ export interface MemooManageInterface extends Interface {
       | "airdropClaim"
       | "claimToken"
       | "createMeme"
+      | "getCanUnlockCount"
       | "getMemooConfig"
       | "getRoleAdmin"
       | "grantRole"
@@ -213,11 +241,15 @@ export interface MemooManageInterface extends Interface {
       | "idoBuy"
       | "idoEnd"
       | "initialize"
+      | "memeDefaultConfig"
+      | "memeUnlockPeriods"
       | "pause"
       | "paused"
       | "renounceRole"
       | "revokeRole"
+      | "setMemeDefaultConfig"
       | "setMemooConfig"
+      | "setUnlockPeriod"
       | "supportsInterface"
       | "unlockMeme"
       | "unlockPriceReached"
@@ -229,6 +261,7 @@ export interface MemooManageInterface extends Interface {
       | "AirdropClaimed"
       | "ClaimToken"
       | "Initialized"
+      | "MemeConfigured"
       | "MemeCreated"
       | "MemeIdoBought"
       | "MemeIdoEnded"
@@ -238,6 +271,7 @@ export interface MemooManageInterface extends Interface {
       | "RoleAdminChanged"
       | "RoleGranted"
       | "RoleRevoked"
+      | "SetUnlockPeriod"
       | "UnlockPriceReached"
       | "Unpaused"
   ): EventFragment;
@@ -271,6 +305,10 @@ export interface MemooManageInterface extends Interface {
     values: [MemeInfoStructs.MemeInfoParamsStruct, BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "getCanUnlockCount",
+    values: [AddressLike, AddressLike, BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "getMemooConfig",
     values?: undefined
   ): string;
@@ -295,6 +333,14 @@ export interface MemooManageInterface extends Interface {
     functionFragment: "initialize",
     values: [AddressLike, AddressLike, AddressLike]
   ): string;
+  encodeFunctionData(
+    functionFragment: "memeDefaultConfig",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "memeUnlockPeriods",
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(functionFragment: "pause", values?: undefined): string;
   encodeFunctionData(functionFragment: "paused", values?: undefined): string;
   encodeFunctionData(
@@ -306,8 +352,16 @@ export interface MemooManageInterface extends Interface {
     values: [BytesLike, AddressLike]
   ): string;
   encodeFunctionData(
+    functionFragment: "setMemeDefaultConfig",
+    values: [MemooManageStructs.MemeConfigStruct]
+  ): string;
+  encodeFunctionData(
     functionFragment: "setMemooConfig",
     values: [MemooManageStructs.MemooConfigStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setUnlockPeriod",
+    values: [MemooManageStructs.UnlockPeriodStruct[]]
   ): string;
   encodeFunctionData(
     functionFragment: "supportsInterface",
@@ -315,11 +369,11 @@ export interface MemooManageInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "unlockMeme",
-    values: [AddressLike]
+    values: [AddressLike, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "unlockPriceReached",
-    values: [AddressLike, BigNumberish]
+    values: [AddressLike, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
 
@@ -346,6 +400,10 @@ export interface MemooManageInterface extends Interface {
   decodeFunctionResult(functionFragment: "claimToken", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "createMeme", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "getCanUnlockCount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getMemooConfig",
     data: BytesLike
   ): Result;
@@ -358,6 +416,14 @@ export interface MemooManageInterface extends Interface {
   decodeFunctionResult(functionFragment: "idoBuy", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "idoEnd", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "memeDefaultConfig",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "memeUnlockPeriods",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
   decodeFunctionResult(
@@ -366,7 +432,15 @@ export interface MemooManageInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "revokeRole", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "setMemeDefaultConfig",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "setMemooConfig",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setUnlockPeriod",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -422,6 +496,20 @@ export namespace InitializedEvent {
   export type OutputTuple = [version: bigint];
   export interface OutputObject {
     version: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace MemeConfiguredEvent {
+  export type InputTuple = [memeConfig: MemooManageStructs.MemeConfigStruct];
+  export type OutputTuple = [
+    memeConfig: MemooManageStructs.MemeConfigStructOutput
+  ];
+  export interface OutputObject {
+    memeConfig: MemooManageStructs.MemeConfigStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -505,19 +593,22 @@ export namespace MemeUnlockedEvent {
   export type InputTuple = [
     meme: AddressLike,
     user: AddressLike,
-    flag: string,
+    index: BigNumberish,
+    periodType: string,
     count: BigNumberish
   ];
   export type OutputTuple = [
     meme: string,
     user: string,
-    flag: string,
+    index: bigint,
+    periodType: string,
     count: bigint
   ];
   export interface OutputObject {
     meme: string;
     user: string;
-    flag: string;
+    index: bigint;
+    periodType: string;
     count: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
@@ -610,11 +701,32 @@ export namespace RoleRevokedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
+export namespace SetUnlockPeriodEvent {
+  export type InputTuple = [
+    unlockPeriods: MemooManageStructs.UnlockPeriodStruct[]
+  ];
+  export type OutputTuple = [
+    unlockPeriods: MemooManageStructs.UnlockPeriodStructOutput[]
+  ];
+  export interface OutputObject {
+    unlockPeriods: MemooManageStructs.UnlockPeriodStructOutput[];
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
 export namespace UnlockPriceReachedEvent {
-  export type InputTuple = [meme: AddressLike, timestamp: BigNumberish];
-  export type OutputTuple = [meme: string, timestamp: bigint];
+  export type InputTuple = [
+    meme: AddressLike,
+    index: BigNumberish,
+    timestamp: BigNumberish
+  ];
+  export type OutputTuple = [meme: string, index: bigint, timestamp: bigint];
   export interface OutputObject {
     meme: string;
+    index: bigint;
     timestamp: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
@@ -713,6 +825,12 @@ export interface MemooManage extends BaseContract {
     "payable"
   >;
 
+  getCanUnlockCount: TypedContractMethod<
+    [meme: AddressLike, user: AddressLike, index: BigNumberish],
+    [bigint],
+    "view"
+  >;
+
   getMemooConfig: TypedContractMethod<
     [],
     [MemooManageStructs.MemooConfigStructOutput],
@@ -747,6 +865,34 @@ export interface MemooManage extends BaseContract {
     "nonpayable"
   >;
 
+  memeDefaultConfig: TypedContractMethod<
+    [],
+    [
+      [string, bigint, bigint, bigint, bigint, bigint] & {
+        payToken: string;
+        idoPrice: bigint;
+        airdropPrice: bigint;
+        totalSupply: bigint;
+        defaultDecimals: bigint;
+        idoUserBuyLimit: bigint;
+      }
+    ],
+    "view"
+  >;
+
+  memeUnlockPeriods: TypedContractMethod<
+    [arg0: BigNumberish],
+    [
+      [bigint, string, bigint, bigint] & {
+        index: bigint;
+        periodType: string;
+        value: bigint;
+        unlockRate: bigint;
+      }
+    ],
+    "view"
+  >;
+
   pause: TypedContractMethod<[], [void], "nonpayable">;
 
   paused: TypedContractMethod<[], [boolean], "view">;
@@ -763,8 +909,20 @@ export interface MemooManage extends BaseContract {
     "nonpayable"
   >;
 
+  setMemeDefaultConfig: TypedContractMethod<
+    [_memeConfig: MemooManageStructs.MemeConfigStruct],
+    [void],
+    "nonpayable"
+  >;
+
   setMemooConfig: TypedContractMethod<
     [_memooConfig: MemooManageStructs.MemooConfigStruct],
+    [void],
+    "nonpayable"
+  >;
+
+  setUnlockPeriod: TypedContractMethod<
+    [p: MemooManageStructs.UnlockPeriodStruct[]],
     [void],
     "nonpayable"
   >;
@@ -775,10 +933,14 @@ export interface MemooManage extends BaseContract {
     "view"
   >;
 
-  unlockMeme: TypedContractMethod<[meme: AddressLike], [void], "nonpayable">;
+  unlockMeme: TypedContractMethod<
+    [meme: AddressLike, index: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
 
   unlockPriceReached: TypedContractMethod<
-    [meme: AddressLike, timestamp: BigNumberish],
+    [meme: AddressLike, index: BigNumberish, timestamp: BigNumberish],
     [void],
     "nonpayable"
   >;
@@ -832,6 +994,13 @@ export interface MemooManage extends BaseContract {
     "payable"
   >;
   getFunction(
+    nameOrSignature: "getCanUnlockCount"
+  ): TypedContractMethod<
+    [meme: AddressLike, user: AddressLike, index: BigNumberish],
+    [bigint],
+    "view"
+  >;
+  getFunction(
     nameOrSignature: "getMemooConfig"
   ): TypedContractMethod<
     [],
@@ -873,6 +1042,36 @@ export interface MemooManage extends BaseContract {
     "nonpayable"
   >;
   getFunction(
+    nameOrSignature: "memeDefaultConfig"
+  ): TypedContractMethod<
+    [],
+    [
+      [string, bigint, bigint, bigint, bigint, bigint] & {
+        payToken: string;
+        idoPrice: bigint;
+        airdropPrice: bigint;
+        totalSupply: bigint;
+        defaultDecimals: bigint;
+        idoUserBuyLimit: bigint;
+      }
+    ],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "memeUnlockPeriods"
+  ): TypedContractMethod<
+    [arg0: BigNumberish],
+    [
+      [bigint, string, bigint, bigint] & {
+        index: bigint;
+        periodType: string;
+        value: bigint;
+        unlockRate: bigint;
+      }
+    ],
+    "view"
+  >;
+  getFunction(
     nameOrSignature: "pause"
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
@@ -893,9 +1092,23 @@ export interface MemooManage extends BaseContract {
     "nonpayable"
   >;
   getFunction(
+    nameOrSignature: "setMemeDefaultConfig"
+  ): TypedContractMethod<
+    [_memeConfig: MemooManageStructs.MemeConfigStruct],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
     nameOrSignature: "setMemooConfig"
   ): TypedContractMethod<
     [_memooConfig: MemooManageStructs.MemooConfigStruct],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "setUnlockPeriod"
+  ): TypedContractMethod<
+    [p: MemooManageStructs.UnlockPeriodStruct[]],
     [void],
     "nonpayable"
   >;
@@ -904,11 +1117,15 @@ export interface MemooManage extends BaseContract {
   ): TypedContractMethod<[interfaceId: BytesLike], [boolean], "view">;
   getFunction(
     nameOrSignature: "unlockMeme"
-  ): TypedContractMethod<[meme: AddressLike], [void], "nonpayable">;
+  ): TypedContractMethod<
+    [meme: AddressLike, index: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "unlockPriceReached"
   ): TypedContractMethod<
-    [meme: AddressLike, timestamp: BigNumberish],
+    [meme: AddressLike, index: BigNumberish, timestamp: BigNumberish],
     [void],
     "nonpayable"
   >;
@@ -936,6 +1153,13 @@ export interface MemooManage extends BaseContract {
     InitializedEvent.InputTuple,
     InitializedEvent.OutputTuple,
     InitializedEvent.OutputObject
+  >;
+  getEvent(
+    key: "MemeConfigured"
+  ): TypedContractEvent<
+    MemeConfiguredEvent.InputTuple,
+    MemeConfiguredEvent.OutputTuple,
+    MemeConfiguredEvent.OutputObject
   >;
   getEvent(
     key: "MemeCreated"
@@ -1001,6 +1225,13 @@ export interface MemooManage extends BaseContract {
     RoleRevokedEvent.OutputObject
   >;
   getEvent(
+    key: "SetUnlockPeriod"
+  ): TypedContractEvent<
+    SetUnlockPeriodEvent.InputTuple,
+    SetUnlockPeriodEvent.OutputTuple,
+    SetUnlockPeriodEvent.OutputObject
+  >;
+  getEvent(
     key: "UnlockPriceReached"
   ): TypedContractEvent<
     UnlockPriceReachedEvent.InputTuple,
@@ -1049,6 +1280,17 @@ export interface MemooManage extends BaseContract {
       InitializedEvent.OutputObject
     >;
 
+    "MemeConfigured(tuple)": TypedContractEvent<
+      MemeConfiguredEvent.InputTuple,
+      MemeConfiguredEvent.OutputTuple,
+      MemeConfiguredEvent.OutputObject
+    >;
+    MemeConfigured: TypedContractEvent<
+      MemeConfiguredEvent.InputTuple,
+      MemeConfiguredEvent.OutputTuple,
+      MemeConfiguredEvent.OutputObject
+    >;
+
     "MemeCreated(address,tuple)": TypedContractEvent<
       MemeCreatedEvent.InputTuple,
       MemeCreatedEvent.OutputTuple,
@@ -1082,7 +1324,7 @@ export interface MemooManage extends BaseContract {
       MemeIdoEndedEvent.OutputObject
     >;
 
-    "MemeUnlocked(address,address,string,uint256)": TypedContractEvent<
+    "MemeUnlocked(address,address,uint256,string,uint256)": TypedContractEvent<
       MemeUnlockedEvent.InputTuple,
       MemeUnlockedEvent.OutputTuple,
       MemeUnlockedEvent.OutputObject
@@ -1148,7 +1390,18 @@ export interface MemooManage extends BaseContract {
       RoleRevokedEvent.OutputObject
     >;
 
-    "UnlockPriceReached(address,uint256)": TypedContractEvent<
+    "SetUnlockPeriod(tuple[6])": TypedContractEvent<
+      SetUnlockPeriodEvent.InputTuple,
+      SetUnlockPeriodEvent.OutputTuple,
+      SetUnlockPeriodEvent.OutputObject
+    >;
+    SetUnlockPeriod: TypedContractEvent<
+      SetUnlockPeriodEvent.InputTuple,
+      SetUnlockPeriodEvent.OutputTuple,
+      SetUnlockPeriodEvent.OutputObject
+    >;
+
+    "UnlockPriceReached(address,uint256,uint256)": TypedContractEvent<
       UnlockPriceReachedEvent.InputTuple,
       UnlockPriceReachedEvent.OutputTuple,
       UnlockPriceReachedEvent.OutputObject

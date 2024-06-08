@@ -29,13 +29,13 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
 
   const totalSupplyBN = useMemo(() => {
     if (!memooConfig) return zeroBN;
-    return new BigNumber(memooConfig.memeTotalSupply).dividedBy(10 ** memooConfig.memeDefaultDecimals);
+    return new BigNumber(memooConfig.totalSupply).dividedBy(10 ** memooConfig.defaultDecimals);
   }, [memooConfig]);
 
   const capped = useMemo(() => {
     if (!memooConfig) return zeroBN;
     const idoQuotaBN = new BigNumber(Number(memooConfig.allocation.ido)).dividedBy(10000);
-    const idoPriceBN = new BigNumber(memooConfig.memeIdoPrice).dividedBy(10 ** memooConfig.memeDefaultDecimals);
+    const idoPriceBN = new BigNumber(memooConfig.idoPrice).dividedBy(10 ** memooConfig.defaultDecimals);
     return totalSupplyBN.multipliedBy(idoQuotaBN).multipliedBy(idoPriceBN);
   }, [memooConfig, totalSupplyBN]);
 

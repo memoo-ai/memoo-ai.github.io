@@ -155,6 +155,51 @@
     "anonymous": false,
     "inputs": [
       {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "payToken",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "idoPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "airdropPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalSupply",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "defaultDecimals",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint256",
+            "name": "idoUserBuyLimit",
+            "type": "uint256"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct MemooManageStructs.MemeConfig",
+        "name": "memeConfig",
+        "type": "tuple"
+      }
+    ],
+    "name": "MemeConfigured",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": false,
         "internalType": "address",
         "name": "meme",
@@ -222,6 +267,11 @@
               {
                 "internalType": "uint256",
                 "name": "preLaunchSecond",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "idoUserBuyLimit",
                 "type": "uint256"
               }
             ],
@@ -305,31 +355,6 @@
                 "internalType": "uint256",
                 "name": "idoCreatorBuyLimit",
                 "type": "uint256"
-              },
-              {
-                "internalType": "address",
-                "name": "memePayToken",
-                "type": "address"
-              },
-              {
-                "internalType": "uint256",
-                "name": "memeIdoPrice",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "memeAirdropPrice",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "memeTotalSupply",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint8",
-                "name": "memeDefaultDecimals",
-                "type": "uint8"
               },
               {
                 "components": [
@@ -478,8 +503,14 @@
       },
       {
         "indexed": false,
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
         "internalType": "string",
-        "name": "flag",
+        "name": "periodType",
         "type": "string"
       },
       {
@@ -571,31 +602,6 @@
             "internalType": "uint256",
             "name": "idoCreatorBuyLimit",
             "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "memePayToken",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "memeIdoPrice",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "memeAirdropPrice",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "memeTotalSupply",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint8",
-            "name": "memeDefaultDecimals",
-            "type": "uint8"
           },
           {
             "components": [
@@ -731,10 +737,51 @@
     "anonymous": false,
     "inputs": [
       {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "periodType",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "unlockRate",
+            "type": "uint256"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct MemooManageStructs.UnlockPeriod[6]",
+        "name": "unlockPeriods",
+        "type": "tuple[6]"
+      }
+    ],
+    "name": "SetUnlockPeriod",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": false,
         "internalType": "address",
         "name": "meme",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
       },
       {
         "indexed": false,
@@ -907,6 +954,35 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "meme",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
+      }
+    ],
+    "name": "getCanUnlockCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "getMemooConfig",
     "outputs": [
@@ -986,31 +1062,6 @@
             "internalType": "uint256",
             "name": "idoCreatorBuyLimit",
             "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "memePayToken",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "memeIdoPrice",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "memeAirdropPrice",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "memeTotalSupply",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint8",
-            "name": "memeDefaultDecimals",
-            "type": "uint8"
           },
           {
             "components": [
@@ -1170,6 +1221,78 @@
   },
   {
     "inputs": [],
+    "name": "memeDefaultConfig",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "payToken",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "idoPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "airdropPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "totalSupply",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "defaultDecimals",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint256",
+        "name": "idoUserBuyLimit",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "memeUnlockPeriods",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "periodType",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "unlockRate",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "pause",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -1220,6 +1343,51 @@
       }
     ],
     "name": "revokeRole",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "payToken",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "idoPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "airdropPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalSupply",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "defaultDecimals",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint256",
+            "name": "idoUserBuyLimit",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct MemooManageStructs.MemeConfig",
+        "name": "_memeConfig",
+        "type": "tuple"
+      }
+    ],
+    "name": "setMemeDefaultConfig",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1304,31 +1472,6 @@
             "type": "uint256"
           },
           {
-            "internalType": "address",
-            "name": "memePayToken",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "memeIdoPrice",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "memeAirdropPrice",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "memeTotalSupply",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint8",
-            "name": "memeDefaultDecimals",
-            "type": "uint8"
-          },
-          {
             "components": [
               {
                 "internalType": "uint256",
@@ -1374,6 +1517,41 @@
   {
     "inputs": [
       {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "periodType",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "unlockRate",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct MemooManageStructs.UnlockPeriod[]",
+        "name": "p",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "setUnlockPeriod",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "bytes4",
         "name": "interfaceId",
         "type": "bytes4"
@@ -1396,6 +1574,11 @@
         "internalType": "address",
         "name": "meme",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
       }
     ],
     "name": "unlockMeme",
@@ -1409,6 +1592,11 @@
         "internalType": "address",
         "name": "meme",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
       },
       {
         "internalType": "uint256",

@@ -193,6 +193,11 @@
                 "internalType": "uint256",
                 "name": "preLaunchSecond",
                 "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "idoUserBuyLimit",
+                "type": "uint256"
               }
             ],
             "internalType": "struct MemeInfoStructs.MemeInfo",
@@ -275,31 +280,6 @@
                 "internalType": "uint256",
                 "name": "idoCreatorBuyLimit",
                 "type": "uint256"
-              },
-              {
-                "internalType": "address",
-                "name": "memePayToken",
-                "type": "address"
-              },
-              {
-                "internalType": "uint256",
-                "name": "memeIdoPrice",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "memeAirdropPrice",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "memeTotalSupply",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint8",
-                "name": "memeDefaultDecimals",
-                "type": "uint8"
               },
               {
                 "components": [
@@ -602,6 +582,11 @@
             "internalType": "uint256",
             "name": "preLaunchSecond",
             "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "idoUserBuyLimit",
+            "type": "uint256"
           }
         ],
         "internalType": "struct MemeInfoStructs.MemeInfo",
@@ -684,31 +669,6 @@
             "internalType": "uint256",
             "name": "idoCreatorBuyLimit",
             "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "memePayToken",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "memeIdoPrice",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "memeAirdropPrice",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "memeTotalSupply",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint8",
-            "name": "memeDefaultDecimals",
-            "type": "uint8"
           },
           {
             "components": [
@@ -818,6 +778,11 @@
                 "internalType": "uint256",
                 "name": "preLaunchSecond",
                 "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "idoUserBuyLimit",
+                "type": "uint256"
               }
             ],
             "internalType": "struct MemeInfoStructs.MemeInfo",
@@ -900,31 +865,6 @@
                 "internalType": "uint256",
                 "name": "idoCreatorBuyLimit",
                 "type": "uint256"
-              },
-              {
-                "internalType": "address",
-                "name": "memePayToken",
-                "type": "address"
-              },
-              {
-                "internalType": "uint256",
-                "name": "memeIdoPrice",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "memeAirdropPrice",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "memeTotalSupply",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint8",
-                "name": "memeDefaultDecimals",
-                "type": "uint8"
               },
               {
                 "components": [
@@ -1163,6 +1103,11 @@
                 "internalType": "uint256",
                 "name": "preLaunchSecond",
                 "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "idoUserBuyLimit",
+                "type": "uint256"
               }
             ],
             "internalType": "struct MemeInfoStructs.MemeInfo",
@@ -1245,31 +1190,6 @@
                 "internalType": "uint256",
                 "name": "idoCreatorBuyLimit",
                 "type": "uint256"
-              },
-              {
-                "internalType": "address",
-                "name": "memePayToken",
-                "type": "address"
-              },
-              {
-                "internalType": "uint256",
-                "name": "memeIdoPrice",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "memeAirdropPrice",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "memeTotalSupply",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint8",
-                "name": "memeDefaultDecimals",
-                "type": "uint8"
               },
               {
                 "components": [

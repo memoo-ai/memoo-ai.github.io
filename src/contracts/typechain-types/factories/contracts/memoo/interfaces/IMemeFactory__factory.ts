@@ -82,6 +82,11 @@ const _abi = [
                 name: "preLaunchSecond",
                 type: "uint256",
               },
+              {
+                internalType: "uint256",
+                name: "idoUserBuyLimit",
+                type: "uint256",
+              },
             ],
             internalType: "struct MemeInfoStructs.MemeInfo",
             name: "memeInfo",
@@ -163,31 +168,6 @@ const _abi = [
                 internalType: "uint256",
                 name: "idoCreatorBuyLimit",
                 type: "uint256",
-              },
-              {
-                internalType: "address",
-                name: "memePayToken",
-                type: "address",
-              },
-              {
-                internalType: "uint256",
-                name: "memeIdoPrice",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "memeAirdropPrice",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "memeTotalSupply",
-                type: "uint256",
-              },
-              {
-                internalType: "uint8",
-                name: "memeDefaultDecimals",
-                type: "uint8",
               },
               {
                 components: [
@@ -315,6 +295,11 @@ const _abi = [
             name: "preLaunchSecond",
             type: "uint256",
           },
+          {
+            internalType: "uint256",
+            name: "idoUserBuyLimit",
+            type: "uint256",
+          },
         ],
         internalType: "struct MemeInfoStructs.MemeInfo",
         name: "memeInfo",
@@ -396,31 +381,6 @@ const _abi = [
             internalType: "uint256",
             name: "idoCreatorBuyLimit",
             type: "uint256",
-          },
-          {
-            internalType: "address",
-            name: "memePayToken",
-            type: "address",
-          },
-          {
-            internalType: "uint256",
-            name: "memeIdoPrice",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "memeAirdropPrice",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "memeTotalSupply",
-            type: "uint256",
-          },
-          {
-            internalType: "uint8",
-            name: "memeDefaultDecimals",
-            type: "uint8",
           },
           {
             components: [
@@ -531,6 +491,11 @@ const _abi = [
                 name: "preLaunchSecond",
                 type: "uint256",
               },
+              {
+                internalType: "uint256",
+                name: "idoUserBuyLimit",
+                type: "uint256",
+              },
             ],
             internalType: "struct MemeInfoStructs.MemeInfo",
             name: "memeInfo",
@@ -612,31 +577,6 @@ const _abi = [
                 internalType: "uint256",
                 name: "idoCreatorBuyLimit",
                 type: "uint256",
-              },
-              {
-                internalType: "address",
-                name: "memePayToken",
-                type: "address",
-              },
-              {
-                internalType: "uint256",
-                name: "memeIdoPrice",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "memeAirdropPrice",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "memeTotalSupply",
-                type: "uint256",
-              },
-              {
-                internalType: "uint8",
-                name: "memeDefaultDecimals",
-                type: "uint8",
               },
               {
                 components: [
@@ -773,6 +713,11 @@ const _abi = [
                 name: "preLaunchSecond",
                 type: "uint256",
               },
+              {
+                internalType: "uint256",
+                name: "idoUserBuyLimit",
+                type: "uint256",
+              },
             ],
             internalType: "struct MemeInfoStructs.MemeInfo",
             name: "memeInfo",
@@ -854,31 +799,6 @@ const _abi = [
                 internalType: "uint256",
                 name: "idoCreatorBuyLimit",
                 type: "uint256",
-              },
-              {
-                internalType: "address",
-                name: "memePayToken",
-                type: "address",
-              },
-              {
-                internalType: "uint256",
-                name: "memeIdoPrice",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "memeAirdropPrice",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "memeTotalSupply",
-                type: "uint256",
-              },
-              {
-                internalType: "uint8",
-                name: "memeDefaultDecimals",
-                type: "uint8",
               },
               {
                 components: [

@@ -206,6 +206,8 @@ declare interface IDOQueueDetail extends IDOClaimStage {
   creatorWebsite: string;
   contributed: number;
   maxContributed: number;
+  rewardEndsIn: number;
+  count: number;
 }
 
 declare type IDOStatus = 'Draft' | 'QUEUE' | 'IDO' | 'Launched';

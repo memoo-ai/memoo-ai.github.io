@@ -152,3 +152,5 @@ export type { UniswapV2Router01 } from "./contracts/uniswap-v2-periphery/Uniswap
 export { UniswapV2Router01__factory } from "./factories/contracts/uniswap-v2-periphery/UniswapV2Router01__factory";
 export type { UniswapV2Router02 } from "./contracts/uniswap-v2-periphery/UniswapV2Router02";
 export { UniswapV2Router02__factory } from "./factories/contracts/uniswap-v2-periphery/UniswapV2Router02__factory";
+export type { LibStr } from "./contracts/util/LibStr";
+export { LibStr__factory } from "./factories/contracts/util/LibStr__factory";

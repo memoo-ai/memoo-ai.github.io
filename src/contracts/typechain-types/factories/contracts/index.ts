@@ -6,3 +6,4 @@ export * as merkle from "./merkle";
 export * as uniswapV2Core from "./uniswap-v2-core";
 export * as uniswapV2Locker from "./uniswap-v2-locker";
 export * as uniswapV2Periphery from "./uniswap-v2-periphery";
+export * as util from "./util";

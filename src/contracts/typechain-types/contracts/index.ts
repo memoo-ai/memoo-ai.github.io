@@ -11,3 +11,5 @@ import type * as uniswapV2Locker from "./uniswap-v2-locker";
 export type { uniswapV2Locker };
 import type * as uniswapV2Periphery from "./uniswap-v2-periphery";
 export type { uniswapV2Periphery };
+import type * as util from "./util";
+export type { util };

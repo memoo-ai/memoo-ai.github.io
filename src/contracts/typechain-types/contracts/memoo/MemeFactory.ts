@@ -37,6 +37,7 @@ export declare namespace MemeInfoStructs {
     idoPrice: BigNumberish;
     airdropPrice: BigNumberish;
     preLaunchSecond: BigNumberish;
+    idoUserBuyLimit: BigNumberish;
   };
 
   export type MemeInfoStructOutput = [
@@ -51,7 +52,8 @@ export declare namespace MemeInfoStructs {
     payToken: string,
     idoPrice: bigint,
     airdropPrice: bigint,
-    preLaunchSecond: bigint
+    preLaunchSecond: bigint,
+    idoUserBuyLimit: bigint
   ] & {
     creator: string;
     defaultAdmin: string;
@@ -65,6 +67,7 @@ export declare namespace MemeInfoStructs {
     idoPrice: bigint;
     airdropPrice: bigint;
     preLaunchSecond: bigint;
+    idoUserBuyLimit: bigint;
   };
 
   export type MemeConfigInfoStruct = {
@@ -129,11 +132,6 @@ export declare namespace MemooManageStructs {
     platformFeeCreateMeme: BigNumberish;
     platformFeeCreateMemePayToken: AddressLike;
     idoCreatorBuyLimit: BigNumberish;
-    memePayToken: AddressLike;
-    memeIdoPrice: BigNumberish;
-    memeAirdropPrice: BigNumberish;
-    memeTotalSupply: BigNumberish;
-    memeDefaultDecimals: BigNumberish;
     allocation: MemooManageStructs.TokenAllocationStruct;
   };
 
@@ -153,11 +151,6 @@ export declare namespace MemooManageStructs {
     platformFeeCreateMeme: bigint,
     platformFeeCreateMemePayToken: string,
     idoCreatorBuyLimit: bigint,
-    memePayToken: string,
-    memeIdoPrice: bigint,
-    memeAirdropPrice: bigint,
-    memeTotalSupply: bigint,
-    memeDefaultDecimals: bigint,
     allocation: MemooManageStructs.TokenAllocationStructOutput
   ] & {
     memeFactory: string;
@@ -175,11 +168,6 @@ export declare namespace MemooManageStructs {
     platformFeeCreateMeme: bigint;
     platformFeeCreateMemePayToken: string;
     idoCreatorBuyLimit: bigint;
-    memePayToken: string;
-    memeIdoPrice: bigint;
-    memeAirdropPrice: bigint;
-    memeTotalSupply: bigint;
-    memeDefaultDecimals: bigint;
     allocation: MemooManageStructs.TokenAllocationStructOutput;
   };
 }

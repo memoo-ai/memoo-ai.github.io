@@ -341,6 +341,10 @@ declare module "hardhat/types/runtime" {
       name: "UniswapV2Router02",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.UniswapV2Router02__factory>;
+    getContractFactory(
+      name: "LibStr",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.LibStr__factory>;
 
     getContractAt(
       name: "AccessControlUpgradeable",
@@ -752,6 +756,11 @@ declare module "hardhat/types/runtime" {
       address: string | ethers.Addressable,
       signer?: ethers.Signer
     ): Promise<Contracts.UniswapV2Router02>;
+    getContractAt(
+      name: "LibStr",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.LibStr>;
 
     deployContract(
       name: "AccessControlUpgradeable",
@@ -1081,6 +1090,10 @@ declare module "hardhat/types/runtime" {
       name: "UniswapV2Router02",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.UniswapV2Router02>;
+    deployContract(
+      name: "LibStr",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.LibStr>;
 
     deployContract(
       name: "AccessControlUpgradeable",
@@ -1492,6 +1505,11 @@ declare module "hardhat/types/runtime" {
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.UniswapV2Router02>;
+    deployContract(
+      name: "LibStr",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.LibStr>;
 
     // default types
     getContractFactory(
