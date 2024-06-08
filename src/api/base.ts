@@ -9,6 +9,7 @@ export interface ApiResponse<T = any> {
 
 export interface BaseConfigData {
   MemooManageContract: string;
+  MemeFactoryContract: string;
 }
 
 export function getBaseConfig<T extends ApiResponse<BaseConfigData>>() {

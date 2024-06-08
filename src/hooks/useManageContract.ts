@@ -1,7 +1,6 @@
 /* eslint-disable max-params */
 /* eslint-disable no-debugger */
-import Abi from '@/contracts/ugly/contracts/memoo/MemooManage.sol/MemooManage.json';
-import { MemooManage, MemooManageStructs } from '@/contracts/typechain-types/contracts/memoo/MemooManage';
+import Abi from '@/contracts/abi/ugly/contracts/memoo/MemooManage.sol/MemooManage.json';
 import { usePublicClient, useWalletClient, useAccount, useBalance } from 'wagmi';
 
 import { useCallback, useEffect, useState, useMemo } from 'react';
@@ -41,7 +40,8 @@ export const useManageContract = () => {
   const { baseConfig } = useBaseConfig();
   const { address } = useAccount();
   const { data: walletClient } = useWalletClient();
-  console.log('publicClient: ', publicClient, walletClient);
+  const [createMemeLoading, setCreateMemeLoading] = useState(false);
+
   const memooConfig = useMemo(() => {
     if (!publicClient || !baseConfig) {
       return;
@@ -133,6 +133,35 @@ export const useManageContract = () => {
     [config, baseConfig, walletClient, address],
   );
 
+  const createMeme = useCallback(
+    // eslint-disable-next-line max-params
+    async (name: string, symbol: string, preLaunchSecond: number, amount: number | string | bigint) => {
+      if (!walletClient || !baseConfig || !config) return;
+      if (config.memePayToken !== ZERO_ADDRESS) {
+        // TODO approve
+      }
+      try {
+        setCreateMemeLoading(true);
+        const tx = {
+          address: baseConfig.MemooManageContract as Hash,
+          abi: Abi,
+          functionName: 'createMeme',
+          args: [{ name, symbol, preLaunchSecond }, amount],
+          value: config.memePayToken === ZERO_ADDRESS ? amount : 0n,
+        } as any;
+        const hash = await walletClient.writeContract(tx);
+        const res = await publicClient?.waitForTransactionReceipt({
+          hash,
+        });
+        return res;
+      } catch (e) {
+      } finally {
+        setCreateMemeLoading(false);
+      }
+    },
+    [walletClient, baseConfig, config, publicClient],
+  );
+
   useEffect(() => {
     fetchMemooConfig().then((res) => {
       console.log(res);
@@ -146,5 +175,7 @@ export const useManageContract = () => {
     idoBuy,
     unlockMeme,
     airdropClaim,
+    createMeme,
+    createMemeLoading,
   };
 };

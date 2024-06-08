@@ -24,6 +24,7 @@
   "function PERCENT_DENOMINATOR() view returns (uint16)",
   "function claimToken(address,address,uint256)",
   "function createMeme(tuple(address,address,address,address,string,string,uint256,uint8,address,uint256,uint256,uint256),tuple(address,address,address,address,address,uint256,address,address,address,address,uint256,uint256,uint256,address,uint256,address,uint256,uint256,uint256,uint8,tuple(uint256,uint256,uint256,uint256,uint256))) returns (address, tuple(tuple(address,address,address,address,string,string,uint256,uint8,address,uint256,uint256,uint256),tuple(address,address,address,address,address,uint256,address,address,address,address,uint256,uint256,uint256,address,uint256,address,uint256,uint256,uint256,uint8,tuple(uint256,uint256,uint256,uint256,uint256)),uint256,uint256,uint256))",
+  "function getMemeAddress(string) view returns (address)",
   "function getRoleAdmin(bytes32) view returns (bytes32)",
   "function grantRole(bytes32,address)",
   "function hasRole(bytes32,address) view returns (bool)",

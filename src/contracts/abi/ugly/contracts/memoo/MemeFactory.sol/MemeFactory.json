@@ -990,6 +990,25 @@
   {
     "inputs": [
       {
+        "internalType": "string",
+        "name": "memeKey",
+        "type": "string"
+      }
+    ],
+    "name": "getMemeAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "meme",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "bytes32",
         "name": "role",
         "type": "bytes32"

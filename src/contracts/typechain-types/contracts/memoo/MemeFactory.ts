@@ -193,6 +193,7 @@ export interface MemeFactoryInterface extends Interface {
       | "PERCENT_DENOMINATOR"
       | "claimToken"
       | "createMeme"
+      | "getMemeAddress"
       | "getRoleAdmin"
       | "grantRole"
       | "hasRole"
@@ -244,6 +245,10 @@ export interface MemeFactoryInterface extends Interface {
       MemeInfoStructs.MemeInfoStruct,
       MemooManageStructs.MemooConfigStruct
     ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getMemeAddress",
+    values: [string]
   ): string;
   encodeFunctionData(
     functionFragment: "getRoleAdmin",
@@ -299,6 +304,10 @@ export interface MemeFactoryInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "claimToken", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "createMeme", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getMemeAddress",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getRoleAdmin",
     data: BytesLike
@@ -521,6 +530,8 @@ export interface MemeFactory extends BaseContract {
     "nonpayable"
   >;
 
+  getMemeAddress: TypedContractMethod<[memeKey: string], [string], "view">;
+
   getRoleAdmin: TypedContractMethod<[role: BytesLike], [string], "view">;
 
   grantRole: TypedContractMethod<
@@ -604,6 +615,9 @@ export interface MemeFactory extends BaseContract {
     [[string, MemeInfoStructs.MemeConfigInfoStructOutput]],
     "nonpayable"
   >;
+  getFunction(
+    nameOrSignature: "getMemeAddress"
+  ): TypedContractMethod<[memeKey: string], [string], "view">;
   getFunction(
     nameOrSignature: "getRoleAdmin"
   ): TypedContractMethod<[role: BytesLike], [string], "view">;

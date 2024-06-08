@@ -43,7 +43,7 @@ export const saveTokenCraft = (data: ITokenSaveData) => {
   return http.post(`${prefix}/web-oriented/token`, data);
 };
 
-export const uploadFile = (file: File) => {
+export const uploadFile = (file: File): Promise<ApiResponse<{ file: string; fileUrl: string }>> => {
   const formData = new FormData();
   formData.set('file', file);
   return http.post(`${prefix}/web-oriented/file-upload`, formData, {
@@ -71,6 +71,7 @@ export interface GetTwitterAccessTokenParams {
   grantType: string;
   redirectUri: string;
   refreshToken: string;
+  appClientId: string;
 }
 export interface GetTwitterAccessTokenData {
   access_token: string;
@@ -82,4 +83,8 @@ export const getTwitterAccessToken = (
   params: GetTwitterAccessTokenParams,
 ): Promise<ApiResponse<GetTwitterAccessTokenData>> => {
   return http.get(`${prefix}/web-oriented/request-bearer-token`, { params });
+};
+
+export const getTwitterClientId = (): Promise<ApiResponse<string>> => {
+  return http.get(`${prefix}/web-oriented/get-twitter-client`);
 };

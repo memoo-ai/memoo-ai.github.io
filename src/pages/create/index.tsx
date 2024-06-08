@@ -28,16 +28,20 @@ import {
   checkTickerExists,
   getTwitterAccessToken,
   uploadFile,
+  getTwitterClientId,
 } from '@/api/token';
 import qs from 'qs';
 
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Trash } from 'lucide-react';
 import { useManageContract } from '@/hooks/useManageContract';
 import { parseEther, formatEther } from 'ethers';
+import { useMemeFactoryContract } from '@/hooks/useMemeFactoryContract';
+import { ZERO_ADDRESS } from '@/constants';
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
 const FORM_STORAGE_KEY = 'create_token_storage';
+const TWITTER_CLIENT_ID_KEY = 'twitter_client_id';
 const PreLaunchDurationOptions = [
   { label: 'immediate', value: PreLaunchDurationEnum.IMMEDIATE },
   { label: '1 day', value: PreLaunchDurationEnum['1DAY'] },
@@ -51,19 +55,22 @@ export default function Create() {
   const [saveCraftLoading, setSaveCraftLoading] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [iconUrl, setIconUrl] = useState('');
-  const { config: memooConfig } = useManageContract();
+  const { config: memooConfig, createMeme, createMemeLoading } = useManageContract();
   const [connectTwitterLoading, setConnectTwitterLoading] = useState(false);
   const [twitter, setTwitter] = useState('');
   const [twitterAccessToken, setTwitterAccessToken] = useState('');
+  const [clientId, setClientId] = useState('');
   console.log('memooConfig: ', memooConfig);
+  const { getMemeAddressWithSymbol } = useMemeFactoryContract();
+  const navigate = useNavigate();
 
-  const totalCap = useMemo(() => {
+  const totalCapInitial = useMemo(() => {
     if (!memooConfig) return 0;
     const rate = Number(memooConfig.idoCreatorBuyLimit) / 10000;
     return Number(formatEther(memooConfig?.memeIdoPrice)) * Number(formatEther(memooConfig?.memeTotalSupply)) * rate;
   }, [memooConfig]);
   console.log('memooConfig: ', memooConfig);
-  console.log('totalCap: ', totalCap);
+  console.log('totalCapInitial: ', totalCapInitial);
   const normFile = (e: any) => {
     if (Array.isArray(e)) {
       return e;
@@ -78,23 +85,26 @@ export default function Create() {
     console.log('onFieldsChange', changedFields);
   };
 
-  const handleUpload = (file: File, filed: string) => {
+  const handleUpload = (file: File, field: string) => {
     if (file) {
       uploadFile(file).then((res) => {
-        form.setFieldValue(filed, res.data);
+        form.setFieldValue(field, field === 'banners' ? [res.data.fileUrl] : res.data.fileUrl);
       });
       return false;
     }
   };
 
-  const connectTwitter = () => {
+  const connectTwitter = async () => {
     // TODO: save form data to local; when callback from twitter, the form data will be lost.
+    const res = await getTwitterClientId();
     const formData = form.getFieldsValue();
+    console.log('formData: ', formData);
     localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(formData));
 
     setConnectTwitterLoading(true);
 
-    let clientId = twitterClientId;
+    let clientId = res.data;
+    localStorage.setItem(TWITTER_CLIENT_ID_KEY, clientId);
     let state = 'twitter';
 
     const params = {
@@ -127,13 +137,18 @@ export default function Create() {
       });
     } else {
       const data = localStorage.getItem(FORM_STORAGE_KEY);
+
       if (data) {
         try {
           const formData = JSON.parse(data);
+          console.log('data: ', formData);
           if (!formData.preLaunchDuration) {
             formData.preLaunchDuration = PreLaunchDurationEnum['IMMEDIATE'];
           }
           form.setFieldsValue(formData);
+          if (formData.icon) {
+            setIconUrl(formData.icon);
+          }
         } catch (e) {}
       } else {
         form.setFieldsValue({
@@ -143,6 +158,7 @@ export default function Create() {
     }
     const code = searchParams.get('code');
     const state = searchParams.get('state');
+    const clientId = localStorage.getItem(TWITTER_CLIENT_ID_KEY);
     if (state === 'twitter' && code) {
       // call api to bind
       const params = {
@@ -152,6 +168,7 @@ export default function Create() {
         redirectUri: twitterRedirectUri,
         codeVerifier: 'challenge',
         refreshToken: '',
+        appClientId: clientId,
       };
       getTwitterAccessToken(params).then((res) => {
         const { access_token, twitter } = res.data;
@@ -161,8 +178,32 @@ export default function Create() {
     }
   }, [searchParams]);
 
+  const payFee = async () => {
+    const data = form.getFieldsValue();
+
+    const preLaunchSecond =
+      data.preLaunchDuration === PreLaunchDurationEnum.IMMEDIATE
+        ? 0
+        : data.preLaunchDuration === PreLaunchDurationEnum['1DAY']
+        ? 24 * 3600
+        : 3 * 24 * 3600;
+    const preValue = totalCapInitial * data.preMarketAcquisition;
+    console.log('preValue: ', preValue);
+    const value = parseEther(String(preValue));
+    const res = await createMeme(data.tokenName, data.ticker, preLaunchSecond, value);
+    console.log('res: ', res);
+  };
+
   const handleSave = async (isConfirm: boolean) => {
     try {
+      const data = form.getFieldsValue();
+      const tokenAddress = await getMemeAddressWithSymbol(data.ticker);
+      console.log('tokenAddress: ', tokenAddress);
+      if (tokenAddress !== ZERO_ADDRESS) {
+        message.warning(`${data.ticker} is already taken. Please choose another one.`);
+        return;
+      }
+
       if (!isAccept) {
         message.warning('Please accept the terms and conditions.');
         return;
@@ -173,7 +214,7 @@ export default function Create() {
         message.warning('Please connect project twitter first.');
         return;
       }
-      const data = form.getFieldsValue();
+
       data.twitter = twitter;
       data.accessToken = twitterAccessToken;
       // TODO check ticker if exits
@@ -186,11 +227,20 @@ export default function Create() {
         setConfirmLoading(true);
         const res = await confirmTokenCreate(data);
         console.log('res: ', res);
+        localStorage.removeItem(FORM_STORAGE_KEY);
+        await payFee();
+        message.success('Congratulations! Create meme successfully!');
         // Go to dashboard
+        navigate('/dashboard');
       } else {
         setSaveCraftLoading(true);
         const res = await saveTokenCraft(data);
         console.log('res: ', res);
+        // clear
+        localStorage.removeItem(FORM_STORAGE_KEY);
+        message.success('Save meme craft successfully!');
+        // Go to dashboard
+        navigate('/dashboard');
       }
     } catch (e) {
       console.log(e);
@@ -344,8 +394,9 @@ export default function Create() {
                 </p>
               }
               name="preMarketAcquisition"
+              style={{ marginTop: '40px' }}
             >
-              <MySlider min={0} max={totalCap} />
+              <MySlider min={0} max={1} minPrice={0} maxPrice={totalCapInitial} />
             </Form.Item>
             <p className="create_tip_for_acquisition">
               The creator can enhance the initial allocation by purchasing an additional 30%
