@@ -285,3 +285,10 @@ declare interface ProofRes {
   count: number;
   address: Address;
 }
+
+declare interface UnlockPeriod {
+  index: bigint;
+  periodType: 'price';
+  value: bigint;
+  unlockRate: bigint;
+}

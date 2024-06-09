@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import BigNumber from 'bignumber.js';
 import toast from 'react-hot-toast';
 import numeral from 'numeral';
@@ -147,3 +148,12 @@ export const formatDecimals = (source: BigNumber.Value, decimals = 10, stripZero
   }
   return result;
 };
+
+export function calculateDaysDifference(a: number, b: number): number {
+  const millisecondsPerDay = 24 * 60 * 60 * 1000; // 一天的毫秒数
+  const dateA = new Date(a);
+  const dateB = new Date(b);
+  const timeDifference = Math.abs(dateB.getTime() - dateA.getTime());
+  const daysDifference = Math.floor(timeDifference / millisecondsPerDay);
+  return daysDifference;
+}

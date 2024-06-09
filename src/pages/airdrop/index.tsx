@@ -1,3 +1,5 @@
+/* eslint-disable no-lone-blocks */
+/* eslint-disable no-debugger */
 import { FC, createContext, useEffect, useMemo, useState } from 'react';
 import AirdropClaim from './airdrop-claim';
 import IMOParticipate from './imo-participate';
@@ -10,6 +12,7 @@ import {
   IDOLaunchedDetailTop10,
   IDOQueueDetail,
   TokenCreateStage,
+  UnlockPeriod,
 } from '@/types';
 import PublicSale from './public-sale';
 import IDODetail from './ido-detail';
@@ -42,6 +45,14 @@ interface AirdropContext {
     claimCount: BigNumber,
     totalCount: BigNumber,
   ) => Promise<TransactionReceipt | undefined>;
+  _1stStage?: {
+    unlockCount: BigNumber;
+    unlockInfo: UnlockPeriod;
+  };
+  _2ndStage?: {
+    unlockCount: BigNumber;
+    unlockInfo: UnlockPeriod;
+  };
 }
 
 export const AirdropContext = createContext<AirdropContext>({
@@ -60,7 +71,15 @@ const Airdrop: FC = () => {
   const { ticker = import.meta.env.VITE_DEMO_TICKER } = useParams<{ ticker: string }>();
   const { address } = useAccount();
   const [loading, setLoading] = useState(false);
-  const { config, idoBuy, unlockMeme, airdropClaim } = useManageContract();
+  const [_1stStage, set1stStage] = useState<{
+    unlockCount: BigNumber;
+    unlockInfo: UnlockPeriod;
+  }>();
+  const [_2ndStage, set2ndStage] = useState<{
+    unlockCount: BigNumber;
+    unlockInfo: UnlockPeriod;
+  }>();
+  const { config, idoBuy, unlockMeme, airdropClaim, getCanUnlockCount, memeUnlockPeriods } = useManageContract();
 
   const mine = useMemo(
     () => compareAddrs(idoQueueDetail?.creatorAddress as Address, address!),
@@ -80,6 +99,8 @@ const Airdrop: FC = () => {
       idoBuy,
       unlockMeme,
       airdropClaim,
+      _1stStage,
+      _2ndStage,
     }),
     [
       stage,
@@ -93,6 +114,8 @@ const Airdrop: FC = () => {
       idoBuy,
       unlockMeme,
       airdropClaim,
+      _1stStage,
+      _2ndStage,
     ],
   );
 
@@ -130,6 +153,31 @@ const Airdrop: FC = () => {
       }
     })();
   }, []);
+
+  useEffect(() => {
+    if (!idoQueueDetail || !address) return;
+    (async () => {
+      // 1st stage
+      {
+        const [unlockCount, unlockInfo] = await Promise.all([
+          getCanUnlockCount(idoQueueDetail.contractAddress, address, 0) as Promise<BigNumber>,
+          memeUnlockPeriods(0) as Promise<UnlockPeriod>,
+        ]);
+        console.log('1st stage', unlockCount, unlockInfo);
+        set1stStage({ unlockCount, unlockInfo });
+      }
+
+      // 2nd stafe
+      {
+        const [unlockCount, unlockInfo] = await Promise.all([
+          getCanUnlockCount(idoQueueDetail.contractAddress, address, 1) as Promise<BigNumber>,
+          memeUnlockPeriods(1) as Promise<UnlockPeriod>,
+        ]);
+        console.log('2nd stage', unlockCount, unlockInfo);
+        set2ndStage({ unlockCount, unlockInfo });
+      }
+    })();
+  }, [idoQueueDetail, address, memeUnlockPeriods]);
 
   return (
     <div className="airdrop pb-16">

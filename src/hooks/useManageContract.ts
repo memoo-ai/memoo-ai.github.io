@@ -135,24 +135,6 @@ export const useManageContract = () => {
     [baseConfig, walletClient],
   );
 
-  const memeUnlockPeriods = useCallback(
-    async (stageIndex: 0 | 1) => {
-      if (!baseConfig || !walletClient) return;
-      const tx = {
-        address: baseConfig.MemooManageContract as Hash,
-        abi: Abi,
-        functionName: 'memeUnlockPeriods',
-        args: [stageIndex],
-      } as any;
-      const hash = await walletClient.writeContract(tx);
-      const res = await publicClient?.waitForTransactionReceipt({
-        hash,
-      });
-      return res;
-    },
-    [baseConfig, walletClient],
-  );
-
   const airdropClaim = useCallback(
     async (project: Address, claimCount: BigNumber, totalCount: BigNumber) => {
       if (!config || !baseConfig || !walletClient || !address) return;
@@ -219,6 +201,37 @@ export const useManageContract = () => {
     });
   }, [memooConfig, publicClient]);
 
+  const getCanUnlockCount = useCallback(
+    async (project: Address, account: Address, stageIndex: 0 | 1) => {
+      if (!memooConfig) return;
+      try {
+        const res = await memooConfig.read.getCanUnlockCount([project, account, stageIndex]);
+        return res;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [memooConfig],
+  );
+
+  const memeUnlockPeriods = useCallback(
+    async (stageIndex: 0 | 1) => {
+      if (!memooConfig) return;
+      try {
+        const res = (await memooConfig.read.memeUnlockPeriods([stageIndex])) as any;
+        return {
+          index: res[0],
+          periodType: res[1],
+          value: res[2],
+          unlockRate: res[3],
+        };
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [memooConfig],
+  );
+
   return {
     config,
     defaultConfig,
@@ -230,5 +243,6 @@ export const useManageContract = () => {
     airdropClaim,
     createMeme,
     createMemeLoading,
+    getCanUnlockCount,
   };
 };

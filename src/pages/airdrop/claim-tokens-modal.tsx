@@ -13,12 +13,14 @@ import {
 import './claim-tokens-modal.scss';
 import { AirdropContext } from '.';
 
-const ClaimTokensModal: FC<{ children: ReactNode; stage: '1st' | '2nd'; lockinPeriod?: number; tokens: number }> = ({
-  children,
-  stage,
-  lockinPeriod,
-  tokens,
-}) => {
+const ClaimTokensModal: FC<{
+  children: ReactNode;
+  stage: '1st' | '2nd';
+  lockinPeriod?: number;
+  tokens: number;
+  rate?: number;
+  unlockTokens?: number;
+}> = ({ children, stage, lockinPeriod, tokens, unlockTokens, rate }) => {
   const [open, setOpen] = useState(false);
   const { unlockMeme, idoQueueDetail } = useContext(AirdropContext);
   const [confirming, setConfirming] = useState(false);
@@ -52,7 +54,7 @@ const ClaimTokensModal: FC<{ children: ReactNode; stage: '1st' | '2nd'; lockinPe
         <div className="claim_tokens flex flex-col">
           <div className="flex justify-between">
             <div className="flex items-center gap-x-[15px]">
-              <p className="whitespace-pre font-OCR text-base leading-[18px] text-white">{`Redeem ${stage} 50%\nunlocked tokens`}</p>
+              <p className="whitespace-pre font-OCR text-base leading-[18px] text-white">{`Redeem ${stage} ${rate}%\nunlocked tokens`}</p>
               <img className="w-[111px] object-contain" src="/create/img-claim.png" />
             </div>
             <div className="flex items-center gap-x-[14px]">
@@ -69,7 +71,7 @@ const ClaimTokensModal: FC<{ children: ReactNode; stage: '1st' | '2nd'; lockinPe
                 <>
                   <div className="flex flex-col items-end">
                     <span className="font-404px text-white text-[24px] leading-[29px]">
-                      {Number(tokens).toLocaleString()}
+                      {Number(unlockTokens).toLocaleString()}
                     </span>
                     <span className="font-OCR text-white text-base leading-[21px]">Claim Completed</span>
                   </div>

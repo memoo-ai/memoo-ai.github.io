@@ -13,7 +13,7 @@ import { compareAddrs, formatDecimals, formatNumberDecimal } from '@/utils';
 import BigNumber from 'bignumber.js';
 
 const Progress: FC = () => {
-  const { stage, idoQueueDetail, memooConfig } = useContext(AirdropContext);
+  const { stage, idoQueueDetail, _2ndStage, _1stStage, memooConfig } = useContext(AirdropContext);
   const { address } = useAccount();
 
   const firstProportion = useMemo(() => Number(memooConfig?.allocation.creator) / 10000, [memooConfig]);
@@ -95,7 +95,12 @@ const Progress: FC = () => {
       btnText: 'claim',
       btnIcon: `/create/icon-claim${stage === '1st-claim' ? '-active' : ''}.svg`,
       wrapper: (node: ReactNode) => (
-        <ClaimTokensModal tokens={2500000} lockinPeriod={14} stage="1st">
+        <ClaimTokensModal
+          tokens={parseFloat(formatDecimals(_1stStage?.unlockCount ?? 0))}
+          lockinPeriod={Number(_1stStage?.unlockInfo.value) / (24 * 60 * 60)}
+          rate={new BigNumber(Number(_1stStage?.unlockInfo?.unlockRate)).dividedBy(1e4).multipliedBy(1e2).toNumber()}
+          stage="1st"
+        >
           {node}
         </ClaimTokensModal>
       ),
@@ -125,7 +130,11 @@ const Progress: FC = () => {
       btnText: 'claim',
       btnIcon: `/create/icon-claim${stage === '2st-claim' ? '-active' : ''}.svg`,
       wrapper: (node: ReactNode) => (
-        <ClaimTokensModal tokens={2500000} stage="2nd">
+        <ClaimTokensModal
+          tokens={parseFloat(formatDecimals(_2ndStage?.unlockCount ?? 0))}
+          unlockTokens={parseFloat(formatDecimals(Number(_2ndStage?.unlockInfo?.value ?? 0)))}
+          stage="2nd"
+        >
           {node}
         </ClaimTokensModal>
       ),
