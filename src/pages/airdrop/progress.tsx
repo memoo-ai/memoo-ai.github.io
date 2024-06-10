@@ -104,14 +104,14 @@ const Progress: FC = () => {
           {node}
         </ClaimTokensModal>
       ),
-      // enabled:
-      //   idoQueueDetail?.status === 'Launched' &&
-      //   (address
-      //     ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
-      //         compareAddrs(addr, address),
-      //       )
-      //     : false),
-      enabled: true,
+      enabled:
+        idoQueueDetail?.status === 'Launched' &&
+        (address
+          ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
+              compareAddrs(addr, address),
+            )
+          : false),
+      // enabled: true,
     },
     {
       key: '2st-claim',
@@ -138,14 +138,14 @@ const Progress: FC = () => {
           {node}
         </ClaimTokensModal>
       ),
-      // enabled:
-      //   idoQueueDetail?.status === 'Launched' &&
-      //   (address
-      //     ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
-      //         compareAddrs(addr, address),
-      //       )
-      //     : false),
-      enabled: true,
+      enabled:
+        idoQueueDetail?.status === 'Launched' &&
+        (address
+          ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
+              compareAddrs(addr, address),
+            )
+          : false),
+      // enabled: true,
     },
   ];
 
