@@ -92,14 +92,21 @@ const Progress: FC = () => {
         </div>
       ),
       title: '1st claim',
-      desc: '1st 50% unlock when\ntoken price hits 0.0005c',
+      desc: `1st ${new BigNumber(Number(_1stStage?.unlockInfo?.unlockRate))
+        .dividedBy(1e4)
+        .multipliedBy(1e2)
+        .toNumber()}% unlock when\ntoken price hits 0.0005c`,
       onClick: () => {},
       btnText: 'claim',
       btnIcon: `/create/icon-claim${stage === '1st-claim' ? '-active' : ''}.svg`,
       wrapper: (node: ReactNode) => (
         <ClaimTokensModal
-          tokens={parseFloat(formatDecimals(_1stStage?.unlockCount ?? 0))}
-          lockinPeriod={Number(_1stStage?.unlockInfo?.value) / (24 * 60 * 60)}
+          tokens={parseFloat(
+            formatDecimals(
+              new BigNumber(_1stStage?.unlockCount ?? 0).dividedBy(10 ** (defaultConfig?.defaultDecimals ?? 0)),
+            ),
+          )}
+          lockinPeriod={Number(_2ndStage?.unlockInfo?.value) / (24 * 60 * 60)}
           rate={new BigNumber(Number(_1stStage?.unlockInfo?.unlockRate)).dividedBy(1e4).multipliedBy(1e2).toNumber()}
           stage="1st"
         >
@@ -128,14 +135,21 @@ const Progress: FC = () => {
         </div>
       ),
       title: '2st claim',
-      desc: ' Next 50% unlocked\ntokens in 14 days',
+      desc: `Next ${new BigNumber(Number(_2ndStage?.unlockInfo?.unlockRate))
+        .dividedBy(1e4)
+        .multipliedBy(1e2)
+        .toNumber()}% unlocked\ntokens in ${Number(_2ndStage?.unlockInfo?.value) / (24 * 60 * 60)} days`,
       onClick: () => {},
       btnText: 'claim',
       btnIcon: `/create/icon-claim${stage === '2st-claim' ? '-active' : ''}.svg`,
       wrapper: (node: ReactNode) => (
         <ClaimTokensModal
-          tokens={parseFloat(formatDecimals(_2ndStage?.unlockCount ?? 0))}
-          unlockTokens={parseFloat(formatDecimals(Number(_2ndStage?.unlockInfo?.value ?? 0)))}
+          tokens={parseFloat(
+            formatDecimals(
+              new BigNumber(_2ndStage?.unlockCount ?? 0).dividedBy(10 ** (defaultConfig?.defaultDecimals ?? 0)),
+            ),
+          )}
+          unlockTokens={parseFloat(formatDecimals(Number(_1stStage?.unlockInfo?.value ?? 0)))}
           stage="2nd"
         >
           {node}
