@@ -25,8 +25,10 @@ const IncreaseModal = ({ children }: any) => {
     let memeTotalSupply = Number(formatEther(memooConfig?.totalSupply));
     let idoCreatorBuyLimit = Number(formatEther(memooConfig?.idoCreatorBuyLimit));
     let creator = Number(formatEther(memooConfig?.allocation?.creator));
-    let minPer = Number(creator / formatEther(10000));
-    let maxPer = Number(idoCreatorBuyLimit / formatEther(10000));
+    // let minPer = Number(creator / formatEther(10000));
+    // let maxPer = Number(idoCreatorBuyLimit / formatEther(10000));
+    let minPer = Number(creator / 10000);
+    let maxPer = Number(idoCreatorBuyLimit / 10000);
     let totalCap = memeIdoPrice * memeTotalSupply;
     setTotalCap(totalCap);
     console.log('memeIdoPrice:', memeIdoPrice);

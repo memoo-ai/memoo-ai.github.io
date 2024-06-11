@@ -258,6 +258,45 @@ declare interface DashboardCreator {
   tokenName: string;
   totalRaised: string;
 }
+declare interface DashboardCollectorAirdrop {
+  claimFlag: boolean;
+  endsIn: number;
+  icon: string;
+  launchDate: number;
+  meMooScore: string;
+  status: string;
+  ticker: string;
+  tokenName: string;
+  totalRaised: string;
+  totalSupply: number;
+}
+declare interface DashboardCollectorParticipated {
+  contributed: string;
+  endsIn: number;
+  icon: string;
+  launchDate: number;
+  meMooScore: string;
+  participatedFlag: boolean;
+  status: string;
+  ticker: string;
+  tokenName: string;
+  totalRaised: string;
+  totalSupply: number;
+}
+declare type DashboardCollectorItem = DashboardCollectorAirdrop & DashboardCollectorParticipated;
+
+declare interface DashboardWatchList {
+  collectionFlag: boolean;
+  endsIn: number;
+  icon: string;
+  launchDate: number;
+  meMooScore: string;
+  status: string;
+  ticker: string;
+  tokenName: string;
+  totalRaised: string;
+  totalSupply: number;
+}
 declare interface TrendingTokens {
   icon: string;
   increase1H: number;

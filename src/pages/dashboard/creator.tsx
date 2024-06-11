@@ -21,6 +21,7 @@ import { useRef, useState, useEffect } from 'react';
 import { getCreator, deleteToken } from '@/api/dashboard';
 import { CreatorStatus } from './type';
 import { DashboardCreator } from '@/types';
+import IncreaseAcquisitionModal from '@/pages/airdrop/increase-acquisition-modal';
 
 const pageSize = 11;
 export const Creator = () => {
@@ -76,7 +77,7 @@ export const Creator = () => {
         break;
       case 'QUEUE':
         button = (
-          <IncreaseModal creator={item}>
+          <ClaimModal creator={item}>
             <Button
               className="flex items-center justify-between"
               onMouseOver={() => iconRefs.current['increase'].setHovered(true)}
@@ -85,12 +86,12 @@ export const Creator = () => {
               <IconQueueBtn className="QueueBtn" ref={(ref) => (iconRefs.current['increase'] = ref)} />
               <span className="ml-[9px]">INCREASE</span>
             </Button>
-          </IncreaseModal>
+          </ClaimModal>
         );
         break;
       case 'IDO':
         button = (
-          <IncreaseModal creator={item}>
+          <ClaimModal creator={item}>
             <Button
               className="flex items-center justify-between"
               onMouseOver={() => iconRefs.current['increase'].setHovered(true)}
@@ -99,7 +100,17 @@ export const Creator = () => {
               <IconQueueBtn className="QueueBtn" ref={(ref) => (iconRefs.current['increase'] = ref)} />
               <span className="ml-[9px]">INCREASE</span>
             </Button>
-          </IncreaseModal>
+          </ClaimModal>
+          // <IncreaseModal creator={item}>
+          //   <Button
+          //     className="flex items-center justify-between"
+          //     onMouseOver={() => iconRefs.current['increase'].setHovered(true)}
+          //     onMouseLeave={() => iconRefs.current['increase'].setHovered(false)}
+          //   >
+          //     <IconQueueBtn className="QueueBtn" ref={(ref) => (iconRefs.current['increase'] = ref)} />
+          //     <span className="ml-[9px]">INCREASE</span>
+          //   </Button>
+          // </IncreaseModal>
         );
         break;
       case 'Launched':

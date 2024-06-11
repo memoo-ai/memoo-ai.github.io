@@ -1,28 +1,9 @@
 import { Button } from '@/components/ui/button';
+import { LaunchpadIMO, LaunchpadAirdrop } from '@/types';
 export enum IDOStatus {
   active = 'active',
   upcoming = 'upcoming',
   completed = 'completed',
-}
-export interface IDO {
-  id: string;
-  endsIn: number;
-  icon: string;
-  meMooScore: string;
-  status: IDOStatus;
-  ticker: string;
-  tokenName: string;
-  totalRaised: number;
-}
-export interface Airdrop {
-  id: string;
-  icon: string;
-  idoDate: string;
-  meMooScore: string;
-  participants: number;
-  status: IDOStatus;
-  ticker: string;
-  tokenName: string;
 }
 
 export const columns = (navigate: (path: string) => void) => [
@@ -30,7 +11,7 @@ export const columns = (navigate: (path: string) => void) => [
     title: 'Token',
     dataIndex: 'tokenName',
     key: 'tokenName',
-    render: (tokenName: string, record: IDO) => (
+    render: (tokenName: string, record: LaunchpadIMO) => (
       <div className="flex items-center">
         <img src={record.icon} alt="" className="w-[84px] h-[84px] rounded-full mr-5" />
         <span className="font-404px font-bold text-lg mr-2 text-[#ffffff]">{tokenName}</span>
@@ -55,7 +36,7 @@ export const columns = (navigate: (path: string) => void) => [
   {
     title: 'Action',
     key: 'action',
-    render: (record: IDO) => (
+    render: (record: LaunchpadIMO) => (
       <Button
         variant="default"
         className="w-[136px] h-[50px] uppercase font-404px font-bold text-lg"
@@ -71,7 +52,7 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
     title: 'Token',
     dataIndex: 'tokenName',
     key: 'tokenName',
-    render: (record: Airdrop) => (
+    render: (record: LaunchpadAirdrop) => (
       <div className="flex items-center">
         <img src={record.icon} alt="" className="w-[84px] h-[84px] rounded-full mr-5" />
         <span className="font-404px font-bold text-lg mr-2">{record.tokenName}</span>
@@ -96,7 +77,7 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
   {
     title: 'Action',
     key: 'action',
-    render: (record: Airdrop) => (
+    render: (record: LaunchpadAirdrop) => (
       <Button
         variant="default"
         className="w-[136px] h-[50px] uppercase font-404px font-bold text-lg"

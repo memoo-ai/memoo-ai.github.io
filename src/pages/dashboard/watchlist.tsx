@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import GoLaunchPadACard from './go-launchpad-card';
 import { getWatchList } from '@/api/dashboard';
-import { CreatorStatus, CreatorList } from './type';
+import { DashboardWatchList } from '@/types';
 import { Button, Spin } from 'antd';
 import { cancelCollect } from '@/api/dashboard';
 export const WatchList = () => {
@@ -14,7 +14,7 @@ export const WatchList = () => {
   const [total, setTotal] = useState(0);
   const [update, setUpdate] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [list, setList] = useState<CreatorList[]>([]);
+  const [list, setList] = useState<DashboardWatchList[]>([]);
   const iconRefs = useRef<any>({});
   const [loading, setLoading] = useState(false);
   useEffect(() => {

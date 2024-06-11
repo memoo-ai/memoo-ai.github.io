@@ -33,8 +33,8 @@ const Gecko = () => {
   const [sorters, setSorters] = useState<any>([]);
   const fetchData = async () => {
     let params = {
-      pageNumber: pagination.current,
-      pageSize: pagination.pageSize,
+      pageNumber: pagination.current ?? 1,
+      pageSize: pagination.pageSize ?? 10,
     };
     const { data } = tab === 'trending' ? await getTrendingTokens(params) : await getTopTokens(params);
     // console.log(data);

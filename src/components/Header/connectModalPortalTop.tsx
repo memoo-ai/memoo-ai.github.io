@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, FC, ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 import './connectModalPortalTop.scss';
-const ConnectModalPortal = ({ children, onClose }) => {
-  const [modalRoot, setModalRoot] = useState(null);
+const ConnectModalPortal: FC<{ children: ReactNode; onClose: () => void }> = ({ children, onClose }) => {
+  const [modalRoot, setModalRoot] = useState<any>(null);
 
   useEffect(() => {
     const modalElement = document.querySelector('.iekbcc0[data-rk]');

@@ -169,7 +169,7 @@ export default function Create() {
         redirectUri: twitterRedirectUri,
         codeVerifier: 'challenge',
         refreshToken: '',
-        appClientId: clientId,
+        appClientId: clientId ?? '',
       };
       getTwitterAccessToken(params).then((res) => {
         const { access_token, twitter } = res.data;

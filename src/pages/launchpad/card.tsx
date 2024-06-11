@@ -1,22 +1,13 @@
 import SwipeCard from '@/components/SwipeCard';
-import { IDO, IDOStatus } from './columns';
 import { useState, useEffect } from 'react';
 import './card.scss';
 import { Button } from '@/components/ui/button';
 import { getImoCompleted } from '@/api/launchpad';
 import { useNavigate } from 'react-router-dom';
+import { LaunchpadIDOCompeted } from '@/types';
 
-interface IDOCompleted {
-  id: string;
-  athRoi: number;
-  icon: string;
-  meMooScore: string;
-  ticker: string;
-  tokenName: string;
-  totalRaised: number;
-}
 export const ActiveIdoCard = () => {
-  const [idos, setIdos] = useState<IDOCompleted[]>([]);
+  const [idos, setIdos] = useState<LaunchpadIDOCompeted[]>([]);
   const navigate = useNavigate();
   useEffect(() => {
     (async () => {
@@ -36,7 +27,7 @@ export const ActiveIdoCard = () => {
     <SwipeCard title="Active IDO" step={360}>
       <div className="flex items-center overflow-hidden">
         {idos.map((ido) => (
-          <div key={ido.id} className="flex flex-col w-[390px] bg-[#131522]  px-11 py-6 mr-8 rounded-lg">
+          <div key={ido.ticker} className="flex flex-col w-[390px] bg-[#131522]  px-11 py-6 mr-8 rounded-lg">
             <img src={ido.icon} alt="" className="w-20 h-20 mb-2 rounded-full" />
             <p className="font-OCR text-white text-lg mb-[64px]">{ido.tokenName}</p>
             <div className="ido-info-item">

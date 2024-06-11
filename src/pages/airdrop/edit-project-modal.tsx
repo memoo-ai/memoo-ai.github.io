@@ -109,12 +109,13 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string }> = ({ childre
 
       setConfirmLoading(true);
       await confirmTokenCreate({ ...projectDetail, ...data }).then((res) => {
-        if (res?.code === 200) {
-          message.success('modify successfully!');
-          setOpen(false);
-        } else {
-          message.warning(res.msg);
-        }
+        setOpen(false);
+        // if (res?.code === 200) {
+        //   message.success('modify successfully!');
+        //   setOpen(false);
+        // } else {
+        //   message.warning('fail in keeping');
+        // }
       });
     } catch (e) {
       console.log(e);

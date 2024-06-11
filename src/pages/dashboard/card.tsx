@@ -4,7 +4,7 @@ import { DashboardCreator } from '@/types';
 import { useNavigate } from 'react-router-dom';
 import { formatTs } from '@/utils';
 interface CardProps {
-  data: DashboardCreator;
+  data: any;
   children: any;
 }
 export const Card = ({ data, children }: CardProps) => {

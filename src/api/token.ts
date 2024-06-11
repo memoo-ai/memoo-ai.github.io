@@ -20,10 +20,12 @@ export interface ITokenSaveData {
   icon: string;
   banners: string[];
 }
-
+function isFile(value: any): value is File {
+  return value instanceof File;
+}
 const getFormData = (data: ITokenSaveData) => {
   const formData = new FormData();
-  if (data.icon && data.icon instanceof File) {
+  if (data.icon && isFile(data.icon)) {
     formData.append('icon', data.icon);
   }
   if (data.banners && data.banners instanceof File) {

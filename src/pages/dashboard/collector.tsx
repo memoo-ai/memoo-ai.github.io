@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import { getCollectorAirdrop, getCollectorParticipated } from '@/api/dashboard';
 import { CollectorType } from './type';
-import { DashboardCreator } from '@/types';
+import { DashboardCollectorItem, DashboardCollectorParticipated, DashboardCollectorAirdrop } from '@/types';
 
 const pageSize = 11;
 export const Collector = () => {
@@ -25,7 +25,8 @@ export const Collector = () => {
   const [tab, setTab] = useState<CollectorType>('Airdrop');
   const [currentPage, setCurrentPage] = useState(1);
   const iconRefs = useRef<any>({});
-  const [list, setList] = useState<DashboardCreator[]>([]);
+  // const [list, setList] = useState<DashboardCollectorItem[]>([]);
+  const [list, setList] = useState<DashboardCollectorParticipated[] | DashboardCollectorAirdrop[]>([]);
   useEffect(() => {
     (async () => {
       try {
@@ -80,7 +81,7 @@ export const Collector = () => {
               <div className="flex justify-between items-center mt-[15px]">
                 {tab === 'Airdrop' ? (
                   <div>
-                    {!item.claimFalg ? (
+                    {item && 'claimFlag' in item && !item?.claimFlag ? (
                       <AirdropModal>
                         {' '}
                         <Button
@@ -107,7 +108,11 @@ export const Collector = () => {
                 ) : (
                   <div className="font-OCR text-[#7D83B5]">Contributed</div>
                 )}
-                <div className="font-OCR text-[#ffffff]">{item.contributed ? item.contributed : ''}</div>
+                {tab === 'Airdrop' ? (
+                  <div />
+                ) : (
+                  <div className="font-OCR text-[#ffffff]">{'contributed' in item ? item?.contributed : ''}</div>
+                )}
               </div>
             </Card>
           );

@@ -1,18 +1,27 @@
 import http from '@/utils/http';
 import { prefix } from '.';
-import { pageParams, DashboardCreator, PageWrapper } from '@/types';
+import {
+  pageParams,
+  DashboardCreator,
+  PageWrapper,
+  DashboardCollectorAirdrop,
+  DashboardCollectorParticipated,
+  DashboardWatchList,
+} from '@/types';
 export const getCreator = (params: pageParams) => {
   return http.get<PageWrapper<DashboardCreator>>(`${prefix}/web-oriented/creator`, { params });
 };
 export const getCollectorAirdrop = (params: pageParams) => {
-  return http.get<PageWrapper<DashboardCreator>>(`${prefix}/web-oriented/collector-airdrop`, { params });
+  return http.get<PageWrapper<DashboardCollectorAirdrop>>(`${prefix}/web-oriented/collector-airdrop`, { params });
 };
 export const getCollectorParticipated = (params: pageParams) => {
-  return http.get<PageWrapper<DashboardCreator>>(`${prefix}/web-oriented/collector-participated`, { params });
+  return http.get<PageWrapper<DashboardCollectorParticipated>>(`${prefix}/web-oriented/collector-participated`, {
+    params,
+  });
 };
 
 export const getWatchList = (params: pageParams) => {
-  return http.get<PageWrapper<DashboardCreator>>(`${prefix}/web-oriented/watchlist`, { params });
+  return http.get<PageWrapper<DashboardWatchList>>(`${prefix}/web-oriented/watchlist`, { params });
 };
 
 export const deleteToken = (id: string) => {
