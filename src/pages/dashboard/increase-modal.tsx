@@ -1,23 +1,66 @@
-import { useState, Children, cloneElement, isValidElement, useMemo } from 'react';
+import { useState, Children, cloneElement, isValidElement, useMemo, useCallback, useEffect } from 'react';
 
 import './increase-modal.scss';
-import { Modal, Button, Checkbox, Tooltip } from 'antd';
+import { Modal, Button, Checkbox, Tooltip, message } from 'antd';
 import { IconClose, IconETH, IconTip } from '@/components/icons';
 import MySlider from '@/components/MySlider';
 import { formatEther } from 'ethers';
 import { useManageContract } from '@/hooks/useManageContract';
-const IncreaseModal = ({ children }: any) => {
+import BigNumber from 'bignumber.js';
+import { compareAddrs, formatDecimals, formatNumberDecimal } from '@/utils';
+import { getIDOQueueDetail } from '@/api/airdrop';
+const IncreaseModal = ({ children, ticker }: any) => {
   const [open, setOpen] = useState(false);
   const [isAccept, setIsAccept] = useState(false);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(5);
-  const { config: memooConfig } = useManageContract();
+  const {
+    config: memooConfig,
+    idoBuy,
+    unlockMeme,
+    defaultConfig,
+    airdropClaim,
+    getCanUnlockCount,
+    memeUnlockPeriods,
+  } = useManageContract();
   const [minPercentage, setMinPercentage] = useState(0);
   const [maxPercentage, setMaxPercentage] = useState(0);
   const [memeIdoMinPrice, setMemeIdoMinPrice] = useState(0);
   const [memeIdoMaxPrice, setMemeIdoMaxPrice] = useState(0);
   const [idoPrice, setIdoPrice] = useState(0);
   const [totalCap, setTotalCap] = useState(0);
+  const [idoQueueDetail, setIDOQueueDetail] = useState<any>();
+  const [proportion, setProportion] = useState(0);
+  const [result, setResult] = useState(0);
+
+  const firstProportion = useMemo(() => Number(memooConfig?.allocation.creator) / 10000, [memooConfig]);
+
+  const maxProportion = useMemo(() => Number(memooConfig?.idoCreatorBuyLimit) / 10000, [memooConfig]);
+
+  const firstIncrease = useMemo(() => {
+    if (!memooConfig || !defaultConfig) return 0;
+
+    const totalSupplyBN = new BigNumber(Number(defaultConfig?.totalSupply)).dividedBy(
+      10 ** defaultConfig?.defaultDecimals,
+    );
+    const idoPriceBN = new BigNumber(Number(defaultConfig?.idoPrice)).dividedBy(10 ** defaultConfig?.defaultDecimals);
+    const result = totalSupplyBN.multipliedBy(idoPriceBN).multipliedBy(firstProportion);
+    return parseFloat(formatDecimals(result));
+  }, [memooConfig, firstProportion, defaultConfig]);
+
+  const maxIncrease = useMemo(
+    () => parseFloat(formatDecimals(firstIncrease * (maxProportion / firstProportion))),
+    [firstProportion, maxProportion, firstIncrease],
+  );
+  useEffect(() => {
+    setProportion(firstProportion * 100);
+  }, [firstProportion]);
+  useEffect(() => {
+    const increasePercent = proportion / 100;
+    const result = parseFloat(formatDecimals(firstIncrease * (increasePercent / firstProportion)));
+    console.log('increasing proportion:', result);
+    setResult(result);
+  }, [proportion, firstProportion, firstIncrease]);
   useMemo(() => {
     if (!memooConfig) return 0;
     console.log('memooConfig', memooConfig);
@@ -42,8 +85,35 @@ const IncreaseModal = ({ children }: any) => {
     setMemeIdoMinPrice(totalCap * minPer);
     setMemeIdoMaxPrice(totalCap * maxPer);
   }, [memooConfig]);
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoading(true);
+        // For testin: BigEgg or NewCake
+        const { data } = await getIDOQueueDetail(ticker);
+        setIDOQueueDetail(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [ticker]);
+  const handleConfirm = useCallback(async () => {
+    if (!idoBuy) return;
+    try {
+      setLoading(true);
+      await idoBuy(idoQueueDetail.contractAddress, new BigNumber(result - firstIncrease));
+      setOpen(false);
+      message.success('Buy Successful');
+    } catch (error) {
+      console.error(error);
+      message.error('Buy Failed');
+    } finally {
+      setLoading(false);
+    }
+  }, [idoBuy, idoQueueDetail, result, firstIncrease]);
 
-  const handleConfirm = () => {};
   return (
     <div>
       <Modal
@@ -71,10 +141,10 @@ const IncreaseModal = ({ children }: any) => {
           </div>
           <div className="flex-1 flex items-center progress">
             <MySlider
-              min={minPercentage}
-              max={maxPercentage}
-              minPrice={memeIdoMinPrice}
-              maxPrice={memeIdoMaxPrice}
+              min={firstProportion}
+              max={maxProportion}
+              minPrice={firstIncrease}
+              maxPrice={maxIncrease}
               value={progress}
               onChange={(value) => {
                 setProgress(value);

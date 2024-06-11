@@ -77,7 +77,7 @@ export const Creator = () => {
         break;
       case 'QUEUE':
         button = (
-          <ClaimModal creator={item}>
+          <IncreaseModal ticker={item.ticker}>
             <Button
               className="flex items-center justify-between"
               onMouseOver={() => iconRefs.current['increase'].setHovered(true)}
@@ -86,12 +86,12 @@ export const Creator = () => {
               <IconQueueBtn className="QueueBtn" ref={(ref) => (iconRefs.current['increase'] = ref)} />
               <span className="ml-[9px]">INCREASE</span>
             </Button>
-          </ClaimModal>
+          </IncreaseModal>
         );
         break;
       case 'IDO':
         button = (
-          <ClaimModal creator={item}>
+          <IncreaseModal ticker={item.ticker}>
             <Button
               className="flex items-center justify-between"
               onMouseOver={() => iconRefs.current['increase'].setHovered(true)}
@@ -100,7 +100,7 @@ export const Creator = () => {
               <IconQueueBtn className="QueueBtn" ref={(ref) => (iconRefs.current['increase'] = ref)} />
               <span className="ml-[9px]">INCREASE</span>
             </Button>
-          </ClaimModal>
+          </IncreaseModal>
           // <IncreaseModal creator={item}>
           //   <Button
           //     className="flex items-center justify-between"
@@ -135,24 +135,25 @@ export const Creator = () => {
         );
         break;
       default:
-        button = (
-          <AirdropModal creator={item}>
-            {' '}
-            <Button
-              className="flex items-center justify-between"
-              key="increase"
-              onMouseOver={() => iconRefs.current['AirdropBtn'].setHovered(true)}
-              onMouseLeave={() => iconRefs.current['AirdropBtn'].setHovered(false)}
-            >
-              <IconAirdropBtn
-                className="IconAirdropBtn"
-                color="#07E993"
-                ref={(ref) => (iconRefs.current['AirdropBtn'] = ref)}
-              />
-              <span className="ml-[9px]">CLAIM AIRDROP</span>
-            </Button>
-          </AirdropModal>
-        );
+        button = '';
+        // button = (
+        //   <AirdropModal creator={item}>
+        //     {' '}
+        //     <Button
+        //       className="flex items-center justify-between"
+        //       key="increase"
+        //       onMouseOver={() => iconRefs.current['AirdropBtn'].setHovered(true)}
+        //       onMouseLeave={() => iconRefs.current['AirdropBtn'].setHovered(false)}
+        //     >
+        //       <IconAirdropBtn
+        //         className="IconAirdropBtn"
+        //         color="#07E993"
+        //         ref={(ref) => (iconRefs.current['AirdropBtn'] = ref)}
+        //       />
+        //       <span className="ml-[9px]">CLAIM AIRDROP</span>
+        //     </Button>
+        //   </AirdropModal>
+        // );
         break;
     }
 
