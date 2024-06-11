@@ -1,7 +1,7 @@
 import './index.scss';
 import BackButton from '@/components/BackButton';
 import { Button } from '@/components/ui/button';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import {
   Cascader,
   Checkbox,
@@ -38,6 +38,7 @@ import { useManageContract } from '@/hooks/useManageContract';
 import { parseEther, formatEther } from 'ethers';
 import { useMemeFactoryContract } from '@/hooks/useMemeFactoryContract';
 import { ZERO_ADDRESS } from '@/constants';
+import { useAccount } from 'wagmi';
 
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
@@ -49,6 +50,7 @@ const PreLaunchDurationOptions = [
   { label: '3 days', value: PreLaunchDurationEnum['3DAYS'] },
 ];
 export default function Create() {
+  const { address } = useAccount();
   const [searchParams] = useSearchParams();
   const [isAccept, setIsAccept] = useState(false);
   const [optionalOpen, setOptionalOpen] = useState(false);
@@ -56,6 +58,7 @@ export default function Create() {
   const [saveCraftLoading, setSaveCraftLoading] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [iconUrl, setIconUrl] = useState('');
+  const [bannerUrl, setBannerUrl] = useState('');
   const { config: memooConfig, defaultConfig, createMeme, createMemeLoading } = useManageContract();
   const [connectTwitterLoading, setConnectTwitterLoading] = useState(false);
   const [twitter, setTwitter] = useState('');
@@ -89,17 +92,25 @@ export default function Create() {
   const handleUpload = (file: File, field: string) => {
     if (file) {
       uploadFile(file).then((res) => {
-        form.setFieldValue(field, field === 'banners' ? [res.data.fileUrl] : res.data.fileUrl);
+        form.setFieldValue(field, field === 'banners' ? [res.data.file] : res.data.file);
+        if (field === 'icon') {
+          setIconUrl(res.data.fileUrl);
+        }
+        if (field === 'banners') {
+          setBannerUrl(res.data.fileUrl);
+        }
       });
       return false;
     }
   };
 
-  const connectTwitter = async () => {
+  const connectTwitter = useCallback(async () => {
     // TODO: save form data to local; when callback from twitter, the form data will be lost.
     const res = await getTwitterClientId();
     const formData = form.getFieldsValue();
     console.log('formData: ', formData);
+    formData.iconUrl = iconUrl;
+    formData.bannerUrl = bannerUrl;
     localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(formData));
 
     setConnectTwitterLoading(true);
@@ -121,7 +132,7 @@ export default function Create() {
     url.search = qs.stringify(params, { encode: false });
 
     window.location.href = url.href;
-  };
+  }, [iconUrl, bannerUrl]);
 
   useEffect(() => {
     const ticker = searchParams.get('ticker');
@@ -131,9 +142,15 @@ export default function Create() {
         if (res?.data) {
           // get twitter binded data
           setIconUrl(res.data.icon);
+          setBannerUrl(res.data.banners[0]);
           setTwitter(res.data.twitter);
           setTwitterAccessToken(res.data.twitterAccessToken);
-          form.setFieldsValue({ ...res.data, tokenIcon: res.data.icon, projectDescription: res.data.description });
+          form.setFieldsValue({
+            ...res.data,
+            icon: res.data.oldIcon,
+            banners: res.data.oldBanners[0],
+            projectDescription: res.data.description,
+          });
         }
       });
     } else {
@@ -148,7 +165,10 @@ export default function Create() {
           }
           form.setFieldsValue(formData);
           if (formData.icon) {
-            setIconUrl(formData.icon);
+            setIconUrl(formData.iconUrl);
+          }
+          if (formData.banners) {
+            setBannerUrl(formData.bannerUrl);
           }
         } catch (e) {}
       } else {
@@ -179,7 +199,7 @@ export default function Create() {
     }
   }, [searchParams]);
 
-  const payFee = async () => {
+  const payFee = useCallback(async () => {
     const data = form.getFieldsValue();
 
     const preLaunchSecond =
@@ -193,68 +213,77 @@ export default function Create() {
     const value = parseEther(String(preValue));
     const res = await createMeme(data.tokenName, data.ticker, preLaunchSecond, value);
     console.log('res: ', res);
-  };
+    return res;
+  }, [createMeme]);
 
-  const handleSave = async (isConfirm: boolean) => {
-    try {
-      const data = form.getFieldsValue();
-      const tokenAddress = await getMemeAddressWithSymbol(data.ticker);
-      console.log('tokenAddress: ', tokenAddress);
-      if (tokenAddress !== ZERO_ADDRESS) {
-        message.warning(`${data.ticker} is already taken. Please choose another one.`);
+  const handleSave = useCallback(
+    // TODO check login
+    async (isConfirm: boolean) => {
+      if (!address) {
+        message.warning('Please connect wallet first.');
         return;
       }
+      try {
+        const data = form.getFieldsValue();
+        const tokenAddress = await getMemeAddressWithSymbol(data.ticker);
+        console.log('tokenAddress: ', tokenAddress);
+        if (tokenAddress && tokenAddress !== ZERO_ADDRESS) {
+          message.warning(`${data.ticker} is already taken. Please choose another one.`);
+          return;
+        }
 
-      if (!isAccept) {
-        message.warning('Please accept the terms and conditions.');
-        return;
-      }
-      await form.validateFields();
-      // twitter must have been connected
-      if (!twitter || !twitterAccessToken) {
-        message.warning('Please connect project twitter first.');
-        return;
-      }
+        if (!isAccept) {
+          message.warning('Please accept the terms and conditions.');
+          return;
+        }
+        await form.validateFields();
+        // twitter must have been connected
+        if (!twitter) {
+          message.warning('Please connect project twitter first.');
+          return;
+        }
 
-      data.twitter = twitter;
-      data.accessToken = twitterAccessToken;
-      // TODO check ticker if exits
-      if (iconUrl) {
-        data.tokenIcon = iconUrl;
-      } else {
-        data.tokenIcon = data.tokenIcon[0]?.originFileObj;
+        data.twitter = twitter;
+        data.accessToken = twitterAccessToken;
+        if (isConfirm) {
+          setConfirmLoading(true);
+          const res = await confirmTokenCreate(data);
+          console.log('res: ', res);
+          const feeRes = await payFee();
+          if (!feeRes) {
+            message.error('Create failed.');
+            return;
+          }
+          localStorage.removeItem(FORM_STORAGE_KEY);
+          message.success('Congratulations! Create meme successfully!');
+          // Go to dashboard
+          navigate('/dashboard');
+        } else {
+          setSaveCraftLoading(true);
+          const res = await saveTokenCraft(data);
+          console.log('res: ', res);
+          // clear
+          localStorage.removeItem(FORM_STORAGE_KEY);
+          message.success('Save meme craft successfully!');
+          // Go to dashboard
+          navigate('/dashboard');
+        }
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setSaveCraftLoading(false);
+        setConfirmLoading(false);
       }
-      if (isConfirm) {
-        setConfirmLoading(true);
-        const res = await confirmTokenCreate(data);
-        console.log('res: ', res);
-        localStorage.removeItem(FORM_STORAGE_KEY);
-        await payFee();
-        message.success('Congratulations! Create meme successfully!');
-        // Go to dashboard
-        navigate('/dashboard');
-      } else {
-        setSaveCraftLoading(true);
-        const res = await saveTokenCraft(data);
-        console.log('res: ', res);
-        // clear
-        localStorage.removeItem(FORM_STORAGE_KEY);
-        message.success('Save meme craft successfully!');
-        // Go to dashboard
-        navigate('/dashboard');
-      }
-    } catch (e) {
-      console.log(e);
-    } finally {
-      setSaveCraftLoading(false);
-      setConfirmLoading(false);
-    }
-  };
+    },
+    [twitter, twitterAccessToken, isAccept, payFee],
+  );
 
   const handleRemove = () => {
     setIconUrl('');
   };
-
+  const handleRemoveBanner = () => {
+    setBannerUrl('');
+  };
   return (
     <div className="create_token">
       <div className="create_token_top">
@@ -369,8 +398,8 @@ export default function Create() {
             >
               <div className="flex items-center">
                 <img src="./token/icon-twitter.svg" className="w-4 h-4 mr-4" />
-                {twitterAccessToken && <img src="./create/icon-authed.svg" />}
-                {!twitterAccessToken && (
+                {twitter && <img src="./create/icon-authed.svg" />}
+                {!twitter && (
                   <Button variant="secondary" className="w-[136px] h-[32px]" onClick={connectTwitter}>
                     CONNECT
                   </Button>
@@ -422,33 +451,44 @@ export default function Create() {
                     getValueFromEvent={normFile}
                     name="banners"
                   >
-                    <Upload
-                      listType="picture-card"
-                      accept="image/*"
-                      maxCount={1}
-                      beforeUpload={(file) => handleUpload(file, 'banners')}
-                      showUploadList={{ showPreviewIcon: true, showRemoveIcon: true }}
-                      style={{ width: 140, height: 140 }}
-                      className="custom-upload-banner"
-                      previewFile={(file) => {
-                        return new Promise((resolve) => {
-                          const reader = new FileReader();
-                          reader.readAsDataURL(file);
-                          reader.onload = () => {
-                            resolve(reader.result as string);
-                          };
-                        });
-                      }}
-                    >
-                      <button style={{ border: 0, background: 'none' }} type="button">
-                        <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
-                          <img src="./token/icon-upload.svg" alt="upload" className="w-[30px] h-[30px]" />
-                          <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px]">
-                            Recommended 790px X 307px Max size: 50MB
-                          </p>
+                    <div className="token-icon-form-item">
+                      {/* <Input style={{ display: 'none' }} /> */}
+                      {bannerUrl && (
+                        <div className="icon-url-container">
+                          <img src={bannerUrl} alt="" />
+                          <span className="icon-url-actions">
+                            <Trash size={16} onClick={handleRemoveBanner} />
+                          </span>
                         </div>
-                      </button>
-                    </Upload>
+                      )}
+                      <Upload
+                        listType="picture-card"
+                        accept="image/*"
+                        maxCount={1}
+                        beforeUpload={(file) => handleUpload(file, 'banners')}
+                        showUploadList={{ showPreviewIcon: true, showRemoveIcon: true }}
+                        style={{ width: 140, height: 140 }}
+                        className="custom-upload-banner"
+                        previewFile={(file) => {
+                          return new Promise((resolve) => {
+                            const reader = new FileReader();
+                            reader.readAsDataURL(file);
+                            reader.onload = () => {
+                              resolve(reader.result as string);
+                            };
+                          });
+                        }}
+                      >
+                        <button style={{ border: 0, background: 'none' }} type="button">
+                          <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
+                            <img src="./token/icon-upload.svg" alt="upload" className="w-[30px] h-[30px]" />
+                            <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px]">
+                              Recommended 790px X 307px Max size: 50MB
+                            </p>
+                          </div>
+                        </button>
+                      </Upload>
+                    </div>
                   </Form.Item>
                   <Form.Item label={<p>Website</p>} name="links">
                     <Input maxLength={20} className="custom-input" />
