@@ -96,25 +96,28 @@ export const useManageContract = () => {
 
   const idoBuy = useCallback(
     async (project: Address, amount: BigNumber) => {
-      if (!walletClient || !baseConfig || !config) return;
-      if (config.payToken !== ZERO_ADDRESS) {
+      if (!walletClient || !baseConfig || !config || !defaultConfig) return;
+      if (defaultConfig.payToken !== ZERO_ADDRESS) {
         // TODO approve
       }
 
       const tx = {
         address: baseConfig.MemooManageContract as Hash,
         abi: Abi,
-        functionName: 'claim',
-        args: [project, amount],
-        value: amount,
+        functionName: 'idoBuy',
+        args: [project, amount.multipliedBy(10 ** defaultConfig.defaultDecimals)],
+        value: amount.multipliedBy(10 ** defaultConfig.defaultDecimals),
       } as any;
+      console.log('idoBuy tx', tx);
       const hash = await walletClient.writeContract(tx);
-      const res = await publicClient?.waitForTransactionReceipt({
+      console.log('idoBuy hash', hash);
+      const receipt = await publicClient?.waitForTransactionReceipt({
         hash,
       });
-      return res;
+      console.log('idoBuy receipt', receipt);
+      return receipt;
     },
-    [walletClient, baseConfig, config],
+    [walletClient, baseConfig, config, defaultConfig],
   );
 
   const unlockMeme = useCallback(
@@ -137,8 +140,8 @@ export const useManageContract = () => {
 
   const airdropClaim = useCallback(
     async (project: Address, claimCount: BigNumber, totalCount: BigNumber) => {
-      if (!config || !baseConfig || !walletClient || !address) return;
-      if (config.payToken !== ZERO_ADDRESS) {
+      if (!config || !baseConfig || !walletClient || !address || !defaultConfig) return;
+      if (defaultConfig.payToken !== ZERO_ADDRESS) {
         // TODO approve
       }
 
@@ -191,15 +194,18 @@ export const useManageContract = () => {
 
   useEffect(() => {
     fetchMemooConfig().then((res) => {
-      console.log(res);
-      setConfig(res);
+      if (res) {
+        console.log('config', res);
+        setConfig(res);
+      }
     });
     getDefaultMemooConfig().then((res) => {
       if (res) {
+        console.log('defaultConfig', res);
         setDefaultConfig(res);
       }
     });
-  }, [memooConfig, publicClient]);
+  }, [fetchMemooConfig, getDefaultMemooConfig]);
 
   const getCanUnlockCount = useCallback(
     async (project: Address, account: Address, stageIndex: 0 | 1) => {

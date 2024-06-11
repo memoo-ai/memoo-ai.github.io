@@ -76,7 +76,7 @@ export default function AirdropClaim() {
               {'\n'}on twitter
             </p>
             <img
-              onClick={() => (item.followed ? item.followed : handleFollow(item.user))}
+              onClick={() => (item.followed ? null : handleFollow(item.user))}
               className={classNames('w-5', { 'cursor-pointer': !item.followed, 'opacity-30': item.followed })}
               src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
             />

@@ -76,8 +76,8 @@ const IDODetail: FC = () => {
     }
     return [
       { key: 'IDO Date', value: formatTs(idoQueueDetail?.idoDate ?? 0) },
-      { key: 'FDV', value: `$${idoQueueDetail?.fdv ?? 0}` },
-      { key: 'Max Supply', value: `$${idoQueueDetail?.totalSupply ?? 0}` },
+      { key: 'FDV', value: `$${Number(idoQueueDetail?.fdv ?? 0).toLocaleString()}` },
+      { key: 'Max Supply', value: `$${Number(idoQueueDetail?.totalSupply ?? 0).toLocaleString()}` },
     ];
   }, [stage, idoQueueDetail, idoLaunchedDetail]);
 

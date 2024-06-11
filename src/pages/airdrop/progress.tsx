@@ -13,7 +13,7 @@ import { compareAddrs, formatDecimals, formatNumberDecimal } from '@/utils';
 import BigNumber from 'bignumber.js';
 
 const Progress: FC = () => {
-  const { stage, idoQueueDetail, _2ndStage, _1stStage, memooConfig } = useContext(AirdropContext);
+  const { stage, idoQueueDetail, _2ndStage, _1stStage, memooConfig, defaultConfig, mine } = useContext(AirdropContext);
   const { address } = useAccount();
 
   const firstProportion = useMemo(() => Number(memooConfig?.allocation.creator) / 10000, [memooConfig]);
@@ -21,13 +21,15 @@ const Progress: FC = () => {
   const maxProportion = useMemo(() => Number(memooConfig?.idoCreatorBuyLimit) / 10000, [memooConfig]);
 
   const firstIncrease = useMemo(() => {
-    if (!memooConfig) return 0;
+    if (!memooConfig || !defaultConfig) return 0;
 
-    const totalSupplyBN = new BigNumber(memooConfig?.totalSupply).dividedBy(10 ** memooConfig?.defaultDecimals);
-    const idoPriceBN = new BigNumber(memooConfig?.idoPrice).dividedBy(10 ** memooConfig?.defaultDecimals);
+    const totalSupplyBN = new BigNumber(Number(defaultConfig?.totalSupply)).dividedBy(
+      10 ** defaultConfig?.defaultDecimals,
+    );
+    const idoPriceBN = new BigNumber(Number(defaultConfig?.idoPrice)).dividedBy(10 ** defaultConfig?.defaultDecimals);
     const result = totalSupplyBN.multipliedBy(idoPriceBN).multipliedBy(firstProportion);
     return parseFloat(formatDecimals(result));
-  }, [memooConfig, firstProportion]);
+  }, [memooConfig, firstProportion, defaultConfig]);
 
   const maxIncrease = useMemo(
     () => parseFloat(formatDecimals(firstIncrease * (maxProportion / firstProportion))),
@@ -63,7 +65,7 @@ const Progress: FC = () => {
           {node}
         </IncreaseAcquisitionModal>
       ),
-      enabled: (['QUEUE', 'IDO', 'Launched'] as IDOStatus[]).includes(idoQueueDetail?.status ?? 'Draft'),
+      enabled: mine && (['QUEUE', 'IDO'] as IDOStatus[]).includes(idoQueueDetail?.status ?? 'Draft'),
       // enabled: true,
     },
     {
@@ -97,7 +99,7 @@ const Progress: FC = () => {
       wrapper: (node: ReactNode) => (
         <ClaimTokensModal
           tokens={parseFloat(formatDecimals(_1stStage?.unlockCount ?? 0))}
-          lockinPeriod={Number(_1stStage?.unlockInfo.value) / (24 * 60 * 60)}
+          lockinPeriod={Number(_1stStage?.unlockInfo?.value) / (24 * 60 * 60)}
           rate={new BigNumber(Number(_1stStage?.unlockInfo?.unlockRate)).dividedBy(1e4).multipliedBy(1e2).toNumber()}
           stage="1st"
         >
@@ -105,6 +107,7 @@ const Progress: FC = () => {
         </ClaimTokensModal>
       ),
       enabled:
+        mine &&
         idoQueueDetail?.status === 'Launched' &&
         (address
           ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
@@ -139,6 +142,7 @@ const Progress: FC = () => {
         </ClaimTokensModal>
       ),
       enabled:
+        mine &&
         idoQueueDetail?.status === 'Launched' &&
         (address
           ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>

@@ -27,9 +27,13 @@ const IncreaseAcquisitionModal: FC<{
   const [open, setOpen] = useState(false);
   const [accepted, setAccepted] = useState(false);
   const [confirming, setConfirming] = useState(false);
-  const [proportion, setProportion] = useState(firstProportion * 100);
+  const [proportion, setProportion] = useState(0);
   const [result, setResult] = useState(0);
   const { idoBuy, idoQueueDetail } = useContext(AirdropContext);
+
+  useEffect(() => {
+    setProportion(firstProportion * 100);
+  }, [firstProportion]);
 
   useEffect(() => {
     const increasePercent = proportion / 100;
@@ -43,7 +47,7 @@ const IncreaseAcquisitionModal: FC<{
     if (!idoBuy || !idoQueueDetail) return;
     try {
       setConfirming(true);
-      await idoBuy(idoQueueDetail.contractAddress, new BigNumber(result));
+      await idoBuy(idoQueueDetail.contractAddress, new BigNumber(result - firstIncrease));
       setOpen(false);
       message.success('Buy Successful');
     } catch (error) {
@@ -52,7 +56,7 @@ const IncreaseAcquisitionModal: FC<{
     } finally {
       setConfirming(false);
     }
-  }, [idoBuy, idoQueueDetail, result]);
+  }, [idoBuy, idoQueueDetail, result, firstIncrease]);
 
   return (
     <>

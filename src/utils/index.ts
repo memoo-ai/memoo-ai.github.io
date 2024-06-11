@@ -125,6 +125,7 @@ export function formatTs(ts: number, unit: 's' | 'ms' = 's') {
 }
 
 export function compareAddrs(addrA: Address, addrB: Address) {
+  if (!addrA || !addrB) return false;
   return new RegExp(addrA, 'i').test(addrB ?? '');
 }
 

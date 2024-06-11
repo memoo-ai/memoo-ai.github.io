@@ -24,7 +24,7 @@ import { getIDOActiveDetail, getIDOLaunchedDetail, getIDOLaunchedDetailTop10, ge
 import { useParams } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 import { compareAddrs } from '@/utils';
-import { MemooConfig, useManageContract } from '@/hooks/useManageContract';
+import { DefaultMemooConfig, MemooConfig, useManageContract } from '@/hooks/useManageContract';
 import BigNumber from 'bignumber.js';
 import { TransactionReceipt } from 'viem';
 import EditProjectModal from './edit-project-modal';
@@ -38,6 +38,7 @@ interface AirdropContext {
   mine: boolean;
   ticker: string;
   memooConfig?: MemooConfig;
+  defaultConfig?: DefaultMemooConfig;
   idoBuy?: (project: `0x${string}`, amount: BigNumber) => Promise<TransactionReceipt | undefined>;
   unlockMeme?: (project: `0x${string}`) => Promise<TransactionReceipt | undefined>;
   airdropClaim?: (
@@ -79,7 +80,8 @@ const Airdrop: FC = () => {
     unlockCount: BigNumber;
     unlockInfo: UnlockPeriod;
   }>();
-  const { config, idoBuy, unlockMeme, airdropClaim, getCanUnlockCount, memeUnlockPeriods } = useManageContract();
+  const { config, idoBuy, unlockMeme, defaultConfig, airdropClaim, getCanUnlockCount, memeUnlockPeriods } =
+    useManageContract();
 
   const mine = useMemo(
     () => compareAddrs(idoQueueDetail?.creatorAddress as Address, address!),
@@ -101,6 +103,7 @@ const Airdrop: FC = () => {
       airdropClaim,
       _1stStage,
       _2ndStage,
+      defaultConfig,
     }),
     [
       stage,
@@ -116,6 +119,7 @@ const Airdrop: FC = () => {
       airdropClaim,
       _1stStage,
       _2ndStage,
+      defaultConfig,
     ],
   );
 
