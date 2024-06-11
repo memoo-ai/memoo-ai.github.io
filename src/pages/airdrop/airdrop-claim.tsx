@@ -9,7 +9,7 @@ import { follow } from '@/api/airdrop';
 import AirdropClaimModal from './airdrop-claim-modal';
 
 export default function AirdropClaim() {
-  const { stage, idoQueueDetail } = useContext(AirdropContext);
+  const { stage, idoQueueDetail, idoLaunchedDetail } = useContext(AirdropContext);
   const [following, setFollowing] = useState(false);
 
   const follows = useMemo(
@@ -87,7 +87,7 @@ export default function AirdropClaim() {
         <div className="mt-5 airdrop-unlock flex flex-col items-center gap-y-2">
           <div className="flex gap-x-3.5">
             <img className="w-5 object-contain" src="/create/icon-airdrop-lock.png" />
-            <Countdown instant={Date.now() + 24 * 60 * 60 * 1000} />
+            <Countdown instant={(idoLaunchedDetail?.rewardEndsIn ?? 0) * 1000} />
           </div>
           <p className="text-white font-OCR leading-20 text-sm">Wait for your airdrop to unlock.</p>
         </div>
@@ -95,7 +95,9 @@ export default function AirdropClaim() {
       {airdropUnlocked && (
         <div className="mt-5 airdrop-unlock flex flex-col items-center gap-y-2">
           <img className="w-5 object-contain" src="/create/icon-airdrop-unlock.png" />
-          <p className="text-white font-404px leading-20 text-2xl">{Number(2000000).toLocaleString()} WIF</p>
+          <p className="text-white font-404px leading-20 text-2xl">
+            {Number(idoLaunchedDetail?.count).toLocaleString()} WIF
+          </p>
         </div>
       )}
       <AirdropClaimModal>

@@ -146,6 +146,8 @@ declare interface IDOLaunchedDetail extends IDOClaimStage {
   totalSupply: string;
   twitter: string;
   volume24H: number;
+  rewardEndsIn: number;
+  count: number;
   website: string;
 }
 

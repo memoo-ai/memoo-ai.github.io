@@ -1,9 +1,11 @@
 import { Button, Checkbox, Input, Modal, Progress, Slider } from 'antd';
-import { Children, FC, Fragment, ReactNode, cloneElement, isValidElement, useState } from 'react';
+import { Children, FC, Fragment, ReactNode, cloneElement, isValidElement, useContext, useState } from 'react';
 import './airdrop-claim-modal.scss';
+import { AirdropContext } from '.';
 
 const AirdropClaimModal: FC<{ children: ReactNode }> = ({ children }) => {
   const [open, setOpen] = useState(false);
+  const { idoLaunchedDetail } = useContext(AirdropContext);
 
   return (
     <>
@@ -29,7 +31,7 @@ const AirdropClaimModal: FC<{ children: ReactNode }> = ({ children }) => {
             />
             <Input
               className="memoo_input h-[66px] font-404px text-white text-[24px] text-center"
-              value={Number(250000000).toLocaleString()}
+              value={Number(idoLaunchedDetail?.count).toLocaleString()}
             />
           </div>
           <Button className="memoo_button mt-4 h-[50px]">Confirm</Button>
