@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useEffect, useState } from 'react';
 import { columns } from './columns';
 import IPagination from '@/components/IPagination';
-
+import { useNavigate } from 'react-router-dom';
 import { Table } from 'antd';
 import type { GetProp, TableProps } from 'antd';
 import type { PaginationProps } from 'antd';
@@ -21,6 +21,7 @@ interface TableParams {
 
 export type GeckoType = 'trending' | 'top';
 const Gecko = () => {
+  const navigate = useNavigate();
   const [tab, setTab] = useState<GeckoType>('trending');
   const [data, setData] = useState<TrendingTokens[]>([]);
   const [loading, setLoading] = useState(false);
@@ -85,6 +86,13 @@ const Gecko = () => {
         pagination={false}
         loading={loading}
         onChange={handleTableChange}
+        onRow={(record) => {
+          return {
+            onClick: (event) => {
+              navigate(`/airdrop/${record.ticker}`);
+            },
+          };
+        }}
       />
       <IPagination
         currentPage={pagination.current ?? 0}
