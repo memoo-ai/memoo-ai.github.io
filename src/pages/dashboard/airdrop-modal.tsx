@@ -1,10 +1,19 @@
-import { useState, Children, cloneElement, isValidElement } from 'react';
+import { useState, Children, cloneElement, isValidElement, useEffect } from 'react';
 
 import './airdrop-modal.scss';
 import { Modal, Button } from 'antd';
 import { IconLock, IconClose, IconCompleted } from '@/components/icons';
-const AirdropModal = ({ children }: any) => {
+import { getIDOLaunchedDetail } from '@/api/airdrop';
+const AirdropModal = ({ children, ticker }: any) => {
   const [open, setOpen] = useState(false);
+  const [idoLaunchedDetail, setIdoLaunchedDetail] = useState<any>(null);
+
+  useEffect(() => {
+    const data = getIDOLaunchedDetail(ticker);
+    setIdoLaunchedDetail(data);
+  }, [ticker]);
+
+  const handleConfirm = () => {};
   return (
     <div>
       <Modal
@@ -25,10 +34,13 @@ const AirdropModal = ({ children }: any) => {
           <div className="confirm_content_title mt-[18px]">WIF has arrived!</div>
           <div className="confirm_content_describe mt-[18px]">Thanks for being part of the Dogwifhat community.</div>
           <div className="confirm_content_wif">
-            <IconLock className="airdrop_lock" color="#07E993" bgColor="#2B526E" /> 200000 WIF
+            <IconLock className="airdrop_lock" color="#07E993" bgColor="#2B526E" />{' '}
+            {Number(idoLaunchedDetail?.count).toLocaleString()}
           </div>
           <div className="airdrop_confirm_btn">
-            <Button className="mt-[16px] custom_ant_btn">CLAIM ALL</Button>
+            <Button className="mt-[16px] custom_ant_btn" onClick={handleConfirm}>
+              CLAIM ALL
+            </Button>
           </div>
         </div>
       </Modal>
