@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { LaunchpadIMO, LaunchpadAirdrop } from '@/types';
+import { formatTs } from '@/utils';
 export enum IDOStatus {
   active = 'active',
   upcoming = 'upcoming',
@@ -24,7 +25,9 @@ export const columns = (navigate: (path: string) => void) => [
     dataIndex: 'endsIn',
     key: 'endsIn',
     sorter: true,
-    render: (endsIn: string) => <div className="font-404px font-semibold text-lg ">{endsIn}</div>,
+    render: (endsIn: number) => (
+      <div className="font-404px font-semibold text-lg ">{endsIn ? formatTs(endsIn ?? 0) : ''}</div>
+    ),
   },
   {
     title: 'Total Raissed',
