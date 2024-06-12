@@ -1,6 +1,7 @@
 import { Button, DropdownMenu } from '@radix-ui/themes';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useAccount, useDisconnect } from 'wagmi';
+import { useAccount, useDisconnect, useAccountEffect } from 'wagmi';
+
 // import { handleCopy } from '@/utils';
 import {
   IconProfile,
@@ -10,7 +11,7 @@ import {
   IconWalletContentLogout,
 } from '@/components/icons';
 import './walletConnect.scss';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ConnectModalPortal from './connectModalPortal';
 import ConnectModalPortalTop from './connectModalPortalTop';
@@ -41,6 +42,7 @@ const WalletConnect = () => {
   const navigate = useNavigate();
   const iconRefs = useRef<any>({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const onDisconnect = async () => {
     if (isConnected || address) {
       for (const connector of connectors) {
@@ -48,9 +50,18 @@ const WalletConnect = () => {
         await disconnect({ connector });
       }
       await disconnect();
+      // window.location.reload();
       console.log('=====================>disconnect');
     }
   };
+  useAccountEffect({
+    onConnect(data) {
+      console.log('Connected!', data);
+      if (!isConnected) {
+        window.location.reload();
+      }
+    },
+  });
 
   return (
     <ConnectButton.Custom>

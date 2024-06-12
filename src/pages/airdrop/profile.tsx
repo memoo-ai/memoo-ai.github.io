@@ -45,7 +45,7 @@ const Profile: FC = () => {
         key: 'Project Website',
         value: '',
         formatValue: (value: string) => (
-          <ul className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1">
+          <ul className={`${idoQueueDetail?.website ? 'token_list' : ''}flex flex-wrap col-span-6 gap-y-1.5 gap-x-1`}>
             {idoQueueDetail?.website && (
               <li className="h-8 cursor-pointer">
                 <a href={idoQueueDetail?.website} target="_blank" className="flex items-center gap-x-1.5">
