@@ -243,10 +243,10 @@ export default function Create() {
         }
         await form.validateFields();
         // twitter must have been connected
-        if (!twitter) {
-          message.warning('Please connect project twitter first.');
-          return;
-        }
+        // if (!twitter) {
+        //   message.warning('Please connect project twitter first.');
+        //   return;
+        // }
 
         data.twitter = twitter;
         data.accessToken = twitterAccessToken;
