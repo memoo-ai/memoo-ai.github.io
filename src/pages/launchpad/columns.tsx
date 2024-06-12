@@ -55,11 +55,11 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
     title: 'Token',
     dataIndex: 'tokenName',
     key: 'tokenName',
-    render: (record: LaunchpadAirdrop) => (
+    render: (tokenName: string, record: LaunchpadAirdrop) => (
       <div className="flex items-center">
         <img src={record.icon} alt="" className="w-[84px] h-[84px] rounded-full mr-5" />
-        <span className="font-404px font-bold text-lg mr-2">{record.tokenName}</span>
-        <span className="font-404px font-normal text-sm ">{record.meMooScore}</span>
+        <span className="font-404px font-bold text-lg mr-2">{tokenName}</span>
+        <span className="font-404px font-normal text-sm ">{record.ticker}</span>
       </div>
     ),
   },
@@ -68,7 +68,9 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
     dataIndex: 'idoDate',
     key: 'idoDate',
     sorter: true,
-    render: (idoDate: string) => <div className="font-404px font-semibold text-lg ">{idoDate}</div>,
+    render: (idoDate: number) => (
+      <div className="font-404px font-semibold text-lg ">{idoDate ? formatTs(idoDate ?? 0) : ''}</div>
+    ),
   },
   {
     title: 'Participants',
