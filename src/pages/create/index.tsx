@@ -39,6 +39,8 @@ import { parseEther, formatEther } from 'ethers';
 import { useMemeFactoryContract } from '@/hooks/useMemeFactoryContract';
 import { ZERO_ADDRESS } from '@/constants';
 import { useAccount } from 'wagmi';
+import { formatDecimals } from '@/utils';
+import BigNumber from 'bignumber.js';
 
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
@@ -68,7 +70,18 @@ export default function Create() {
   console.log('memooConfig: ', memooConfig);
   const { getMemeAddressWithSymbol } = useMemeFactoryContract();
   const navigate = useNavigate();
+  const firstProportion = useMemo(() => Number(memooConfig?.allocation.creator) / 10000, [memooConfig]);
+  const maxProportion = useMemo(() => Number(memooConfig?.idoCreatorBuyLimit) / 10000, [memooConfig]);
+  const firstIncrease = useMemo(() => {
+    if (!memooConfig || !defaultConfig) return 0;
 
+    const totalSupplyBN = new BigNumber(Number(defaultConfig?.totalSupply)).dividedBy(
+      10 ** defaultConfig?.defaultDecimals,
+    );
+    const idoPriceBN = new BigNumber(Number(defaultConfig?.idoPrice)).dividedBy(10 ** defaultConfig?.defaultDecimals);
+    const result = totalSupplyBN.multipliedBy(idoPriceBN).multipliedBy(firstProportion);
+    return parseFloat(formatDecimals(result));
+  }, [memooConfig, firstProportion, defaultConfig]);
   const totalCapInitial = useMemo(() => {
     if (!memooConfig || !defaultConfig) return 0;
     const rate = Number(memooConfig.idoCreatorBuyLimit) / 10000;
@@ -432,7 +445,13 @@ export default function Create() {
               name="preMarketAcquisition"
               style={{ marginTop: '40px' }}
             >
-              <MySlider defaultValue={preMarketAcquisition} min={0} max={1} minPrice={0} maxPrice={totalCapInitial} />
+              <MySlider
+                defaultValue={preMarketAcquisition}
+                min={firstProportion}
+                max={maxProportion}
+                minPrice={firstIncrease}
+                maxPrice={totalCapInitial}
+              />
             </Form.Item>
             <p className="create_tip_for_acquisition">
               The creator can enhance the initial allocation by purchasing an additional 30%
@@ -515,9 +534,9 @@ export default function Create() {
 
           <div>
             <p className="create_fee_desc">
-              A platform Fee of 0.05 ETH is applicable to facilitate your meme token creation. You will be entitled to
-              5% supply of your meme token. The token will be distributed post TGE after{' '}
-              <span className="text-[#07E993]">‘fair conditions’</span> are met.{' '}
+              A platform Fee of {totalCapInitial} ETH is applicable to facilitate your meme token creation. You will be
+              entitled to {firstProportion * 100}% supply of your meme token. The token will be distributed post TGE
+              after <span className="text-[#07E993]">‘fair conditions’</span> are met.{' '}
               <span className="text-[#07E993]">Click here</span>
               for the tokenomics disclosures.
             </p>

@@ -24,7 +24,7 @@ export const ActiveIdoCard = () => {
   }, []);
 
   return (
-    <SwipeCard title="Active IMO" step={360}>
+    <SwipeCard title="COMPLETED IMO" step={360}>
       <div className="flex items-center overflow-hidden">
         {idos.map((ido) => (
           <div key={ido.ticker} className="flex flex-col w-[390px] bg-[#131522]  px-11 py-6 mr-8 rounded-lg">
