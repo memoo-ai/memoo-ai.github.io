@@ -1,6 +1,7 @@
 import './index.scss';
 import { Button } from '@/components/ui/button';
 import { IconTwitter, IconTelegram, IconVector } from '@/components/icons';
+import { useNavigate } from 'react-router-dom';
 const Revolutions = [
   {
     title: (
@@ -66,6 +67,7 @@ const Revolutions = [
   },
 ];
 const Home = () => {
+  const navigate = useNavigate();
   return (
     <div>
       <div className="block mx-[auto] max-w-[94.5rem]">
@@ -78,10 +80,20 @@ const Home = () => {
               Enabling the memecoin industry with a wide range of resources, tools & launchpad.
             </p>
             <div className="flex items-center gap-3 mt-[50px]">
-              <Button variant="default" className="font-404px text-lg  w-[298px] h-[53px] uppercase rounded-lg">
+              <Button
+                variant="default"
+                className="font-404px text-lg  w-[298px] h-[53px] uppercase rounded-lg"
+                onClick={() => {
+                  navigate('/create');
+                }}
+              >
                 Create your meme
               </Button>
-              <Button variant="secondary" className="font-404px text-lg  w-[298px] h-[53px] uppercase">
+              <Button
+                variant="secondary"
+                className="font-404px text-lg  w-[298px] h-[53px] uppercase"
+                onClick={() => navigate('/launchpad?type=airdrop')}
+              >
                 Hunt for airdrops
               </Button>
             </div>
