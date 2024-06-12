@@ -84,7 +84,7 @@ const Home = () => {
                 variant="default"
                 className="font-404px text-lg  w-[298px] h-[53px] uppercase rounded-lg"
                 onClick={() => {
-                  navigate('/create');
+                  navigate('/create_token');
                 }}
               >
                 Create your meme

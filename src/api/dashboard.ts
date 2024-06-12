@@ -7,6 +7,7 @@ import {
   DashboardCollectorAirdrop,
   DashboardCollectorParticipated,
   DashboardWatchList,
+  TokenDetail,
 } from '@/types';
 export const getCreator = (params: pageParams) => {
   return http.get<PageWrapper<DashboardCreator>>(`${prefix}/web-oriented/creator`, { params });
@@ -29,4 +30,8 @@ export const deleteToken = (id: string) => {
 };
 export const cancelCollect = (ticker: string) => {
   return http.put(`${prefix}/web-oriented/collection`, { ticker });
+};
+
+export const getTokenDetail = (ticker: string) => {
+  return http.get<TokenDetail>(`${prefix}/web-oriented/token-detail`, { params: { ticker } });
 };

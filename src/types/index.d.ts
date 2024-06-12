@@ -333,3 +333,47 @@ declare interface UnlockPeriod {
   value: bigint;
   unlockRate: bigint;
 }
+
+declare interface TokenDetail {
+  address: string;
+  airdropEndsIn: number;
+  banners: string[];
+  claimFlag: boolean;
+  contractAddress: string;
+  contributed: number;
+  createdAt: number;
+  creatorAddress: string;
+  creatorTelegram: string;
+  creatorTwitter: string;
+  creatorWebsite: string;
+  description: string;
+  endsIn: number;
+  fdv: string;
+  icon: string;
+  idoDate: number;
+  idoEndFlag: boolean;
+  launchDate: number;
+  lpContractAddress: string;
+  lpLock: boolean;
+  marketCap: string;
+  maxContributed: number;
+  oldBanners: string[];
+  oldIcon: string;
+  pinnedTwitter: string;
+  preLaunchDuration: string;
+  preMarketAcquisition: number;
+  price: number;
+  projectName: string;
+  rewardEndsIn: number;
+  stageOneClaim: boolean;
+  stageTwoClaim: boolean;
+  status: string;
+  telegram: string;
+  ticker: string;
+  tokenName: string;
+  totalRaised: string;
+  totalSupply: string;
+  twitter: string;
+  userName: string;
+  website: string;
+}
