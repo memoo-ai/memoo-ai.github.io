@@ -208,7 +208,9 @@ export const Creator = () => {
                 <div
                   className={item.status === 'Draft' ? 'draft' : ''}
                   onClick={() => {
-                    navigate(item.status === 'Draft' ? `/create?ticker=${item.ticker}` : `/airdrop/${item.ticker}`);
+                    navigate(
+                      item.status === 'Draft' ? `/create_token?ticker=${item.ticker}` : `/airdrop/${item.ticker}`,
+                    );
                   }}
                 >
                   <IconEdit

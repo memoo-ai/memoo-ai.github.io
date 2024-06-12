@@ -24,7 +24,7 @@ const Dashboard = () => {
           setCommonBanner({
             title: 'Exclusive ‘Proof of Creation’ Reward for Creators.',
             desc: 'Exciting Rewards for Exceptional Talent in Meme Creation.',
-            link: '/create',
+            link: '/create_token',
             linkText: 'BE A CREATOR',
           });
           break;
@@ -50,7 +50,7 @@ const Dashboard = () => {
           setCommonBanner({
             title: 'Exclusive ‘Proof of Creation’ Reward for Creators.',
             desc: 'Exciting Rewards for Exceptional Talent in Meme Creation.',
-            link: '/create',
+            link: '/create_token',
             linkText: 'BE A CREATOR',
           });
           break;
