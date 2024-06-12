@@ -82,6 +82,16 @@ export default function Create() {
     const result = totalSupplyBN.multipliedBy(idoPriceBN).multipliedBy(firstProportion);
     return parseFloat(formatDecimals(result));
   }, [memooConfig, firstProportion, defaultConfig]);
+  // console.log('memooConfig.platformFeeCreateMeme:', formatDecimals(memooConfig.platformFeeCreateMeme));
+  const totalCap = useMemo(() => {
+    if (!memooConfig || !defaultConfig) return 0;
+
+    const platformFeeCreateMeme = new BigNumber(Number(memooConfig?.platformFeeCreateMeme)).dividedBy(
+      10 ** defaultConfig?.defaultDecimals,
+    );
+    return parseFloat(platformFeeCreateMeme.toString());
+  }, [memooConfig, defaultConfig]);
+
   const totalCapInitial = useMemo(() => {
     if (!memooConfig || !defaultConfig) return 0;
     const rate = Number(memooConfig.idoCreatorBuyLimit) / 10000;
@@ -445,13 +455,16 @@ export default function Create() {
               name="preMarketAcquisition"
               style={{ marginTop: '40px' }}
             >
-              <MySlider
+              {/* <MySlider
                 defaultValue={preMarketAcquisition}
+                // min={firstProportion}
+                // max={maxProportion}
                 min={firstProportion}
-                max={maxProportion}
-                minPrice={firstIncrease}
+                max={100}
+                minPrice={0}
                 maxPrice={totalCapInitial}
-              />
+              /> */}
+              <MySlider defaultValue={preMarketAcquisition} min={0} max={1} minPrice={0} maxPrice={totalCapInitial} />
             </Form.Item>
             <p className="create_tip_for_acquisition">
               The creator can enhance the initial allocation by purchasing an additional 30%
@@ -534,7 +547,7 @@ export default function Create() {
 
           <div>
             <p className="create_fee_desc">
-              A platform Fee of {totalCapInitial} ETH is applicable to facilitate your meme token creation. You will be
+              A platform Fee of {totalCap} ETH is applicable to facilitate your meme token creation. You will be
               entitled to {firstProportion * 100}% supply of your meme token. The token will be distributed post TGE
               after <span className="text-[#07E993]">‘fair conditions’</span> are met.{' '}
               <span className="text-[#07E993]">Click here</span>
