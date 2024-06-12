@@ -1,7 +1,7 @@
-import { useState, Children, cloneElement, isValidElement, useEffect } from 'react';
+import { useState, Children, cloneElement, isValidElement, useEffect, useCallback } from 'react';
 
 import './claim-modal.scss';
-import { Modal, Button } from 'antd';
+import { Modal, Button, message } from 'antd';
 import { IconLock, IconClose, IconCompleted } from '@/components/icons';
 import { getTokenDetail } from '@/api/token';
 import BigNumber from 'bignumber.js';
@@ -17,6 +17,7 @@ import {
 import { useManageContract } from '@/hooks/useManageContract';
 import { useAccount } from 'wagmi';
 import { getIDOActiveDetail, getIDOLaunchedDetail, getIDOLaunchedDetailTop10, getIDOQueueDetail } from '@/api/airdrop';
+import { compareAddrs, formatDecimals, formatNumberDecimal } from '@/utils';
 
 const ClaimModal = ({ ticker, children }: any) => {
   const { config, idoBuy, unlockMeme, defaultConfig, airdropClaim, getCanUnlockCount, memeUnlockPeriods } =
@@ -27,8 +28,9 @@ const ClaimModal = ({ ticker, children }: any) => {
   const [idoLaunchedDetailTop10, setIDOLaunchedDetailTop10] = useState<IDOLaunchedDetailTop10[]>([]);
   const [idoQueueDetail, setIDOQueueDetail] = useState<IDOQueueDetail>();
   const { address } = useAccount();
-  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [confirming, setConfirming] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [_1stStage, set1stStage] = useState<{
     unlockCount: BigNumber;
     unlockInfo: UnlockPeriod;
@@ -106,6 +108,21 @@ const ClaimModal = ({ ticker, children }: any) => {
     })();
   }, [ticker]);
 
+  const onConfirm = useCallback(async () => {
+    if (!unlockMeme || !idoQueueDetail) return;
+    try {
+      setConfirming(true);
+      await unlockMeme(idoQueueDetail.contractAddress);
+      setOpen(false);
+      message.success('Unlock Successful');
+    } catch (error) {
+      console.error(error);
+      message.error('Unlock Failed');
+    } finally {
+      setConfirming(false);
+    }
+  }, [unlockMeme, idoQueueDetail]);
+
   return (
     <div>
       <Modal
@@ -142,7 +159,7 @@ const ClaimModal = ({ ticker, children }: any) => {
             </div>
             <div className="flex">
               <div className="unlock">
-                <h3>14 days</h3>
+                <h3>{parseFloat(formatDecimals(Number(_1stStage?.unlockInfo?.value ?? 0)))}days</h3>
                 <p>Claim Completed</p>
               </div>
               <IconCompleted className="lock" />
@@ -151,10 +168,20 @@ const ClaimModal = ({ ticker, children }: any) => {
         )}
         <div className="claimable">
           <div className="claimable_left">Claimable LEASH</div>
-          <div className="claimable_right">250,000,000</div>
+          <div className="claimable_right">
+            {Number(
+              parseFloat(
+                formatDecimals(
+                  new BigNumber(_1stStage?.unlockCount ?? 0).dividedBy(10 ** (defaultConfig?.defaultDecimals ?? 0)),
+                ),
+              ),
+            ).toLocaleString()}
+          </div>
         </div>
         <div className="confirm_btn">
-          <Button className="mt-[76px]">CLAIM ALL</Button>
+          <Button className="mt-[76px]" loading={confirming} onClick={onConfirm}>
+            CLAIM ALL
+          </Button>
         </div>
       </Modal>
       {Children.map(children, (child) => {
