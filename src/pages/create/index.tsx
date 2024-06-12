@@ -145,20 +145,21 @@ export default function Create() {
         if (res?.data) {
           // get twitter binded data
           setIconUrl(res.data.icon);
-          setBannerUrl(res.data.banners[0] ?? '');
+          setBannerUrl(res.data?.banners ? res.data?.banners[0] : '');
           setTwitter(res.data.twitter);
           setTwitterAccessToken(res.data.twitterAccessToken);
           setPreMarketAcquisition(res.data.preMarketAcquisition);
           form.setFieldsValue({
             ...res.data,
             icon: res.data.oldIcon,
-            banners: res.data.oldBanners[0],
+            banners: res.data?.oldBanners ? res.data?.oldBanners[0] : [],
             projectDescription: res.data.description,
           });
-          console.log(form);
+          console.log('form:', form);
         }
       });
     } else {
+      console.log('no-ticker');
       const data = localStorage.getItem(FORM_STORAGE_KEY);
 
       if (data) {
