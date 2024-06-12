@@ -74,7 +74,7 @@ export default function LaunchPad() {
 
   return (
     <div className="page pb-[70px]">
-      <AirDrop />
+      {/* <AirDrop /> */}
       <div className="base-container">
         <div className="header-banner-bg">
           <div className="header-banner-content">

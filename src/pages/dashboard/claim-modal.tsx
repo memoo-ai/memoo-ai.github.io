@@ -4,19 +4,107 @@ import './claim-modal.scss';
 import { Modal, Button } from 'antd';
 import { IconLock, IconClose, IconCompleted } from '@/components/icons';
 import { getTokenDetail } from '@/api/token';
-const ClaimModal = ({ creator, children }: any) => {
-  const [open, setOpen] = useState(false);
+import BigNumber from 'bignumber.js';
+import {
+  Address,
+  IDOActiveDetail,
+  IDOLaunchedDetail,
+  IDOLaunchedDetailTop10,
+  IDOQueueDetail,
+  TokenCreateStage,
+  UnlockPeriod,
+} from '@/types';
+import { useManageContract } from '@/hooks/useManageContract';
+import { useAccount } from 'wagmi';
+import { getIDOActiveDetail, getIDOLaunchedDetail, getIDOLaunchedDetailTop10, getIDOQueueDetail } from '@/api/airdrop';
 
+const ClaimModal = ({ ticker, children }: any) => {
+  const { config, idoBuy, unlockMeme, defaultConfig, airdropClaim, getCanUnlockCount, memeUnlockPeriods } =
+    useManageContract();
+  const [stage, setStage] = useState<TokenCreateStage>('in-queue');
+  const [idoActiveDetail, setIDOActiveDetail] = useState<IDOActiveDetail>();
+  const [idoLaunchedDetail, setIDOLaunchedDetail] = useState<IDOLaunchedDetail>();
+  const [idoLaunchedDetailTop10, setIDOLaunchedDetailTop10] = useState<IDOLaunchedDetailTop10[]>([]);
+  const [idoQueueDetail, setIDOQueueDetail] = useState<IDOQueueDetail>();
+  const { address } = useAccount();
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [_1stStage, set1stStage] = useState<{
+    unlockCount: BigNumber;
+    unlockInfo: UnlockPeriod;
+  }>();
+  const [_2ndStage, set2ndStage] = useState<{
+    unlockCount: BigNumber;
+    unlockInfo: UnlockPeriod;
+  }>();
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await getTokenDetail(creator.ticker);
+        setLoading(true);
+        // For testin: BigEgg or NewCake
+        const { data } = await getIDOQueueDetail(ticker);
+        setIDOQueueDetail(data);
+
+        if (data.stageTwoClaim) {
+          setStage('2st-claim');
+        } else if (data.stageOneClaim) {
+          setStage('1st-claim');
+        } else if (data.status === 'Launched') {
+          const [p1, p2] = await Promise.all([
+            getIDOLaunchedDetail(ticker),
+            getIDOLaunchedDetailTop10({ pageNumber: 1, pageSize: 10, ticker: ticker }),
+          ]);
+          setIDOLaunchedDetail(p1.data);
+          setIDOLaunchedDetailTop10(p2.data);
+          setStage('launch');
+        } else if (data.status === 'IDO') {
+          const { data } = await getIDOActiveDetail(ticker);
+          setIDOActiveDetail(data);
+          setStage('imo');
+        } else {
+          setStage('in-queue');
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+  useEffect(() => {
+    if (!idoQueueDetail || !address) return;
+    (async () => {
+      // 1st stage
+      {
+        const [unlockCount, unlockInfo] = await Promise.all([
+          getCanUnlockCount(idoQueueDetail.contractAddress, address, 0) as Promise<BigNumber>,
+          memeUnlockPeriods(0) as Promise<UnlockPeriod>,
+        ]);
+        console.log('1st stage', unlockCount, unlockInfo);
+        set1stStage({ unlockCount, unlockInfo });
+      }
+
+      // 2nd stafe
+      {
+        const [unlockCount, unlockInfo] = await Promise.all([
+          getCanUnlockCount(idoQueueDetail.contractAddress, address, 1) as Promise<BigNumber>,
+          memeUnlockPeriods(1) as Promise<UnlockPeriod>,
+        ]);
+        console.log('2nd stage', unlockCount, unlockInfo);
+        set2ndStage({ unlockCount, unlockInfo });
+      }
+    })();
+  }, [idoQueueDetail, address, memeUnlockPeriods]);
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await getTokenDetail(ticker);
         console.log(data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     })();
-  }, [creator]);
+  }, [ticker]);
 
   return (
     <div>
@@ -33,7 +121,7 @@ const ClaimModal = ({ creator, children }: any) => {
         closeIcon={<IconClose className="close" />}
       >
         <div className="confirm_title">Claim Tokens</div>
-        {creator.stageOneClaim ? (
+        {_1stStage && (
           <div className="flex justify-between mt-[39px] items-center">
             <div className="unlocked">
               <span>Redeem 1st 50% unlocked tokens</span> <img src="./dashboard/reward.svg" alt="" />
@@ -46,8 +134,8 @@ const ClaimModal = ({ creator, children }: any) => {
               <IconLock className="lock" />
             </div>
           </div>
-        ) : undefined}
-        {creator.stageTwoClaim ? (
+        )}
+        {_2ndStage && (
           <div className="flex justify-between mt-[39px] items-center">
             <div className="unlocked">
               <span>Redeem 2nd 50% unlocked tokens</span> <img src="./dashboard/reward.svg" alt="" />
@@ -60,7 +148,7 @@ const ClaimModal = ({ creator, children }: any) => {
               <IconCompleted className="lock" />
             </div>
           </div>
-        ) : undefined}
+        )}
         <div className="claimable">
           <div className="claimable_left">Claimable LEASH</div>
           <div className="claimable_right">250,000,000</div>

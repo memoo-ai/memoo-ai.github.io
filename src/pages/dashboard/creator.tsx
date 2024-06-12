@@ -115,7 +115,7 @@ export const Creator = () => {
         break;
       case 'Launched':
         button = (
-          <ClaimModal creator={item}>
+          <ClaimModal ticker={item.ticker}>
             {' '}
             <Button
               className="flex items-center justify-between"
