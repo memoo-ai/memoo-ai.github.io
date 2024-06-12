@@ -2,7 +2,7 @@
 import { FC, ReactNode, useContext, useMemo } from 'react';
 import { AirdropContext } from '../airdrop';
 import './ido-detail.scss';
-import { clipAddress, formatTs } from '@/utils';
+import { clipAddress, formatTs, formatDecimals } from '@/utils';
 
 const IDODetail: FC = () => {
   const { stage, idoQueueDetail, idoLaunchedDetail, idoLaunchedDetailTop10 } = useContext(AirdropContext);
@@ -43,7 +43,7 @@ const IDODetail: FC = () => {
         { key: 'Max Supply', value: `$${idoQueueDetail?.totalSupply ?? 0}` },
         {
           key: 'All Time High',
-          value: `$${idoLaunchedDetail?.allTimeHigh ?? 0}`,
+          value: `$${formatDecimals(idoLaunchedDetail?.allTimeHigh ?? 0) ?? 0}`,
           formatValue: (value: string): ReactNode => (
             <div className="flex flex-col items-end">
               <span className="text-white text-lg font-OCR leading-5">{value}</span>
@@ -58,7 +58,7 @@ const IDODetail: FC = () => {
         },
         {
           key: 'All Time Low',
-          value: `$${idoLaunchedDetail?.allTimeLow ?? 0}`,
+          value: `$${formatDecimals(idoLaunchedDetail?.allTimeLow ?? 0) ?? 0}`,
           formatValue: (value: string): ReactNode => (
             <div className="flex flex-col items-end">
               <span className="text-white text-lg font-OCR leading-5">{value}</span>

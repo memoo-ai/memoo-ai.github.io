@@ -3,14 +3,15 @@ import './public-sale.scss';
 import { Button, Popover } from 'antd';
 import classNames from 'classnames';
 import { AirdropContext } from '.';
+import { formatDecimals } from '@/utils';
 
 const PublicSale: FC = () => {
   const { idoLaunchedDetail, idoQueueDetail } = useContext(AirdropContext);
 
   const params = useMemo(
     () => [
-      { key: 'Market Cap', value: `$${idoLaunchedDetail?.marketCap}`, tip: null },
-      { key: 'Price', value: `$${idoLaunchedDetail?.price}`, tip: null },
+      { key: 'Market Cap', value: `$${formatDecimals(idoLaunchedDetail?.marketCap ?? 0)}`, tip: null },
+      { key: 'Price', value: `$${formatDecimals(idoLaunchedDetail?.price ?? 0)}`, tip: null },
       { key: 'Total Raised', value: `${idoLaunchedDetail?.totalRaised ?? 'NA/NA'} ETH`, tip: '1' },
       {
         key: 'Contributed',
