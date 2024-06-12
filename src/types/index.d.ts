@@ -382,3 +382,12 @@ declare interface TokenDetail {
   userName: string;
   website: string;
 }
+declare interface LoginParams {
+  address: string;
+  message: string;
+  signature: string;
+}
+declare interface LoginToken {
+  expire: number;
+  token: string;
+}
