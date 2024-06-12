@@ -87,3 +87,16 @@ export const getTwitterAccessToken = (
 export const getTwitterClientId = (): Promise<ApiResponse<string>> => {
   return http.get(`${prefix}/web-oriented/get-twitter-client`);
 };
+
+export interface RequestTwitterFollowParams {
+  appClientId: string;
+  code: string;
+  codeVerifier: string;
+  grantType: string;
+  redirectUri: string;
+  refreshToken: string;
+  twitter: string;
+}
+export const requestTwitterFollow = (params: RequestTwitterFollowParams): Promise<ApiResponse<boolean>> => {
+  return http.get(`${prefix}/web-oriented/request-twitter-follow`, { params });
+};

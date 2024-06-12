@@ -29,6 +29,7 @@ import {
   getTwitterAccessToken,
   uploadFile,
   getTwitterClientId,
+  requestTwitterFollow,
 } from '@/api/token';
 import qs from 'qs';
 
@@ -210,6 +211,19 @@ export default function Create() {
     const state = searchParams.get('state');
     const clientId = localStorage.getItem(TWITTER_CLIENT_ID_KEY);
     if (state === 'twitter' && code) {
+      // TODO test twitter follow
+      const followParams = {
+        appClientId: clientId ?? '',
+        code,
+        codeVerifier: 'challenge',
+        grantType: 'authorization_code',
+        redirectUri: twitterRedirectUri,
+        refreshToken: '',
+        twitter: 'elonmusk',
+      };
+      requestTwitterFollow(followParams).then((res) => {
+        console.log('follow res: ', res);
+      });
       // call api to bind
       const params = {
         code,
