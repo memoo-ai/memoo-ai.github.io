@@ -192,7 +192,7 @@ export const Creator = () => {
         <div
           className="dashboard_item_create"
           onClick={() => {
-            navigate('/create');
+            navigate('/create_token');
           }}
         >
           <IconAdd className="dashboard_item_create_add" />

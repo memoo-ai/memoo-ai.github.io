@@ -23,7 +23,7 @@ const routeConfig: RouteObject[] = [
         Component: lazy(() => import('../pages/dashboard')),
       },
       {
-        path: '/create',
+        path: '/create_token',
         Component: lazy(() => import('../pages/create')),
       },
       {
