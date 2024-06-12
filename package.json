@@ -11,6 +11,7 @@
     "start:prod": "vite --mode production",
     "build": "pnpm build:prod",
     "build:dev": "pnpm tsc && vite build --mode development",
+    "build:test": "pnpm tsc && vite build --mode test",
     "build:prod": "pnpm tsc && vite build --mode production",
     "lint:fix": "eslint --fix --ext .js,.jsx,.tsx,.ts .",
     "commit": "git add . && git-cz",
