@@ -530,3 +530,13 @@ div[data-rk] {
     }
   }
 }
+
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+::-webkit-scrollbar-horizontal {
+  height: 0px;
+  background: transparent;
+}
