@@ -24,7 +24,7 @@ export interface DefaultMemooConfig {
 }
 
 export interface MemooConfig {
-  platformFeeCreateMeme: string; // "0.00005"""
+  platformFeeCreateMeme: bigint; // "0.00005"""
   platformFeeCreateMemePayToken: string; // '0x0000000000000000000000000000000000000000';
   idoPrice: string; //  '0.00000001';
   totalSupply: string; // '0';

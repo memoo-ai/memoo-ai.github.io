@@ -215,7 +215,7 @@ export default function Create() {
         : 3 * 24 * 3600;
     const preValue = totalCapInitial * data.preMarketAcquisition;
     console.log('preValue: ', preValue);
-    const value = parseEther(String(preValue));
+    const value = parseEther(String(preValue)) + memooConfig!.platformFeeCreateMeme;
     const res = await createMeme(data.tokenName, data.ticker, preLaunchSecond, value);
     console.log('res: ', res);
     return res;
