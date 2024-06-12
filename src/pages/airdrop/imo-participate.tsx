@@ -5,13 +5,19 @@ import { Button, Popover } from 'antd';
 import classNames from 'classnames';
 import { AirdropContext } from '.';
 import ImoParticipationModal from './imo-participation-modal';
+import { formatDecimals } from '@/utils';
 
 const IMOParticipate: FC = () => {
   const { idoActiveDetail, idoQueueDetail } = useContext(AirdropContext);
-
+  console.log('idoActiveDetail?.endsIn:', idoActiveDetail?.endsIn);
   const params = useMemo(
     () => [
-      { key: 'Price', value: `$${idoActiveDetail?.price ?? 0}`, tip: null },
+      {
+        key: 'Price',
+        value: `$${formatDecimals(idoActiveDetail?.price ? idoActiveDetail?.price : 0) ?? 0}`,
+        tip: null,
+      },
+      // { key: 'Price', value: `$${Number(idoActiveDetail?.price).toLocaleString() ?? 0}`, tip: null },
       { key: 'Total Raised', value: `${idoActiveDetail?.totalRaised ?? 'NA/NA'} ETH`, tip: '1' },
       {
         key: 'Contributed',
@@ -89,7 +95,5 @@ const IMOParticipate: FC = () => {
     </div>
   );
 };
-
-IMOParticipate.displayName = IMOParticipate.name;
 
 export default IMOParticipate;

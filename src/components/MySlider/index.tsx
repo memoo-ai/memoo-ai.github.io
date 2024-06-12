@@ -39,7 +39,7 @@ const MySlider = ({
         step={step}
         // value={value * 100}
         value={value * 100}
-        defaultValue={defaultValue}
+        defaultValue={defaultValue * 100}
         onChange={handleSliderChange}
         tipFormatter={(value: any) => `${value}%`}
         tooltip={{ open: true }}

@@ -1,4 +1,4 @@
-import { FC, useContext, useMemo } from 'react';
+import { FC, useCallback, useContext, useMemo } from 'react';
 import './public-sale.scss';
 import { Button, Popover } from 'antd';
 import classNames from 'classnames';
@@ -20,6 +20,7 @@ const PublicSale: FC = () => {
     ],
     [idoLaunchedDetail, idoQueueDetail],
   );
+  const onConfirm = useCallback(() => {}, []);
 
   return (
     <div className="pubsale px-5 pt-9 pb-5">
@@ -31,7 +32,7 @@ const PublicSale: FC = () => {
           {params.map((item) => (
             <li key={item.key} className="flex justify-between">
               <label className="text-white text-xs font-OCR leading-4 flex items-center gap-x-1.5">
-                Price{' '}
+                {item.key}{' '}
                 {item.tip && (
                   <Popover content={item.tip}>
                     <img src="/create/tip.png" />
@@ -42,7 +43,9 @@ const PublicSale: FC = () => {
             </li>
           ))}
         </ul>
-        <Button className={classNames('mt-5 uppercase w-full pubsale_btn h-12 font–404px', {})}>Buy</Button>
+        <Button className={classNames('mt-5 uppercase w-full pubsale_btn h-12 font–404px', {})} onClick={onConfirm}>
+          Buy
+        </Button>
       </div>
     </div>
   );

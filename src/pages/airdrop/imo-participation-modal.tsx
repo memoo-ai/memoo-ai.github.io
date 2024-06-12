@@ -23,19 +23,20 @@ const grades = [1 / 4, 1 / 2, 1];
 const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(0);
-  const { memooConfig } = useContext(AirdropContext);
+  const { memooConfig, defaultConfig, idoBuy, idoQueueDetail } = useContext(AirdropContext);
   const [accepted, setAccepted] = useState(false);
   const [confirming, setConfirming] = useState(false);
 
   const totalSupplyBN = useMemo(() => {
-    if (!memooConfig) return zeroBN;
-    return new BigNumber(memooConfig.totalSupply).dividedBy(10 ** memooConfig.defaultDecimals);
+    if (!memooConfig || !defaultConfig) return zeroBN;
+    return new BigNumber(Number(defaultConfig.totalSupply)).dividedBy(10 ** defaultConfig.defaultDecimals);
   }, [memooConfig]);
 
   const capped = useMemo(() => {
-    if (!memooConfig) return zeroBN;
+    if (!memooConfig || !defaultConfig) return zeroBN;
     const idoQuotaBN = new BigNumber(Number(memooConfig.allocation.ido)).dividedBy(10000);
-    const idoPriceBN = new BigNumber(memooConfig.idoPrice).dividedBy(10 ** memooConfig.defaultDecimals);
+    // const idoPriceBN = new BigNumber(defaultConfig.idoPrice).dividedBy(10 ** defaultConfig.defaultDecimals);
+    const idoPriceBN = new BigNumber(Number(defaultConfig.idoPrice)).dividedBy(10 ** defaultConfig.defaultDecimals);
     return totalSupplyBN.multipliedBy(idoQuotaBN).multipliedBy(idoPriceBN);
   }, [memooConfig, totalSupplyBN]);
 
@@ -50,7 +51,11 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
   const options = useMemo(() => {
     // set default
     setSelected(parseFloat(formatDecimals(capped.multipliedBy(grades[0]).multipliedBy(idoUserBuyLimitBN))));
+    console.log('grades[0]:', grades[0]);
 
+    console.log('capped:', capped);
+    console.log('capped.multipliedBy:', capped.multipliedBy(grades[0]).multipliedBy(idoUserBuyLimitBN));
+    console.log('idoUserBuyLimitBN:', idoUserBuyLimitBN);
     return grades.map((g, i) => ({
       label: (
         <div key={i} className="imo_opt">
@@ -62,19 +67,21 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
     }));
   }, [capped, idoUserBuyLimitBN, totalSupplyBN]);
 
-  const onConfirm = useCallback(() => {
+  const onConfirm = useCallback(async () => {
+    if (!idoBuy || !idoQueueDetail) return;
     try {
       setConfirming(true);
       // TODO
+      await idoBuy(idoQueueDetail?.contractAddress, new BigNumber(selected));
       setOpen(false);
-      message.error('Participate Successful');
+      message.success('Participate Successful');
     } catch (error) {
       console.error(error);
       message.error('Participate Failed');
     } finally {
       setConfirming(false);
     }
-  }, []);
+  }, [idoQueueDetail, idoBuy, selected]);
 
   return (
     <>
