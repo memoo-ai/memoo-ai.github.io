@@ -333,6 +333,11 @@ declare interface UnlockPeriod {
   value: bigint;
   unlockRate: bigint;
 }
+declare interface getMeMeme {
+  balance: string;
+  ethAmout: string;
+  ticker: string;
+}
 
 declare interface TokenDetail {
   address: string;

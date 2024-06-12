@@ -31,7 +31,3 @@ export const deleteToken = (id: string) => {
 export const cancelCollect = (ticker: string) => {
   return http.put(`${prefix}/web-oriented/collection`, { ticker });
 };
-
-export const getTokenDetail = (ticker: string) => {
-  return http.get<TokenDetail>(`${prefix}/web-oriented/token-detail`, { params: { ticker } });
-};

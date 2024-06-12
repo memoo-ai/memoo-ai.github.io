@@ -34,7 +34,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string }> = ({ childre
       if (res?.data) {
         console.log('TokenDetail: ', res?.data);
         setProjectDetail(res.data);
-        setProjectBannerUrl(res.data.banners[0]);
+        setProjectBannerUrl(res.data.oldBanners ? res.data.oldBanners[0] : '');
         setTwitter(res.data.twitter);
         setTwitterAccessToken(res.data.twitterAccessToken);
         form.setFieldsValue({ ...res.data, tokenIcon: res.data.icon, projectDescription: res.data.description });
@@ -157,6 +157,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string }> = ({ childre
               </p>
             }
             name="projectDescription"
+            rules={[{ required: true, message: 'Please input Project Description!' }]}
           >
             <Input.TextArea
               showCount

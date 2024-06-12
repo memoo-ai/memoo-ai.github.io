@@ -8,12 +8,13 @@ import { formatEther } from 'ethers';
 import { useManageContract } from '@/hooks/useManageContract';
 import BigNumber from 'bignumber.js';
 import { compareAddrs, formatDecimals, formatNumberDecimal } from '@/utils';
-import { getIDOQueueDetail } from '@/api/airdrop';
+import { getTokenDetail } from '@/api/token';
+import { getMeMemo } from '@/api/common';
 const IncreaseModal = ({ children, ticker }: any) => {
   const [open, setOpen] = useState(false);
   const [isAccept, setIsAccept] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState(5);
+  const [progress, setProgress] = useState(0);
   const {
     config: memooConfig,
     idoBuy,
@@ -23,13 +24,10 @@ const IncreaseModal = ({ children, ticker }: any) => {
     getCanUnlockCount,
     memeUnlockPeriods,
   } = useManageContract();
-  const [minPercentage, setMinPercentage] = useState(0);
-  const [maxPercentage, setMaxPercentage] = useState(0);
-  const [memeIdoMinPrice, setMemeIdoMinPrice] = useState(0);
-  const [memeIdoMaxPrice, setMemeIdoMaxPrice] = useState(0);
+
   const [idoPrice, setIdoPrice] = useState(0);
   const [totalCap, setTotalCap] = useState(0);
-  const [idoQueueDetail, setIDOQueueDetail] = useState<any>();
+  const [tokenDetail, setTokenDetail] = useState<any>();
   const [proportion, setProportion] = useState(0);
   const [result, setResult] = useState(0);
 
@@ -67,8 +65,10 @@ const IncreaseModal = ({ children, ticker }: any) => {
       try {
         setLoading(true);
         // For testin: BigEgg or NewCake
-        const { data } = await getIDOQueueDetail(ticker);
-        setIDOQueueDetail(data);
+        const { data } = await getTokenDetail(ticker);
+        const { data: meme } = await getMeMemo(ticker);
+        console.log('meme:', meme);
+        setTokenDetail(data);
       } catch (error) {
         console.error(error);
       } finally {
@@ -80,7 +80,7 @@ const IncreaseModal = ({ children, ticker }: any) => {
     if (!idoBuy) return;
     try {
       setLoading(true);
-      await idoBuy(idoQueueDetail.contractAddress, new BigNumber(result - firstIncrease));
+      await idoBuy(tokenDetail.contractAddress, new BigNumber(result - firstIncrease));
       setOpen(false);
       message.success('Buy Successful');
     } catch (error) {
@@ -89,7 +89,7 @@ const IncreaseModal = ({ children, ticker }: any) => {
     } finally {
       setLoading(false);
     }
-  }, [idoBuy, idoQueueDetail, result, firstIncrease]);
+  }, [idoBuy, tokenDetail, result, firstIncrease]);
 
   return (
     <div>

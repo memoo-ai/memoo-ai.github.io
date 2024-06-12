@@ -71,6 +71,7 @@ const Airdrop: FC = () => {
   const [idoQueueDetail, setIDOQueueDetail] = useState<IDOQueueDetail>();
   const { ticker = import.meta.env.VITE_DEMO_TICKER } = useParams<{ ticker: string }>();
   const { address } = useAccount();
+  console.log('my-address:', address);
   const [loading, setLoading] = useState(false);
   const [_1stStage, set1stStage] = useState<{
     unlockCount: BigNumber;
