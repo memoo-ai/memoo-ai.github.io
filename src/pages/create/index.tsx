@@ -64,6 +64,7 @@ export default function Create() {
   const [twitter, setTwitter] = useState('');
   const [twitterAccessToken, setTwitterAccessToken] = useState('');
   const [clientId, setClientId] = useState('');
+  const [preMarketAcquisition, setPreMarketAcquisition] = useState(0);
   console.log('memooConfig: ', memooConfig);
   const { getMemeAddressWithSymbol } = useMemeFactoryContract();
   const navigate = useNavigate();
@@ -139,18 +140,22 @@ export default function Create() {
     console.log('ticker: ', ticker);
     if (ticker) {
       getTokenDetail(ticker).then((res) => {
+        console.log('getTokenDetail:', res);
+        console.log('setPreMarketAcquisition:', res.data.preMarketAcquisition);
         if (res?.data) {
           // get twitter binded data
           setIconUrl(res.data.icon);
-          setBannerUrl(res.data.banners[0]);
+          setBannerUrl(res.data.banners[0] ?? '');
           setTwitter(res.data.twitter);
           setTwitterAccessToken(res.data.twitterAccessToken);
+          setPreMarketAcquisition(res.data.preMarketAcquisition);
           form.setFieldsValue({
             ...res.data,
             icon: res.data.oldIcon,
             banners: res.data.oldBanners[0],
             projectDescription: res.data.description,
           });
+          console.log(form);
         }
       });
     } else {
@@ -426,7 +431,7 @@ export default function Create() {
               name="preMarketAcquisition"
               style={{ marginTop: '40px' }}
             >
-              <MySlider min={0} max={1} minPrice={0} maxPrice={totalCapInitial} />
+              <MySlider defaultValue={preMarketAcquisition} min={0} max={1} minPrice={0} maxPrice={totalCapInitial} />
             </Form.Item>
             <p className="create_tip_for_acquisition">
               The creator can enhance the initial allocation by purchasing an additional 30%

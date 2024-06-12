@@ -6,6 +6,7 @@ import { ArrowUp, ArrowDown } from 'lucide-react';
 // You can use a Zod schema here if you want.
 
 import { TrendingTokens } from '@/types';
+import { formatDecimals } from '@/utils';
 
 export const columnsOld: ColumnDef<TrendingTokens>[] = [
   {
@@ -66,7 +67,7 @@ export const columns = [
     dataIndex: 'price',
     key: 'price',
     sorter: true,
-    render: (price: number) => <div className="font-semibold text-lg ">${price}</div>,
+    render: (price: number) => <div className="font-semibold text-lg ">${formatDecimals(price)}</div>,
   },
   {
     title: '1h',

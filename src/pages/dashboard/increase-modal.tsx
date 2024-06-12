@@ -61,30 +61,7 @@ const IncreaseModal = ({ children, ticker }: any) => {
     console.log('increasing proportion:', result);
     setResult(result);
   }, [proportion, firstProportion, firstIncrease]);
-  useMemo(() => {
-    if (!memooConfig) return 0;
-    console.log('memooConfig', memooConfig);
-    let memeIdoPrice = Number(formatEther(memooConfig?.idoPrice));
-    let memeTotalSupply = Number(formatEther(memooConfig?.totalSupply));
-    let idoCreatorBuyLimit = Number(formatEther(memooConfig?.idoCreatorBuyLimit));
-    let creator = Number(formatEther(memooConfig?.allocation?.creator));
-    // let minPer = Number(creator / formatEther(10000));
-    // let maxPer = Number(idoCreatorBuyLimit / formatEther(10000));
-    let minPer = Number(creator / 10000);
-    let maxPer = Number(idoCreatorBuyLimit / 10000);
-    let totalCap = memeIdoPrice * memeTotalSupply;
-    setTotalCap(totalCap);
-    console.log('memeIdoPrice:', memeIdoPrice);
-    console.log('memeTotalSupply:', memeTotalSupply);
-    console.log('idoCreatorBuyLimit:', idoCreatorBuyLimit);
-    console.log('creator:', creator);
-    console.log('totalCap:', totalCap);
 
-    setMinPercentage(minPer);
-    setMaxPercentage(maxPer);
-    setMemeIdoMinPrice(totalCap * minPer);
-    setMemeIdoMaxPrice(totalCap * maxPer);
-  }, [memooConfig]);
   useEffect(() => {
     (async () => {
       try {

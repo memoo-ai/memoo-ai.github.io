@@ -1,5 +1,5 @@
 import './index.scss';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Slider } from 'antd';
 interface MySliderProps {
   min?: number;
@@ -8,10 +8,20 @@ interface MySliderProps {
   maxPrice?: number;
   step?: number;
   value?: number;
+  defaultValue?: number;
   onChange?: (value: number) => void;
 }
 
-const MySlider = ({ min = 5, max = 35, step, value = 0, minPrice = 0, maxPrice = 0, onChange }: MySliderProps) => {
+const MySlider = ({
+  min = 5,
+  max = 35,
+  step,
+  value = 0,
+  minPrice = 0,
+  maxPrice = 0,
+  defaultValue = 0,
+  onChange,
+}: MySliderProps) => {
   const handleSliderChange = (newValue: number) => {
     const newProgress = newValue / 100;
     if (onChange) {
@@ -29,6 +39,7 @@ const MySlider = ({ min = 5, max = 35, step, value = 0, minPrice = 0, maxPrice =
         step={step}
         // value={value * 100}
         value={value * 100}
+        defaultValue={defaultValue}
         onChange={handleSliderChange}
         tipFormatter={(value: any) => `${value}%`}
         tooltip={{ open: true }}
