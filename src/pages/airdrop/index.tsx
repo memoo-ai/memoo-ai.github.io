@@ -207,7 +207,7 @@ const Airdrop: FC = () => {
       <div className="airdrop_left flex flex-col gap-y-3.5">
         <AirdropContext.Provider value={context}>
           {/* <Status /> */}
-          {stage === 'launch' && <PublicSale />}
+          {idoQueueDetail?.status === 'Launched' && <PublicSale />}
           {stage === 'imo' && <IMOParticipate />}
           <AirdropClaim />
           <IDODetail />
