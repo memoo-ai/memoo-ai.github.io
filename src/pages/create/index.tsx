@@ -542,7 +542,7 @@ export default function Create() {
                       </Upload>
                     </div>
                   </Form.Item>
-                  <Form.Item label={<p>Website</p>} name="links">
+                  <Form.Item label={<p>Website</p>} name="website">
                     <Input maxLength={20} className="custom-input" />
                   </Form.Item>
                   {/* <Form.Item label="Creator's Twitter">
