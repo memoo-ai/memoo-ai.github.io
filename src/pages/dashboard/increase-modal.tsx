@@ -15,6 +15,8 @@ const IncreaseModal = ({ children, ticker }: any) => {
   const [isAccept, setIsAccept] = useState(false);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [balances, setBalances] = useState(0);
+  const [ethAmout, setEthAmout] = useState(0);
   const {
     config: memooConfig,
     idoBuy,
@@ -68,6 +70,12 @@ const IncreaseModal = ({ children, ticker }: any) => {
         const { data } = await getTokenDetail(ticker);
         const { data: meme } = await getMeMemo(ticker);
         console.log('meme:', meme);
+        const balance = meme.reduce((acc, item) => acc + Number(item.balance), 0);
+        const ethAmout = meme.reduce((acc, item) => acc + Number(item.ethAmout), 0);
+        setBalances(balance ?? 0);
+        setEthAmout(ethAmout ?? 0);
+        console.log('balance:', balance);
+        console.log('ethAmout:', ethAmout);
         setTokenDetail(data);
       } catch (error) {
         console.error(error);

@@ -2,7 +2,7 @@
 import { FC, useContext, useMemo } from 'react';
 import './profile.scss';
 import { AirdropContext } from '.';
-import { clipAddress, extractDomainName, formatTs } from '@/utils';
+import { clipAddress, extractDomainName, formatTs, handleCopy } from '@/utils';
 
 const Profile: FC = () => {
   const { idoQueueDetail } = useContext(AirdropContext);
@@ -96,7 +96,12 @@ const Profile: FC = () => {
           </label>
         ),
         formatValue: (value: string) => (
-          <ul className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1 mt-10">
+          <ul
+            className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1 mt-10"
+            onClick={() => {
+              handleCopy(idoQueueDetail?.creatorAddress);
+            }}
+          >
             {idoQueueDetail?.creatorAddress && (
               <li className="flex items-center gap-x-1.5 h-8">
                 {clipAddress(idoQueueDetail?.creatorAddress ?? '')}{' '}

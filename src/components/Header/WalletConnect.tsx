@@ -62,15 +62,16 @@ const WalletConnect = () => {
       console.log('Connected!', data);
       if (!isConnected) {
         setTimeout(async () => {
-          window.location.reload();
+          await loginMeme();
+          // window.location.reload();
         }, 500);
       }
     },
   });
 
-  useEffect(() => {
-    loginMeme();
-  }, [address]);
+  // useEffect(() => {
+  //   loginMeme();
+  // }, [address]);
 
   return (
     <ConnectButton.Custom>

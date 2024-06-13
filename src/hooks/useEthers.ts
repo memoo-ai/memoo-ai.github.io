@@ -25,6 +25,8 @@ export function useSign() {
   const signer = useEthersSigner({ chainId: Number(import.meta.env.VITE_NODE_CHAIN_ID) });
 
   const getSign = useCallback(async () => {
+    // eslint-disable-next-line no-debugger
+    debugger;
     console.log(signer);
     if (!signer) return;
     // const msg = String(Date.now() / 1e3);

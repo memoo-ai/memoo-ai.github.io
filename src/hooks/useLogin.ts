@@ -18,7 +18,7 @@ export const useLogin = () => {
       console.log(result);
       localStorage.setItem('meme-token', result.data.token);
     }
-  }, [address]);
+  }, [address, getSign]);
 
   return { loginMeme };
 };
