@@ -138,7 +138,7 @@ const ClaimModal = ({ ticker, children }: any) => {
         closeIcon={<IconClose className="close" />}
       >
         <div className="confirm_title">Claim Tokens</div>
-        {_1stStage && (
+        {idoQueueDetail?.stageOneClaim && (
           <div className="flex justify-between mt-[39px] items-center">
             <div className="unlocked">
               <span>Redeem 1st 50% unlocked tokens</span> <img src="./dashboard/reward.svg" alt="" />
@@ -152,14 +152,14 @@ const ClaimModal = ({ ticker, children }: any) => {
             </div>
           </div>
         )}
-        {_2ndStage && (
+        {idoQueueDetail?.stageTwoClaim && (
           <div className="flex justify-between mt-[39px] items-center">
             <div className="unlocked">
               <span>Redeem 2nd 50% unlocked tokens</span> <img src="./dashboard/reward.svg" alt="" />
             </div>
             <div className="flex">
               <div className="unlock">
-                <h3>{parseFloat(formatDecimals(Number(_1stStage?.unlockInfo?.value ?? 0)))}days</h3>
+                <h3>{parseFloat(formatDecimals(Number(_1stStage?.unlockInfo?.value ?? 0)))}</h3>
                 <p>Claim Completed</p>
               </div>
               <IconCompleted className="lock" />

@@ -22,7 +22,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/backend/api/v1': {
-        target: 'https://xapp.memoo.ai',
+        // target: 'https://xapp.memoo.ai',
+        target: 'https://app-beta.memoo.ai',
         changeOrigin: true,
       },
       '/api/v1/merkel-tree': {

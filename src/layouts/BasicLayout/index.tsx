@@ -29,7 +29,7 @@ const BasicLayout: React.FC = () => {
         // console.log('rawSignature', rawSignature);
         // // TODO
         await loginMeme();
-        // window.location.reload();
+        window.location.reload();
       })();
     }
   }, [connected, signer]);
