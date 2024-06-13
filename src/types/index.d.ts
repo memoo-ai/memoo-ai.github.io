@@ -189,6 +189,7 @@ declare interface IDOQueueDetail extends IDOClaimStage {
   memeTwitterBind: boolean;
   pinnedTwitter: string;
   platformTwitterBind: boolean;
+  projectTwitterBind: boolean;
   socialInfo: string;
   status: IDOStatus;
   telegram: string;

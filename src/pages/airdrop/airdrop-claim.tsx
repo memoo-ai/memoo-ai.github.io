@@ -20,7 +20,7 @@ export default function AirdropClaim() {
 
   const follows = useMemo(
     () => [
-      { user: idoQueueDetail?.projectTwitter, link: '', followed: idoQueueDetail?.memeTwitterBind },
+      { user: idoQueueDetail?.twitter, link: '', followed: idoQueueDetail?.projectTwitterBind },
       { user: idoQueueDetail?.platformTwitter, link: '', followed: idoQueueDetail?.platformTwitterBind },
     ],
     [idoQueueDetail],
