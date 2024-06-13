@@ -39,7 +39,8 @@ export default function SwipeCard({ type = 'light', title, step, children }: IPr
   };
 
   const IconSwipe = useMemo(() => {
-    return type === 'dark' ? IconSwipeDark : IconSwipeLight;
+    // return type === 'dark' ? IconSwipeDark : IconSwipeLight;
+    return type === 'dark' ? IconSwipeDark : IconSwipeDark;
   }, [type]);
 
   return (
