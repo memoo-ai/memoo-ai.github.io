@@ -79,7 +79,7 @@ export const Creator = () => {
         button = (
           <IncreaseModal ticker={item.ticker}>
             <Button
-              className="flex items-center justify-between"
+              className="flex items-center justify-between creator-btn"
               onMouseOver={() => iconRefs.current['increase'].setHovered(true)}
               onMouseLeave={() => iconRefs.current['increase'].setHovered(false)}
             >
@@ -93,7 +93,7 @@ export const Creator = () => {
         button = (
           <IncreaseModal ticker={item.ticker}>
             <Button
-              className="flex items-center justify-between"
+              className="flex items-center justify-between creator-btn"
               onMouseOver={() => iconRefs.current['increase'].setHovered(true)}
               onMouseLeave={() => iconRefs.current['increase'].setHovered(false)}
             >
@@ -118,7 +118,7 @@ export const Creator = () => {
           <ClaimModal ticker={item.ticker}>
             {' '}
             <Button
-              className="flex items-center justify-between"
+              className="flex items-center justify-between creator-btn"
               key="increase"
               onMouseOver={() => iconRefs.current['LaunchedBtn'].setHovered(true)}
               onMouseLeave={() => iconRefs.current['LaunchedBtn'].setHovered(false)}

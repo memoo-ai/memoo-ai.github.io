@@ -7,7 +7,7 @@ import { useRef, useState, useEffect } from 'react';
 import GoLaunchPadACard from './go-launchpad-card';
 import { getWatchList } from '@/api/dashboard';
 import { DashboardWatchList } from '@/types';
-import { Button, Spin } from 'antd';
+import { Spin } from 'antd';
 import { cancelCollect } from '@/api/dashboard';
 export const WatchList = () => {
   const navigate = useNavigate();
