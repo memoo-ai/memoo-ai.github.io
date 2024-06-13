@@ -115,6 +115,7 @@ const Progress: FC = () => {
       ),
       enabled:
         mine &&
+        Number(_1stStage?.unlockCount) > 0 &&
         idoQueueDetail?.status === 'Launched' &&
         (address
           ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
@@ -157,6 +158,7 @@ const Progress: FC = () => {
       ),
       enabled:
         mine &&
+        Number(_2ndStage?.unlockCount) > 0 &&
         idoQueueDetail?.status === 'Launched' &&
         (address
           ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
