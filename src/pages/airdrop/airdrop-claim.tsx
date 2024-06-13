@@ -14,7 +14,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
 let isRequestFollowing = false;
 export default function AirdropClaim() {
-  const { stage, idoQueueDetail, idoLaunchedDetail, triggerRefresh, ticker } = useContext(AirdropContext);
+  const { stage, idoQueueDetail, idoLaunchedDetail, triggerRefresh, ticker, mine } = useContext(AirdropContext);
   const [following, setFollowing] = useState(false);
   const [searchParams] = useSearchParams();
 
@@ -132,11 +132,15 @@ export default function AirdropClaim() {
               Follow @{item.user}
               {'\n'}on twitter
             </p>
-            <img
-              onClick={() => (item.followed ? null : handleFollow(item.user ? item.user : ''))}
-              className={classNames('w-5', { 'cursor-pointer': !item.followed, 'opacity-30': item.followed })}
-              src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
-            />
+            {mine ? (
+              ''
+            ) : (
+              <img
+                onClick={() => (item.followed ? null : handleFollow(item.user ? item.user : ''))}
+                className={classNames('w-5', { 'cursor-pointer': !item.followed, 'opacity-30': item.followed })}
+                src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
+              />
+            )}
           </li>
         ))}
       </ul>
