@@ -22,7 +22,6 @@ import { getCreator, deleteToken } from '@/api/dashboard';
 import { CreatorStatus } from './type';
 import { DashboardCreator } from '@/types';
 import IncreaseAcquisitionModal from '@/pages/airdrop/increase-acquisition-modal';
-
 const pageSize = 11;
 export const Creator = () => {
   const navigate = useNavigate();
@@ -33,7 +32,6 @@ export const Creator = () => {
   const [list, setList] = useState<DashboardCreator[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const iconRefs = useRef<any>({});
-
   useEffect(() => {
     (async () => {
       try {
@@ -56,6 +54,7 @@ export const Creator = () => {
   const deleteDraft = async (id: string) => {
     await deleteToken(id);
   };
+
   const renderButton = (item: DashboardCreator) => {
     let button;
     switch (item.status) {

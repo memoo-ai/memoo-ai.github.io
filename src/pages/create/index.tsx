@@ -478,7 +478,7 @@ export default function Create() {
                 minPrice={0}
                 maxPrice={totalCapInitial}
               /> */}
-              <MySlider defaultValue={preMarketAcquisition} min={0} max={1} minPrice={0} maxPrice={totalCapInitial} />
+              <MySlider min={0} max={1} minPrice={0} maxPrice={totalCapInitial} />
             </Form.Item>
             <p className="create_tip_for_acquisition">
               The creator can enhance the initial allocation by purchasing an additional 30%

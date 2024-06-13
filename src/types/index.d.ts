@@ -383,7 +383,7 @@ declare interface TokenDetail {
   website: string;
 }
 declare interface LoginParams {
-  address: string;
+  address: `0x${string}`;
   message: string;
   signature: string;
 }

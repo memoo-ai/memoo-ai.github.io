@@ -6,7 +6,8 @@ const http = axios.create({
 });
 
 http.interceptors.request.use((config) => {
-  config.headers['Authorization'] = `Bearer ${import.meta.env.VITE_DEMO_TOKEN}`;
+  // config.headers['Authorization'] = `Bearer ${import.meta.env.VITE_DEMO_TOKEN}`;
+  config.headers['Authorization'] = `Bearer ${localStorage.getItem('meme-token') ?? ''}`;
   return config;
 });
 
