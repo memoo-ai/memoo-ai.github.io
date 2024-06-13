@@ -150,7 +150,7 @@ export const useManageContract = () => {
       const tx = {
         address: baseConfig.MemooManageContract as Hash,
         abi: Abi,
-        functionName: 'claim',
+        functionName: 'airdropClaim',
         args: [project, claimCount, totalCount, claimCount.multipliedBy(priceBN), proofRes.proof],
         value: claimCount.multipliedBy(priceBN),
       } as any;
