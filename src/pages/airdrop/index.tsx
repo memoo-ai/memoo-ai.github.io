@@ -165,12 +165,10 @@ const Airdrop: FC = () => {
     (async () => {
       // 1st stage
       {
-        debugger;
         const [unlockCount, unlockInfo] = await Promise.all([
           getCanUnlockCount(idoQueueDetail.contractAddress, address, 0) as Promise<BigNumber>,
           memeUnlockPeriods(0) as Promise<UnlockPeriod>,
         ]);
-        debugger;
         console.log('1st stage', unlockCount, unlockInfo);
         set1stStage({ unlockCount, unlockInfo });
       }
