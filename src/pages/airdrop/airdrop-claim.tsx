@@ -11,8 +11,8 @@ import { REQUEST_FOLLOWING_STORAGE } from '@/constants';
 import { getTwitterClientId, requestTwitterFollow } from '@/api/token';
 import { authorizeTwitter } from '@/utils';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
-
+const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
+let isRequestFollowing = false;
 export default function AirdropClaim() {
   const { stage, idoQueueDetail, idoLaunchedDetail, triggerRefresh, ticker } = useContext(AirdropContext);
   const [following, setFollowing] = useState(false);
@@ -66,7 +66,11 @@ export default function AirdropClaim() {
       if (!followingParams) {
         return;
       }
+      if (isRequestFollowing) {
+        return;
+      }
       if (state === 'twitter' && code && followingParams) {
+        isRequestFollowing = true;
         const { ticker, twitter, clientId } = followingParams;
         const followParams = {
           appClientId: clientId,
@@ -75,7 +79,7 @@ export default function AirdropClaim() {
           grantType: 'authorization_code',
           redirectUri: twitterRedirectUri,
           refreshToken: '',
-          twitter: twitter,
+          twitter: twitter ?? 'elonmusk',
         };
         const res = await requestTwitterFollow(followParams);
         console.log('follow res: ', res);
@@ -84,6 +88,7 @@ export default function AirdropClaim() {
           return;
         }
         localStorage.removeItem(REQUEST_FOLLOWING_STORAGE);
+        isRequestFollowing = false;
         triggerRefresh?.();
       }
       console.log('ticker: ', ticker);

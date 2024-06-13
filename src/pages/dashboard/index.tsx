@@ -6,11 +6,11 @@ import DashboardBannerImg1 from './assets/dashboard_banner1.png';
 import DashboardBannerBgImg1 from './assets/dashboard_banner_bg1.png';
 import DashboardBannerImg2 from './assets/dashboard_banner2.png';
 import DashboardBannerImg3 from './assets/dashboard_banner3.png';
-import { useSearchParams, redirect } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { REQUEST_FOLLOWING_STORAGE } from '@/constants';
 const Dashboard = () => {
   const [searchParams] = useSearchParams();
-
+  const navigate = useNavigate();
   useEffect(() => {
     const code = searchParams.get('code');
     const state = searchParams.get('state');
@@ -22,7 +22,7 @@ const Dashboard = () => {
       return;
     }
     if (state === 'twitter' && code && followingParams) {
-      redirect(`/airdrop/${followingParams.ticker}?code=${code}&state=${state}`);
+      navigate(`/airdrop/${followingParams.ticker}?code=${code}&state=${state}`);
     }
   }, [searchParams]);
   const [dashboardBannerImg, setDashboardBannerImg] = useState(DashboardBannerImg1);
