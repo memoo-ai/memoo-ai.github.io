@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import classNames from 'classnames';
 import { FC, Fragment, ReactNode, useEffect, useMemo, useState } from 'react';
 
@@ -29,7 +30,7 @@ const Countdown: FC<{
     return format
       ? format([days, hours, minutes, seconds])
       : [
-          // `${days}D`,
+          `${String(days).padStart(2, '0')}`,
           // `${String(hours).padStart(2, '0')}H`,
           // `${String(minutes).padStart(2, '0')}M`,
           // `${String(seconds).padStart(2, '0')}S`,
