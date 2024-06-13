@@ -229,10 +229,10 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string }> = ({ childre
               </Upload>
             )}
           </Form.Item>
-          <Form.Item label={<p className="edit-form-label">Other links</p>} name="links">
+          <Form.Item label={<p className="edit-form-label">Website</p>} name="website">
             <Input maxLength={20} className="custom-input" />
           </Form.Item>
-          <Form.Item label={<p className="w-[113px] whitespace-normal edit-form-label">Creator’s Twitter</p>}>
+          {/* <Form.Item label={<p className="w-[113px] whitespace-normal edit-form-label">Creator’s Twitter</p>}>
             <div className="flex items-center">
               <div style={{ width: '15px' }} className="mr-[7px]">
                 <IconTwitter hoverColor="#07E993" className="" />
@@ -244,7 +244,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string }> = ({ childre
                 </ConnectButton>
               )}
             </div>
-          </Form.Item>
+          </Form.Item> */}
           {/* <Form.Item
             label={<p className="w-[113px] whitespace-normal edit-form-label">Pinned Twitter links</p>}
             name="links"

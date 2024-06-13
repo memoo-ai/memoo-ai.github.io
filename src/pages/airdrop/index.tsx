@@ -28,7 +28,7 @@ import { DefaultMemooConfig, MemooConfig, useManageContract } from '@/hooks/useM
 import BigNumber from 'bignumber.js';
 import { TransactionReceipt } from 'viem';
 import EditProjectModal from './edit-project-modal';
-
+import { useNavigate } from 'react-router-dom';
 interface AirdropContext {
   stage: TokenCreateStage;
   idoActiveDetail?: IDOActiveDetail;
@@ -85,7 +85,7 @@ const Airdrop: FC = () => {
   }>();
   const { config, idoBuy, unlockMeme, defaultConfig, airdropClaim, getCanUnlockCount, memeUnlockPeriods } =
     useManageContract();
-
+  const navigate = useNavigate();
   const mine = useMemo(
     () => compareAddrs(idoQueueDetail?.creatorAddress as Address, address!),
     [idoQueueDetail, address],
@@ -203,12 +203,12 @@ const Airdrop: FC = () => {
       </div>
       <div className="col-span-full pt-[70px] pb-[22px] pl-[428px] flex items-center justify-between">
         <EditProjectModal ticker={ticker}>
-          <Button type="link" className="flex items-center h-[40px] gap-x-[11px]" disabled={mine}>
+          <Button type="link" className="flex items-center h-[40px] gap-x-[11px]" disabled={!mine}>
             <img src="/create/icon-edit.svg" />
             <span className="text-bluish-purple-light font-OCR leading-5 text-sm">Edit Info</span>
           </Button>
         </EditProjectModal>
-        <Button type="link" className="flex items-center h-[40px] gap-x-[11px]">
+        <Button type="link" className="flex items-center h-[40px] gap-x-[11px]" onClick={() => navigate('/dashboard')}>
           <span className="text-bluish-purple-light font-OCR leading-5 text-sm">Back to Dashboard</span>
           <img src="/create/icon-dashboard.svg" />
         </Button>
