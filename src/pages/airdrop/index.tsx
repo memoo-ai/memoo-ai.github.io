@@ -40,7 +40,7 @@ interface AirdropContext {
   memooConfig?: MemooConfig;
   defaultConfig?: DefaultMemooConfig;
   idoBuy?: (project: `0x${string}`, amount: BigNumber) => Promise<TransactionReceipt | undefined>;
-  unlockMeme?: (project: `0x${string}`) => Promise<TransactionReceipt | undefined>;
+  unlockMeme?: (project: `0x${string}`, index: number) => Promise<TransactionReceipt | undefined>;
   triggerRefresh?: Function;
   airdropClaim?: (
     project: `0x${string}`,

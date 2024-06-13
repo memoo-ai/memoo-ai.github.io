@@ -121,13 +121,13 @@ export const useManageContract = () => {
   );
 
   const unlockMeme = useCallback(
-    async (project: Address) => {
+    async (project: Address, index: number) => {
       if (!baseConfig || !walletClient) return;
       const tx = {
         address: baseConfig.MemooManageContract as Hash,
         abi: Abi,
         functionName: 'unlockMeme',
-        args: [project],
+        args: [project, index],
       } as any;
       const hash = await walletClient.writeContract(tx);
       const res = await publicClient?.waitForTransactionReceipt({

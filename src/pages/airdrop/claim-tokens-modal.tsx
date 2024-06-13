@@ -29,7 +29,7 @@ const ClaimTokensModal: FC<{
     if (!unlockMeme || !idoQueueDetail) return;
     try {
       setConfirming(true);
-      await unlockMeme(idoQueueDetail.contractAddress);
+      await unlockMeme(idoQueueDetail.contractAddress, stage === '1st' ? 0 : 1);
       setOpen(false);
       message.success('Unlock Successful');
     } catch (error) {
