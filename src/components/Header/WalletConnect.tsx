@@ -15,9 +15,6 @@ import { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ConnectModalPortal from './connectModalPortal';
 import ConnectModalPortalTop from './connectModalPortalTop';
-import { useLogin } from '@/hooks/useLogin';
-import { useEthersSigner } from '@/hooks/useEthers';
-import { ethers } from 'ethers';
 // const explorerURL = import.meta.env.VITE_EXPLORER_URL;
 const opts = [
   {
@@ -45,8 +42,6 @@ const WalletConnect = () => {
   const navigate = useNavigate();
   const iconRefs = useRef<any>({});
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [provider, setProvider] = useState(null);
-  const { loginMeme } = useLogin();
   const onDisconnect = async () => {
     if (isConnected || address) {
       for (const connector of connectors) {
@@ -58,24 +53,6 @@ const WalletConnect = () => {
       console.log('=====================>disconnect');
     }
   };
-  const res = useEthersSigner({ chainId: 1123 });
-  // console.log('useEthersSigner:', res);
-  useAccountEffect({
-    onConnect(data) {
-      console.log('Connected!', data);
-      if (!isConnected) {
-        setTimeout(async () => {
-          console.log('useAccountEffect', res);
-          // await loginMeme();
-          // window.location.reload();
-        }, 500);
-      }
-    },
-  });
-
-  // useEffect(() => {
-  //   loginMeme();
-  // }, [address]);
 
   return (
     <ConnectButton.Custom>

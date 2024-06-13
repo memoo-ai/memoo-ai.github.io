@@ -28,12 +28,11 @@ export function useSign() {
   const { signMessageAsync } = useSignMessage();
   const signer = useEthersSigner({ chainId: Number(import.meta.env.VITE_NODE_CHAIN_ID) });
 
-  const handleSign = async () => {
-    if (!address) return;
+  const handleSign = useCallback(async () => {
     const msg = String(Date.now());
     const signature = await signMessageAsync({ message: msg });
-    return signature;
-  };
+    return { msg, signature };
+  }, [address]);
 
   const getSign = useCallback(async () => {
     // eslint-disable-next-line no-debugger
