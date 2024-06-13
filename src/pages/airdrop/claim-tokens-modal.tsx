@@ -29,6 +29,9 @@ const ClaimTokensModal: FC<{
     if (!unlockMeme || !idoQueueDetail) return;
     try {
       setConfirming(true);
+      console.log('idoQueueDetail.contractAddress:', idoQueueDetail.contractAddress);
+      const s = stage === '1st' ? 0 : 1;
+      console.log(s);
       await unlockMeme(idoQueueDetail.contractAddress, stage === '1st' ? 0 : 1);
       setOpen(false);
       message.success('Unlock Successful');
