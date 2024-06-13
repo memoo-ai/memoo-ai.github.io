@@ -1,13 +1,13 @@
 /* eslint-disable no-debugger */
 import axios from 'axios';
-
+import { MEMOO_TOKEN_STORAGE } from '@/constants';
 const http = axios.create({
   baseURL: import.meta.env.VITE_GO_NODE,
 });
 
 http.interceptors.request.use((config) => {
   // config.headers['Authorization'] = `Bearer ${import.meta.env.VITE_DEMO_TOKEN}`;
-  config.headers['Authorization'] = `Bearer ${localStorage.getItem('meme-token') ?? ''}`;
+  config.headers['Authorization'] = `Bearer ${localStorage.getItem(MEMOO_TOKEN_STORAGE) ?? ''}`;
   return config;
 });
 

@@ -139,15 +139,15 @@ const Profile: FC = () => {
   return (
     <div className="profile relative pt-20">
       <ul className="relationship_fracture absolute flex gap-x-2.5 top-5 right-5">
-        <li>
+        {/* <li>
           <img className="w-10 h-10 object-cover" src="/create/icon-collect.png" />
-        </li>
+        </li> */}
         <li>
           <img className="w-10 h-10 object-cover" src="/create/icon-share.png" />
         </li>
-        <li>
+        {/* <li>
           <img className="w-10 h-10 object-cover" src="/create/icon-more.png" />
-        </li>
+        </li> */}
       </ul>
       <div className="head">
         <h1 className="font-404px text-white leading-7 text-3xl">
