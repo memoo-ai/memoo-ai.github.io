@@ -162,7 +162,7 @@ export function calculateDaysDifference(a: number, b: number): number {
 }
 
 export const authorizeTwitter = async (clientId: string) => {
-  const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
+  const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
   const params = {
     response_type: 'code',
     client_id: clientId,

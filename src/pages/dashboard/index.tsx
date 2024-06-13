@@ -22,7 +22,7 @@ const Dashboard = () => {
       return;
     }
     if (state === 'twitter' && code && followingParams) {
-      redirect(`/dashboard/${followingParams.ticker}?code=${code}&state=${state}`);
+      redirect(`/airdrop/${followingParams.ticker}?code=${code}&state=${state}`);
     }
   }, [searchParams]);
   const [dashboardBannerImg, setDashboardBannerImg] = useState(DashboardBannerImg1);
