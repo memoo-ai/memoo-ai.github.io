@@ -99,7 +99,7 @@ const Profile: FC = () => {
           <ul
             className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1 mt-10"
             onClick={() => {
-              handleCopy(idoQueueDetail?.creatorAddress);
+              handleCopy(idoQueueDetail?.creatorAddress ? idoQueueDetail?.creatorAddress : '');
             }}
           >
             {idoQueueDetail?.creatorAddress && (
