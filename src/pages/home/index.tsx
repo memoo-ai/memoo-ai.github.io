@@ -74,7 +74,7 @@ const Home = () => {
         <div className="content-banner-bg" />
         <div className="content-banner flex justify-between ">
           <div className="content-banner-left items pt-[6rem]">
-            <img src="./img-powered-base.png" className="w-[168px] ml-2" />
+            <img src="/img-powered-base.png" className="w-[168px] ml-2" />
             <p className="text-ultimate">The Ultimate Memecoin Infrastructure.</p>
             <p className="text-sub">
               Enabling the memecoin industry with a wide range of resources, tools & launchpad.
