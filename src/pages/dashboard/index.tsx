@@ -1,12 +1,30 @@
 import './index.scss';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import DashboardContent from './dashboard-content';
 import CommonBanner from '@/components/Banner';
 import DashboardBannerImg1 from './assets/dashboard_banner1.png';
 import DashboardBannerBgImg1 from './assets/dashboard_banner_bg1.png';
 import DashboardBannerImg2 from './assets/dashboard_banner2.png';
 import DashboardBannerImg3 from './assets/dashboard_banner3.png';
+import { useSearchParams, redirect } from 'react-router-dom';
+import { REQUEST_FOLLOWING_STORAGE } from '@/constants';
 const Dashboard = () => {
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const code = searchParams.get('code');
+    const state = searchParams.get('state');
+    let followingParams = null;
+    try {
+      followingParams = JSON.parse(localStorage.getItem(REQUEST_FOLLOWING_STORAGE) ?? '');
+    } catch (e) {}
+    if (!followingParams) {
+      return;
+    }
+    if (state === 'twitter' && code && followingParams) {
+      redirect(`/dashboard/${followingParams.ticker}?code=${code}&state=${state}`);
+    }
+  }, [searchParams]);
   const [dashboardBannerImg, setDashboardBannerImg] = useState(DashboardBannerImg1);
   const [dashboardBannerBgImg, setDashboardBannerBgImg] = useState(DashboardBannerBgImg1);
   const [commonBanner, setCommonBanner] = useState({

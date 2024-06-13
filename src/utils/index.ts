@@ -6,7 +6,9 @@ import Decimal from 'decimal.js';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { Address } from '@/types';
-
+import { getTwitterClientId } from '@/api/token';
+import qs from 'qs';
+import { REQUEST_FOLLOWING_STORAGE } from '@/constants';
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -158,3 +160,20 @@ export function calculateDaysDifference(a: number, b: number): number {
   const daysDifference = Math.floor(timeDifference / millisecondsPerDay);
   return daysDifference;
 }
+
+export const authorizeTwitter = async (clientId: string) => {
+  const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
+  const params = {
+    response_type: 'code',
+    client_id: clientId,
+    redirect_uri: twitterRedirectUri,
+    scope: 'tweet.read%20tweet.write%20like.write%20users.read%20follows.read%20follows.write',
+    state: 'twitter',
+    code_challenge: 'challenge',
+    code_challenge_method: 'plain',
+  };
+  const url = new URL(`https://twitter.com/i/oauth2/authorize`);
+  url.search = qs.stringify(params, { encode: false });
+
+  window.location.href = url.href;
+};

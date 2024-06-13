@@ -41,6 +41,7 @@ interface AirdropContext {
   defaultConfig?: DefaultMemooConfig;
   idoBuy?: (project: `0x${string}`, amount: BigNumber) => Promise<TransactionReceipt | undefined>;
   unlockMeme?: (project: `0x${string}`) => Promise<TransactionReceipt | undefined>;
+  triggerRefresh?: Function;
   airdropClaim?: (
     project: `0x${string}`,
     claimCount: BigNumber,
@@ -70,6 +71,7 @@ const Airdrop: FC = () => {
   const [idoLaunchedDetailTop10, setIDOLaunchedDetailTop10] = useState<IDOLaunchedDetailTop10[]>([]);
   const [idoQueueDetail, setIDOQueueDetail] = useState<IDOQueueDetail>();
   const { ticker = import.meta.env.VITE_DEMO_TICKER } = useParams<{ ticker: string }>();
+  const [refresh, setRefresh] = useState(0);
   const { address } = useAccount();
   console.log('my-address:', address);
   const [loading, setLoading] = useState(false);
@@ -89,6 +91,10 @@ const Airdrop: FC = () => {
     [idoQueueDetail, address],
   );
 
+  const triggerRefresh = () => {
+    setRefresh((v) => v + 1);
+  };
+
   const context: AirdropContext = useMemo(
     () => ({
       stage,
@@ -105,6 +111,7 @@ const Airdrop: FC = () => {
       _1stStage,
       _2ndStage,
       defaultConfig,
+      triggerRefresh,
     }),
     [
       stage,
@@ -121,6 +128,7 @@ const Airdrop: FC = () => {
       _1stStage,
       _2ndStage,
       defaultConfig,
+      triggerRefresh,
     ],
   );
 
@@ -157,7 +165,7 @@ const Airdrop: FC = () => {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [refresh]);
 
   useEffect(() => {
     if (!idoQueueDetail || !address) return;

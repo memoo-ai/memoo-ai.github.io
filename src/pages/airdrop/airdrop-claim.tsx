@@ -1,16 +1,22 @@
-import { useCallback, useContext, useMemo, useState } from 'react';
+import { useCallback, useContext, useMemo, useState, useEffect } from 'react';
 import Countdown from './countdown';
 import { TokenCreateStage } from '@/types';
 import './airdrop-claim.scss';
-import { Button, Popover, Spin } from 'antd';
+import { Button, Popover, Spin, message } from 'antd';
 import classNames from 'classnames';
 import { AirdropContext } from '../airdrop';
 import { follow } from '@/api/airdrop';
 import AirdropClaimModal from './airdrop-claim-modal';
+import { REQUEST_FOLLOWING_STORAGE } from '@/constants';
+import { getTwitterClientId, requestTwitterFollow } from '@/api/token';
+import { authorizeTwitter } from '@/utils';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
 
 export default function AirdropClaim() {
-  const { stage, idoQueueDetail, idoLaunchedDetail } = useContext(AirdropContext);
+  const { stage, idoQueueDetail, idoLaunchedDetail, triggerRefresh, ticker } = useContext(AirdropContext);
   const [following, setFollowing] = useState(false);
+  const [searchParams] = useSearchParams();
 
   const follows = useMemo(
     () => [
@@ -26,8 +32,18 @@ export default function AirdropClaim() {
 
   const airdropUnlocked = useMemo(() => stage === 'launch' || stage === '1st-claim' || stage === '2st-claim', [stage]);
 
-  const handleFollow = useCallback(async (twitter?: string) => {
+  const handleFollow = useCallback(async (twitter: string) => {
     try {
+      const res = await getTwitterClientId();
+      let clientId = res.data;
+      const followingParams = {
+        ticker,
+        twitter,
+        clientId,
+      };
+      localStorage.setItem(REQUEST_FOLLOWING_STORAGE, JSON.stringify(followingParams));
+      authorizeTwitter(clientId);
+
       console.assert(!!twitter, 'twitter is not found');
       setFollowing(true);
       await follow(twitter!);
@@ -37,6 +53,42 @@ export default function AirdropClaim() {
       setFollowing(false);
     }
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      const ticker = searchParams.get('ticker');
+      const code = searchParams.get('code');
+      const state = searchParams.get('state');
+      let followingParams = null;
+      try {
+        followingParams = JSON.parse(localStorage.getItem(REQUEST_FOLLOWING_STORAGE) ?? '');
+      } catch (e) {}
+      if (!followingParams) {
+        return;
+      }
+      if (state === 'twitter' && code && followingParams) {
+        const { ticker, twitter, clientId } = followingParams;
+        const followParams = {
+          appClientId: clientId,
+          code,
+          codeVerifier: 'challenge',
+          grantType: 'authorization_code',
+          redirectUri: twitterRedirectUri,
+          refreshToken: '',
+          twitter: twitter,
+        };
+        const res = await requestTwitterFollow(followParams);
+        console.log('follow res: ', res);
+        if (!res.data) {
+          message.error('Failed to follow. Please try again later.');
+          return;
+        }
+        localStorage.removeItem(REQUEST_FOLLOWING_STORAGE);
+        triggerRefresh?.();
+      }
+      console.log('ticker: ', ticker);
+    })();
+  }, [triggerRefresh, searchParams]);
 
   return (
     <div className="airdrop_claim px-5 pt-9 pb-5">
