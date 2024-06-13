@@ -9,6 +9,7 @@ import isMobile from 'is-mobile';
 import { useEthersSigner } from '@/hooks/useEthers';
 import { useAccountEffect } from 'wagmi';
 import { useLogin } from '@/hooks/useLogin';
+import { MEMOO_TOKEN_STORAGE } from '@/constants';
 const BasicLayout: React.FC = () => {
   const signer = useEthersSigner({ chainId: Number(import.meta.env.VITE_NODE_CHAIN_ID) });
   const [connected, setConnected] = useState(false);
@@ -20,14 +21,15 @@ const BasicLayout: React.FC = () => {
   });
 
   useEffect(() => {
-    if (connected && signer && localStorage.getItem('meme_token')) {
+    if (connected && !localStorage.getItem(MEMOO_TOKEN_STORAGE)) {
       (async () => {
-        const msg = String(Date.now());
-        const rawSignature = await signer.signMessage(msg);
-        console.log('rawSignature', rawSignature);
-        // TODO
+        // if (!signer) return;
+        // const msg = String(Date.now());
+        // const rawSignature = await signer.signMessage(msg);
+        // console.log('rawSignature', rawSignature);
+        // // TODO
         await loginMeme();
-        window.location.reload();
+        // window.location.reload();
       })();
     }
   }, [connected, signer]);

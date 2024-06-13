@@ -10,3 +10,4 @@ export const zeroBN = new BigNumber(0);
 export const DEFAULT_IDO_LIMIT = 100;
 
 export const REQUEST_FOLLOWING_STORAGE = 'REQUEST_FOLLOWING_STORAGE';
+export const MEMOO_TOKEN_STORAGE = 'MEMOO_TOKEN_STORAGE';
