@@ -1,6 +1,6 @@
 /* eslint-disable no-lone-blocks */
 /* eslint-disable no-debugger */
-import { FC, createContext, useEffect, useMemo, useState } from 'react';
+import { FC, createContext, useCallback, useEffect, useMemo, useState } from 'react';
 import AirdropClaim from './airdrop-claim';
 import IMOParticipate from './imo-participate';
 import Status from './status';
@@ -91,9 +91,9 @@ const Airdrop: FC = () => {
     [idoQueueDetail, address],
   );
 
-  const triggerRefresh = () => {
+  const triggerRefresh = useCallback(() => {
     setRefresh((v) => v + 1);
-  };
+  }, []);
 
   const context: AirdropContext = useMemo(
     () => ({
