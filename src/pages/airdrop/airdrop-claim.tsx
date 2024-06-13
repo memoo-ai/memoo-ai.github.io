@@ -11,12 +11,14 @@ import { REQUEST_FOLLOWING_STORAGE } from '@/constants';
 import { getTwitterClientId, requestTwitterFollow } from '@/api/token';
 import { authorizeTwitter } from '@/utils';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import BigNumber from 'bignumber.js';
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
 let isRequestFollowing = false;
 export default function AirdropClaim() {
-  const { stage, idoQueueDetail, idoLaunchedDetail, triggerRefresh, ticker, mine } = useContext(AirdropContext);
+  const { stage, idoQueueDetail, idoLaunchedDetail, triggerRefresh, ticker, airdropClaim } = useContext(AirdropContext);
   const [following, setFollowing] = useState(false);
   const [searchParams] = useSearchParams();
+  const [confirming, setConfirming] = useState(false);
 
   const follows = useMemo(
     () => [
@@ -28,7 +30,10 @@ export default function AirdropClaim() {
 
   const doingTask = useMemo(() => stage === 'in-queue', [stage]);
 
-  const airdropUnlocking = useMemo(() => stage === 'imo', [stage]);
+  const airdropUnlocking = useMemo(
+    () => Date.now() < (idoLaunchedDetail?.rewardEndsIn ?? 0) * 1000,
+    [idoLaunchedDetail],
+  );
 
   const airdropUnlocked = useMemo(() => stage === 'launch' || stage === '1st-claim' || stage === '2st-claim', [stage]);
 
@@ -93,7 +98,25 @@ export default function AirdropClaim() {
       }
       console.log('ticker: ', ticker);
     })();
-  }, [triggerRefresh, searchParams]);
+  }, [searchParams]);
+
+  const onClaim = useCallback(async () => {
+    if (!airdropClaim || !idoQueueDetail) return;
+    try {
+      setConfirming(true);
+      await airdropClaim(
+        idoQueueDetail.contractAddress,
+        new BigNumber(idoLaunchedDetail?.count ?? 0),
+        new BigNumber(idoLaunchedDetail?.count ?? 0),
+      );
+      message.success('Unlock Successful');
+    } catch (error) {
+      console.error(error);
+      message.error('Unlock Failed');
+    } finally {
+      setConfirming(false);
+    }
+  }, [airdropClaim, idoQueueDetail]);
 
   return (
     <div className="airdrop_claim px-5 pt-9 pb-5">
@@ -140,16 +163,18 @@ export default function AirdropClaim() {
           </li>
         ))}
       </ul>
-      {airdropUnlocking && (
+      {airdropUnlocking ? (
         <div className="mt-5 airdrop-unlock flex flex-col items-center gap-y-2">
           <div className="flex gap-x-3.5">
             <img className="w-5 object-contain" src="/create/icon-airdrop-lock.png" />
-            <Countdown instant={(idoLaunchedDetail?.rewardEndsIn ?? 0) * 1000} />
+            <Countdown
+              onEnded={(ended) => ended && triggerRefresh?.()}
+              instant={(idoLaunchedDetail?.rewardEndsIn ?? 0) * 1000}
+            />
           </div>
           <p className="text-white font-OCR leading-20 text-sm">Wait for your airdrop to unlock.</p>
         </div>
-      )}
-      {airdropUnlocked && (
+      ) : (
         <div className="mt-5 airdrop-unlock flex flex-col items-center gap-y-2">
           <img className="w-5 object-contain" src="/create/icon-airdrop-unlock.png" />
           <p className="text-white font-404px leading-20 text-2xl">
@@ -164,6 +189,7 @@ export default function AirdropClaim() {
             'mt-20': doingTask,
             'mt-5': airdropUnlocking || airdropUnlocked,
           })}
+          onClick={onClaim}
         >
           claim
         </Button>
