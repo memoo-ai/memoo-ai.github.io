@@ -15,6 +15,7 @@ import { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ConnectModalPortal from './connectModalPortal';
 import ConnectModalPortalTop from './connectModalPortalTop';
+import { MEMOO_TOKEN_STORAGE } from '@/constants';
 // const explorerURL = import.meta.env.VITE_EXPLORER_URL;
 const opts = [
   {
@@ -51,6 +52,7 @@ const WalletConnect = () => {
       await disconnect();
       // window.location.reload();
       console.log('=====================>disconnect');
+      localStorage.removeItem(MEMOO_TOKEN_STORAGE);
     }
   };
 
