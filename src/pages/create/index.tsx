@@ -221,9 +221,9 @@ export default function Create() {
         refreshToken: '',
         twitter: 'elonmusk',
       };
-      requestTwitterFollow(followParams).then((res) => {
-        console.log('follow res: ', res);
-      });
+      // requestTwitterFollow(followParams).then((res) => {
+      //   console.log('follow res: ', res);
+      // });
       // call api to bind
       const params = {
         code,
