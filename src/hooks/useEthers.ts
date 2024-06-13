@@ -1,7 +1,7 @@
 import { BrowserProvider, JsonRpcSigner } from 'ethers';
 import { useCallback, useMemo } from 'react';
 import type { Account, Chain, Client, Transport } from 'viem';
-import { type Config, useConnectorClient } from 'wagmi';
+import { type Config, useConnectorClient, useSignMessage, useAccount } from 'wagmi';
 
 export function clientToSigner(client: Client<Transport, Chain, Account>) {
   const { account, chain, transport } = client;
@@ -24,7 +24,16 @@ export function useEthersSigner({ chainId }: { chainId?: number } = {}) {
 }
 
 export function useSign() {
+  const { address } = useAccount();
+  const { signMessageAsync } = useSignMessage();
   const signer = useEthersSigner({ chainId: Number(import.meta.env.VITE_NODE_CHAIN_ID) });
+
+  const handleSign = async () => {
+    if (!address) return;
+    const msg = String(Date.now());
+    const signature = await signMessageAsync({ message: msg });
+    return signature;
+  };
 
   const getSign = useCallback(async () => {
     // eslint-disable-next-line no-debugger
@@ -41,5 +50,5 @@ export function useSign() {
     };
   }, [signer]);
 
-  return { getSign };
+  return { getSign, handleSign };
 }
