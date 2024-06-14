@@ -115,6 +115,8 @@
       }
 
       .custom-upload-banner {
+        width: 100%;
+
         .ant-upload-select {
           width: 100%;
           height: 140px;
@@ -229,6 +231,11 @@
     align-items: center;
   }
 
+  .token-banner-form-item {
+    display: flex;
+    flex-direction: column;
+  }
+
   .icon-url-container {
     width: 140px;
     height: 140px;
@@ -279,6 +286,16 @@
       cursor: pointer;
       transition: all 0.3s;
       color: #fff;
+    }
+  }
+
+  .banner-url-container {
+    width: 100%;
+
+    >img {
+      width: 100%;
+      object-fit: contain;
+      height: 100%;
     }
   }
 

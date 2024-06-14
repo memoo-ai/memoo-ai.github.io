@@ -9,6 +9,7 @@ import {
   checkTickerExists,
   getTwitterAccessToken,
   uploadFile,
+  saveEditInfo,
 } from '@/api/token';
 import qs from 'qs';
 import { Button as ConnectButton } from '@/components/ui/button';
@@ -19,7 +20,11 @@ const FORM_STORAGE_KEY = 'create_token_storage';
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
 
-const EditProjectModal: FC<{ children: ReactNode; ticker: string }> = ({ children, ticker }) => {
+const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess: () => void }> = ({
+  children,
+  ticker,
+  onSaveSuccess,
+}) => {
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
   const [connectTwitterLoading, setConnectTwitterLoading] = useState(false);
@@ -34,7 +39,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string }> = ({ childre
       if (res?.data) {
         console.log('TokenDetail: ', res?.data);
         setProjectDetail(res.data);
-        setProjectBannerUrl(res.data.oldBanners ? res.data.oldBanners[0] : '');
+        setProjectBannerUrl(res.data?.banners ? res.data?.banners[0] : '');
         setTwitter(res.data.twitter);
         setTwitterAccessToken(res.data.twitterAccessToken);
         form.setFieldsValue({ ...res.data, tokenIcon: res.data.icon, projectDescription: res.data.description });
@@ -57,10 +62,11 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string }> = ({ childre
     return e?.fileList;
   };
 
-  const handleUpload = (file: File, filed: string) => {
+  const handleUpload = (file: File) => {
     if (file) {
       uploadFile(file).then((res) => {
-        form.setFieldValue(filed, res.data);
+        form.setFieldValue('banners', [res.data.file]);
+        setProjectBannerUrl(res.data.fileUrl);
       });
       return false;
     }
@@ -103,19 +109,20 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string }> = ({ childre
       //   return;
       // }
       const data = form.getFieldsValue();
-      data.twitter = twitter;
-      data.accessToken = twitterAccessToken;
+      data.twitter = twitter || '';
+      data.accessToken = twitterAccessToken || '';
       // TODO check ticker if exits
 
       setConfirmLoading(true);
-      await confirmTokenCreate({ ...projectDetail, ...data }).then((res) => {
+      await saveEditInfo({ ...data, ticker }).then((res) => {
         setOpen(false);
-        // if (res?.code === 200) {
-        //   message.success('modify successfully!');
-        //   setOpen(false);
-        // } else {
-        //   message.warning('fail in keeping');
-        // }
+        if (res?.code === 200) {
+          message.success('modify successfully!');
+          onSaveSuccess();
+          setOpen(false);
+        } else {
+          message.warning('fail in keeping');
+        }
       });
     } catch (e) {
       console.log(e);
@@ -130,7 +137,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string }> = ({ childre
         wrapClassName="memoo_modal"
         title={
           <div className="flex items-center gap-x-[13px]">
-            <span className="text-[24px] leading-6 font-404px">Edit Info</span>
+            <span className="text-[24px] leading-6 font-404px edit-title">Edit Info</span>
             <img src="/create/icon-edit-project-title.png" />
           </div>
         }
@@ -204,8 +211,8 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string }> = ({ childre
                 listType="picture-card"
                 accept="image/*"
                 maxCount={1}
-                beforeUpload={(file) => handleUpload(file, 'banners')}
-                showUploadList={{ showPreviewIcon: true, showRemoveIcon: true }}
+                beforeUpload={(file) => handleUpload(file)}
+                showUploadList={{ showPreviewIcon: true, showRemoveIcon: false }}
                 style={{ width: '100%', height: 140 }}
                 className="edit-upload-banner"
                 previewFile={(file) => {
