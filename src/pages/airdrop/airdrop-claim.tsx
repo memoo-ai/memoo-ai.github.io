@@ -54,6 +54,10 @@ export default function AirdropClaim() {
     return isUnlocking;
   }, [idoLaunchedDetail, idoActiveDetail, stage]);
 
+  const showAirdropClaim = useMemo(() => {
+    return idoLaunchedDetail?.status === 'Launched' || idoLaunchedDetail?.status === 'IDO';
+  }, [idoLaunchedDetail, idoActiveDetail, stage]);
+
   const airdropUnlocked = useMemo(() => stage === 'launch' || stage === '1st-claim' || stage === '2st-claim', [stage]);
 
   const handleFollow = useCallback(async (twitter: string) => {
@@ -183,27 +187,30 @@ export default function AirdropClaim() {
           </li>
         ))}
       </ul>
-      {airdropUnlocking ? (
-        <div className="mt-5 airdrop-unlock flex flex-col items-center gap-y-2">
-          <div className="flex gap-x-3.5">
-            <img className="w-5 object-contain" src="/create/icon-airdrop-lock.png" />
-            <Countdown
-              onEnded={(ended) => ended && triggerRefresh?.()}
-              instant={
-                (stage === 'launch' ? idoLaunchedDetail?.rewardEndsIn ?? 0 : idoActiveDetail?.rewardEndsIn ?? 0) * 1000
-              }
-            />
+      {showAirdropClaim &&
+        (airdropUnlocking ? (
+          <div className="mt-5 airdrop-unlock flex flex-col items-center gap-y-2">
+            <div className="flex gap-x-3.5">
+              <img className="w-5 object-contain" src="/create/icon-airdrop-lock.png" />
+              <Countdown
+                onEnded={(ended) => ended && triggerRefresh?.()}
+                instant={
+                  (stage === 'launch' ? idoLaunchedDetail?.rewardEndsIn ?? 0 : idoActiveDetail?.rewardEndsIn ?? 0) *
+                  1000
+                }
+              />
+            </div>
+            <p className="text-white font-OCR leading-20 text-sm">Wait for your airdrop to unlock.</p>
           </div>
-          <p className="text-white font-OCR leading-20 text-sm">Wait for your airdrop to unlock.</p>
-        </div>
-      ) : (
-        <div className="mt-5 airdrop-unlock flex flex-col items-center gap-y-2">
-          <img className="w-5 object-contain" src="/create/icon-airdrop-unlock.png" />
-          <p className="text-white font-404px leading-20 text-2xl">
-            {Number(idoLaunchedDetail?.count).toLocaleString()} WIF
-          </p>
-        </div>
-      )}
+        ) : (
+          <div className="mt-5 airdrop-unlock flex flex-col items-center gap-y-2">
+            <img className="w-5 object-contain" src="/create/icon-airdrop-unlock.png" />
+            <p className="text-white font-404px leading-20 text-2xl">
+              {Number(idoLaunchedDetail?.count).toLocaleString()} WIF
+            </p>
+          </div>
+        ))}
+
       <AirdropClaimModal>
         <Button
           disabled={!idoQueueDetail?.claimFlag}
