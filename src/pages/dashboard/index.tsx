@@ -9,7 +9,7 @@ import DashboardBottomBgImg1 from './assets/dashboard_banner_bg1.png';
 import DashboardBottomBgImg2 from './assets/dashboard_banner_bg2.png';
 import DashboardBottomBgImg3 from './assets/dashboard_banner_bg3.png';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { REQUEST_FOLLOWING_STORAGE } from '@/constants';
+import { REQUEST_FOLLOWING_STORAGE, UPDATE_PROJECT_TWITTER_STORAGE } from '@/constants';
 const Dashboard = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -18,14 +18,18 @@ const Dashboard = () => {
     const code = searchParams.get('code');
     const state = searchParams.get('state');
     let followingParams = null;
+    let updateParams = null;
     try {
       followingParams = JSON.parse(localStorage.getItem(REQUEST_FOLLOWING_STORAGE) ?? '');
+      updateParams = JSON.parse(localStorage.getItem(UPDATE_PROJECT_TWITTER_STORAGE) ?? '');
     } catch (e) {}
-    if (!followingParams) {
+    if (!followingParams || !updateParams) {
       return;
     }
     if (state === 'twitter' && code && followingParams) {
       navigate(`/airdrop/${followingParams.ticker}?code=${code}&state=${state}`);
+    } else if (state === 'twitter' && code && updateParams) {
+      navigate(`/airdrop/${updateParams.ticker}?code=${code}&state=${state}&edit=true`);
     }
   }, [searchParams]);
 

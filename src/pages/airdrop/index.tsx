@@ -28,7 +28,9 @@ import { DefaultMemooConfig, MemooConfig, useManageContract } from '@/hooks/useM
 import BigNumber from 'bignumber.js';
 import { TransactionReceipt } from 'viem';
 import EditProjectModal from './edit-project-modal';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { REQUEST_FOLLOWING_STORAGE, UPDATE_PROJECT_TWITTER_STORAGE } from '@/constants';
+
 interface AirdropContext {
   stage: TokenCreateStage;
   idoActiveDetail?: IDOActiveDetail;
@@ -76,6 +78,8 @@ const Airdrop: FC = () => {
   const { address } = useAccount();
   console.log('my-address:', address);
   const [loading, setLoading] = useState(false);
+  const [searchParams] = useSearchParams();
+
   const [_1stStage, set1stStage] = useState<{
     unlockCount: BigNumber;
     unlockInfo: UnlockPeriod;

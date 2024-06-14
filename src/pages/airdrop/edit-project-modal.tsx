@@ -10,12 +10,15 @@ import {
   getTwitterAccessToken,
   uploadFile,
   saveEditInfo,
+  getTwitterClientId,
 } from '@/api/token';
 import qs from 'qs';
 import { Button as ConnectButton } from '@/components/ui/button';
 import { IconTwitter, IconUpload, IconWebsite } from '@/components/icons';
 import { Trash } from 'lucide-react';
-
+import { REQUEST_FOLLOWING_STORAGE, UPDATE_PROJECT_TWITTER_STORAGE } from '@/constants';
+import { useSearchParams } from 'react-router-dom';
+import { authorizeTwitter } from '@/utils';
 const FORM_STORAGE_KEY = 'create_token_storage';
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
@@ -33,6 +36,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
   const [twitter, setTwitter] = useState('');
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [projectDetail, setProjectDetail] = useState({});
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     getTokenDetail(ticker).then((res) => {
@@ -72,32 +76,51 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
     }
   };
 
+  useEffect(() => {
+    (async () => {
+      const code = searchParams.get('code');
+      const state = searchParams.get('state');
+      const edit = searchParams.get('edit');
+      let updateParams = null;
+      try {
+        updateParams = JSON.parse(localStorage.getItem(UPDATE_PROJECT_TWITTER_STORAGE) ?? '');
+      } catch (e) {}
+      if (!updateParams) {
+        return;
+      }
+      if (state === 'twitter' && code && updateParams && edit && updateParams.ticker === ticker) {
+        const params = {
+          code,
+          grantType: 'authorization_code',
+          // clientd: twitterClientId,
+          redirectUri: twitterRedirectUri,
+          codeVerifier: 'challenge',
+          refreshToken: '',
+          appClientId: updateParams.clientId ?? '',
+        };
+        getTwitterAccessToken(params).then((res) => {
+          const { access_token, twitter } = res.data;
+          setTwitterAccessToken(access_token);
+          setTwitter(twitter);
+        });
+        setOpen(true);
+      }
+    })();
+  }, []);
+
   const handleRemove = () => {
     setProjectBannerUrl('');
   };
-  const connectTwitter = () => {
-    // TODO: save form data to local; when callback from twitter, the form data will be lost.
-    const formData = form.getFieldsValue();
-    localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(formData));
-
-    setConnectTwitterLoading(true);
-
-    let clientId = twitterClientId;
-    let state = 'twitter';
-
-    const params = {
-      response_type: 'code',
-      client_id: clientId,
-      redirect_uri: twitterRedirectUri,
-      scope: 'tweet.read%20tweet.write%20like.write%20users.read%20follows.read%20follows.write',
-      state,
-      code_challenge: 'challenge',
-      code_challenge_method: 'plain',
+  const connectTwitter = async () => {
+    const res = await getTwitterClientId();
+    let clientId = res.data;
+    const updategParams = {
+      ticker,
+      twitter,
+      clientId,
     };
-    const url = new URL(`https://twitter.com/i/oauth2/authorize`);
-    url.search = qs.stringify(params, { encode: false });
-
-    window.location.href = url.href;
+    localStorage.setItem(UPDATE_PROJECT_TWITTER_STORAGE, JSON.stringify(updategParams));
+    authorizeTwitter(clientId);
   };
 
   const handleSave = async (isConfirm: boolean) => {
