@@ -165,6 +165,7 @@ export default function Create() {
     if (ticker) {
       getTokenDetail(ticker).then((res) => {
         console.log('getTokenDetail:', res);
+        setIsAccept(true);
         console.log('setPreMarketAcquisition:', res.data.preMarketAcquisition);
         if (res?.data) {
           // get twitter binded data
@@ -289,6 +290,11 @@ export default function Create() {
         data.twitter = twitter;
         data.accessToken = twitterAccessToken;
         if (isConfirm) {
+          // twitter must have been connected
+          if (!twitter) {
+            message.warning('Please connect project twitter first.');
+            return;
+          }
           setConfirmLoading(true);
           const res = await confirmTokenCreate(data);
           console.log('res: ', res);
@@ -422,6 +428,7 @@ export default function Create() {
                 </p>
               }
               name="projectDescription"
+              rules={[{ required: true, message: 'Please input description!' }]}
             >
               <Input.TextArea
                 showCount
@@ -570,8 +577,9 @@ export default function Create() {
           </div>
           <div>
             <Checkbox
-              value={isAccept}
+              checked={isAccept}
               onChange={() => {
+                console.log('isAccept: ', isAccept);
                 setIsAccept(!isAccept);
               }}
               className="create_terms mt-[24px] text-[#ffffff] border-[red]"
