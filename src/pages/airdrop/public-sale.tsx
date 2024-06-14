@@ -21,7 +21,10 @@ const PublicSale: FC = () => {
     ],
     [idoLaunchedDetail, idoQueueDetail],
   );
-  const onConfirm = useCallback(() => {}, []);
+  const onConfirm = useCallback(() => {
+    // TODO it may be replaced by swap contract later
+    window.open('https://app.uniswap.org/', '_blank');
+  }, []);
 
   return (
     <div className="pubsale px-5 pt-9 pb-5">
