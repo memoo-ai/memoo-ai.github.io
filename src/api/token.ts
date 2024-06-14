@@ -106,3 +106,17 @@ export interface RequestTwitterFollowParams {
 export const requestTwitterFollow = (params: RequestTwitterFollowParams): Promise<ApiResponse<boolean>> => {
   return http.get(`${prefix}/web-oriented/request-twitter-follow`, { params });
 };
+
+export interface ITokenEditInfo {
+  accessToken: string;
+  banners: ['string'];
+  pinnedTwitter: string;
+  projectDescription: string;
+  telegram: string;
+  ticker: string;
+  twitter: string;
+  website: string;
+}
+export const saveEditInfo = (data: ITokenEditInfo): Promise<ApiResponse<any>> => {
+  return http.post(`${prefix}/web-oriented/project`, data);
+};

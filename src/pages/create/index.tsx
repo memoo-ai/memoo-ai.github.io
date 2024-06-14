@@ -511,43 +511,44 @@ export default function Create() {
                     getValueFromEvent={normFile}
                     name="banners"
                   >
-                    <div className="token-icon-form-item">
+                    <div className="token-banner-form-item">
                       {/* <Input style={{ display: 'none' }} /> */}
                       {bannerUrl && (
-                        <div className="icon-url-container">
+                        <div className="icon-url-container banner-url-container">
                           <img src={bannerUrl} alt="" />
                           <span className="icon-url-actions">
                             <Trash size={16} onClick={handleRemoveBanner} />
                           </span>
                         </div>
                       )}
-                      <Upload
-                        listType="picture-card"
-                        accept="image/*"
-                        maxCount={1}
-                        beforeUpload={(file) => handleUpload(file, 'banners')}
-                        showUploadList={{ showPreviewIcon: true, showRemoveIcon: true }}
-                        style={{ width: 140, height: 140 }}
-                        className="custom-upload-banner"
-                        previewFile={(file) => {
-                          return new Promise((resolve) => {
-                            const reader = new FileReader();
-                            reader.readAsDataURL(file);
-                            reader.onload = () => {
-                              resolve(reader.result as string);
-                            };
-                          });
-                        }}
-                      >
-                        <button style={{ border: 0, background: 'none' }} type="button">
-                          <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
-                            <img src="./token/icon-upload.svg" alt="upload" className="w-[30px] h-[30px]" />
-                            <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px]">
-                              Recommended 790px X 307px Max size: 50MB
-                            </p>
-                          </div>
-                        </button>
-                      </Upload>
+                      {!bannerUrl && (
+                        <Upload
+                          listType="picture-card"
+                          accept="image/*"
+                          maxCount={1}
+                          beforeUpload={(file) => handleUpload(file, 'banners')}
+                          showUploadList={{ showPreviewIcon: false, showRemoveIcon: true }}
+                          className="custom-upload-banner"
+                          previewFile={(file) => {
+                            return new Promise((resolve) => {
+                              const reader = new FileReader();
+                              reader.readAsDataURL(file);
+                              reader.onload = () => {
+                                resolve(reader.result as string);
+                              };
+                            });
+                          }}
+                        >
+                          <button style={{ border: 0, background: 'none' }} type="button">
+                            <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
+                              <img src="./token/icon-upload.svg" alt="upload" className="w-[30px] h-[30px]" />
+                              <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px]">
+                                Recommended 790px X 307px Max size: 50MB
+                              </p>
+                            </div>
+                          </button>
+                        </Upload>
+                      )}
                     </div>
                   </Form.Item>
                   <Form.Item label={<p>Website</p>} name="website">
