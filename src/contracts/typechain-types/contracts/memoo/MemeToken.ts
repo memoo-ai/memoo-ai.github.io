@@ -218,13 +218,13 @@ export namespace ClaimTokenEvent {
   export type InputTuple = [
     token: AddressLike,
     to: AddressLike,
-    amount: BigNumberish
+    count: BigNumberish
   ];
-  export type OutputTuple = [token: string, to: string, amount: bigint];
+  export type OutputTuple = [token: string, to: string, count: bigint];
   export interface OutputObject {
     token: string;
     to: string;
-    amount: bigint;
+    count: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -404,7 +404,7 @@ export interface MemeToken extends BaseContract {
   >;
 
   claimToken: TypedContractMethod<
-    [token: AddressLike, to: AddressLike, amount: BigNumberish],
+    [token: AddressLike, to: AddressLike, count: BigNumberish],
     [void],
     "nonpayable"
   >;
@@ -516,7 +516,7 @@ export interface MemeToken extends BaseContract {
   getFunction(
     nameOrSignature: "claimToken"
   ): TypedContractMethod<
-    [token: AddressLike, to: AddressLike, amount: BigNumberish],
+    [token: AddressLike, to: AddressLike, count: BigNumberish],
     [void],
     "nonpayable"
   >;

@@ -307,7 +307,7 @@ export default function Create() {
           localStorage.removeItem(FORM_STORAGE_KEY);
           message.success('Congratulations! Create meme successfully!');
           // Go to dashboard
-          navigate('/dashboard');
+          navigate(`/airdrop/${res.data.Ticker}`);
         } else {
           setSaveCraftLoading(true);
           const res = await saveTokenCraft(data);

@@ -294,7 +294,7 @@ export interface MemooManageInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "airdropClaim",
-    values: [AddressLike, BigNumberish, BigNumberish, BigNumberish, BytesLike[]]
+    values: [AddressLike, BigNumberish, BigNumberish, BytesLike, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "claimToken",
@@ -477,13 +477,13 @@ export namespace ClaimTokenEvent {
   export type InputTuple = [
     token: AddressLike,
     to: AddressLike,
-    amount: BigNumberish
+    count: BigNumberish
   ];
-  export type OutputTuple = [token: string, to: string, amount: bigint];
+  export type OutputTuple = [token: string, to: string, count: bigint];
   export interface OutputObject {
     token: string;
     to: string;
-    amount: bigint;
+    count: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -802,16 +802,16 @@ export interface MemooManage extends BaseContract {
     [
       meme: AddressLike,
       claimCount: BigNumberish,
-      totalCount: BigNumberish,
       amount: BigNumberish,
-      merkleProof: BytesLike[]
+      message: BytesLike,
+      signature: BytesLike
     ],
     [void],
     "payable"
   >;
 
   claimToken: TypedContractMethod<
-    [token: AddressLike, to: AddressLike, amount: BigNumberish],
+    [token: AddressLike, to: AddressLike, count: BigNumberish],
     [void],
     "nonpayable"
   >;
@@ -834,7 +834,7 @@ export interface MemooManage extends BaseContract {
   getMemooConfig: TypedContractMethod<
     [],
     [MemooManageStructs.MemooConfigStructOutput],
-    "nonpayable"
+    "view"
   >;
 
   getRoleAdmin: TypedContractMethod<[role: BytesLike], [string], "view">;
@@ -969,9 +969,9 @@ export interface MemooManage extends BaseContract {
     [
       meme: AddressLike,
       claimCount: BigNumberish,
-      totalCount: BigNumberish,
       amount: BigNumberish,
-      merkleProof: BytesLike[]
+      message: BytesLike,
+      signature: BytesLike
     ],
     [void],
     "payable"
@@ -979,7 +979,7 @@ export interface MemooManage extends BaseContract {
   getFunction(
     nameOrSignature: "claimToken"
   ): TypedContractMethod<
-    [token: AddressLike, to: AddressLike, amount: BigNumberish],
+    [token: AddressLike, to: AddressLike, count: BigNumberish],
     [void],
     "nonpayable"
   >;
@@ -1005,7 +1005,7 @@ export interface MemooManage extends BaseContract {
   ): TypedContractMethod<
     [],
     [MemooManageStructs.MemooConfigStructOutput],
-    "nonpayable"
+    "view"
   >;
   getFunction(
     nameOrSignature: "getRoleAdmin"

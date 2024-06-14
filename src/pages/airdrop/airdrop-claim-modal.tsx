@@ -1,11 +1,54 @@
-import { Button, Checkbox, Input, Modal, Progress, Slider } from 'antd';
-import { Children, FC, Fragment, ReactNode, cloneElement, isValidElement, useContext, useState } from 'react';
+import { Button, Checkbox, Input, Modal, Progress, Slider, message } from 'antd';
+import {
+  Children,
+  FC,
+  Fragment,
+  ReactNode,
+  cloneElement,
+  isValidElement,
+  useContext,
+  useState,
+  useCallback,
+} from 'react';
 import './airdrop-claim-modal.scss';
 import { AirdropContext } from '.';
+import { myAirdropDetail } from '@/api/airdrop';
+import { useSign } from '@/hooks/useEthers';
+import { useManageContract } from '@/hooks/useManageContract';
+import BigNumber from 'bignumber.js';
 
 const AirdropClaimModal: FC<{ children: ReactNode }> = ({ children }) => {
   const [open, setOpen] = useState(false);
-  const { idoLaunchedDetail } = useContext(AirdropContext);
+  const [confirming, setConfirming] = useState(false);
+  const { idoLaunchedDetail, airdropClaim } = useContext(AirdropContext);
+  const { getSign } = useSign();
+  const onConfirm = useCallback(async () => {
+    if (!airdropClaim || !idoLaunchedDetail) return;
+    try {
+      setConfirming(true);
+      const res = await getSign();
+      const { data } = await myAirdropDetail({
+        ticker: idoLaunchedDetail?.ticker ?? '',
+        signature: res?.rawSignature ?? '',
+        timestap: res?.msg ?? '',
+      });
+      if (data && idoLaunchedDetail?.contractAddress) {
+        await airdropClaim(
+          idoLaunchedDetail?.contractAddress,
+          new BigNumber(data?.airdropCount),
+          data?.jsonData,
+          data?.signature,
+        );
+      }
+      setOpen(false);
+      message.success('Claim Successful');
+    } catch (error) {
+      console.error(error);
+      message.error('Claim Failed');
+    } finally {
+      setConfirming(false);
+    }
+  }, [airdropClaim, idoLaunchedDetail]);
 
   return (
     <>
@@ -34,7 +77,9 @@ const AirdropClaimModal: FC<{ children: ReactNode }> = ({ children }) => {
               value={Number(idoLaunchedDetail?.count).toLocaleString()}
             />
           </div>
-          <Button className="memoo_button mt-4 h-[50px]">Confirm</Button>
+          <Button className="memoo_button mt-4 h-[50px]" onClick={onConfirm} loading={confirming}>
+            Confirm
+          </Button>
         </div>
       </Modal>
       {Children.map(children, (child) => {

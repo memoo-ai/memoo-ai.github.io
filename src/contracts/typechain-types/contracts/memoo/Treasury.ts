@@ -98,6 +98,7 @@ export interface TreasuryInterface extends Interface {
       | "approve"
       | "authorised"
       | "burn"
+      | "claimToken"
       | "getRoleAdmin"
       | "grantRole"
       | "hasRole"
@@ -112,6 +113,7 @@ export interface TreasuryInterface extends Interface {
 
   getEvent(
     nameOrSignatureOrTopic:
+      | "ClaimToken"
       | "Initialized"
       | "Paused"
       | "RoleAdminChanged"
@@ -151,6 +153,10 @@ export interface TreasuryInterface extends Interface {
   encodeFunctionData(
     functionFragment: "burn",
     values: [AddressLike, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "claimToken",
+    values: [AddressLike, AddressLike, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getRoleAdmin",
@@ -213,6 +219,7 @@ export interface TreasuryInterface extends Interface {
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "authorised", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "burn", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "claimToken", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getRoleAdmin",
     data: BytesLike
@@ -235,6 +242,24 @@ export interface TreasuryInterface extends Interface {
     functionFragment: "transferEth",
     data: BytesLike
   ): Result;
+}
+
+export namespace ClaimTokenEvent {
+  export type InputTuple = [
+    token: AddressLike,
+    to: AddressLike,
+    count: BigNumberish
+  ];
+  export type OutputTuple = [token: string, to: string, count: bigint];
+  export interface OutputObject {
+    token: string;
+    to: string;
+    count: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace InitializedEvent {
@@ -418,6 +443,12 @@ export interface Treasury extends BaseContract {
     "nonpayable"
   >;
 
+  claimToken: TypedContractMethod<
+    [token: AddressLike, to: AddressLike, count: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+
   getRoleAdmin: TypedContractMethod<[role: BytesLike], [string], "view">;
 
   grantRole: TypedContractMethod<
@@ -527,6 +558,13 @@ export interface Treasury extends BaseContract {
     "nonpayable"
   >;
   getFunction(
+    nameOrSignature: "claimToken"
+  ): TypedContractMethod<
+    [token: AddressLike, to: AddressLike, count: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
     nameOrSignature: "getRoleAdmin"
   ): TypedContractMethod<[role: BytesLike], [string], "view">;
   getFunction(
@@ -586,6 +624,13 @@ export interface Treasury extends BaseContract {
   >;
 
   getEvent(
+    key: "ClaimToken"
+  ): TypedContractEvent<
+    ClaimTokenEvent.InputTuple,
+    ClaimTokenEvent.OutputTuple,
+    ClaimTokenEvent.OutputObject
+  >;
+  getEvent(
     key: "Initialized"
   ): TypedContractEvent<
     InitializedEvent.InputTuple,
@@ -629,6 +674,17 @@ export interface Treasury extends BaseContract {
   >;
 
   filters: {
+    "ClaimToken(address,address,uint256)": TypedContractEvent<
+      ClaimTokenEvent.InputTuple,
+      ClaimTokenEvent.OutputTuple,
+      ClaimTokenEvent.OutputObject
+    >;
+    ClaimToken: TypedContractEvent<
+      ClaimTokenEvent.InputTuple,
+      ClaimTokenEvent.OutputTuple,
+      ClaimTokenEvent.OutputObject
+    >;
+
     "Initialized(uint64)": TypedContractEvent<
       InitializedEvent.InputTuple,
       InitializedEvent.OutputTuple,

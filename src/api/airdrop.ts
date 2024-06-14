@@ -1,6 +1,13 @@
 import http from '@/utils/http';
 import { prefix } from '.';
-import { IDOActiveDetail, IDOLaunchedDetail, IDOLaunchedDetailTop10, IDOQueueDetail, PageWrapper } from '@/types';
+import {
+  IDOActiveDetail,
+  IDOLaunchedDetail,
+  IDOLaunchedDetailTop10,
+  IDOQueueDetail,
+  PageWrapper,
+  AirdropDetail,
+} from '@/types';
 
 export const getIDOActiveDetail = (ticker: string) => {
   return http.get<IDOActiveDetail>(`${prefix}/web-oriented/ido-active-detail`, { params: { ticker } });
@@ -30,4 +37,7 @@ export const follow = (twitter: string) => {
 
 export const imoParticipate = (postBody: { balance: number; ethAmout: number; ticker: string }) => {
   return http.get<string>(`${prefix}/web-oriented/imo-participate`, { data: postBody });
+};
+export const myAirdropDetail = (params: { ticker: string; signature: string; timestap: string }) => {
+  return http.get<AirdropDetail>(`${prefix}/web-oriented/my-airdrop-detail`, { params });
 };

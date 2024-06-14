@@ -325,13 +325,13 @@ export namespace ClaimTokenEvent {
   export type InputTuple = [
     token: AddressLike,
     to: AddressLike,
-    amount: BigNumberish
+    count: BigNumberish
   ];
-  export type OutputTuple = [token: string, to: string, amount: bigint];
+  export type OutputTuple = [token: string, to: string, count: bigint];
   export interface OutputObject {
     token: string;
     to: string;
-    amount: bigint;
+    count: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -504,7 +504,7 @@ export interface MemeFactory extends BaseContract {
   PERCENT_DENOMINATOR: TypedContractMethod<[], [bigint], "view">;
 
   claimToken: TypedContractMethod<
-    [token: AddressLike, to: AddressLike, amount: BigNumberish],
+    [token: AddressLike, to: AddressLike, count: BigNumberish],
     [void],
     "nonpayable"
   >;
@@ -589,7 +589,7 @@ export interface MemeFactory extends BaseContract {
   getFunction(
     nameOrSignature: "claimToken"
   ): TypedContractMethod<
-    [token: AddressLike, to: AddressLike, amount: BigNumberish],
+    [token: AddressLike, to: AddressLike, count: BigNumberish],
     [void],
     "nonpayable"
   >;

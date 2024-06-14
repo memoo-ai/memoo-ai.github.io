@@ -102,6 +102,7 @@ declare interface IDOActiveDetail extends IDOClaimStage {
   totalSupply: string;
   twitter: string;
   website: string;
+  rewardEndsIn: number;
 }
 
 declare interface IDOLaunchedDetail extends IDOClaimStage {
@@ -115,7 +116,8 @@ declare interface IDOLaunchedDetail extends IDOClaimStage {
   commitment: string;
   communityActivit: string;
   communitySize: string;
-  contractAddress: string;
+  // contractAddress: string;
+  contractAddress: `0x${string}`;
   count: number;
   createdAt: string;
   creatorActivity: string;
@@ -391,4 +393,9 @@ declare interface LoginParams {
 declare interface LoginToken {
   expire: number;
   token: string;
+}
+declare interface AirdropDetail {
+  jsonData: string[];
+  signature: string[];
+  airdropCount: number;
 }

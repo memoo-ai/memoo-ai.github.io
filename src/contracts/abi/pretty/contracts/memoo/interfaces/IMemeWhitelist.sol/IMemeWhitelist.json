@@ -1,3 +1,3 @@
 [
-  "function verify(address,address,uint256,bytes32[]) view returns (bool)"
+  "function verify(bytes,bytes) view returns (tuple(address,address,uint256,uint256))"
 ]

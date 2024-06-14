@@ -21,12 +21,28 @@ import type {
   TypedContractMethod,
 } from "../../../common";
 
+export declare namespace IMemeWhitelist {
+  export type WhitelistMessageStruct = {
+    token: AddressLike;
+    user: AddressLike;
+    count: BigNumberish;
+    timestamp: BigNumberish;
+  };
+
+  export type WhitelistMessageStructOutput = [
+    token: string,
+    user: string,
+    count: bigint,
+    timestamp: bigint
+  ] & { token: string; user: string; count: bigint; timestamp: bigint };
+}
+
 export interface IMemeWhitelistInterface extends Interface {
   getFunction(nameOrSignature: "verify"): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: "verify",
-    values: [AddressLike, AddressLike, BigNumberish, BytesLike[]]
+    values: [BytesLike, BytesLike]
   ): string;
 
   decodeFunctionResult(functionFragment: "verify", data: BytesLike): Result;
@@ -76,13 +92,8 @@ export interface IMemeWhitelist extends BaseContract {
   ): Promise<this>;
 
   verify: TypedContractMethod<
-    [
-      meme: AddressLike,
-      user: AddressLike,
-      count: BigNumberish,
-      merkleProof: BytesLike[]
-    ],
-    [boolean],
+    [message: BytesLike, signature: BytesLike],
+    [IMemeWhitelist.WhitelistMessageStructOutput],
     "view"
   >;
 
@@ -93,13 +104,8 @@ export interface IMemeWhitelist extends BaseContract {
   getFunction(
     nameOrSignature: "verify"
   ): TypedContractMethod<
-    [
-      meme: AddressLike,
-      user: AddressLike,
-      count: BigNumberish,
-      merkleProof: BytesLike[]
-    ],
-    [boolean],
+    [message: BytesLike, signature: BytesLike],
+    [IMemeWhitelist.WhitelistMessageStructOutput],
     "view"
   >;
 

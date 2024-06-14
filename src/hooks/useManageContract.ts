@@ -16,7 +16,7 @@ import { getProof } from '@/api/merkel-tree';
 
 export interface DefaultMemooConfig {
   payToken: string;
-  idoPrice: bigint;
+  idoPrice: string;
   airdropPrice: bigint;
   totalSupply: bigint;
   defaultDecimals: number;
@@ -139,19 +139,20 @@ export const useManageContract = () => {
   );
 
   const airdropClaim = useCallback(
-    async (project: Address, claimCount: BigNumber, totalCount: BigNumber, proof: string[]) => {
+    async (project: Address, claimCount: BigNumber, proof: string[], signature: string[]) => {
       if (!config || !baseConfig || !walletClient || !address || !defaultConfig) return;
       if (defaultConfig.payToken !== ZERO_ADDRESS) {
         // TODO approve
       }
 
       // const { data: proofRes } = await getProof(project, address);
-      const priceBN = new BigNumber(config.airdropPrice).dividedToIntegerBy(10 ** config.defaultDecimals);
+      const priceBN = new BigNumber(defaultConfig.idoPrice).dividedToIntegerBy(10 ** defaultConfig.defaultDecimals);
+      console.log('claimCount.multipliedBy(priceBN):', claimCount.multipliedBy(priceBN));
       const tx = {
         address: baseConfig.MemooManageContract as Hash,
         abi: Abi,
         functionName: 'airdropClaim',
-        args: [project, claimCount, totalCount, claimCount.multipliedBy(priceBN), proof],
+        args: [project, claimCount, claimCount.multipliedBy(priceBN), proof, signature],
         value: claimCount.multipliedBy(priceBN),
       } as any;
       const hash = await walletClient.writeContract(tx);

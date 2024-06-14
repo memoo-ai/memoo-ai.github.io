@@ -12,32 +12,44 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "address",
-        name: "meme",
-        type: "address",
+        internalType: "bytes",
+        name: "message",
+        type: "bytes",
       },
       {
-        internalType: "address",
-        name: "user",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "count",
-        type: "uint256",
-      },
-      {
-        internalType: "bytes32[]",
-        name: "merkleProof",
-        type: "bytes32[]",
+        internalType: "bytes",
+        name: "signature",
+        type: "bytes",
       },
     ],
     name: "verify",
     outputs: [
       {
-        internalType: "bool",
-        name: "verified",
-        type: "bool",
+        components: [
+          {
+            internalType: "address",
+            name: "token",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "user",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "count",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "timestamp",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct IMemeWhitelist.WhitelistMessage",
+        name: "",
+        type: "tuple",
       },
     ],
     stateMutability: "view",

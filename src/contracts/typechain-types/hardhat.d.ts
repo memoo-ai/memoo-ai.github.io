@@ -186,13 +186,17 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MemeToken__factory>;
     getContractFactory(
+      name: "MemooManage",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.MemooManage__factory>;
+    getContractFactory(
       name: "MemeWhitelist",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MemeWhitelist__factory>;
     getContractFactory(
-      name: "MemooManage",
+      name: "SignatureProofWhitelist",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.MemooManage__factory>;
+    ): Promise<Contracts.SignatureProofWhitelist__factory>;
     getContractFactory(
       name: "Treasury",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -562,15 +566,20 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.MemeToken>;
     getContractAt(
+      name: "MemooManage",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.MemooManage>;
+    getContractAt(
       name: "MemeWhitelist",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
     ): Promise<Contracts.MemeWhitelist>;
     getContractAt(
-      name: "MemooManage",
+      name: "SignatureProofWhitelist",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
-    ): Promise<Contracts.MemooManage>;
+    ): Promise<Contracts.SignatureProofWhitelist>;
     getContractAt(
       name: "Treasury",
       address: string | ethers.Addressable,
@@ -935,13 +944,17 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.MemeToken>;
     deployContract(
+      name: "MemooManage",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.MemooManage>;
+    deployContract(
       name: "MemeWhitelist",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.MemeWhitelist>;
     deployContract(
-      name: "MemooManage",
+      name: "SignatureProofWhitelist",
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.MemooManage>;
+    ): Promise<Contracts.SignatureProofWhitelist>;
     deployContract(
       name: "Treasury",
       signerOrOptions?: ethers.Signer | DeployContractOptions
@@ -1311,15 +1324,20 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.MemeToken>;
     deployContract(
+      name: "MemooManage",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.MemooManage>;
+    deployContract(
       name: "MemeWhitelist",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.MemeWhitelist>;
     deployContract(
-      name: "MemooManage",
+      name: "SignatureProofWhitelist",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.MemooManage>;
+    ): Promise<Contracts.SignatureProofWhitelist>;
     deployContract(
       name: "Treasury",
       args: any[],

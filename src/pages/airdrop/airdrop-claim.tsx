@@ -15,7 +15,8 @@ import BigNumber from 'bignumber.js';
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
 let isRequestFollowing = false;
 export default function AirdropClaim() {
-  const { stage, idoQueueDetail, idoLaunchedDetail, triggerRefresh, ticker, airdropClaim } = useContext(AirdropContext);
+  const { stage, idoQueueDetail, idoLaunchedDetail, idoActiveDetail, triggerRefresh, ticker, airdropClaim } =
+    useContext(AirdropContext);
   const [following, setFollowing] = useState(false);
   const [searchParams] = useSearchParams();
   const [confirming, setConfirming] = useState(false);
@@ -30,12 +31,28 @@ export default function AirdropClaim() {
 
   const doingTask = useMemo(() => stage === 'in-queue', [stage]);
 
-  const airdropUnlocking = useMemo(
-    () =>
-      Date.now() < (idoLaunchedDetail?.rewardEndsIn ?? 0) * 1000 &&
-      (idoLaunchedDetail?.status === 'Launched' || idoLaunchedDetail?.status === 'IDO'),
-    [idoLaunchedDetail],
-  );
+  // const airdropUnlocking = useMemo(
+  //   () =>
+  //     Date.now() < (idoLaunchedDetail?.rewardEndsIn ?? 0) * 1000 &&
+  //     (idoLaunchedDetail?.status === 'Launched' || idoLaunchedDetail?.status === 'IDO'),
+  //   [idoLaunchedDetail],
+  // );
+
+  const airdropUnlocking = useMemo(() => {
+    let now = Date.now();
+    let rewardEndsIn =
+      (stage === 'launch' ? idoLaunchedDetail?.rewardEndsIn ?? 0 : idoActiveDetail?.rewardEndsIn ?? 0) * 1000;
+    // &&(idoLaunchedDetail?.status === 'Launched' || idoLaunchedDetail?.status === 'IDO');
+
+    console.log('now:', now);
+
+    console.log(
+      'rewardEndsIn:',
+      (stage === 'launch' ? idoLaunchedDetail?.rewardEndsIn ?? 0 : idoActiveDetail?.rewardEndsIn ?? 0) * 1000,
+    );
+    let isUnlocking = now < rewardEndsIn;
+    return isUnlocking;
+  }, [idoLaunchedDetail, idoActiveDetail, stage]);
 
   const airdropUnlocked = useMemo(() => stage === 'launch' || stage === '1st-claim' || stage === '2st-claim', [stage]);
 
@@ -102,24 +119,24 @@ export default function AirdropClaim() {
     })();
   }, [searchParams]);
 
-  const onClaim = useCallback(async () => {
-    if (!airdropClaim || !idoQueueDetail) return;
-    try {
-      setConfirming(true);
-      await airdropClaim(
-        idoQueueDetail.contractAddress,
-        new BigNumber(idoLaunchedDetail?.count ?? 0),
-        new BigNumber(idoLaunchedDetail?.count ?? 0),
-        [], // TODO proof, should fetch it from the back-end
-      );
-      message.success('Unlock Successful');
-    } catch (error) {
-      console.error(error);
-      message.error('Unlock Failed');
-    } finally {
-      setConfirming(false);
-    }
-  }, [airdropClaim, idoQueueDetail]);
+  // const onClaim = useCallback(async () => {
+  //   if (!airdropClaim || !idoQueueDetail) return;
+  //   try {
+  //     setConfirming(true);
+  //     await airdropClaim(
+  //       idoQueueDetail.contractAddress,
+  //       new BigNumber(idoLaunchedDetail?.count ?? 0),
+  //       new BigNumber(idoLaunchedDetail?.count ?? 0),
+  //       [], // TODO proof, should fetch it from the back-end
+  //     );
+  //     message.success('Unlock Successful');
+  //   } catch (error) {
+  //     console.error(error);
+  //     message.error('Unlock Failed');
+  //   } finally {
+  //     setConfirming(false);
+  //   }
+  // }, [airdropClaim, idoQueueDetail]);
 
   return (
     <div className="airdrop_claim px-5 pt-9 pb-5">
@@ -172,7 +189,9 @@ export default function AirdropClaim() {
             <img className="w-5 object-contain" src="/create/icon-airdrop-lock.png" />
             <Countdown
               onEnded={(ended) => ended && triggerRefresh?.()}
-              instant={(idoLaunchedDetail?.rewardEndsIn ?? 0) * 1000}
+              instant={
+                (stage === 'launch' ? idoLaunchedDetail?.rewardEndsIn ?? 0 : idoActiveDetail?.rewardEndsIn ?? 0) * 1000
+              }
             />
           </div>
           <p className="text-white font-OCR leading-20 text-sm">Wait for your airdrop to unlock.</p>
@@ -192,7 +211,7 @@ export default function AirdropClaim() {
             'mt-20': doingTask,
             'mt-5': airdropUnlocking || airdropUnlocked,
           })}
-          onClick={onClaim}
+          // onClick={onClaim}
         >
           claim
         </Button>
