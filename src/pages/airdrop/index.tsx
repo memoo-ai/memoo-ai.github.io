@@ -46,6 +46,7 @@ interface AirdropContext {
     project: `0x${string}`,
     claimCount: BigNumber,
     totalCount: BigNumber,
+    proof: string[],
   ) => Promise<TransactionReceipt | undefined>;
   _1stStage?: {
     unlockCount: BigNumber;
