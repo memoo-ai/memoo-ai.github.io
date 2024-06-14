@@ -59,7 +59,7 @@ const Gecko = () => {
 
   return (
     <div className="page pb-[70px]">
-      <div className="header-banner-bg">
+      <div className="gecko-header-banner-bg">
         <div className="header-banner-content">
           <div className="header-banner-left flex  flex-col">
             <img className="mb-[49px] w-[680px] h-[144px]" src="./gecko/img-left-desc.png" alt="" />
