@@ -16,7 +16,7 @@ import { AirdropContext } from '.';
 const ClaimTokensModal: FC<{
   children: ReactNode;
   stage: '1st' | '2nd';
-  lockinPeriod?: number;
+  lockinPeriod?: string;
   tokens: number;
   rate?: number;
   unlockTokens?: number;
@@ -64,7 +64,7 @@ const ClaimTokensModal: FC<{
               {stage === '1st' && (
                 <>
                   <div className="flex flex-col items-end">
-                    <span className="font-404px text-white text-[24px] leading-[29px]">{lockinPeriod} days</span>
+                    <span className="font-404px text-white text-[24px] leading-[29px]">{lockinPeriod}</span>
                     <span className="font-OCR text-white text-base leading-[21px]">Next Unlock</span>
                   </div>
                   <img className="w-[50px]" src="/create/icon-claim-unlock.png" />

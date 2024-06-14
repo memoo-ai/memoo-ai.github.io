@@ -177,3 +177,20 @@ export const authorizeTwitter = async (clientId: string) => {
 
   window.location.href = url.href;
 };
+
+export function formatRestTime(timestamp: number) {
+  const seconds = Math.floor(timestamp / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (days > 0) {
+    return days + ' days';
+  } else if (hours > 0) {
+    return hours + ' hours';
+  } else if (minutes > 0) {
+    return minutes + ' minutes';
+  } else {
+    return seconds + ' seconds';
+  }
+}

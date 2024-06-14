@@ -9,7 +9,7 @@ import './progress.scss';
 import IncreaseAcquisitionModal from './increase-acquisition-modal';
 import ClaimTokensModal from './claim-tokens-modal';
 import { useAccount } from 'wagmi';
-import { compareAddrs, formatDecimals, formatNumberDecimal } from '@/utils';
+import { compareAddrs, formatDecimals, formatNumberDecimal, formatRestTime } from '@/utils';
 import BigNumber from 'bignumber.js';
 
 const Progress: FC = () => {
@@ -106,7 +106,7 @@ const Progress: FC = () => {
               new BigNumber(_1stStage?.unlockCount ?? 0).dividedBy(10 ** (defaultConfig?.defaultDecimals ?? 0)),
             ),
           )}
-          lockinPeriod={Number(_2ndStage?.unlockInfo?.value) / (24 * 60 * 60)}
+          lockinPeriod={formatRestTime(Number(_2ndStage?.unlockInfo?.value) / 1000)}
           rate={new BigNumber(Number(_1stStage?.unlockInfo?.unlockRate)).dividedBy(1e4).multipliedBy(1e2).toNumber()}
           stage="1st"
         >
@@ -139,7 +139,7 @@ const Progress: FC = () => {
       desc: `Next ${new BigNumber(Number(_2ndStage?.unlockInfo?.unlockRate))
         .dividedBy(1e4)
         .multipliedBy(1e2)
-        .toNumber()}% unlocked\ntokens in ${Number(_2ndStage?.unlockInfo?.value) / (24 * 60 * 60)} days`,
+        .toNumber()}% unlocked\ntokens in ${formatRestTime(Number(_2ndStage?.unlockInfo?.value) * 1000)}`,
       onClick: () => {},
       btnText: 'claim',
       btnIcon: `/create/icon-claim${stage === '2st-claim' ? '-active' : ''}.svg`,
