@@ -10,7 +10,7 @@ export const enum PreLaunchDurationEnum {
 export interface ITokenSaveData {
   pinnedTwitter?: string;
   preLaunchDuration: PreLaunchDurationEnum;
-  preMarketAcquisition: string;
+  preMarketAcquisition: number;
   projectDescription?: string;
   telegram?: string;
   ticker: string;
@@ -39,6 +39,12 @@ export interface ITokenSaveData {
 // };
 
 export const saveTokenCraft = (data: ITokenSaveData) => {
+  if (!data.projectDescription) {
+    data.projectDescription = '';
+  }
+  if (!data.preMarketAcquisition) {
+    data.preMarketAcquisition = 0;
+  }
   return http.post(`${prefix}/web-oriented/token`, data);
 };
 

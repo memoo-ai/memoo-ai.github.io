@@ -31,7 +31,9 @@ export default function AirdropClaim() {
   const doingTask = useMemo(() => stage === 'in-queue', [stage]);
 
   const airdropUnlocking = useMemo(
-    () => Date.now() < (idoLaunchedDetail?.rewardEndsIn ?? 0) * 1000,
+    () =>
+      Date.now() < (idoLaunchedDetail?.rewardEndsIn ?? 0) * 1000 &&
+      (idoLaunchedDetail?.status === 'Launched' || idoLaunchedDetail?.status === 'IDO'),
     [idoLaunchedDetail],
   );
 
