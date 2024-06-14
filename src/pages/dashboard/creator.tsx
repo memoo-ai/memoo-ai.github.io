@@ -1,4 +1,4 @@
-import './index.scss';
+import './creator.scss';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card } from './card';
 import { Button, Spin } from 'antd';

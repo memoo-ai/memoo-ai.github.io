@@ -4,6 +4,7 @@ import './airdrop-modal.scss';
 import { Modal, Button } from 'antd';
 import { IconLock, IconClose, IconCompleted } from '@/components/icons';
 import { getIDOLaunchedDetail } from '@/api/airdrop';
+import { getTokenDetail } from '@/api/token';
 const AirdropModal = ({ children, ticker }: any) => {
   const [open, setOpen] = useState(false);
   const [idoLaunchedDetail, setIdoLaunchedDetail] = useState<any>(null);
@@ -35,7 +36,8 @@ const AirdropModal = ({ children, ticker }: any) => {
           <div className="confirm_content_describe mt-[18px]">Thanks for being part of the Dogwifhat community.</div>
           <div className="confirm_content_wif">
             <IconLock className="airdrop_lock" color="#07E993" bgColor="#2B526E" />{' '}
-            {Number(idoLaunchedDetail?.count).toLocaleString()}
+            {/* {Number(idoLaunchedDetail?.count).toLocaleString()} */}
+            {idoLaunchedDetail?.count}
           </div>
           <div className="airdrop_confirm_btn">
             <Button className="mt-[16px] custom_ant_btn" onClick={handleConfirm}>

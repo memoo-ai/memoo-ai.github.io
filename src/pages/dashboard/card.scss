@@ -98,3 +98,32 @@
     }
   }
 }
+.airdrop-button{
+  width: 197.69px !important;
+    height: 38.57px;
+    color: #000;
+    border-color: $dashboardBtnBorderColor !important;
+    background: transparent !important;
+    display: flex;
+    justify-content: center;
+    border-radius: 7px !important;
+
+    span{
+      color: $dashboardBtnBorderColor !important;
+      font-family: '404px';
+      font-size: 14px;
+      font-weight: 800;
+      text-align: left;
+      line-height: 31px;
+    }
+
+    &:hover{
+      border-color: transparent!important;
+      background: $mainColor !important;
+      span{
+        color: #242842 !important;
+      }
+
+    }
+
+}

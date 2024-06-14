@@ -1,4 +1,4 @@
-import './creator.scss';
+import './collector.scss';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card } from './card';
 import { Button, Spin } from 'antd';
@@ -82,10 +82,10 @@ export const Collector = () => {
                 {tab === 'Airdrop' ? (
                   <div>
                     {item && 'claimFlag' in item && !item?.claimFlag ? (
-                      <AirdropModal>
+                      <AirdropModal ticker={item.ticker}>
                         {' '}
                         <Button
-                          className="flex items-center justify-between"
+                          className="flex items-center justify-between collector-btn"
                           key="increase"
                           onMouseOver={() => iconRefs.current['AirdropBtn'].setHovered(true)}
                           onMouseLeave={() => iconRefs.current['AirdropBtn'].setHovered(false)}
