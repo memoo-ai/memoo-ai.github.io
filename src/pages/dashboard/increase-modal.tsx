@@ -17,6 +17,7 @@ const IncreaseModal = ({ children, ticker }: any) => {
   const [progress, setProgress] = useState(0);
   const [balances, setBalances] = useState(0);
   const [ethAmout, setEthAmout] = useState(0);
+  const [defaultValue, setDefaultValue] = useState(0);
   const {
     config: memooConfig,
     idoBuy,
@@ -27,8 +28,6 @@ const IncreaseModal = ({ children, ticker }: any) => {
     memeUnlockPeriods,
   } = useManageContract();
 
-  const [idoPrice, setIdoPrice] = useState(0);
-  const [totalCap, setTotalCap] = useState(0);
   const [tokenDetail, setTokenDetail] = useState<any>();
   const [proportion, setProportion] = useState(0);
   const [result, setResult] = useState(0);
@@ -57,26 +56,32 @@ const IncreaseModal = ({ children, ticker }: any) => {
   }, [firstProportion]);
   useEffect(() => {
     const increasePercent = proportion / 100;
+
     const result = parseFloat(formatDecimals(firstIncrease * (increasePercent / firstProportion)));
+    console.log('firstIncrease:', firstIncrease);
+    console.log('firstProportion:', firstProportion);
+    console.log('increasePercent:', increasePercent);
     console.log('increasing proportion:', result);
     setResult(result);
-  }, [proportion, firstProportion, firstIncrease]);
+  }, [proportion, firstProportion, firstIncrease, progress]);
 
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
         // For testin: BigEgg or NewCake
-        const { data } = await getTokenDetail(ticker);
+        // const { data } = await getTokenDetail(ticker);
         const { data: meme } = await getMeMemo(ticker);
         console.log('meme:', meme);
-        const balance = meme.reduce((acc, item) => acc + Number(item.balance), 0);
-        const ethAmout = meme.reduce((acc, item) => acc + Number(item.ethAmout), 0);
-        setBalances(balance ?? 0);
-        setEthAmout(ethAmout ?? 0);
-        console.log('balance:', balance);
-        console.log('ethAmout:', ethAmout);
-        setTokenDetail(data);
+        if (meme && meme.length > 0) {
+          // const balance = meme.reduce((acc, item) => acc + Number(item.balance), 0);
+          const ethAmout = meme.reduce((acc, item) => acc + Number(item.ethAmout), 0);
+          console.log('setDefaultValue:', ethAmout / maxIncrease);
+          setDefaultValue(ethAmout / maxIncrease);
+          setProgress(ethAmout / maxIncrease);
+        }
+
+        // setTokenDetail(data);
       } catch (error) {
         console.error(error);
       } finally {
@@ -88,7 +93,8 @@ const IncreaseModal = ({ children, ticker }: any) => {
     if (!idoBuy) return;
     try {
       setLoading(true);
-      await idoBuy(tokenDetail.contractAddress, new BigNumber(result - firstIncrease));
+      // await idoBuy(tokenDetail.contractAddress, new BigNumber(result - firstIncrease));
+      await idoBuy(tokenDetail.contractAddress, new BigNumber(result - defaultValue));
       setOpen(false);
       message.success('Buy Successful');
     } catch (error) {
@@ -131,9 +137,13 @@ const IncreaseModal = ({ children, ticker }: any) => {
               minPrice={firstIncrease}
               maxPrice={maxIncrease}
               value={progress}
+              defaultValue={defaultValue}
               onChange={(value) => {
-                setProgress(value);
-                setIdoPrice(Number((value * totalCap).toLocaleString()));
+                if (value >= defaultValue) {
+                  setProgress(value);
+                  // setIdoPrice(Number((value * totalCap).toLocaleString()));
+                  setProportion(value * 100);
+                }
               }}
             />
           </div>
@@ -143,7 +153,7 @@ const IncreaseModal = ({ children, ticker }: any) => {
           <div className="claimable_left">Pre-Market Acquisition</div>
           <div className="claimable_right">
             <IconETH className="IconETH mr-[22px]" color="#FFFFFF" />
-            {idoPrice} ETH
+            {`${formatDecimals(result - firstIncrease)} ETH`}
           </div>
         </div>
         <div>
