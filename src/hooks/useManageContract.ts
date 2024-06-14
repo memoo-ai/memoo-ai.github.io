@@ -139,19 +139,19 @@ export const useManageContract = () => {
   );
 
   const airdropClaim = useCallback(
-    async (project: Address, claimCount: BigNumber, totalCount: BigNumber) => {
+    async (project: Address, claimCount: BigNumber, totalCount: BigNumber, proof: string[]) => {
       if (!config || !baseConfig || !walletClient || !address || !defaultConfig) return;
       if (defaultConfig.payToken !== ZERO_ADDRESS) {
         // TODO approve
       }
 
-      const { data: proofRes } = await getProof(project, address);
+      // const { data: proofRes } = await getProof(project, address);
       const priceBN = new BigNumber(config.airdropPrice).dividedToIntegerBy(10 ** config.defaultDecimals);
       const tx = {
         address: baseConfig.MemooManageContract as Hash,
         abi: Abi,
         functionName: 'airdropClaim',
-        args: [project, claimCount, totalCount, claimCount.multipliedBy(priceBN), proofRes.proof],
+        args: [project, claimCount, totalCount, claimCount.multipliedBy(priceBN), proof],
         value: claimCount.multipliedBy(priceBN),
       } as any;
       const hash = await walletClient.writeContract(tx);

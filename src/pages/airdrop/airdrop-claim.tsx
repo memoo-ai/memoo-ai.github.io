@@ -110,6 +110,7 @@ export default function AirdropClaim() {
         idoQueueDetail.contractAddress,
         new BigNumber(idoLaunchedDetail?.count ?? 0),
         new BigNumber(idoLaunchedDetail?.count ?? 0),
+        [], // TODO proof, should fetch it from the back-end
       );
       message.success('Unlock Successful');
     } catch (error) {
