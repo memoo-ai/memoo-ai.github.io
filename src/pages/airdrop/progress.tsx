@@ -114,7 +114,7 @@ const Progress: FC = () => {
         </ClaimTokensModal>
       ),
       enabled:
-        mine &&
+        idoQueueDetail?.stageOneClaim &&
         Number(_1stStage?.unlockCount) > 0 &&
         idoQueueDetail?.status === 'Launched' &&
         (address
@@ -157,7 +157,7 @@ const Progress: FC = () => {
         </ClaimTokensModal>
       ),
       enabled:
-        mine &&
+        idoQueueDetail?.stageTwoClaim &&
         Number(_2ndStage?.unlockCount) > 0 &&
         idoQueueDetail?.status === 'Launched' &&
         (address
