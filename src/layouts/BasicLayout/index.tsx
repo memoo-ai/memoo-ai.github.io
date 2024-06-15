@@ -18,6 +18,10 @@ const BasicLayout: React.FC = () => {
     onConnect(data) {
       setConnected(true);
     },
+    onDisconnect() {
+      localStorage.removeItem(MEMOO_TOKEN_STORAGE);
+      window.location.reload();
+    },
   });
 
   useEffect(() => {
