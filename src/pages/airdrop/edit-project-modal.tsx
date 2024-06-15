@@ -16,12 +16,12 @@ import qs from 'qs';
 import { Button as ConnectButton } from '@/components/ui/button';
 import { IconTwitter, IconUpload, IconWebsite } from '@/components/icons';
 import { Trash } from 'lucide-react';
-import { REQUEST_FOLLOWING_STORAGE, UPDATE_PROJECT_TWITTER_STORAGE } from '@/constants';
+import { REQUEST_FOLLOWING_STORAGE, UPDATE_PROJECT_TWITTER_STORAGE, EDIT_INFO_STORAGE } from '@/constants';
 import { useSearchParams } from 'react-router-dom';
 import { authorizeTwitter } from '@/utils';
 const FORM_STORAGE_KEY = 'create_token_storage';
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
-const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
+const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
 
 const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess: () => void }> = ({
   children,
@@ -46,12 +46,24 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
         setProjectBannerUrl(res.data?.banners ? res.data?.banners[0] : '');
         setTwitter(res.data.twitter);
         setTwitterAccessToken(res.data.twitterAccessToken);
-        form.setFieldsValue({
+        // get data from local
+        let formData = {
           ...res.data,
           banners: res.data?.oldBanners ? res.data?.oldBanners : [],
           tokenIcon: res.data.icon,
           projectDescription: res.data.description,
-        });
+        };
+        try {
+          const data = JSON.parse(localStorage.getItem(EDIT_INFO_STORAGE) ?? '');
+          if (data) {
+            formData.projectDescription = data.projectDescription;
+            formData.website = data.website;
+            if (formData.bannerUrl) {
+              setProjectBannerUrl(formData.bannerUrl);
+            }
+          }
+        } catch (e) {}
+        form.setFieldsValue(formData);
       }
     });
   }, [ticker]);
@@ -111,12 +123,16 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
         setOpen(true);
       }
     })();
-  }, []);
+  }, [searchParams]);
 
   const handleRemove = () => {
     setProjectBannerUrl('');
   };
   const connectTwitter = async () => {
+    const formData = form.getFieldsValue();
+    console.log('formData: ', formData);
+    formData.bannerUrl = projectBannerUrl;
+    localStorage.setItem(EDIT_INFO_STORAGE, JSON.stringify(formData));
     const res = await getTwitterClientId();
     let clientId = res.data;
     const updategParams = {
@@ -125,7 +141,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
       clientId,
     };
     localStorage.setItem(UPDATE_PROJECT_TWITTER_STORAGE, JSON.stringify(updategParams));
-    authorizeTwitter(clientId);
+    authorizeTwitter(clientId, twitterRedirectUri);
   };
 
   const handleSave = async (isConfirm: boolean) => {
@@ -142,16 +158,17 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
       // TODO check ticker if exits
 
       setConfirmLoading(true);
-      await saveEditInfo({ ...data, ticker }).then((res) => {
+      const res = await saveEditInfo({ ...data, ticker });
+      setOpen(false);
+      if (res?.code === 200) {
+        message.success('modify successfully!');
+        onSaveSuccess();
         setOpen(false);
-        if (res?.code === 200) {
-          message.success('modify successfully!');
-          onSaveSuccess();
-          setOpen(false);
-        } else {
-          message.warning('fail in keeping');
-        }
-      });
+      } else {
+        message.warning('fail in keeping');
+      }
+      localStorage.removeItem(UPDATE_PROJECT_TWITTER_STORAGE);
+      localStorage.removeItem(EDIT_INFO_STORAGE);
     } catch (e) {
       console.log(e);
     } finally {
@@ -213,12 +230,10 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
               <div style={{ width: '15px' }} className="mr-[7px]">
                 <IconTwitter hoverColor="#07E993" className="" />
               </div>
-              {twitterAccessToken && <img src="./create/icon-authed.svg" />}
-              {!twitterAccessToken && (
-                <ConnectButton variant="secondary" className="w-[136px] h-[32px]" onClick={connectTwitter}>
-                  CONNECT
-                </ConnectButton>
-              )}
+              {twitter && <img src="/create/icon-authed.svg" />}(
+              <ConnectButton variant="secondary" className="w-[136px] h-[32px]" onClick={connectTwitter}>
+                {!twitter ? 'CONNECT' : 'CHANGE'}
+              </ConnectButton>
             </div>
           </Form.Item>
           <Form.Item

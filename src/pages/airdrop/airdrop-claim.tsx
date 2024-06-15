@@ -70,7 +70,7 @@ export default function AirdropClaim() {
         clientId,
       };
       localStorage.setItem(REQUEST_FOLLOWING_STORAGE, JSON.stringify(followingParams));
-      authorizeTwitter(clientId);
+      authorizeTwitter(clientId, twitterRedirectUri);
 
       console.assert(!!twitter, 'twitter is not found');
       setFollowing(true);

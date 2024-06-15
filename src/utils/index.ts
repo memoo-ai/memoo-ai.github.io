@@ -161,12 +161,12 @@ export function calculateDaysDifference(a: number, b: number): number {
   return daysDifference;
 }
 
-export const authorizeTwitter = async (clientId: string) => {
-  const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
+export const authorizeTwitter = async (clientId: string, reidrectUri: string) => {
+  // const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
   const params = {
     response_type: 'code',
     client_id: clientId,
-    redirect_uri: twitterRedirectUri,
+    redirect_uri: reidrectUri,
     scope: 'tweet.read%20tweet.write%20like.write%20users.read%20follows.read%20follows.write',
     state: 'twitter',
     code_challenge: 'challenge',

@@ -40,7 +40,7 @@ import { parseEther, formatEther } from 'ethers';
 import { useMemeFactoryContract } from '@/hooks/useMemeFactoryContract';
 import { ZERO_ADDRESS } from '@/constants';
 import { useAccount } from 'wagmi';
-import { formatDecimals } from '@/utils';
+import { formatDecimals, authorizeTwitter } from '@/utils';
 import BigNumber from 'bignumber.js';
 
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
@@ -143,21 +143,8 @@ export default function Create() {
 
     let clientId = res.data;
     localStorage.setItem(TWITTER_CLIENT_ID_KEY, clientId);
-    let state = 'twitter';
 
-    const params = {
-      response_type: 'code',
-      client_id: clientId,
-      redirect_uri: twitterRedirectUri,
-      scope: 'tweet.read%20tweet.write%20like.write%20users.read%20follows.read%20follows.write',
-      state,
-      code_challenge: 'challenge',
-      code_challenge_method: 'plain',
-    };
-    const url = new URL(`https://twitter.com/i/oauth2/authorize`);
-    url.search = qs.stringify(params, { encode: false });
-
-    window.location.href = url.href;
+    authorizeTwitter(clientId, twitterRedirectUri);
   }, [iconUrl, bannerUrl]);
 
   useEffect(() => {

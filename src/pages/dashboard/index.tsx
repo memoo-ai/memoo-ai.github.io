@@ -21,9 +21,12 @@ const Dashboard = () => {
     let updateParams = null;
     try {
       followingParams = JSON.parse(localStorage.getItem(REQUEST_FOLLOWING_STORAGE) ?? '');
+    } catch (e) {}
+    try {
       updateParams = JSON.parse(localStorage.getItem(UPDATE_PROJECT_TWITTER_STORAGE) ?? '');
     } catch (e) {}
-    if (!followingParams || !updateParams) {
+    console.log('updateParams: ', updateParams, localStorage.getItem(UPDATE_PROJECT_TWITTER_STORAGE));
+    if (!followingParams && !updateParams) {
       return;
     }
     if (state === 'twitter' && code && followingParams) {
