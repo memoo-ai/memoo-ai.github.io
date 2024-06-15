@@ -178,7 +178,7 @@ export default function Create() {
           form.setFieldsValue({
             ...res.data,
             icon: res.data.oldIcon,
-            banners: res.data?.oldBanners ? res.data?.oldBanners[0] : [],
+            banners: res.data?.oldBanners ? res.data?.oldBanners : [],
             projectDescription: res.data.description,
           });
           console.log('form:', form);

@@ -32,14 +32,16 @@ const AirdropClaimModal: FC<{ children: ReactNode }> = ({ children }) => {
         signature: res?.rawSignature ?? '',
         timestap: res?.msg ?? '',
       });
-      if (data && idoLaunchedDetail?.contractAddress) {
-        await airdropClaim(
-          idoLaunchedDetail?.contractAddress,
-          new BigNumber(data?.airdropCount),
-          data?.jsonData,
-          data?.signature,
-        );
-      }
+      console.log('contractAddress:', idoLaunchedDetail?.contractAddress);
+      console.log('airdropCount:', new BigNumber(data?.airdropCount));
+      console.log('jsonData:', data?.jsonData);
+      console.log('signature:', data?.signature);
+      await airdropClaim(
+        idoLaunchedDetail?.contractAddress,
+        new BigNumber(data?.airdropCount),
+        data?.jsonData,
+        data?.signature,
+      );
       setOpen(false);
       message.success('Claim Successful');
     } catch (error) {

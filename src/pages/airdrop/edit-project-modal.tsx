@@ -46,7 +46,12 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
         setProjectBannerUrl(res.data?.banners ? res.data?.banners[0] : '');
         setTwitter(res.data.twitter);
         setTwitterAccessToken(res.data.twitterAccessToken);
-        form.setFieldsValue({ ...res.data, tokenIcon: res.data.icon, projectDescription: res.data.description });
+        form.setFieldsValue({
+          ...res.data,
+          banners: res.data?.oldBanners ? res.data?.oldBanners : [],
+          tokenIcon: res.data.icon,
+          projectDescription: res.data.description,
+        });
       }
     });
   }, [ticker]);
