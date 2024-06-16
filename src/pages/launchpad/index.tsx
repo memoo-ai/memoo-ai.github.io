@@ -56,10 +56,10 @@ export default function LaunchPad() {
     const { data } = tab === 'imo' ? await getLaunchpadImo(params) : await getLaunchpadAirdrop(params);
     // console.log(data);
     if (data) {
-      setData(data.records);
+      setData(data.records ?? []);
       setPagination({
         ...pagination,
-        total: data.total_record,
+        total: data.total_record ?? 0,
       });
     }
   };

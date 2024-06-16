@@ -16,7 +16,7 @@ export const ActiveIdoCard = () => {
           pageNumber: 1,
           pageSize: 10,
         });
-        setIdos(data.records);
+        setIdos(data.records ?? []);
       } catch (error) {
         console.error('Error fetching data:', error);
       }

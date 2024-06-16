@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { LaunchpadIMO, LaunchpadAirdrop } from '@/types';
 import { formatTs } from '@/utils';
+import Wallet from '@/components/Wallet';
 export enum IDOStatus {
   active = 'active',
   upcoming = 'upcoming',
@@ -40,13 +41,15 @@ export const columns = (navigate: (path: string) => void) => [
     title: 'Action',
     key: 'action',
     render: (record: LaunchpadIMO) => (
-      <Button
-        variant="secondary"
-        className=" h-[50px] uppercase font-404px font-bold text-lg px-2"
-        onClick={() => navigate(`/airdrop/${record.ticker}`)}
-      >
-        PARTICIPATE
-      </Button>
+      <Wallet>
+        <Button
+          variant="secondary"
+          className=" h-[50px] uppercase font-404px font-bold text-lg px-2"
+          onClick={() => navigate(`/airdrop/${record.ticker}`)}
+        >
+          PARTICIPATE
+        </Button>
+      </Wallet>
     ),
   },
 ];

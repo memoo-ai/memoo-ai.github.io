@@ -40,10 +40,10 @@ const Gecko = () => {
     const { data } = tab === 'trending' ? await getTrendingTokens(params) : await getTopTokens(params);
     // console.log(data);
     if (data) {
-      setData(data.records);
+      setData(data.records ?? []);
       setPagination({
         ...pagination,
-        total: data.total_record,
+        total: data.total_record ?? 0,
       });
     }
   };

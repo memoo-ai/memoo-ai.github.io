@@ -25,8 +25,8 @@ export const WatchList = () => {
           pageNumber: currentPage,
           pageSize: 10,
         });
-        setList(data.records);
-        setTotal(data.total_record);
+        setList(data.records ?? []);
+        setTotal(data.total_record ?? 0);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
