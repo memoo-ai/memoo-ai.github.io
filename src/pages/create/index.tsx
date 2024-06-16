@@ -190,7 +190,7 @@ export default function Create() {
           const formData = JSON.parse(data);
           console.log('data: ', formData);
           if (!formData.preLaunchDuration) {
-            formData.preLaunchDuration = PreLaunchDurationEnum['IMMEDIATE'];
+            formData.preLaunchDuration = PreLaunchDurationEnum['IMMEDIATE'] ?? 0;
           }
           form.setFieldsValue(formData);
           if (formData.icon) {

@@ -46,8 +46,8 @@ const AirdropClaimModal: FC<{ children: ReactNode }> = ({ children }) => {
         // `0x${data?.jsonData}`,
         // data?.signature,
       );
-      // setOpen(false);
-      // message.success('Claim Successful');
+      setOpen(false);
+      message.success('Claim Successful');
     } catch (error) {
       console.error(error);
       message.error('Claim Failed');
