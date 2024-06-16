@@ -11,7 +11,7 @@
       "alias": [["@", "./src"]]
     }
   },
-  "extends": ["alloy", "alloy/react", "alloy/typescript", "prettier"],
+  "extends": ["alloy", "alloy/react", "alloy/typescript", "prettier","plugin:react-hooks/recommended"],
   "plugins": ["prettier","react-refresh"],
   "env": {
     "browser": true

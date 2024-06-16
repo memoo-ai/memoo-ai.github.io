@@ -175,6 +175,14 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
       setConfirmLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!open) {
+      localStorage.removeItem(UPDATE_PROJECT_TWITTER_STORAGE);
+      localStorage.removeItem(EDIT_INFO_STORAGE);
+    }
+  }, [open]);
+
   return (
     <>
       <Modal

@@ -39,9 +39,10 @@ import { useManageContract } from '@/hooks/useManageContract';
 import { parseEther, formatEther } from 'ethers';
 import { useMemeFactoryContract } from '@/hooks/useMemeFactoryContract';
 import { ZERO_ADDRESS } from '@/constants';
-import { useAccount } from 'wagmi';
+import { useAccount, useSwitchChain } from 'wagmi';
 import { formatDecimals, authorizeTwitter } from '@/utils';
 import BigNumber from 'bignumber.js';
+import { CHAIN_ID } from '@/constants';
 
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
@@ -53,7 +54,8 @@ const PreLaunchDurationOptions = [
   { label: '3 days', value: PreLaunchDurationEnum['3DAYS'] },
 ];
 export default function Create() {
-  const { address } = useAccount();
+  const { address, chainId } = useAccount();
+  const { switchChain } = useSwitchChain();
   const [searchParams] = useSearchParams();
   const [isAccept, setIsAccept] = useState(false);
   const [optionalOpen, setOptionalOpen] = useState(false);
@@ -107,6 +109,11 @@ export default function Create() {
     }
     return e?.fileList;
   };
+
+  const invalidChain = useMemo(() => {
+    return chainId !== CHAIN_ID;
+  }, [chainId]);
+
   const onFinish = (values: any) => {
     console.log('Received values of form: ', values);
   };
@@ -145,7 +152,7 @@ export default function Create() {
     localStorage.setItem(TWITTER_CLIENT_ID_KEY, clientId);
 
     authorizeTwitter(clientId, twitterRedirectUri);
-  }, [iconUrl, bannerUrl]);
+  }, [form, iconUrl, bannerUrl]);
 
   useEffect(() => {
     const ticker = searchParams.get('ticker');
@@ -229,30 +236,37 @@ export default function Create() {
         setTwitter(twitter);
       });
     }
-  }, [searchParams]);
+  }, [form, searchParams]);
 
   const payFee = useCallback(async () => {
     const data = form.getFieldsValue();
 
-    const preLaunchSecond =
-      data.preLaunchDuration === PreLaunchDurationEnum.IMMEDIATE
-        ? 0
-        : data.preLaunchDuration === PreLaunchDurationEnum['1DAY']
-        ? 24 * 3600
-        : 3 * 24 * 3600;
+    let preLaunchSecond = 0;
+    if (data.preLaunchDuration === PreLaunchDurationEnum.IMMEDIATE) {
+      preLaunchSecond = 0;
+    } else if (data.preLaunchDuration === PreLaunchDurationEnum['1DAY']) {
+      preLaunchSecond = 24 * 3600;
+    } else {
+      preLaunchSecond = 3 * 24 * 3600;
+    }
+
     const preValue = totalCapInitial * data.preMarketAcquisition;
     console.log('preValue: ', preValue);
     const value = parseEther(String(preValue)) + memooConfig!.platformFeeCreateMeme;
     const res = await createMeme(data.tokenName, data.ticker, preLaunchSecond, value);
     console.log('res: ', res);
     return res;
-  }, [createMeme]);
+  }, [createMeme, form, memooConfig, totalCapInitial]);
 
   const handleSave = useCallback(
     // TODO check login
     async (isConfirm: boolean) => {
       if (!address) {
         message.warning('Please connect wallet first.');
+        return;
+      }
+      if (invalidChain) {
+        switchChain({ chainId: Number(CHAIN_ID) });
         return;
       }
       try {
@@ -312,7 +326,18 @@ export default function Create() {
         setConfirmLoading(false);
       }
     },
-    [twitter, twitterAccessToken, isAccept, payFee],
+    [
+      address,
+      invalidChain,
+      switchChain,
+      form,
+      getMemeAddressWithSymbol,
+      isAccept,
+      twitter,
+      twitterAccessToken,
+      payFee,
+      navigate,
+    ],
   );
 
   const handleRemove = () => {
@@ -594,7 +619,7 @@ export default function Create() {
               onClick={() => handleSave(true)}
               loading={confirmLoading}
             >
-              confirm
+              {invalidChain ? 'Switch Chain' : 'Confirm'}
             </Button>
           </div>
         </div>
