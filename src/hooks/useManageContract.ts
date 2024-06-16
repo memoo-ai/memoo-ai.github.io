@@ -17,7 +17,7 @@ import { getProof } from '@/api/merkel-tree';
 export interface DefaultMemooConfig {
   payToken: string;
   idoPrice: string;
-  airdropPrice: bigint;
+  airdropPrice: string;
   totalSupply: bigint;
   defaultDecimals: number;
   idoUserBuyLimit: bigint;
@@ -139,29 +139,37 @@ export const useManageContract = () => {
   );
 
   const airdropClaim = useCallback(
-    async (project: Address, claimCount: BigNumber, proof: string[], signature: string[]) => {
+    async (project: Address, claimCount: BigNumber, proof: string, signature: string) => {
       if (!config || !baseConfig || !walletClient || !address || !defaultConfig) return;
       if (defaultConfig.payToken !== ZERO_ADDRESS) {
         // TODO approve
       }
 
       // const { data: proofRes } = await getProof(project, address);
-      const priceBN = new BigNumber(defaultConfig.idoPrice).dividedToIntegerBy(10 ** defaultConfig.defaultDecimals);
-      console.log('claimCount.multipliedBy(priceBN):', claimCount.multipliedBy(priceBN));
+      const priceBN = new BigNumber(defaultConfig.airdropPrice).dividedToIntegerBy(10 ** defaultConfig.defaultDecimals);
+      console.log('project:', project);
+      console.log('claimCount:', claimCount);
+      console.log('claimCount.multipliedBy:', claimCount.multipliedBy(priceBN));
+      console.log('proof:', proof);
+      console.log('signature:', signature);
       const tx = {
         address: baseConfig.MemooManageContract as Hash,
         abi: Abi,
         functionName: 'airdropClaim',
         args: [project, claimCount, claimCount.multipliedBy(priceBN), proof, signature],
         value: claimCount.multipliedBy(priceBN),
+        // args: [project, 100, 0, proof, signature],
+        // value: 0,
       } as any;
+      console.log('tx:', tx);
       const hash = await walletClient.writeContract(tx);
+      console.log('airdropClaimhash', hash);
       const res = await publicClient?.waitForTransactionReceipt({
         hash,
       });
       return res;
     },
-    [config, baseConfig, walletClient, address],
+    [config, baseConfig, walletClient, address, defaultConfig],
   );
 
   const createMeme = useCallback(

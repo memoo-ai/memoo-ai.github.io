@@ -395,7 +395,9 @@ declare interface LoginToken {
   token: string;
 }
 declare interface AirdropDetail {
-  jsonData: string[];
-  signature: string[];
+  hexMessage: string;
+  hexSignature: string;
+  jsonData: string;
+  signature: string;
   airdropCount: number;
 }

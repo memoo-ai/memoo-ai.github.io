@@ -39,11 +39,15 @@ const AirdropClaimModal: FC<{ children: ReactNode }> = ({ children }) => {
       await airdropClaim(
         idoLaunchedDetail?.contractAddress,
         new BigNumber(data?.airdropCount),
-        data?.jsonData,
-        data?.signature,
+        // data?.hexMessage,
+        // data?.hexSignature,
+        `0x${data?.hexMessage}`,
+        `0x${data?.hexSignature}`,
+        // `0x${data?.jsonData}`,
+        // data?.signature,
       );
-      setOpen(false);
-      message.success('Claim Successful');
+      // setOpen(false);
+      // message.success('Claim Successful');
     } catch (error) {
       console.error(error);
       message.error('Claim Failed');

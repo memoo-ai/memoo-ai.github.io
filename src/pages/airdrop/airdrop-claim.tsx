@@ -122,6 +122,16 @@ export default function AirdropClaim() {
       console.log('ticker: ', ticker);
     })();
   }, [searchParams]);
+  // const testAirdrop = async () => {
+  //   if (airdropClaim) {
+  //     await airdropClaim(
+  //       '0x9Bf377DD4a6177a67B4b7c05114857eeB4E167b3',
+  //       new BigNumber(100),
+  //       '0x0000000000000000000000009bf377dd4a6177a67b4b7c05114857eeb4e167b300000000000000000000000000b34b516bbccab8d15fb780664d98bc08150119000000000000000000000000000000000000000000000000000000174876e80000000000000000000000000000000000000000000000000000000000666e5c0b',
+  //       '0xcad5c2a88a559912837f1833ff70d6a82b077b66dcc5c932f57075e499b9bf360386219141e36f882011ddbdfca653e24b238352bb7c01905e829902d30506721b',
+  //     );
+  //   }
+  // };
 
   // const onClaim = useCallback(async () => {
   //   if (!airdropClaim || !idoQueueDetail) return;
@@ -186,6 +196,7 @@ export default function AirdropClaim() {
             />
           </li>
         ))}
+        {/* <li className="follow_list_item flex items-center w-full justify-between px-3 py-3.5" onClick={testAirdrop} /> */}
       </ul>
       {showAirdropClaim &&
         (airdropUnlocking ? (
