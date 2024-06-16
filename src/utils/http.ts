@@ -16,6 +16,10 @@ http.interceptors.response.use(
     if (response.data.code !== 200) {
       return Promise.reject(response.data);
     }
+    // else if(response.data.code === 401) {
+    //   // not authed
+
+    // }
     return response.data;
   },
   (reason) => {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styles from './index.module.scss';
 import Header from '@/components/Header';
 import Toast from '@/components/Toast';
@@ -14,6 +14,8 @@ const BasicLayout: React.FC = () => {
   const signer = useEthersSigner({ chainId: Number(import.meta.env.VITE_NODE_CHAIN_ID) });
   const [connected, setConnected] = useState(false);
   const { loginMeme } = useLogin();
+  const location = useLocation();
+  const navigate = useNavigate();
   useAccountEffect({
     onConnect(data) {
       setConnected(true);
@@ -37,6 +39,15 @@ const BasicLayout: React.FC = () => {
       })();
     }
   }, [connected, signer]);
+
+  useEffect(() => {
+    if (location.pathname === '/') return;
+
+    if (!localStorage.getItem(MEMOO_TOKEN_STORAGE)) {
+      loginMeme();
+      navigate('/');
+    }
+  }, [location]);
 
   return (
     <div>

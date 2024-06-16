@@ -1,7 +1,7 @@
 /* eslint-disable max-params */
 /* eslint-disable no-debugger */
 import Abi from '@/contracts/abi/ugly/contracts/memoo/MemooManage.sol/MemooManage.json';
-import { usePublicClient, useWalletClient, useAccount, useBalance } from 'wagmi';
+import { usePublicClient, useWalletClient, useAccount, useBalance, useDisconnect } from 'wagmi';
 
 import { useCallback, useEffect, useState, useMemo } from 'react';
 import { config as wagmiConfig } from '@/constants/networks';
@@ -44,6 +44,7 @@ export interface MemooConfig {
 
 export const useManageContract = () => {
   const [config, setConfig] = useState<MemooConfig>();
+  const { disconnect } = useDisconnect();
   const [defaultConfig, setDefaultConfig] = useState<DefaultMemooConfig>();
   const publicClient = usePublicClient({ config: wagmiConfig });
   // const [operating, setOperating] = useState(false);
@@ -175,6 +176,10 @@ export const useManageContract = () => {
   const createMeme = useCallback(
     // eslint-disable-next-line max-params
     async (name: string, symbol: string, preLaunchSecond: number, amount: number | string | bigint) => {
+      if (!walletClient) {
+        await disconnect();
+        window.location.reload();
+      }
       if (!walletClient || !baseConfig || !defaultConfig) return;
       if (defaultConfig.payToken !== ZERO_ADDRESS) {
         // TODO approve
@@ -194,11 +199,12 @@ export const useManageContract = () => {
         });
         return res;
       } catch (e) {
+        console.error(e);
       } finally {
         setCreateMemeLoading(false);
       }
     },
-    [walletClient, baseConfig, defaultConfig, publicClient],
+    [walletClient, baseConfig, defaultConfig, disconnect, publicClient],
   );
 
   useEffect(() => {
