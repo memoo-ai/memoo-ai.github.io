@@ -284,10 +284,10 @@ export default function Create() {
         }
         await form.validateFields();
         // twitter must have been connected
-        // if (!twitter) {
-        //   message.warning('Please connect project twitter first.');
-        //   return;
-        // }
+        if (!twitter) {
+          message.warning('Please connect project twitter first.');
+          return;
+        }
 
         data.twitter = twitter;
         data.accessToken = twitterAccessToken;
@@ -319,8 +319,11 @@ export default function Create() {
           // Go to dashboard
           navigate('/dashboard');
         }
-      } catch (e) {
+      } catch (e: any) {
         console.log(e);
+        if (e?.errorFields) {
+          form.scrollToField(e.errorFields[0].name, { behavior: 'smooth' });
+        }
       } finally {
         setSaveCraftLoading(false);
         setConfirmLoading(false);
@@ -401,6 +404,7 @@ export default function Create() {
               }
               valuePropName="fileList"
               getValueFromEvent={normFile}
+              rules={[{ required: true, message: 'Please upload icon!' }]}
               name="icon"
             >
               <div className="token-icon-form-item">
