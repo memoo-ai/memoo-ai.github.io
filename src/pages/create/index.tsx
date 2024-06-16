@@ -126,6 +126,9 @@ export default function Create() {
     if (file) {
       uploadFile(file).then((res) => {
         form.setFieldValue(field, field === 'banners' ? [res.data.file] : res.data.file);
+        if (!form.isFieldsValidating()) {
+          form.validateFields();
+        }
         if (field === 'icon') {
           setIconUrl(res.data.fileUrl);
         }

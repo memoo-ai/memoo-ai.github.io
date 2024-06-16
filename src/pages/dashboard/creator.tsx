@@ -208,7 +208,9 @@ export const Creator = () => {
                   className={item.status === 'Draft' ? 'draft' : ''}
                   onClick={() => {
                     navigate(
-                      item.status === 'Draft' ? `/create_token?ticker=${item.ticker}` : `/airdrop/${item.ticker}`,
+                      item.status === 'Draft' || item.status === 'Waiting_for_pay'
+                        ? `/create_token?ticker=${item.ticker}`
+                        : `/airdrop/${item.ticker}`,
                     );
                   }}
                 >
