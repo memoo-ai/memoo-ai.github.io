@@ -41,7 +41,7 @@ export const columns = (navigate: (path: string) => void) => [
     key: 'action',
     render: (record: LaunchpadIMO) => (
       <Button
-        variant="default"
+        variant="secondary"
         className=" h-[50px] uppercase font-404px font-bold text-lg px-2"
         onClick={() => navigate(`/airdrop/${record.ticker}`)}
       >
