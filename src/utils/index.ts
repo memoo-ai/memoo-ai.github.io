@@ -123,7 +123,7 @@ export function clipAddress(address: string) {
 export function formatTs(ts: number, unit: 's' | 'ms' = 's') {
   const date = new Date((ts ?? 0) * (unit === 's' ? 1000 : 1));
   const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' };
-  return date.toLocaleDateString('en-US', options);
+  return ts === 0 ? '' : date.toLocaleDateString('en-US', options);
 }
 
 export function compareAddrs(addrA: Address, addrB: Address) {

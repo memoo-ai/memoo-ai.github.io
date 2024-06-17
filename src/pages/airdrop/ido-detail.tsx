@@ -12,7 +12,7 @@ const IDODetail: FC = () => {
       return [
         {
           key: 'IDO Date',
-          value: formatTs(idoQueueDetail?.idoDate ?? 0),
+          value: idoQueueDetail?.idoDate ? formatTs(idoQueueDetail?.idoDate ?? 0) : '',
         },
         {
           key: 'LP Lock',
