@@ -45,14 +45,22 @@ const Wallet: FC<{ children: ReactNode }> = ({ children }) => {
             {(() => {
               if (!connected) {
                 return (
-                  <Button
-                    variant="soft"
+                  // <Button
+                  //   variant="soft"
+                  //   onClick={() => {
+                  //     openConnectModal();
+                  //     setIsModalOpen(true);
+                  //   }}
+                  //   className="cursor-pointer hidden md:block text-center text-lg  md:h-[51px] px-6   font-bold font-404px"
+                  // />
+                  <div
                     onClick={() => {
                       openConnectModal();
                       setIsModalOpen(true);
                     }}
-                    className="cursor-pointer hidden md:block text-center text-lg  md:h-[51px] px-6   font-bold font-404px"
-                  />
+                  >
+                    {children}
+                  </div>
                 );
               }
             })()}

@@ -9,6 +9,7 @@ import {
   IconWalletContentCollector,
   IconWalletContentWatchList,
   IconWalletContentLogout,
+  IconWalletContentProfile,
 } from '@/components/icons';
 import './walletConnect.scss';
 import { useRef, useState, useEffect } from 'react';
@@ -18,6 +19,12 @@ import ConnectModalPortalTop from './connectModalPortalTop';
 import { MEMOO_TOKEN_STORAGE } from '@/constants';
 // const explorerURL = import.meta.env.VITE_EXPLORER_URL;
 const opts = [
+  // {
+  //   name: 'Profile',
+  //   path: '/dashboard',
+  //   type: 'Profile',
+  //   icon: IconWalletContentProfile,
+  // },
   {
     name: 'Creator',
     path: '/dashboard',
@@ -37,6 +44,14 @@ const opts = [
     icon: IconWalletContentWatchList,
   },
 ];
+if (import.meta.env.MODE === 'development') {
+  opts.unshift({
+    name: 'Profile',
+    path: '/dashboard',
+    type: 'Profile',
+    icon: IconWalletContentProfile,
+  });
+}
 const WalletConnect = () => {
   const { address, isConnected } = useAccount();
   const { connectors, disconnect } = useDisconnect();

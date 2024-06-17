@@ -4,6 +4,7 @@ import { useCallback, useState, FC, useEffect } from 'react';
 import { Creator } from './creator';
 import { Collector } from './collector';
 import { WatchList } from './watchlist';
+import { Profile } from './profile';
 import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 
 const DashboardContent: FC<{ onChangeType: (type: string) => void }> = ({ onChangeType, ...rest }) => {
@@ -22,6 +23,11 @@ const DashboardContent: FC<{ onChangeType: (type: string) => void }> = ({ onChan
     }
   }, [location.search]);
   const items = [
+    // {
+    //   key: 'Profile',
+    //   label: 'Profile',
+    //   children: <Profile />,
+    // },
     {
       key: 'Creator',
       label: 'Creator',
@@ -38,6 +44,13 @@ const DashboardContent: FC<{ onChangeType: (type: string) => void }> = ({ onChan
       children: <WatchList />,
     },
   ];
+  if (import.meta.env.MODE === 'development') {
+    items.unshift({
+      key: 'Profile',
+      label: 'Profile',
+      children: <Profile />,
+    });
+  }
 
   return (
     <div>

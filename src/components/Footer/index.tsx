@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import React from 'react';
 import './index.scss';
-import { IconTwitter, IconTelegram, IconVector } from '@/components/icons';
+import { IconTwitter, IconTelegram, IconVector, IconMemoo } from '@/components/icons';
 
 interface FooterProps {
   children?: ReactNode;
@@ -11,7 +11,12 @@ const Footer: React.FC<FooterProps> = ({ children }) => {
   return (
     <footer className="footer hidden md:flex">
       <div className="footerLogo">
-        <img src="/logo.svg" alt="" className="w-[300px] h-[106px]" />
+        <div className="flex items-center  gap-[3rem]">
+          <a href="/" className="flex items-center justify-center">
+            <img src="/logo.svg" alt="Logo" className="w-[106px] h-[106px] mr-[8px]" />
+            <IconMemoo className="w-[174.53px] h-[68.48px]" />
+          </a>
+        </div>
         <div className="flex items-center gap-6 mt-6">
           <IconVector className="cursor-pointer w-8" hoverColor="#B53BFF" />
           <IconTwitter className="cursor-pointer w-8" hoverColor="#B53BFF" />

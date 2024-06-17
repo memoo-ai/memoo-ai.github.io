@@ -5,9 +5,12 @@ import CommonBanner from '@/components/Banner';
 import DashboardBottomImg1 from './assets/dashboard_banner1.png';
 import DashboardBottomImg2 from './assets/dashboard_banner2.png';
 import DashboardBottomImg3 from './assets/dashboard_banner3.png';
+import DashboardBottomImg4 from './assets/dashboard_banner4.png';
 import DashboardBottomBgImg1 from './assets/dashboard_banner_bg1.png';
 import DashboardBottomBgImg2 from './assets/dashboard_banner_bg2.png';
 import DashboardBottomBgImg3 from './assets/dashboard_banner_bg3.png';
+import DashboardBottomBgImg4 from './assets/dashboard_banner_bg4.png';
+import HeaderBannerBg from './assets/header-banner-bg.png';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { REQUEST_FOLLOWING_STORAGE, UPDATE_PROJECT_TWITTER_STORAGE } from '@/constants';
 const Dashboard = () => {
@@ -55,6 +58,21 @@ const Dashboard = () => {
       console.log(type);
       setTabType(type);
       switch (type) {
+        case 'Profile':
+          setCommonBottom({
+            title: 'Unleash the Degen in You',
+            title1: 'and get Rewarded.',
+            desc: 'Build Your Creator Reputation to Unlock Rewards.',
+            rightImg: DashboardBottomImg4,
+            bg: DashboardBottomBgImg4,
+          });
+          setCommonBanner({
+            title: 'Exclusive ‘Proof of Creation’ Reward for Creators.',
+            desc: 'Exciting Rewards for Exceptional Talent in Meme Creation.',
+            link: '/gecko?type=CREATOR Ranking',
+            linkText: 'BE A CREATOR',
+          });
+          break;
         case 'Creator':
           setCommonBottom({
             title: 'Begin Your Meme',
@@ -64,8 +82,8 @@ const Dashboard = () => {
             bg: DashboardBottomBgImg1,
           });
           setCommonBanner({
-            title: 'Exclusive ‘Proof of Creation’ Reward for Creators.',
-            desc: 'Exciting Rewards for Exceptional Talent in Meme Creation.',
+            title: 'Get Recognized and Stand Among Meme Gods.',
+            desc: 'See Where You Stand Within the Creator Ranks.',
             link: '/create_token',
             linkText: 'BE A CREATOR',
           });
@@ -114,7 +132,7 @@ const Dashboard = () => {
   );
   return (
     <div className="page">
-      <div className="dashboard-header-banner-bg">
+      <div className="dashboard-header-banner-bg" style={{ background: `url(${HeaderBannerBg})` }}>
         {/* <div className="header-banner-bg" style={{ background: `url(${commonBottom.bg})` }}> */}
         <div className="dashboard-header-banner-content">
           <div className="dashboard-header-banner-left flex  flex-col">
