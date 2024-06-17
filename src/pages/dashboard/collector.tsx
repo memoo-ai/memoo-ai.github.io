@@ -81,7 +81,7 @@ export const Collector = () => {
               <div className="flex justify-between items-center mt-[15px]">
                 {tab === 'Airdrop' ? (
                   <div>
-                    {item && 'claimFlag' in item && !item?.claimFlag ? (
+                    {item && 'claimFlag' in item && item?.claimFlag ? (
                       <AirdropModal ticker={item.ticker}>
                         {' '}
                         <Button
@@ -89,6 +89,7 @@ export const Collector = () => {
                           key="increase"
                           onMouseOver={() => iconRefs.current['AirdropBtn'].setHovered(true)}
                           onMouseLeave={() => iconRefs.current['AirdropBtn'].setHovered(false)}
+                          disabled={!item.claimFlag}
                         >
                           <IconAirdropBtn
                             className="IconAirdropBtn"

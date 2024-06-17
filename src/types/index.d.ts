@@ -182,6 +182,7 @@ declare interface IDOQueueDetail extends IDOClaimStage {
   fdv: number;
   holders: string;
   icon: string;
+  price: number;
   idoDate: number;
   liquidity: string;
   lpContractAddress: Address;

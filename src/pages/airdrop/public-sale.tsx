@@ -6,13 +6,13 @@ import { AirdropContext } from '.';
 import { formatDecimals } from '@/utils';
 
 const PublicSale: FC = () => {
-  const { idoLaunchedDetail, idoQueueDetail } = useContext(AirdropContext);
+  const { idoLaunchedDetail, idoQueueDetail, stage } = useContext(AirdropContext);
 
   const params = useMemo(
     () => [
-      { key: 'Market Cap', value: `$${formatDecimals(idoLaunchedDetail?.marketCap ?? 0)}`, tip: null },
-      { key: 'Price', value: `$${formatDecimals(idoLaunchedDetail?.price ?? 0)}`, tip: null },
-      { key: 'Total Raised', value: `${idoLaunchedDetail?.totalRaised ?? 'NA/NA'} ETH`, tip: '1' },
+      { key: 'Market Cap', value: `$${formatDecimals(idoQueueDetail?.marketCap ?? 0)}`, tip: null },
+      { key: 'Price', value: `$${formatDecimals(idoQueueDetail?.price ?? 0)}`, tip: null },
+      { key: 'Total Raised', value: `${idoQueueDetail?.totalRaised ?? 'NA/NA'} ETH`, tip: '1' },
       {
         key: 'Contributed',
         value: `${idoQueueDetail?.contributed ?? 'NA'}/${idoQueueDetail?.maxContributed ?? 'NA'} ETH`,
