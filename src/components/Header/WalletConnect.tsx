@@ -150,7 +150,7 @@ const WalletConnect = () => {
                   <DropdownMenu.Root>
                     <DropdownMenu.Trigger>
                       <div>
-                        <IconProfile className="cursor-pointer wallet-border rounded-[7px]" />
+                        <IconProfile className="cursor-pointer wallet-border rounded-[12px]" />
                       </div>
                     </DropdownMenu.Trigger>
 

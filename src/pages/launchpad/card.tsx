@@ -47,7 +47,7 @@ export const ActiveIdoCard = () => {
               <span className="overflow-hidden whitespace-nowrap text-ellipsis">{ido.totalRaised} ETH</span>
             </div>
             <Button
-              variant="secondary"
+              variant="second"
               className="font-404px text-lg  w-full h-[50px] uppercase mt-[74px]"
               onClick={() => {
                 navigate(`/airdrop/${ido.ticker}`);

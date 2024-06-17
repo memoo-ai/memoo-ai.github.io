@@ -20,7 +20,7 @@ export default function CommonBanner(props: IProps) {
         <p className="common-banner-desc">{desc}</p>
         {/* <img src={img} /> */}
         {link && (
-          <Button variant="default" className="w-[300px] h-[50px] uppercase" onClick={() => navigate(link)}>
+          <Button variant="primary" className="w-[300px] h-[50px] uppercase" onClick={() => navigate(link)}>
             {linkText}
           </Button>
         )}

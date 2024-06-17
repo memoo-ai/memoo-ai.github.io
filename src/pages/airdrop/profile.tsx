@@ -3,6 +3,7 @@ import { FC, useContext, useMemo } from 'react';
 import './profile.scss';
 import { AirdropContext } from '.';
 import { clipAddress, extractDomainName, formatTs, handleCopy } from '@/utils';
+import { IconCopy } from '@/components/icons';
 
 const Profile: FC = () => {
   const { idoQueueDetail } = useContext(AirdropContext);
@@ -106,7 +107,8 @@ const Profile: FC = () => {
               <li className="flex items-center gap-x-1.5 h-8">
                 {clipAddress(idoQueueDetail?.creatorAddress ?? '')}{' '}
                 <a className="cursor-pointer">
-                  <img className="w-2.5 object-contain" src="/create/icon-copy.png" />
+                  {/* <img className="w-2.5 object-contain" src="/create/icon-copy.png" /> */}
+                  <IconCopy className="object-contain" />
                 </a>
               </li>
             )}
