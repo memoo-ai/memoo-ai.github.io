@@ -170,7 +170,7 @@ export const Profile = () => {
         <div>
           <Button type="link" className="flex items-center h-[40px] gap-x-[11px]">
             <span className="text-bluish-purple-light font-OCR leading-5 text-sm">Edit Profile</span>
-            <img src="/create/icon-edit.svg" />
+            <IconEdit className="" color="#07E993" hoverColor="#B53BFF" bgColor="#B53BFF" hoverBgColor="#07E993" />
           </Button>
         </div>
       </div>

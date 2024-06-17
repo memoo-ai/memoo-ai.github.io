@@ -447,8 +447,8 @@ export const IconBack = ({
   className,
   color = '#19FDA6',
   bgColor = '#B53BFF',
-  hoverColor = '#19FDA6',
-  hoverBgColor = '#B53BFF',
+  hoverColor = '#B53BFF',
+  hoverBgColor = '#19FDA6',
   ...rest
 }: IconProps) => {
   const [hovered, setHovered] = useState(false);

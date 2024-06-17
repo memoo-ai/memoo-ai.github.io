@@ -30,6 +30,7 @@ import { TransactionReceipt } from 'viem';
 import EditProjectModal from './edit-project-modal';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { REQUEST_FOLLOWING_STORAGE, UPDATE_PROJECT_TWITTER_STORAGE } from '@/constants';
+import { IconEdit, IconBack } from '@/components/icons';
 
 interface AirdropContext {
   stage: TokenCreateStage;
@@ -209,13 +210,15 @@ const Airdrop: FC = () => {
       <div className="col-span-full pt-[70px] pb-[22px] pl-[428px] flex items-center justify-between">
         <EditProjectModal ticker={ticker} onSaveSuccess={triggerRefresh}>
           <Button type="link" className="flex items-center h-[40px] gap-x-[11px]" disabled={!mine}>
-            <img src="/create/icon-edit.svg" />
+            {/* <img src="/create/icon-edit.svg" /> */}
+            <IconEdit className="" color="#07E993" hoverColor="#B53BFF" bgColor="#B53BFF" hoverBgColor="#07E993" />
             <span className="text-bluish-purple-light font-OCR leading-5 text-sm">Edit Info</span>
           </Button>
         </EditProjectModal>
         <Button type="link" className="flex items-center h-[40px] gap-x-[11px]" onClick={() => navigate('/dashboard')}>
           <span className="text-bluish-purple-light font-OCR leading-5 text-sm">Back to Dashboard</span>
-          <img src="/create/icon-dashboard.svg" />
+          {/* <img src="/create/icon-dashboard.svg" /> */}
+          <IconBack className="" />
         </Button>
       </div>
       <div className="airdrop_left flex flex-col gap-y-3.5">
