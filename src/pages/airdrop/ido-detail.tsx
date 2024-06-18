@@ -40,7 +40,7 @@ const IDODetail: FC = () => {
           value: '+86%',
           formatValue: (value: string): ReactNode => <span className="text-green font-404px">{value}</span>,
         },
-        { key: 'Max Supply', value: `$${idoQueueDetail?.totalSupply ?? 0}` },
+        { key: 'Max Supply', value: `${idoQueueDetail?.totalSupply ?? 0}` },
         {
           key: 'All Time High',
           value: `$${formatDecimals(idoLaunchedDetail?.allTimeHigh ?? 0) ?? 0}`,
@@ -77,7 +77,7 @@ const IDODetail: FC = () => {
     return [
       { key: 'IDO Date', value: formatTs(idoQueueDetail?.idoDate ?? 0) },
       { key: 'FDV', value: `$${Number(idoQueueDetail?.fdv ?? 0).toLocaleString()}` },
-      { key: 'Max Supply', value: `$${Number(idoQueueDetail?.totalSupply ?? 0).toLocaleString()}` },
+      { key: 'Max Supply', value: `${Number(idoQueueDetail?.totalSupply ?? 0).toLocaleString()}` },
     ];
   }, [stage, idoQueueDetail, idoLaunchedDetail]);
 

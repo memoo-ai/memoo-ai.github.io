@@ -1,12 +1,13 @@
 /* eslint-disable react/no-unstable-nested-components */
-import { FC, useContext, useMemo } from 'react';
+import { FC, useContext, useMemo, useRef } from 'react';
 import './profile.scss';
 import { AirdropContext } from '.';
 import { clipAddress, extractDomainName, formatTs, handleCopy } from '@/utils';
-import { IconCopy } from '@/components/icons';
+import { IconCopy, IconTwitter, IconTelegram, IconShare } from '@/components/icons';
 
 const Profile: FC = () => {
   const { idoQueueDetail } = useContext(AirdropContext);
+  const iconRefs = useRef<any>({});
 
   const params = useMemo(() => {
     return [
@@ -30,7 +31,7 @@ const Profile: FC = () => {
               { name: 'Bubblemaps', icon: '/create/icon-tool-bubble-maps.png' },
               { name: 'GeckoTerminal', icon: '/create/icon-tool-gecko-terminal.png' },
             ].map((token) => (
-              <li key={token.name} className="flex items-center gap-x-1.5 h-8">
+              <li key={token.name} className="flex items-center gap-x-1.5 h-8 token_list_hover">
                 <img className="w-5 object-contain" src={token.icon} /> {token.name}
               </li>
             ))}
@@ -63,25 +64,44 @@ const Profile: FC = () => {
         formatValue: (value: string) => (
           <ul className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1">
             {idoQueueDetail?.twitter && (
-              <li className="h-8">
+              <li
+                className="h-8 token_list_hover"
+                onMouseOver={() => iconRefs.current['IconTwitterProject'].setHovered(true)}
+                onMouseLeave={() => iconRefs.current['IconTwitterProject'].setHovered(false)}
+              >
                 <a
                   href={`https://x.com/${idoQueueDetail?.twitter}`}
                   target="_blank"
                   className="flex items-center gap-x-1.5"
                 >
-                  <img className="w-5 object-contain" src="/create/social-twitter.png" />{' '}
+                  <IconTwitter
+                    ref={(ref) => (iconRefs.current['IconTwitterProject'] = ref)}
+                    color="#FFF"
+                    hoverColor="#07E993"
+                    className="w-[20px]"
+                  />{' '}
                   {idoQueueDetail?.twitter ?? ''}
                 </a>
               </li>
             )}
             {idoQueueDetail?.telegram && (
-              <li className="h-8">
+              <li
+                className="h-8 token_list_hover"
+                onMouseOver={() => iconRefs.current['IconTelegram'].setHovered(true)}
+                onMouseLeave={() => iconRefs.current['IconTelegram'].setHovered(false)}
+              >
                 <a
                   href={`https://t.me/${idoQueueDetail?.telegram}`}
                   target="_blank"
                   className="flex items-center gap-x-1.5"
                 >
-                  <img className="w-5 object-contain" src="/create/social-tg.png" /> {idoQueueDetail?.telegram ?? ''}
+                  <IconTelegram
+                    ref={(ref) => (iconRefs.current['IconTelegram'] = ref)}
+                    color="#FFF"
+                    hoverColor="#07E993"
+                    className="w-[20px]"
+                  />{' '}
+                  {idoQueueDetail?.telegram ?? ''}
                 </a>
               </li>
             )}
@@ -119,15 +139,24 @@ const Profile: FC = () => {
         key: 'Creator’s\nSocial Account',
         value: '',
         formatValue: (value: string) => (
-          <ul className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1">
+          <ul
+            className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1"
+            onMouseOver={() => iconRefs.current['IconTwitterCreator'].setHovered(true)}
+            onMouseLeave={() => iconRefs.current['IconTwitterCreator'].setHovered(false)}
+          >
             {idoQueueDetail?.creatorTwitter && (
-              <li className="flex items-center gap-x-1.5 h-8">
+              <li className="flex items-center gap-x-1.5 h-8 token_list_hover">
                 <a
                   href={`https://x.com/${idoQueueDetail?.creatorTwitter}`}
                   target="_blank"
                   className="flex items-center gap-x-1.5"
                 >
-                  <img className="w-5 object-contain" src="/create/social-twitter.png" />{' '}
+                  <IconTwitter
+                    ref={(ref) => (iconRefs.current['IconTwitterCreator'] = ref)}
+                    color="#FFF"
+                    hoverColor="#07E993"
+                    className="w-[20px]"
+                  />{' '}
                   {idoQueueDetail?.creatorTwitter}
                 </a>
               </li>
@@ -145,7 +174,8 @@ const Profile: FC = () => {
           <img className="w-10 h-10 object-cover" src="/create/icon-collect.png" />
         </li> */}
         <li>
-          <img className="w-10 h-10 object-cover" src="/create/icon-share.png" />
+          {/* <img className="w-10 h-10 object-cover" src="/create/icon-share.png" /> */}
+          <IconShare />
         </li>
         {/* <li>
           <img className="w-10 h-10 object-cover" src="/create/icon-more.png" />

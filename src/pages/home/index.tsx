@@ -169,7 +169,7 @@ const Home = () => {
         </div>
         <div className="content-revolution flex flex-col items-center py-[50px]">
           <img src="./img-revolution.png" alt="" className="w-[540px]" />
-          <p className="font-OCR font-bold text-[28px] leading-[30px] mt-5 mb-8">
+          <p className="font-OCR font-bold text-[28px] leading-[30px] mt-5 mb-8 text-[#FFF]">
             Revolutionizing the future of memecoins{' '}
           </p>
           <div className="grid grid-cols-3 gap-5">

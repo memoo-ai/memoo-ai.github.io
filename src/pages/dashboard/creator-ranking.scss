@@ -1,0 +1,116 @@
+.creator_ranking {
+  border-radius: 15px;
+  border: 1px solid #5d64a2;
+  background: #131522;
+  padding: 32px 22px 13px 22px;
+  background: url("./assets/creator-ranking-bg.png") no-repeat;
+  background-size: cover;
+}
+
+.creator_ranking_head {
+  border-bottom: 1px solid #5d64a2;
+  padding-bottom: 24px;
+  > span {
+    color: #7d83b5;
+    font-family: 'OCR A Extended';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 142.857% */
+    letter-spacing: -0.7px;
+  }
+}
+
+.creator_ranking_process {
+  gap: 11px;
+  > span {
+    color: #07e993;
+    text-align: right;
+    font-family: '404px';
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 111.111% */
+  }
+}
+
+.creator_ranking_memo_score {
+  position: relative;
+  .bot {
+    position: absolute;
+    top: -8px;
+    right: 7px;
+    width: 108px;
+    object-fit: contain;
+  }
+}
+
+.creator_ranking_process_detail {
+  padding-top: 24px;
+  h3 {
+    color: #07e993;
+    font-family: '404px';
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px; /* 88.889% */
+  }
+  .numerator {
+    color: #fff;
+    font-family: '404px';
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 26px;
+  }
+  .denominator {
+    color: #fff;
+    font-family: '404px';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%;
+  }
+}
+
+.creator_ranking_memo_score_bar {
+  .ant-progress-inner {
+    height: 15px;
+    border-radius: 180px;
+    background: #252841;
+  }
+  .ant-progress-bg {
+    height: 15px !important;
+    border-radius: 180px;
+    background: linear-gradient(90deg, #8d47ff 0.01%, #07e993 99.99%);
+  }
+}
+
+.consider {
+  color: #fff;
+  font-family: 'OCR A Extended';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 125% */
+  letter-spacing: -0.8px;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.intend {
+  > p {
+    color: #4a5082;
+    font-family: 'OCR A Extended';
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 11px; /* 110% */
+    letter-spacing: -0.5px;
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
+  .outlink {
+    width: 22px;
+  }
+}
