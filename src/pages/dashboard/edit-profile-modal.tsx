@@ -1,17 +1,7 @@
 import { Button, Checkbox, Input, Modal, message, Slider, Form, Upload } from 'antd';
 import { Children, FC, Fragment, ReactNode, cloneElement, isValidElement, useEffect, useState } from 'react';
 import './edit-profile-modal.scss';
-import {
-  PreLaunchDurationEnum,
-  saveTokenCraft,
-  confirmTokenCreate,
-  getTokenDetail,
-  checkTickerExists,
-  getTwitterAccessToken,
-  uploadFile,
-  saveEditInfo,
-  getTwitterClientId,
-} from '@/api/token';
+import { getTokenDetail, getTwitterAccessToken, uploadFile, saveEditInfo, getTwitterClientId } from '@/api/token';
 import qs from 'qs';
 import { Button as ConnectButton } from '@/components/ui/button';
 import { IconTwitter, IconUpload, IconWebsite } from '@/components/icons';
@@ -19,6 +9,9 @@ import { Trash } from 'lucide-react';
 import { REQUEST_FOLLOWING_STORAGE, UPDATE_PROJECT_TWITTER_STORAGE, EDIT_INFO_STORAGE } from '@/constants';
 import { useSearchParams } from 'react-router-dom';
 import { authorizeTwitter } from '@/utils';
+import { IconCopy } from '@/components/icons';
+import { handleCopy } from '@/utils';
+
 const FORM_STORAGE_KEY = 'create_token_storage';
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
@@ -212,7 +205,23 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
           <Form.Item
             label={
               <p className="flex items-end">
-                <span className="w-[113px] whitespace-normal">Project Description </span>
+                <span className="w-[113px] whitespace-normal">Username </span>
+                <span>*</span>
+              </p>
+            }
+            name="projectDescription"
+            rules={[{ required: true, message: 'Please input Project Description!' }]}
+          >
+            <Input
+              placeholder=""
+              style={{ resize: 'none', borderRadius: '7px' }}
+              className="text-[#fff] bg-[#2b526e]"
+            />
+          </Form.Item>
+          <Form.Item
+            label={
+              <p className="flex items-end">
+                <span className="w-[113px] whitespace-normal">Bio </span>
                 <span>*</span>
               </p>
             }
@@ -221,24 +230,106 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
           >
             <Input.TextArea
               showCount
-              maxLength={450}
+              maxLength={160}
               placeholder=""
-              style={{ height: 165, resize: 'none', borderRadius: '7px' }}
+              style={{ height: '87px', resize: 'none', borderRadius: '7px' }}
               className="text-[#fff] bg-[#2b526e]"
             />
           </Form.Item>
-          <Form.Item
-            label={
-              <p>
-                Project Twitter <span>*</span>
-              </p>
-            }
-          >
+          <div className="flex">
+            <Form.Item
+              label={<p>Profile Image</p>}
+              valuePropName="bannerList"
+              getValueFromEvent={normFile}
+              name="banners"
+            >
+              {projectBannerUrl ? (
+                <div className="project-url-container w-[125px]">
+                  <img src={projectBannerUrl} alt="" />
+                  <span className="icon-url-actions">
+                    <Trash size={16} onClick={handleRemove} />
+                  </span>
+                </div>
+              ) : (
+                <Upload
+                  listType="picture-card"
+                  accept="image/*"
+                  maxCount={1}
+                  beforeUpload={(file) => handleUpload(file)}
+                  showUploadList={{ showPreviewIcon: true, showRemoveIcon: false }}
+                  style={{ width: '125px', height: 140 }}
+                  className="edit-upload-banner"
+                  previewFile={(file) => {
+                    return new Promise((resolve) => {
+                      const reader = new FileReader();
+                      reader.readAsDataURL(file);
+                      reader.onload = () => {
+                        resolve(reader.result as string);
+                      };
+                    });
+                  }}
+                >
+                  <button style={{ border: 0, background: 'none' }} type="button">
+                    <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
+                      <IconUpload className="" />
+                      <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px] mt-[10px]">
+                        Upload Image
+                      </p>
+                    </div>
+                  </button>
+                </Upload>
+              )}
+            </Form.Item>
+            <Form.Item
+              label={<p>Profile Banner</p>}
+              valuePropName="bannerList"
+              getValueFromEvent={normFile}
+              name="banners"
+            >
+              {projectBannerUrl ? (
+                <div className="project-url-container">
+                  <img src={projectBannerUrl} alt="" />
+                  <span className="icon-url-actions">
+                    <Trash size={16} onClick={handleRemove} />
+                  </span>
+                </div>
+              ) : (
+                <Upload
+                  listType="picture-card"
+                  accept="image/*"
+                  maxCount={1}
+                  beforeUpload={(file) => handleUpload(file)}
+                  showUploadList={{ showPreviewIcon: true, showRemoveIcon: false }}
+                  style={{ width: '267px', height: 140 }}
+                  className="edit-upload-banner"
+                  previewFile={(file) => {
+                    return new Promise((resolve) => {
+                      const reader = new FileReader();
+                      reader.readAsDataURL(file);
+                      reader.onload = () => {
+                        resolve(reader.result as string);
+                      };
+                    });
+                  }}
+                >
+                  <button style={{ border: 0, background: 'none' }} type="button">
+                    <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
+                      <IconUpload className="" />
+                      <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px] mt-[10px]">
+                        Recommended 790px X 307px Max size: 50MB
+                      </p>
+                    </div>
+                  </button>
+                </Upload>
+              )}
+            </Form.Item>
+          </div>
+          <Form.Item label={<p>Twitter</p>}>
             <div className="flex items-center">
               <div style={{ width: '15px' }} className="mr-[7px]">
                 <IconTwitter hoverColor="#07E993" className="" />
               </div>
-              {twitter && <img src="/create/icon-authed.svg" />}(
+              {twitter && <img src="/create/icon-authed.svg" />}
               <ConnectButton variant="secondary" className="w-[136px] h-[32px]" onClick={connectTwitter}>
                 {!twitter ? 'CONNECT' : 'CHANGE'}
               </ConnectButton>
@@ -289,6 +380,10 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
           </Form.Item>
           <Form.Item label={<p className="edit-form-label">Website</p>} name="website">
             <Input maxLength={20} className="custom-input" />
+          </Form.Item>
+          <Form.Item label={<p className="edit-form-label">ID</p>} name="id">
+            <span>{form.getFieldValue('id')}</span>{' '}
+            <IconCopy className="" onClick={() => handleCopy(form.getFieldValue('id'))} />
           </Form.Item>
           {/* <Form.Item label={<p className="w-[113px] whitespace-normal edit-form-label">Creator’s Twitter</p>}>
             <div className="flex items-center">

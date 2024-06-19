@@ -1,0 +1,35 @@
+.view-token-ranking-modal{
+  border-radius: 15px;
+  .ant-modal-content{
+    border-radius: 15px !important;
+    background: #131522 !important;
+  }
+  .view-btn{
+    .ant-btn{
+      color: #19FDA6;
+      background: #B53BFF !important;
+      border: none;
+      display: flex;
+      justify-content: center;
+      border-radius: 7px !important;
+
+      span{
+        color: #19FDA6 !important;
+        font-family: '404px';
+        font-size: 14px;
+        font-weight: 800;
+        text-align: left;
+        line-height: 40px;
+      }
+
+      &:hover{
+        border-color: transparent!important;
+        background: #19FDA6 !important;
+        span{
+          color: #B53BFF !important;
+        }
+
+      }
+    }
+  }
+}

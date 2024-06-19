@@ -38,9 +38,8 @@
   position: relative;
   .bot {
     position: absolute;
-    top: -8px;
-    right: 7px;
-    width: 108px;
+    top: 45px;
+    right: 0;
     object-fit: contain;
   }
 }
@@ -48,7 +47,7 @@
 .creator_ranking_process_detail {
   padding-top: 24px;
   h3 {
-    color: #07e993;
+    color: #fff;
     font-family: '404px';
     font-size: 18px;
     font-style: normal;
@@ -70,6 +69,34 @@
     font-style: normal;
     font-weight: 400;
     line-height: 100%;
+  }
+  .creator_ranking_btn{
+    .ant-btn{
+      color: #19FDA6;
+      background: #B53BFF !important;
+      border: none;
+      display: flex;
+      justify-content: center;
+      border-radius: 7px !important;
+
+      span{
+        color: #19FDA6 !important;
+        font-family: '404px';
+        font-size: 14px;
+        font-weight: 800;
+        text-align: left;
+        line-height: 40px;
+      }
+
+      &:hover{
+        border-color: transparent!important;
+        background: #19FDA6 !important;
+        span{
+          color: #B53BFF !important;
+        }
+
+      }
+    }
   }
 }
 

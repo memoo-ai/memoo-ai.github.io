@@ -9,6 +9,7 @@ import ProfileContent from './profile-content';
 import ProfileBanner from './profile-banner';
 import CreatorRanking from './creator-ranking';
 import EditProfileModal from './edit-profile-modal';
+import TopPerformingToken from './top-performing-token';
 interface ProfileDetail {
   icon: string;
   banners: Array<string>;
@@ -20,6 +21,11 @@ interface ProfileDetail {
   id: string;
   website: string;
   twitter: string;
+  marketCap: string;
+  athMarketCap: string;
+  holders: string;
+  holdersGrowth: string;
+  ticker: string;
 }
 interface ProfileContext {
   profileDetail: ProfileDetail;
@@ -36,6 +42,11 @@ export const ProfileContext = createContext<ProfileContext>({
     id: '123',
     website: 'website',
     twitter: 'twitter',
+    marketCap: '630,581,973',
+    athMarketCap: '1,495,392,846',
+    holders: '684123135',
+    holdersGrowth: '+21%',
+    ticker: 'Tick',
   },
 });
 export const Profile = () => {
@@ -61,6 +72,11 @@ export const Profile = () => {
       id: '123',
       website: 'Memepower.org',
       twitter: 'twitter',
+      marketCap: '630,581,973',
+      athMarketCap: '1,495,392,846',
+      holders: '684123135',
+      holdersGrowth: '+21%',
+      ticker: 'Tick',
     });
   }, []);
   // const context: ProfileContext = useMemo(
@@ -87,6 +103,7 @@ export const Profile = () => {
       <div className="profile-layout mt-[30px]">
         <div className="profile-layout-left">
           <CreatorRanking />
+          <TopPerformingToken />
         </div>
         <div className="profile-layout-right">
           {/* <ProfileContext.Provider value={context}> */}

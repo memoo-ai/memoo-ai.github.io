@@ -2,7 +2,7 @@
 import { FC, useState, useMemo, useContext, useRef } from 'react';
 import './profile-content.scss';
 import { clipAddress, extractDomainName, formatTs, handleCopy } from '@/utils';
-import { IconCopy, IconTwitter, IconTip } from '@/components/icons';
+import { IconCopy, IconTwitter, IconTip, IconMore } from '@/components/icons';
 import { ProfileContext } from './profile';
 
 const ProfileContent: FC = () => {
@@ -143,9 +143,9 @@ const ProfileContent: FC = () => {
         <li>
           <img className="w-10 h-10 object-cover" src="/create/icon-share.png" />
         </li>
-        {/* <li>
-          <img className="w-10 h-10 object-cover" src="/create/icon-more.png" />
-        </li> */}
+        <li className="w-[40px] h-[40px] rounded-[7px] flex items-center justify-center bg-[#252841]">
+          <IconMore color="#5D64A2" />
+        </li>
       </ul>
       <div className="head">
         <h1 className="font-404px text-white leading-7 text-3xl">

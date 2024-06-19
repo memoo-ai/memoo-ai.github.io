@@ -1,0 +1,12 @@
+.creator-ranking-share-modal{
+  border-radius: 15px;
+  .ant-modal-content{
+    border-radius: 15px !important;
+  }
+  .creator-ranking-share-modal-content{
+    background: url('./assets/creator-ranking-bg.png') no-repeat;
+    background-size: cover ;
+    padding: 28px;
+    border-radius: 15px;
+  }
+}
