@@ -174,8 +174,8 @@ const Profile: FC = () => {
           <img className="w-10 h-10 object-cover" src="/create/icon-collect.png" />
         </li> */}
         <li>
-          {/* <img className="w-10 h-10 object-cover" src="/create/icon-share.png" /> */}
-          <IconShare />
+          <img className="w-10 h-10 object-cover" src="/create/icon-share.png" />
+          {/* <IconShare /> */}
         </li>
         {/* <li>
           <img className="w-10 h-10 object-cover" src="/create/icon-more.png" />

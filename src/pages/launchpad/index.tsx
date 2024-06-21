@@ -16,6 +16,8 @@ import { SectionListWithSeparator } from './sectionListWithSeparator';
 import { getLaunchpadAirdrop, getLaunchpadImo } from '@/api/launchpad';
 import { useNavigate } from 'react-router-dom';
 import { LaunchpadAirdrop, LaunchpadIMO } from '@/types';
+import HeaderBannerBg from './assets/header-banner-bg.png';
+
 type ColumnsType<T> = TableProps<T>['columns'];
 type TablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;
 type LaunchpadData = LaunchpadIMO | LaunchpadAirdrop;
@@ -76,7 +78,7 @@ export default function LaunchPad() {
     <div className="page pb-[70px]">
       {/* <AirDrop /> */}
       <div className="base-container">
-        <div className="header-banner-bg">
+        <div className="header-banner-bg" style={{ background: `url(${HeaderBannerBg}) no-repeat` }}>
           <div className="header-banner-content">
             <div className="header-banner-left flex  flex-col">
               <p className="left-text">

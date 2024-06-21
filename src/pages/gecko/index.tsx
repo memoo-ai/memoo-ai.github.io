@@ -11,6 +11,8 @@ import type { PaginationProps } from 'antd';
 import { SorterResult } from 'antd/es/table/interface';
 import { getTrendingTokens, getTopTokens } from '@/api/gecko';
 import { TrendingTokens } from '@/types';
+import HeaderBannerBg from './assets/header-banner-bg.png';
+
 type ColumnsType<T> = TableProps<T>['columns'];
 type TablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;
 
@@ -59,7 +61,7 @@ const Gecko = () => {
 
   return (
     <div className="page pb-[70px]">
-      <div className="gecko-header-banner-bg">
+      <div className="gecko-header-banner-bg" style={{ background: `url(${HeaderBannerBg}) no-repeat` }}>
         <div className="header-banner-content">
           <div className="header-banner-left flex  flex-col">
             <img className="mb-[49px] w-[680px] h-[144px]" src="./gecko/img-left-desc.png" alt="" />

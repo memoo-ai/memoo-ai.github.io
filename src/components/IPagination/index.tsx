@@ -20,6 +20,7 @@ const MyPagination = ({ total, currentPage, pageSize = 11, onChangePageNumber }:
   const handlePageChange = useCallback(
     (page: number) => {
       onChangePageNumber(page);
+      window.scrollTo({ top: 500, behavior: 'smooth' });
     },
     [onChangePageNumber],
   );

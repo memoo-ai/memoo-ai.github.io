@@ -1,4 +1,4 @@
-import { FC, useContext, useMemo } from 'react';
+import { FC, useContext, useMemo, useState } from 'react';
 import './imo-participate.scss';
 import Countdown from './countdown';
 import { Button, Popover } from 'antd';
@@ -9,6 +9,7 @@ import { formatDecimals } from '@/utils';
 
 const IMOParticipate: FC = () => {
   const { idoActiveDetail, idoQueueDetail } = useContext(AirdropContext);
+  const [ended, setEnded] = useState(false);
   console.log('idoActiveDetail?.endsIn:', idoActiveDetail?.endsIn);
   const params = useMemo(
     () => [
@@ -62,6 +63,9 @@ const IMOParticipate: FC = () => {
               </div>,
             ]}
             instant={(idoActiveDetail?.endsIn ?? 0) * 1000}
+            onEnded={(ended) => {
+              setEnded(ended);
+            }}
           />
           <p className="mt-3 text-white font-OCR leading-5 text-sm">Fair Distribution Policy</p>
           <p className="text-deep-green text-center font-OCR leading-14 text-xs">
@@ -85,7 +89,7 @@ const IMOParticipate: FC = () => {
         </ul>
         <ImoParticipationModal>
           <Button
-            disabled={disabled}
+            disabled={disabled || ended}
             className={classNames('mt-5 uppercase w-full participate_btn h-12 font–404px', {})}
           >
             participate
