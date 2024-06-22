@@ -34,15 +34,16 @@
 }
 
 .active {
-  color: #07E993;
+  // color: #07E993;
+  color: #8c31c8;;
   font-weight: 700;
   // background: #1F3B4F;
   // border: 1px solid #07E993;
 
   &:hover{
     // background: #07E993;
-    // color: #1f3b4f;
-    color: #8c31c8;
+    // color: #8c31c8;
+    color:  #07E993;
   }
 }
 .Create{

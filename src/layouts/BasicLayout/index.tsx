@@ -39,14 +39,17 @@ const BasicLayout: React.FC = () => {
       })();
     }
   }, [connected, signer]);
-
+  const whitelist = ['/', '/launchpad', '/gecko'];
   useEffect(() => {
-    if (location.pathname === '/') return;
+    (async () => {
+      // if (location.pathname === '/') return;
+      if (whitelist.includes(location.pathname)) return;
 
-    if (!localStorage.getItem(MEMOO_TOKEN_STORAGE)) {
-      loginMeme();
-      navigate('/');
-    }
+      if (!localStorage.getItem(MEMOO_TOKEN_STORAGE)) {
+        await loginMeme();
+        navigate('/');
+      }
+    })();
   }, [location]);
 
   return (

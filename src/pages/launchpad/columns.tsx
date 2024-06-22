@@ -41,15 +41,16 @@ export const columns = (navigate: (path: string) => void) => [
     title: 'Action',
     key: 'action',
     render: (record: LaunchpadIMO) => (
-      <Wallet>
-        <Button
-          variant="secondary"
-          className=" h-[50px] uppercase font-404px font-bold text-lg px-2"
-          onClick={() => navigate(`/airdrop/${record.ticker}`)}
-        >
-          PARTICIPATE
-        </Button>
-      </Wallet>
+      // <Wallet>
+
+      // </Wallet>
+      <Button
+        variant="secondary"
+        className=" h-[50px] uppercase font-404px font-bold text-lg px-2"
+        onClick={() => navigate(`/airdrop/${record.ticker}`)}
+      >
+        PARTICIPATE
+      </Button>
     ),
   },
 ];

@@ -10,6 +10,7 @@ import {
   rabbyWallet,
   metaMaskWallet,
   injectedWallet,
+  phantomWallet,
 } from '@rainbow-me/rainbowkit/wallets';
 export const BsquaredTestnet = defineChain({
   id: 1123,
@@ -48,6 +49,7 @@ const connectors = connectorsForWallets(
         // BinanceWallet,
         // rabbyWallet,
         metaMaskWallet,
+        phantomWallet,
         // walletConnectWallet,
       ],
     },

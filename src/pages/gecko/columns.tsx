@@ -76,8 +76,9 @@ export const columns = [
     sorter: true,
     render: (increase1H: number) => (
       <span className={`font-semibold text-lg ${increase1H < 0 ? 'text-red' : 'text-green'}`}>
-        {increase1H > 0 ? '+' : ''}
-        {increase1H * 100}%
+        {increase1H}
+        {/* {increase1H > 0 ? '+' : ''}
+        {increase1H * 100}% */}
       </span>
     ),
   },
@@ -88,8 +89,9 @@ export const columns = [
     sorter: true,
     render: (increase24H: number) => (
       <span className={`font-semibold text-lg ${increase24H < 0 ? 'text-red' : 'text-green'}`}>
-        {increase24H > 0 ? '+' : ''}
-        {increase24H * 100}%
+        {increase24H}
+        {/* {increase24H > 0 ? '+' : ''}
+        {increase24H * 100}% */}
       </span>
     ),
   },
@@ -104,6 +106,6 @@ export const columns = [
     title: 'Market Cap',
     dataIndex: 'marketCap',
     key: 'marketCap',
-    render: (marketCap: number) => <div className="font-semibold text-lg ">${marketCap}</div>,
+    render: (marketCap: number) => <div className="font-semibold text-lg ">${formatDecimals(marketCap)}</div>,
   },
 ];

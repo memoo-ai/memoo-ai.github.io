@@ -33,7 +33,9 @@ export default () => {
             key={index}
             target={item.target}
             className={({ isActive }) =>
-              `${styles.navItem} ${isActive ? styles.active : undefined} ${item.name === 'Create' ? styles.create : ''}`
+              `${styles.navItem} ${isActive && item.name !== 'Create' ? styles.active : undefined} ${
+                item.name === 'Create' ? styles.create : ''
+              }`
             }
           >
             {item.name}
