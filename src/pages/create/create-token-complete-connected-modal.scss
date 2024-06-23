@@ -1,0 +1,54 @@
+.create-token-complete-connected-modal{
+  border-radius: 15px;
+  .ant-modal-content{
+    border-radius: 15px !important;
+    background: #1F3B4F !important;
+  }
+  .create-token-complete-connected-modal-content{
+    .create-token-complete-connected-modal-content-title{
+      font-family: '404px';
+      font-size: 32px;
+      font-weight: 400;
+      line-height: 29px;
+      text-align: center;
+
+      background: linear-gradient(270deg, #14FCFB 0%, #07E993 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .create-token-complete-connected-modal-content-view{
+      padding: 17px 21px;
+      width: 100%;
+    }
+  }
+
+  .view-btn{
+    .ant-btn{
+      color: #19FDA6;
+      background: #B53BFF !important;
+      border: none;
+      display: flex;
+      justify-content: center;
+      border-radius: 7px !important;
+
+      span{
+        color: #19FDA6 !important;
+        font-family: '404px';
+        font-size: 14px;
+        font-weight: 800;
+        text-align: left;
+        line-height: 40px;
+      }
+
+      &:hover{
+        border-color: transparent!important;
+        background: #19FDA6 !important;
+        span{
+          color: #B53BFF !important;
+        }
+
+      }
+    }
+  }
+}

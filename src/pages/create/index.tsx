@@ -1,7 +1,7 @@
 import './index.scss';
 import BackButton from '@/components/BackButton';
 import { Button } from '@/components/ui/button';
-import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import {
   Cascader,
   Checkbox,
@@ -43,6 +43,7 @@ import { useAccount, useSwitchChain } from 'wagmi';
 import { formatDecimals, authorizeTwitter } from '@/utils';
 import BigNumber from 'bignumber.js';
 import { CHAIN_ID } from '@/constants';
+import CreatedTokenCompleteConnectedModal from './create-token-complete-connected-modal';
 
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
@@ -53,6 +54,17 @@ const PreLaunchDurationOptions = [
   { label: '1 day', value: PreLaunchDurationEnum['1DAY'] },
   { label: '3 days', value: PreLaunchDurationEnum['3DAYS'] },
 ];
+const CurrentProductDescriptions = [
+  'Tokenomics for Meme Tokens',
+  'Standardize Smart Contract Rails',
+  'Simplified IMO & LP Management',
+  'Fair Launch Policy',
+  'Fair Launch Smart Vesting',
+];
+
+interface CreatedTokenCompleteConnectedModalRef {
+  setOpen: (open: boolean) => void;
+}
 export default function Create() {
   const { address, chainId } = useAccount();
   const { switchChain } = useSwitchChain();
@@ -73,6 +85,8 @@ export default function Create() {
   console.log('memooConfig: ', memooConfig);
   const { getMemeAddressWithSymbol } = useMemeFactoryContract();
   const navigate = useNavigate();
+  const createdTokenRef = useRef<CreatedTokenCompleteConnectedModalRef>(null);
+
   const firstProportion = useMemo(() => Number(memooConfig?.allocation.creator) / 10000, [memooConfig]);
   const maxProportion = useMemo(() => Number(memooConfig?.idoCreatorBuyLimit) / 10000, [memooConfig]);
   const firstIncrease = useMemo(() => {
@@ -314,7 +328,10 @@ export default function Create() {
           localStorage.removeItem(FORM_STORAGE_KEY);
           message.success('Congratulations! Create meme successfully!');
           // Go to dashboard
-          navigate(`/airdrop/${res.data.Ticker}`);
+          // navigate(`/airdrop/${res.data.Ticker}`);
+          if (createdTokenRef?.current) {
+            createdTokenRef.current.setOpen(true);
+          }
         } else {
           setSaveCraftLoading(true);
           const res = await saveTokenCraft(data);
@@ -356,7 +373,7 @@ export default function Create() {
     setBannerUrl('');
   };
   return (
-    <div className="create_token">
+    <div className="create_token mb-[70px]">
       <div className="create_token_top">
         <div className="create_token_top_title">Create Token</div>
         <div className="create_token_top_back cursor-pointer">
@@ -456,7 +473,7 @@ export default function Create() {
               <Input.TextArea
                 showCount
                 maxLength={100}
-                placeholder="disable resize"
+                placeholder=""
                 style={{ height: 208, resize: 'none' }}
                 className="custom-create-textarea"
               />
@@ -592,9 +609,9 @@ export default function Create() {
 
           <div>
             <p className="create_fee_desc">
-              A platform Fee of {totalCap} ETH is applicable to facilitate your meme token creation. You will be
-              entitled to {firstProportion * 100}% supply of your meme token. The token will be distributed post TGE
-              after <span className="text-[#07E993]">‘fair conditions’</span> are met.{' '}
+              A platform Fee of {totalCap} ETH is applicable to facilitate your meme token creation. You will <br /> be
+              entitled to {firstProportion * 100}% supply of your meme token. The token will be distributed post <br />{' '}
+              TGE after <span className="text-[#07E993]">‘fair conditions’</span> are met.{' '}
               <span className="text-[#07E993]">Click here</span>
               for the tokenomics disclosures.
             </p>
@@ -631,9 +648,19 @@ export default function Create() {
             >
               {invalidChain ? 'Switch Chain' : 'Confirm'}
             </Button>
+            <CreatedTokenCompleteConnectedModal ref={createdTokenRef} data={form.getFieldsValue()} iconUrl={iconUrl} />
           </div>
         </div>
         <img src="./create/img-create-bg.png" alt="" className="create_token_bg" />
+      </div>
+      <div className="flex items-center mt-[76px] w-[100%] justify-center gap-[30px]">
+        {CurrentProductDescriptions.map((item) => {
+          return (
+            <span className="text-[12px] text-[#07E993] font-OCR hover:text-[#B53BFF]" key={item}>
+              {item}
+            </span>
+          );
+        })}
       </div>
     </div>
   );

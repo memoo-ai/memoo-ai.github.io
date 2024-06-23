@@ -218,6 +218,11 @@
 .ant-radio-group-solid {
   border: 1px solid #07E993 !important;
   border-radius: 5px;
+  padding: 2px;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: nowrap;
+  background: #1F3B4F;
 }
 
 .ant-radio-button-wrapper {
@@ -246,6 +251,14 @@
   border-inline-start: unset;
   border-radius: 5px;
   text-align: center;
+
+
+  &:hover{
+    background: #07E993;
+    span{
+      color:#A005FE;
+    }
+  }
 }
 
 .ant-radio-button-wrapper:not(:first-child)::before {
@@ -320,6 +333,13 @@
   text-align: right;
   bottom: 4px;
   right: 9px;
+}
+.ant-input-outlined.ant-input-status-error:not(.ant-input-disabled){
+  background: #1F3B4F ;
+
+  &:hover{
+    background: #1F3B4F ;
+  }
 }
 
 .ant-upload.ant-upload-select {
