@@ -46,7 +46,7 @@ export default function SwipeCard({ type = 'light', title, step, children }: IPr
   return (
     <div className={classnames('swipe-card', type === 'light' ? 'swipe-card-light' : 'swipe-card-dark')}>
       <div className="swipe-header w-full flex items-center justify-between">
-        <p className="title">{title}</p>
+        <p className="title font-404px">{title}</p>
         <div className="swipe-icons flex items-center">
           <IconSwipe
             className={`w-10 h-10 curose-pointer mr-3  ${leftDisabled ? 'cursor-not-allowed' : 'cursor-pointer'} `}
