@@ -60,8 +60,11 @@ const Gecko = () => {
   };
 
   return (
-    <div className="page pb-[70px]">
-      <div className="gecko-header-banner-bg" style={{ background: `url(${HeaderBannerBg}) no-repeat` }}>
+    <div className="page">
+      <div
+        className="gecko-header-banner-bg"
+        style={{ background: `url(${HeaderBannerBg}) no-repeat`, backgroundSize: 'cover' }}
+      >
         <div className="header-banner-content">
           <div className="header-banner-left flex  flex-col">
             <img className="mb-[49px] w-[680px] h-[144px]" src="./gecko/img-left-desc.png" alt="" />

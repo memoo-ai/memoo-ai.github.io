@@ -75,10 +75,13 @@ export default function LaunchPad() {
   };
 
   return (
-    <div className="page pb-[70px]">
+    <div className="page">
       {/* <AirDrop /> */}
       <div className="base-container">
-        <div className="header-banner-bg" style={{ background: `url(${HeaderBannerBg}) no-repeat` }}>
+        <div
+          className="header-banner-bg"
+          style={{ background: `url(${HeaderBannerBg}) no-repeat`, backgroundSize: 'cover' }}
+        >
           <div className="header-banner-content">
             <div className="header-banner-left flex  flex-col">
               <p className="left-text">

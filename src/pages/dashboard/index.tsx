@@ -132,7 +132,10 @@ const Dashboard = () => {
   );
   return (
     <div className="page">
-      <div className="dashboard-header-banner-bg" style={{ background: `url(${HeaderBannerBg})` }}>
+      <div
+        className="dashboard-header-banner-bg"
+        style={{ background: `url(${HeaderBannerBg}) no-repeat`, backgroundSize: 'cover' }}
+      >
         {/* <div className="header-banner-bg" style={{ background: `url(${commonBottom.bg})` }}> */}
         <div className="dashboard-header-banner-content">
           <div className="dashboard-header-banner-left flex  flex-col">
