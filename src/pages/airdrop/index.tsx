@@ -143,7 +143,7 @@ const Airdrop: FC = () => {
       try {
         setLoading(true);
         // For testin: BigEgg or NewCake
-        const { data } = await getIDOQueueDetail(ticker);
+        const { data } = await getIDOQueueDetail(ticker, address ? address : 'default');
         setIDOQueueDetail(data);
 
         if (data.stageTwoClaim) {
@@ -152,14 +152,19 @@ const Airdrop: FC = () => {
           setStage('1st-claim');
         } else if (data.status === 'Launched') {
           const [p1, p2] = await Promise.all([
-            getIDOLaunchedDetail(ticker),
-            getIDOLaunchedDetailTop10({ pageNumber: 1, pageSize: 10, ticker: ticker }),
+            getIDOLaunchedDetail(ticker, address ? address : 'default'),
+            getIDOLaunchedDetailTop10({
+              pageNumber: 1,
+              pageSize: 10,
+              ticker: ticker,
+              address: address ? address : 'default',
+            }),
           ]);
           setIDOLaunchedDetail(p1.data);
           setIDOLaunchedDetailTop10(p2.data);
           setStage('launch');
         } else if (data.status === 'IDO') {
-          const { data } = await getIDOActiveDetail(ticker);
+          const { data } = await getIDOActiveDetail(ticker, address ? address : 'default');
           setIDOActiveDetail(data);
           setStage('imo');
         } else {

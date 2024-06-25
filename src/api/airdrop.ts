@@ -9,26 +9,31 @@ import {
   AirdropDetail,
 } from '@/types';
 
-export const getIDOActiveDetail = (ticker: string) => {
-  return http.get<IDOActiveDetail>(`${prefix}/web-oriented/ido-active-detail`, { params: { ticker } });
+export const getIDOActiveDetail = (ticker: string, address?: string) => {
+  return http.get<IDOActiveDetail>(`${prefix}/web-unauthorized/ido-active-detail`, { params: { ticker, address } });
 };
 
 // export const getIDOCompleted = (params: { pageSize: number; pageNumber: number }) => {
 //   return http.get(`${prefix}/web-oriented/ido-completed`, { params });
 // };
 
-export const getIDOLaunchedDetail = (ticker: string) => {
-  return http.get<IDOLaunchedDetail>(`${prefix}/web-oriented/ido-launched-detail`, {
-    params: { ticker },
+export const getIDOLaunchedDetail = (ticker: string, address?: string) => {
+  return http.get<IDOLaunchedDetail>(`${prefix}/web-unauthorized/ido-launched-detail`, {
+    params: { ticker, address },
   });
 };
 
-export const getIDOLaunchedDetailTop10 = (params: { pageSize: number; pageNumber: number; ticker: string }) => {
-  return http.get<IDOLaunchedDetailTop10[]>(`${prefix}/web-oriented/ido-launched-detail-top10`, { params });
+export const getIDOLaunchedDetailTop10 = (params: {
+  pageSize: number;
+  pageNumber: number;
+  ticker: string;
+  address?: string;
+}) => {
+  return http.get<IDOLaunchedDetailTop10[]>(`${prefix}/web-unauthorized/ido-launched-detail-top10`, { params });
 };
 
-export const getIDOQueueDetail = (ticker: string) => {
-  return http.get<IDOQueueDetail>(`${prefix}/web-oriented/ido-queue-detail`, { params: { ticker } });
+export const getIDOQueueDetail = (ticker: string, address?: string) => {
+  return http.get<IDOQueueDetail>(`${prefix}/web-unauthorized/ido-queue-detail`, { params: { ticker, address } });
 };
 
 export const follow = (twitter: string) => {
