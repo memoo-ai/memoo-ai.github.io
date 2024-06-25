@@ -99,9 +99,9 @@ const Home = () => {
             </div>
             <div className="flex items-center gap-12 mt-[50px]">
               {/* <img src="./SVG/icon-twitter.svg" className="w-8 cursor-pointer" alt="" /> */}
-              <IconVector className="cursor-pointer w-8" />
-              <IconTwitter className="cursor-pointer w-8" />
-              <IconTelegram className="cursor-pointer w-8" />
+              <IconVector className="cursor-pointer w-[47.24px] h-[34px]" />
+              <IconTwitter className="cursor-pointer w-[40.24px] h-[33.92px]" />
+              <IconTelegram className="cursor-pointer w-[36.06px] h-[33.75px]" />
             </div>
           </div>
           <div className="content-banner-right items pt-[3rem]">

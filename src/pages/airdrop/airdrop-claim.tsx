@@ -183,14 +183,14 @@ export default function AirdropClaim() {
             <p
               className={classNames('leading-5 font-OCR whitespace-pre-wrap', {
                 'text-white': !item.followed,
-                'text-deep-green': item.followed,
+                'text-deep-green': item.followed || stage === 'imo',
               })}
             >
               Follow @{item.user}
               {'\n'}on twitter
             </p>
             <img
-              onClick={() => (item.followed ? null : handleFollow(item.user ? item.user : ''))}
+              onClick={() => (item.followed || stage === 'imo' ? null : handleFollow(item.user ? item.user : ''))}
               className={classNames('w-5', { 'cursor-pointer': !item.followed, 'opacity-30': item.followed })}
               src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
             />

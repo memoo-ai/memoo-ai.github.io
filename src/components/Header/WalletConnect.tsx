@@ -37,12 +37,12 @@ const opts = [
     type: 'Collector',
     icon: IconWalletContentCollector,
   },
-  {
-    name: 'WatchList',
-    path: '/dashboard',
-    type: 'WatchList',
-    icon: IconWalletContentWatchList,
-  },
+  // {
+  //   name: 'WatchList',
+  //   path: '/dashboard',
+  //   type: 'WatchList',
+  //   icon: IconWalletContentWatchList,
+  // },
 ];
 if (import.meta.env.MODE === 'development') {
   opts.unshift({
@@ -50,6 +50,13 @@ if (import.meta.env.MODE === 'development') {
     path: '/dashboard',
     type: 'Profile',
     icon: IconWalletContentProfile,
+  });
+
+  opts.push({
+    name: 'WatchList',
+    path: '/dashboard',
+    type: 'WatchList',
+    icon: IconWalletContentWatchList,
   });
 }
 const WalletConnect = () => {

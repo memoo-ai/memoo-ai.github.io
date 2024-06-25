@@ -338,8 +338,11 @@
   background: #1F3B4F ;
 
   &:hover{
-    background: #1F3B4F ;
+    background: #1F3B4F;
   }
+}
+.ant-input{
+  background: #1F3B4F !important;
 }
 
 .ant-upload.ant-upload-select {

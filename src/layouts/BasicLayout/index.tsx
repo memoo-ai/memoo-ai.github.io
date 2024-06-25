@@ -39,18 +39,18 @@ const BasicLayout: React.FC = () => {
       })();
     }
   }, [connected, signer]);
-  const whitelist = ['/', '/launchpad', '/gecko'];
-  useEffect(() => {
-    (async () => {
-      // if (location.pathname === '/') return;
-      if (whitelist.includes(location.pathname)) return;
+  // const whitelist = ['/', '/launchpad', '/gecko'];
+  // useEffect(() => {
+  //   (async () => {
+  //     // if (location.pathname === '/') return;
+  //     if (whitelist.includes(location.pathname)) return;
 
-      if (!localStorage.getItem(MEMOO_TOKEN_STORAGE)) {
-        await loginMeme();
-        navigate('/');
-      }
-    })();
-  }, [location]);
+  //     if (!localStorage.getItem(MEMOO_TOKEN_STORAGE)) {
+  //       await loginMeme();
+  //       navigate('/');
+  //     }
+  //   })();
+  // }, [location]);
 
   return (
     <div>

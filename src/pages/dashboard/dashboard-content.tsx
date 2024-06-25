@@ -38,17 +38,22 @@ const DashboardContent: FC<{ onChangeType: (type: string) => void }> = ({ onChan
       label: 'Collector',
       children: <Collector />,
     },
-    {
-      key: 'WatchList',
-      label: 'WatchList',
-      children: <WatchList />,
-    },
+    // {
+    //   key: 'WatchList',
+    //   label: 'WatchList',
+    //   children: <WatchList />,
+    // },
   ];
   if (import.meta.env.MODE === 'development') {
     items.unshift({
       key: 'Profile',
       label: 'Profile',
       children: <Profile />,
+    });
+    items.push({
+      key: 'WatchList',
+      label: 'WatchList',
+      children: <WatchList />,
     });
   }
 
