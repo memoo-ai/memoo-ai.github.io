@@ -14,6 +14,7 @@ export const useLogin = () => {
         address: address,
         message: data.msg,
         signature: data.rawSignature,
+        chain: 'Ethereum',
       });
       console.log(result);
       localStorage.setItem(MEMOO_TOKEN_STORAGE, result.data.token);

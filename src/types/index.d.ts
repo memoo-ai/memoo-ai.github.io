@@ -390,6 +390,7 @@ declare interface LoginParams {
   address: `0x${string}`;
   message: string;
   signature: string;
+  chain: 'Ethereum' | 'Solana';
 }
 declare interface LoginToken {
   expire: number;

@@ -107,7 +107,7 @@ const WalletConnect = () => {
                       openConnectModal();
                       setIsModalOpen(true);
                     }}
-                    className="wallet-border cursor-pointer hidden md:block text-center text-lg  md:h-[51px] px-6 md:bg-[#1F3B4F] md:text-[#07E993] font-bold font-404px"
+                    className="wallet-border cursor-pointer hidden md:block text-center text-lg  md:h-[51px] px-6 md:bg-[#1F3B4F] md:text-[#07E993] font-bold font-404px rounded-[7px]"
                   >
                     Connect Wallet
                     {isModalOpen && (
