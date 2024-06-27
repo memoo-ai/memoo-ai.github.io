@@ -19,7 +19,7 @@ export default function SwipeCard({ type = 'light', title, step, children }: IPr
       swipeContainerWidth.current = document.querySelector('.swipe-container')?.clientWidth || 0;
     }
   }, [children]);
-  const handleSwipeLeft = () => {
+  const handleSwipeRight = () => {
     // observe the last one in screen to stop swipe left;
     if (leftDisabled) return;
     setTranslateX(translateX - step);
@@ -33,7 +33,7 @@ export default function SwipeCard({ type = 'light', title, step, children }: IPr
     return swipeCardWidth.current - translateX > swipeContainerWidth.current;
   }, [translateX]);
 
-  const handleSwipeRight = () => {
+  const handleSwipeLeft = () => {
     if (translateX === 0) return;
     setTranslateX(translateX + step);
   };

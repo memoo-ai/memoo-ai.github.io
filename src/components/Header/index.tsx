@@ -1,8 +1,11 @@
 import { NavLink } from 'react-router-dom';
 import WalletConnect from './WalletConnect';
+import ConnectWallet from './connectWallet';
 import styles from './index.module.scss';
 import NavMenu from '@/components/NavMenu';
 import { IconMemoo } from '../icons';
+import { Button } from '@radix-ui/themes';
+import { useLogin } from '@/hooks/useLogin';
 // import { useState } from 'react';
 export interface MenuItem {
   name: string;
@@ -18,6 +21,7 @@ export const menus: MenuItem[] = [
 ];
 
 export default () => {
+  const { loginMeme } = useLogin();
   return (
     <header className={`${styles.header} flex justify-between items-center z-[999]`}>
       <div className="flex items-center  gap-[3rem]">
@@ -43,7 +47,10 @@ export default () => {
         ))}
       </div>
       <div className="flex items-center gap-[1rem]">
-        <WalletConnect />
+        {/* <Button onclick={loginMeme}> login</Button> */}
+        {/* <Wallet /> */}
+        {/* <WalletConnect /> */}
+        <ConnectWallet />
         <NavMenu menus={menus} />
       </div>
     </header>

@@ -39,7 +39,8 @@ import { useManageContract } from '@/hooks/useManageContract';
 import { parseEther, formatEther } from 'ethers';
 import { useMemeFactoryContract } from '@/hooks/useMemeFactoryContract';
 import { ZERO_ADDRESS } from '@/constants';
-import { useAccount, useSwitchChain } from 'wagmi';
+// import { useAccount, useSwitchChain } from 'wagmi';
+import { useAccount } from '@/hooks/useWeb3';
 import { formatDecimals, authorizeTwitter } from '@/utils';
 import BigNumber from 'bignumber.js';
 import { CHAIN_ID } from '@/constants';
@@ -66,8 +67,9 @@ interface CreatedTokenCompleteConnectedModalRef {
   setOpen: (open: boolean) => void;
 }
 export default function Create() {
-  const { address, chainId } = useAccount();
-  const { switchChain } = useSwitchChain();
+  // const { address, chainId } = useAccount();
+  const { address } = useAccount();
+  // const { switchChain } = useSwitchChain();
   const [searchParams] = useSearchParams();
   const [isAccept, setIsAccept] = useState(false);
   const [optionalOpen, setOptionalOpen] = useState(false);
@@ -124,9 +126,9 @@ export default function Create() {
     return e?.fileList;
   };
 
-  const invalidChain = useMemo(() => {
-    return chainId !== CHAIN_ID;
-  }, [chainId]);
+  // const invalidChain = useMemo(() => {
+  //   return chainId !== CHAIN_ID;
+  // }, [chainId]);
 
   const onFinish = (values: any) => {
     console.log('Received values of form: ', values);
@@ -285,10 +287,10 @@ export default function Create() {
         message.warning('Please connect wallet first.');
         return;
       }
-      if (invalidChain) {
-        switchChain({ chainId: Number(CHAIN_ID) });
-        return;
-      }
+      // if (invalidChain) {
+      //   switchChain({ chainId: Number(CHAIN_ID) });
+      //   return;
+      // }
       try {
         const data = form.getFieldsValue();
         const tokenAddress = await getMemeAddressWithSymbol(data.ticker);
@@ -354,8 +356,8 @@ export default function Create() {
     },
     [
       address,
-      invalidChain,
-      switchChain,
+      // invalidChain,
+      // switchChain,
       form,
       getMemeAddressWithSymbol,
       isAccept,
@@ -646,7 +648,8 @@ export default function Create() {
               onClick={() => handleSave(true)}
               loading={confirmLoading}
             >
-              {invalidChain ? 'Switch Chain' : 'Confirm'}
+              {/* {invalidChain ? 'Switch Chain' : 'Confirm'} */}
+              Confirm
             </Button>
             <CreatedTokenCompleteConnectedModal ref={createdTokenRef} data={form.getFieldsValue()} iconUrl={iconUrl} />
           </div>

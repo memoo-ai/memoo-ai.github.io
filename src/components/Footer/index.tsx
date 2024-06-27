@@ -19,7 +19,12 @@ const Footer: React.FC<FooterProps> = ({ children }) => {
         </div>
         <div className="flex items-center gap-6 mt-6">
           <IconVector className="cursor-pointer w-[47.24px] h-[34px]" />
-          <IconTwitter className="cursor-pointer w-[40.24px] h-[33.92px]" />
+          <IconTwitter
+            className="cursor-pointer w-[40.24px] h-[33.92px]"
+            onClick={() => {
+              window.open('https://x.com/MemooAI', '_blank');
+            }}
+          />
           <IconTelegram className="cursor-pointer w-[36.06px] h-[33.75px]" />
         </div>
       </div>

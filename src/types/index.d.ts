@@ -323,7 +323,7 @@ declare interface TrendingCreators {
   userName: string;
 }
 
-declare type Address = `0x${string}`;
+declare type Address = `0x${string}` | string;
 
 declare interface ProofRes {
   proof: string[];

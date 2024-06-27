@@ -75,8 +75,11 @@ const Gecko = () => {
           </div>
         </div>
       </div>
-      <div className="flex items-center justify-between my-[70px]">
+      <div className="flex items-center justify-between mt-[70px]">
         <p className="font-404px text-green font-normal text-[38px]">Token Ranking</p>
+      </div>
+      <div className="flex items-center justify-between mb-[70px]">
+        <div />
         <Tabs value={tab} onValueChange={(value) => setTab(value as GeckoType)}>
           <TabsList>
             <TabsTrigger value="trending">Trending</TabsTrigger>

@@ -8,7 +8,8 @@ import classNames from 'classnames';
 import './progress.scss';
 import IncreaseAcquisitionModal from './increase-acquisition-modal';
 import ClaimTokensModal from './claim-tokens-modal';
-import { useAccount } from 'wagmi';
+// import { useAccount } from 'wagmi';
+import { useAccount } from '@/hooks/useWeb3';
 import { compareAddrs, formatDecimals, formatNumberDecimal, formatRestTime } from '@/utils';
 import BigNumber from 'bignumber.js';
 

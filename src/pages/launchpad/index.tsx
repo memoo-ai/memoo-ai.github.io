@@ -145,7 +145,7 @@ export default function LaunchPad() {
         <CommonBanner
           title="Supercharge Your Meme Creation."
           desc="Create Your Very Own Meme Token Now."
-          link="/"
+          link="/create_token"
           linkText="BE A CREATOR"
         />
       </div>

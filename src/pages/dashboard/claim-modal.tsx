@@ -15,7 +15,8 @@ import {
   UnlockPeriod,
 } from '@/types';
 import { useManageContract } from '@/hooks/useManageContract';
-import { useAccount } from 'wagmi';
+// import { useAccount } from 'wagmi';
+import { useAccount } from '@/hooks/useWeb3';
 import { getIDOActiveDetail, getIDOLaunchedDetail, getIDOLaunchedDetailTop10, getIDOQueueDetail } from '@/api/airdrop';
 import { compareAddrs, formatDecimals, formatNumberDecimal } from '@/utils';
 
