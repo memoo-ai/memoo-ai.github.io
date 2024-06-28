@@ -38,7 +38,7 @@ const BasicLayout: React.FC = () => {
         window.location.reload();
       })();
     }
-  }, [connected, signer]);
+  }, [connected]);
   // const whitelist = ['/', '/launchpad', '/gecko'];
   // useEffect(() => {
   //   (async () => {
