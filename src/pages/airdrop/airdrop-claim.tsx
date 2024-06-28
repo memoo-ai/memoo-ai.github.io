@@ -58,7 +58,9 @@ export default function AirdropClaim() {
   }, [idoLaunchedDetail, idoActiveDetail, stage]);
 
   const showAirdropClaim = useMemo(() => {
-    return idoLaunchedDetail?.status === 'Launched' || idoLaunchedDetail?.status === 'IDO';
+    const idoStatus = idoLaunchedDetail?.status === 'Launched' || idoLaunchedDetail?.status === 'IDO';
+    const taskCompleted = idoQueueDetail?.projectTwitterBind && idoQueueDetail?.platformTwitterBind;
+    return idoStatus && taskCompleted;
   }, [idoLaunchedDetail, idoActiveDetail, stage]);
 
   const airdropUnlocked = useMemo(() => stage === 'launch' || stage === '1st-claim' || stage === '2st-claim', [stage]);
