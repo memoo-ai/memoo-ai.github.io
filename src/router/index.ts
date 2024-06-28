@@ -7,11 +7,11 @@ const routeConfig: RouteObject[] = [
     Component: lazy(() => import('../layouts/BasicLayout')),
     children: [
       {
-        path: '/',
+        path: '/home',
         Component: lazy(() => import('../pages/home')),
       },
       {
-        path: '/gecko',
+        path: '/',
         Component: lazy(() => import('../pages/gecko')),
       },
       {
