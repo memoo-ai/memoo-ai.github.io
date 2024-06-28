@@ -21,6 +21,8 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import '@solana/wallet-adapter-react-ui/styles.css';
 import { SolanaPortalTop, SolanaPortalBottom } from '@/components/SolanaPortal';
+import WalletLogo from '@/assets/imgs/wallet-logo.png';
+import Wallet from '@/components/SolanaWallet';
 
 // const explorerURL = import.meta.env.VITE_EXPLORER_URL;
 const opts = [
@@ -72,6 +74,7 @@ const ConnectWallet = () => {
   const onDisconnect = async () => {
     await provider.disconnect();
     localStorage.removeItem(MEMOO_TOKEN_STORAGE);
+    window.location.reload();
   };
   const { connected, publicKey } = useWallet();
 
@@ -90,7 +93,7 @@ const ConnectWallet = () => {
       {connected ? (
         <div className="flex items-center">
           {connected && (
-            <div className=" wallet-border flex items-center justify-center w-[164px] h-[46px] bg-[#1F3B4F] rounded-lg mr-4 font-404px font-bold text-[#07E993] text-lg">
+            <div className=" wallet-border flex items-center justify-center w-[192px] h-[46px] bg-[#1F3B4F] rounded-lg mr-[12px] font-404px font-bold text-[#07E993] text-lg">
               {address}
             </div>
           )}
@@ -139,20 +142,16 @@ const ConnectWallet = () => {
           </DropdownMenu.Root>
         </div>
       ) : (
-        <div onClick={() => setUpdatePortal((count) => count + 1)}>
+        <div className="wallet_button_border" onClick={() => setUpdatePortal((count) => count + 1)}>
+          {/* <Wallet>Connect Wallet</Wallet> */}
           <WalletMultiButton className="w-[192px]">
             Connect Wallet
-            {
-              <SolanaPortalTop updatePortal={updatePortal}>
-                {/* <div className="w-[366px] flex justify-end ">
-                <IconClose className="" onClick={() => setIsModalOpen(false)} />
-              </div> */}
-                <div className="flex items-center flex-column justify-center mt-[25px] ">
-                  <img className="w-[142.11px] " src="./walletContent/wallet-logo.png" alt="" />
-                </div>
-                <div className="connect-to-memoo text-center mb-[21px]">Connect to MeMoo</div>
-              </SolanaPortalTop>
-            }
+            <SolanaPortalTop updatePortal={updatePortal}>
+              <div className="flex items-center flex-column justify-center mt-[25px] ">
+                <img className="w-[142.11px] h-[167.2px]" src={WalletLogo} alt="" />
+              </div>
+              <div className="connect-to-memoo text-center mb-[21px]">Connect to MeMoo</div>
+            </SolanaPortalTop>
             <SolanaPortalBottom updatePortal={updatePortal}>
               <div className="flex w-[366px] justify-between mt-[10px]">
                 <p className=" font-OCR text-[#ffffff] text-[10px] text-left">

@@ -34,7 +34,7 @@ background-clip: text;
   font-family: '404px' !important;
   font-size: 16px !important;
   color: #07D788 !important;
-  border: 1px solid #07D788 !important;
+  // border: 1px solid #07D788 !important;
   border-radius: 7px !important;
 
   .wallet-adapter-button-start-icon{
@@ -97,4 +97,8 @@ background-clip: text;
 }
 .wallet-adapter-modal-list-more{
   display: none !important;
+}
+.wallet_button_border{
+  border: 1px solid #07D788 !important;
+  border-radius: 7px !important;
 }

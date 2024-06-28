@@ -10,8 +10,11 @@ export const useAccount = () => {
       address: publicKey?.toBase58(),
     };
   }
-
   return {
-    address,
+    address: null,
   };
+
+  // return {
+  //   address,
+  // };
 };
