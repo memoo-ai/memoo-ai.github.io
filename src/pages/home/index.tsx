@@ -2,6 +2,7 @@ import './index.scss';
 import { Button } from '@/components/ui/button';
 import { IconTwitter, IconTelegram, IconVector } from '@/components/icons';
 import { useNavigate } from 'react-router-dom';
+import Wallet from '@/components/Wallet';
 const Revolutions = [
   {
     title: (
@@ -99,7 +100,9 @@ const Home = () => {
             </div>
             <div className="flex items-center gap-12 mt-[50px]">
               {/* <img src="./SVG/icon-twitter.svg" className="w-8 cursor-pointer" alt="" /> */}
-              <IconVector className="cursor-pointer w-[47.24px] h-[34px]" />
+              <Wallet>
+                <IconVector className="cursor-pointer w-[47.24px] h-[34px]" />
+              </Wallet>
               <IconTwitter
                 className="cursor-pointer w-[40.24px] h-[33.92px]"
                 onClick={() => {

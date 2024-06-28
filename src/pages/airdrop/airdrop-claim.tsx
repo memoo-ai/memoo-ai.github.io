@@ -12,6 +12,9 @@ import { getTwitterClientId, requestTwitterFollow } from '@/api/token';
 import { authorizeTwitter } from '@/utils';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import BigNumber from 'bignumber.js';
+import { IconWallet } from '@/components/icons';
+import Wallet from '@/components/Wallet';
+import { useAccount } from 'wagmi';
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
 let isRequestFollowing = false;
 export default function AirdropClaim() {
@@ -20,7 +23,7 @@ export default function AirdropClaim() {
   const [following, setFollowing] = useState(false);
   const [searchParams] = useSearchParams();
   const [confirming, setConfirming] = useState(false);
-
+  const { address } = useAccount();
   const follows = useMemo(
     () => [
       { user: idoQueueDetail?.twitter, link: '', followed: idoQueueDetail?.projectTwitterBind },
@@ -182,18 +185,23 @@ export default function AirdropClaim() {
           <li key={index} className="follow_list_item flex items-center w-full justify-between px-3 py-3.5">
             <p
               className={classNames('leading-5 font-OCR whitespace-pre-wrap', {
-                'text-white': !item.followed,
+                'text-white': !item.followed && stage !== 'imo',
                 'text-deep-green': item.followed || stage === 'imo',
               })}
             >
               Follow @{item.user}
               {'\n'}on twitter
             </p>
-            <img
-              onClick={() => (item.followed || stage === 'imo' ? null : handleFollow(item.user ? item.user : ''))}
-              className={classNames('w-5', { 'cursor-pointer': !item.followed, 'opacity-30': item.followed })}
-              src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
-            />
+            <Wallet>
+              <img
+                onClick={() => (item.followed || stage === 'imo' ? null : handleFollow(item.user ? item.user : ''))}
+                className={classNames('w-5', {
+                  'cursor-pointer': !item.followed,
+                  'opacity-30': item.followed || stage === 'imo',
+                })}
+                src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
+              />
+            </Wallet>
           </li>
         ))}
         {/* <li className="follow_list_item flex items-center w-full justify-between px-3 py-3.5" onClick={testAirdrop} /> */}
@@ -221,6 +229,12 @@ export default function AirdropClaim() {
             </p>
           </div>
         ))}
+      {!address && (
+        <div className="flex flex-col items-center mt-[29px]">
+          <IconWallet className="" />
+          <h5 className="font-OCR text-[14px] text-[#fff] line-[20px]">Connect wallet to access</h5>
+        </div>
+      )}
 
       <AirdropClaimModal>
         <Button
