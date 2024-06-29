@@ -12,7 +12,14 @@ import { SorterResult } from 'antd/es/table/interface';
 import { getTrendingTokens, getTopTokens } from '@/api/gecko';
 import { TrendingTokens } from '@/types';
 import HeaderBannerBg from './assets/header-banner-bg.png';
-
+import BannerBox from '@/components/BannerBox';
+import GeckoBannerBg from '@/assets/imgs/gecko-banner-bg.png';
+import MemooGeckoIcon from '@/assets/imgs/memoogecko.png';
+import AirdropsIcon from '@/assets/imgs/airdrops.png';
+import CreateTokensIcon from '@/assets/imgs/create-token.png';
+import LaunchpadIcon from '@/assets/imgs/launchpad.png';
+import BannerRightBox from '@/components/BannerRightBox';
+import { IconHorn } from '@/components/icons';
 type ColumnsType<T> = TableProps<T>['columns'];
 type TablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;
 
@@ -22,6 +29,26 @@ interface TableParams {
 }
 
 export type GeckoType = 'trending' | 'top';
+
+const banners = [
+  {
+    icon: MemooGeckoIcon,
+    text: 'Memoogecko',
+  },
+  {
+    icon: AirdropsIcon,
+    text: 'Airdrops',
+  },
+  {
+    icon: CreateTokensIcon,
+    text: 'Create Tokens',
+  },
+  {
+    icon: LaunchpadIcon,
+    text: 'Launchpad',
+  },
+];
+
 const Gecko = () => {
   const navigate = useNavigate();
   const [tab, setTab] = useState<GeckoType>('trending');
@@ -75,6 +102,38 @@ const Gecko = () => {
           </div>
         </div>
       </div>
+      <div className="flex justify-between mt-[21px]">
+        <div className="w-[835px] h-[469px]">
+          <BannerBox background={GeckoBannerBg} title="MEMOOGECKO">
+            <div className="pt-[60px] flex items-center flex-col">
+              <img className="w-[159px] h-[159px]" src="/logo.svg" alt="" />
+              <h3 className="font-Kitty mt-[13px] banner-title text-[40px]">Welcome to Memoo.</h3>
+              <h3 className="font-Kitty mt-[13px] banner-title text-[40px]">Trade, Hunt, Create, Launch.</h3>
+              <div className="flex items-center justify-center gap-[41px]">
+                {banners.map((banner) => {
+                  return (
+                    <div className="flex flex-col font-404px items-center justify-center" key={banner.text}>
+                      <img className="w-[106px] h-[100px]" src={banner.icon} alt="" />
+                      <p className="text-[16px] text-[#fff] font-OCR">{banner.text}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </BannerBox>
+        </div>
+        <div className="w-[406px] h-[470px]">
+          <BannerRightBox title="POWERED ON">
+            <div className="flex flex-col items-center w-[338px]">
+              <div className="flex justify-center items-center w-[100%]">
+                <IconHorn className="mr-[7px]" />
+                <span className="font-404px text-[16px] text-green">LIVE DEGEN ACTIVITY</span>
+              </div>
+            </div>
+          </BannerRightBox>
+        </div>
+      </div>
+
       <div className="flex items-center justify-between mt-[70px]">
         <p className="font-404px text-green font-normal text-[38px]">Token Ranking</p>
       </div>
