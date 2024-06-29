@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import ConnectModalPortal from './connectModalPortal';
 import ConnectModalPortalTop from './connectModalPortalTop';
 import { MEMOO_TOKEN_STORAGE } from '@/constants';
+import WalletLogo from '@/assets/imgs/wallet-logo.png';
 // const explorerURL = import.meta.env.VITE_EXPLORER_URL;
 const opts = [
   // {
@@ -117,7 +118,7 @@ const WalletConnect = () => {
                         }}
                       >
                         <div className="flex items-center flex-column justify-center mt-[-30px]">
-                          <img className="w-[142.11px] " src="./walletContent/wallet-logo.png" alt="" />
+                          <img className="w-[142.11px] " src={WalletLogo} alt="" />
                         </div>
                         <div className="connect-to-memoo text-center">Connect to MeMoo</div>
                       </ConnectModalPortalTop>
