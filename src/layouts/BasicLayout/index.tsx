@@ -9,9 +9,11 @@ import isMobile from 'is-mobile';
 import { useEthersSigner } from '@/hooks/useEthers';
 import { useAccountEffect } from 'wagmi';
 import { useLogin } from '@/hooks/useLogin';
-import { MEMOO_TOKEN_STORAGE } from '@/constants';
+import { MEMOO_TOKEN_STORAGE, SOL_DEMO_SPL_USDC } from '@/constants';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { usePhantom } from '@/hooks/useSolana';
+import useSPLToken from '@/utils/solanaWeb3/slpToken';
+import { PublicKey } from '@solana/web3.js';
 
 const BasicLayout: React.FC = () => {
   const signer = useEthersSigner({ chainId: Number(import.meta.env.VITE_NODE_CHAIN_ID) });
@@ -30,6 +32,8 @@ const BasicLayout: React.FC = () => {
   //     window.location.reload();
   //   },
   // });
+  const { balance } = useSPLToken(new PublicKey(SOL_DEMO_SPL_USDC));
+  console.log('USDC balance on testnet', balance?.toNumber());
 
   useEffect(() => {
     if (connected && !localStorage.getItem(MEMOO_TOKEN_STORAGE)) {
