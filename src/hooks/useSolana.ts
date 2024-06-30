@@ -32,6 +32,8 @@ export const usePhantom = () => {
     }
   };
   useEffect(() => {
+    if (!provider) return;
+
     // Store user's public key once they connect
     provider.on('connect', (publicKey: any) => {
       console.log('connect: ', publicKey);
