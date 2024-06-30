@@ -7,6 +7,7 @@ export const CHAIN_ID = Number(chainId);
 
 export const ZERO_ADDRESS = `0x${String(0).repeat(40)}`;
 export const zeroBN = new BigNumber(0);
+export const ZERO = zeroBN;
 export const DEFAULT_IDO_LIMIT = 100;
 
 export const REQUEST_FOLLOWING_STORAGE = 'REQUEST_FOLLOWING_STORAGE';
