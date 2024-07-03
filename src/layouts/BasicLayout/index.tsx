@@ -14,7 +14,6 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { usePhantom } from '@/hooks/useSolana';
 import useSPLToken from '@/utils/solanaWeb3/slpToken';
 import { PublicKey } from '@solana/web3.js';
-
 const BasicLayout: React.FC = () => {
   const signer = useEthersSigner({ chainId: Number(import.meta.env.VITE_NODE_CHAIN_ID) });
   // const [connected, setConnected] = useState(false);
@@ -42,12 +41,13 @@ const BasicLayout: React.FC = () => {
         // const msg = String(Date.now());
         // const rawSignature = await signer.signMessage(msg);
         // console.log('rawSignature', rawSignature);
+        console.log('loginMeme');
         // // TODO
         await loginMeme();
         window.location.reload();
       })();
     }
-  }, [connected, signer]);
+  }, [connected]);
   // const whitelist = ['/', '/launchpad', '/gecko'];
   // useEffect(() => {
   //   (async () => {

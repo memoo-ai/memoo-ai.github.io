@@ -57,3 +57,43 @@
     color: #1f3b4f;
   }
 }
+.search{
+  border: 1px solid #07E993;
+  position: relative;
+  width: 339px;
+  .searchResult{
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: calc(100% + 26px);
+    border: 1px solid #07E993;
+  }
+}
+.searchIcon{
+  border: 1px solid #07E993;
+  width: 46px !important;
+}
+.searchInput{
+
+  border: none;
+  padding: 0 10px;
+  color: #fff !important;
+
+
+  &::placeholder{
+    color: #fff !important;
+  }
+
+  &:focus{
+    outline: none;
+    box-shadow: none;
+  }
+
+
+}
+.noData{
+  padding: 23px 15px !important;
+  text-wrap: nowrap;
+  line-height: 20px;
+}
+

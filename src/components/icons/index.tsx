@@ -1172,3 +1172,43 @@ export const IconHorn = forwardRef(
     );
   },
 );
+export const IconSearch = forwardRef(
+  ({ className, hoverColor = '#1F3B4F', color = '#07E993', ...rest }: IconProps, ref) => {
+    const [hovered, setHovered] = useState(false);
+    useImperativeHandle(ref, () => ({
+      setHovered,
+    }));
+    return (
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clipPath="url(#clip0_1757_1236)">
+          <path
+            d="M21.1251 10.5614C21.1251 12.8924 20.3685 15.0446 19.0944 16.7916L25.5236 23.2243C26.1583 23.8589 26.1583 24.8891 25.5236 25.5237C24.8889 26.1582 23.8585 26.1582 23.2238 25.5237L16.7947 19.0909C15.0473 20.3711 12.8947 21.1212 10.5633 21.1212C4.7277 21.1212 0 16.3944 0 10.5614C0 4.72842 4.7277 0 10.5633 0C16.399 0 21.1267 4.72684 21.1267 10.5614H21.1251ZM10.5633 17.8724C14.6025 17.8724 17.8757 14.5983 17.8757 10.5614C17.8757 6.52453 14.601 3.2504 10.5633 3.2504C6.52572 3.2504 3.25099 6.52453 3.25099 10.5614C3.25099 14.5983 6.52572 17.8724 10.5633 17.8724Z"
+            fill="#07E993"
+          />
+        </g>
+        <defs>
+          <clipPath id="clip0_1757_1236">
+            <rect width="26" height="26" fill="white" />
+          </clipPath>
+        </defs>
+      </svg>
+    );
+  },
+);
+export const IconClear = forwardRef(
+  ({ className, hoverColor = '#1F3B4F', color = '#07E993', ...rest }: IconProps, ref) => {
+    const [hovered, setHovered] = useState(false);
+    useImperativeHandle(ref, () => ({
+      setHovered,
+    }));
+    return (
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="22" height="22" rx="5" fill="#2B526E" />
+        <path
+          d="M13.1523 8.0625L9.15625 14.8535C9.09375 14.9551 8.99414 15.0059 8.85742 15.0059C8.72852 15.0059 8.60742 14.9629 8.49414 14.877C8.38477 14.7871 8.33008 14.6738 8.33008 14.5371C8.33008 14.416 8.36914 14.2871 8.44727 14.1504L12.4434 7.36523C12.5098 7.25977 12.6133 7.20703 12.7539 7.20703C12.8789 7.20703 12.9961 7.25 13.1055 7.33594C13.2188 7.41797 13.2754 7.52734 13.2754 7.66406C13.2754 7.79297 13.2344 7.92578 13.1523 8.0625Z"
+          fill="#07E993"
+        />
+      </svg>
+    );
+  },
+);

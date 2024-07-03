@@ -15,7 +15,6 @@ import './connectWallet.scss';
 import { useRef, useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MEMOO_TOKEN_STORAGE } from '@/constants';
-import { usePhantom } from '@/hooks/useSolana';
 import { useLogin } from '@/hooks/useLogin';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
@@ -67,16 +66,17 @@ if (import.meta.env.MODE === 'development') {
   });
 }
 const ConnectWallet = () => {
-  const { provider } = usePhantom();
   const navigate = useNavigate();
   const iconRefs = useRef<any>({});
   const [updatePortal, setUpdatePortal] = useState(0);
+
+  const { connected, publicKey, disconnect } = useWallet();
+
   const onDisconnect = async () => {
-    await provider.disconnect();
+    await disconnect();
     localStorage.removeItem(MEMOO_TOKEN_STORAGE);
     window.location.reload();
   };
-  const { connected, publicKey } = useWallet();
 
   useEffect(() => {
     if (!connected) return;
