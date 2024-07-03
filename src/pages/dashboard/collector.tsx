@@ -12,10 +12,20 @@ import {
 import AirdropModal from './airdrop-modal';
 import GoLaunchPadACard from './go-launchpad-card';
 import { useNavigate } from 'react-router-dom';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, createContext, useMemo } from 'react';
 import { getCollectorAirdrop, getCollectorParticipated } from '@/api/dashboard';
 import { CollectorType } from './type';
-import { DashboardCollectorItem, DashboardCollectorParticipated, DashboardCollectorAirdrop } from '@/types';
+import { IDOLaunchedDetail, DashboardCollectorParticipated, DashboardCollectorAirdrop } from '@/types';
+import { getIDOQueueDetail, getIDOLaunchedDetail } from '@/api/airdrop';
+import { useAccount } from 'wagmi';
+
+interface CollectorContext {
+  idoLaunchedDetail?: IDOLaunchedDetail;
+  ticker?: string;
+}
+export const CollectorContext = createContext<CollectorContext>({
+  ticker: '',
+});
 
 const pageSize = 11;
 export const Collector = () => {
@@ -27,6 +37,16 @@ export const Collector = () => {
   const iconRefs = useRef<any>({});
   // const [list, setList] = useState<DashboardCollectorItem[]>([]);
   const [list, setList] = useState<DashboardCollectorParticipated[] | DashboardCollectorAirdrop[]>([]);
+  const [idoLaunchedDetail, setIdoLaunchedDetail] = useState<IDOLaunchedDetail>();
+  const { address } = useAccount();
+
+  const context: CollectorContext = useMemo(
+    () => ({
+      idoLaunchedDetail,
+    }),
+    [idoLaunchedDetail],
+  );
+
   useEffect(() => {
     (async () => {
       try {
@@ -46,6 +66,19 @@ export const Collector = () => {
       }
     })();
   }, [tab, currentPage]);
+
+  const getLaunchedDetail = async (ticker: string) => {
+    try {
+      setLoading(true);
+      const { data } = await getIDOLaunchedDetail(ticker, address ? address : 'default');
+      setIdoLaunchedDetail(data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="dashboard_items">
@@ -75,49 +108,54 @@ export const Collector = () => {
       <div className="dashboard_items_items">
         <GoLaunchPadACard />
         <Spin spinning={loading} fullscreen />
-        {list.map((item, index) => {
-          return (
-            <Card key={index} data={item}>
-              <div className="flex justify-between items-center mt-[15px]">
-                {tab === 'Airdrop' ? (
-                  <div>
-                    {item && 'claimFlag' in item && item?.claimFlag ? (
-                      <AirdropModal ticker={item.ticker}>
-                        {' '}
-                        <Button
-                          className="flex items-center justify-between collector-btn"
-                          key="increase"
-                          onMouseOver={() => iconRefs.current['AirdropBtn'].setHovered(true)}
-                          onMouseLeave={() => iconRefs.current['AirdropBtn'].setHovered(false)}
-                          disabled={!item.claimFlag}
-                        >
-                          <IconAirdropBtn
-                            className="IconAirdropBtn"
-                            color="#07E993"
-                            ref={(ref) => (iconRefs.current['AirdropBtn'] = ref)}
-                          />
-                          <span className="ml-[9px]">CLAIM AIRDROP</span>
-                        </Button>
-                      </AirdropModal>
-                    ) : (
-                      <div className="flex">
-                        <IconAwaiting className="IconAwaiting" />{' '}
-                        <span className="font-404px text-[#07E993] ml-[11px]">AWAITING</span>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <div className="font-OCR text-[#7D83B5]">Contributed</div>
-                )}
-                {tab === 'Airdrop' ? (
-                  <div />
-                ) : (
-                  <div className="font-OCR text-[#ffffff]">{'contributed' in item ? item?.contributed : ''}</div>
-                )}
-              </div>
-            </Card>
-          );
-        })}
+        <CollectorContext.Provider value={context}>
+          {list.map((item, index) => {
+            return (
+              <Card key={index} data={item}>
+                <div className="flex justify-between items-center mt-[15px]">
+                  {tab === 'Airdrop' ? (
+                    <div>
+                      {item && 'claimFlag' in item && item?.claimFlag ? (
+                        <AirdropModal ticker={item.ticker}>
+                          {' '}
+                          <Button
+                            className="flex items-center justify-between collector-btn"
+                            key="increase"
+                            onMouseOver={() => iconRefs.current['AirdropBtn'].setHovered(true)}
+                            onMouseLeave={() => iconRefs.current['AirdropBtn'].setHovered(false)}
+                            disabled={!item.claimFlag}
+                            onClick={() => {
+                              getLaunchedDetail(item.ticker);
+                            }}
+                          >
+                            <IconAirdropBtn
+                              className="IconAirdropBtn"
+                              color="#07E993"
+                              ref={(ref) => (iconRefs.current['AirdropBtn'] = ref)}
+                            />
+                            <span className="ml-[9px]">CLAIM AIRDROP</span>
+                          </Button>
+                        </AirdropModal>
+                      ) : (
+                        <div className="flex">
+                          <IconAwaiting className="IconAwaiting" />{' '}
+                          <span className="font-404px text-[#07E993] ml-[11px]">AWAITING</span>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="font-OCR text-[#7D83B5]">Contributed</div>
+                  )}
+                  {tab === 'Airdrop' ? (
+                    <div />
+                  ) : (
+                    <div className="font-OCR text-[#ffffff]">{'contributed' in item ? item?.contributed : ''}</div>
+                  )}
+                </div>
+              </Card>
+            );
+          })}
+        </CollectorContext.Provider>
       </div>
       <div className="mt-[60px]">
         <IPagination

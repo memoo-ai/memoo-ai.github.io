@@ -11,11 +11,11 @@ const routeConfig: RouteObject[] = [
         Component: lazy(() => import('../pages/home')),
       },
       {
-        path: '/',
+        path: '/gecko',
         Component: lazy(() => import('../pages/gecko')),
       },
       {
-        path: '/launchpad',
+        path: '/',
         Component: lazy(() => import('../pages/launchpad')),
       },
       {

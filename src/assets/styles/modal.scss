@@ -15,10 +15,10 @@
     font-weight: 400;
     line-height: 29px; /* 120.833% */
 
-    background: linear-gradient(90deg, #07e993 1.89%, #14fcfb 97%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    background: linear-gradient(90deg, #07e993 1.89%, #14fcfb 97%) !important;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
   }
   .ant-modal-close .anticon svg path {
     fill: #07e993;

@@ -15,6 +15,7 @@ import BigNumber from 'bignumber.js';
 import { IconWallet } from '@/components/icons';
 import Wallet from '@/components/Wallet';
 import { useAccount } from 'wagmi';
+import ITooltip from '@/components/ITooltip';
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
 let isRequestFollowing = false;
 export default function AirdropClaim() {
@@ -163,7 +164,15 @@ export default function AirdropClaim() {
         <h3 className="flex items-center gap-x-2 font-404px text-green text text-lg">
           airdrop{' '}
           <Popover>
-            <img src="/create/tip.png" />
+            {/* <img src="/create/tip.png" /> */}
+            <ITooltip
+              title="Lorem ipsum dolor sit amet consectetur adipiscing elit.
+                Morbi fringilla ipsum turpisı sit amet tempus est malesuadased.
+                Integer fringilla magnavel orci ultricies fermentum.
+                Suspendisse sem est."
+              color="#fff"
+              bgColor="#396D93"
+            />
           </Popover>
         </h3>
         {doingTask && <span className="endsin font-OCR text-white">Ends in</span>}
@@ -241,7 +250,7 @@ export default function AirdropClaim() {
       <AirdropClaimModal>
         <Button
           disabled={!idoQueueDetail?.claimFlag}
-          className={classNames('uppercase w-full claim_btn h-12 font–404px', {
+          className={classNames('uppercase w-full claim_btn h-12 font–404px mt-5', {
             'mt-20': doingTask,
             'mt-5': airdropUnlocking || airdropUnlocked,
           })}

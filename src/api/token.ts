@@ -45,7 +45,7 @@ export const saveTokenCraft = (data: ITokenSaveData) => {
   if (!data.preMarketAcquisition) {
     data.preMarketAcquisition = 0;
   }
-  return http.post(`${prefix}/web-unauthorized/token`, data);
+  return http.post(`${prefix}/web-oriented/token`, data);
 };
 
 export const uploadFile = (file: File): Promise<ApiResponse<{ file: string; fileUrl: string }>> => {

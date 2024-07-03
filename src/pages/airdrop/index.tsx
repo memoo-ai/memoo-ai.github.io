@@ -31,6 +31,7 @@ import EditProjectModal from './edit-project-modal';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { REQUEST_FOLLOWING_STORAGE, UPDATE_PROJECT_TWITTER_STORAGE } from '@/constants';
 import { IconEdit, IconBack } from '@/components/icons';
+import { getMeMemo } from '@/api/common';
 
 interface AirdropContext {
   stage: TokenCreateStage;
@@ -59,6 +60,7 @@ interface AirdropContext {
     unlockCount: BigNumber;
     unlockInfo: UnlockPeriod;
   };
+  totalPurchased?: string;
 }
 
 export const AirdropContext = createContext<AirdropContext>({
@@ -89,6 +91,7 @@ const Airdrop: FC = () => {
     unlockCount: BigNumber;
     unlockInfo: UnlockPeriod;
   }>();
+  const [totalPurchased, setTotalPurchased] = useState('0');
   const { config, idoBuy, unlockMeme, defaultConfig, airdropClaim, getCanUnlockCount, memeUnlockPeriods } =
     useManageContract();
   const navigate = useNavigate();
@@ -118,6 +121,7 @@ const Airdrop: FC = () => {
       _2ndStage,
       defaultConfig,
       triggerRefresh,
+      totalPurchased,
     }),
     [
       stage,
@@ -135,6 +139,7 @@ const Airdrop: FC = () => {
       _2ndStage,
       defaultConfig,
       triggerRefresh,
+      totalPurchased,
     ],
   );
 
@@ -146,6 +151,8 @@ const Airdrop: FC = () => {
         const { data } = await getIDOQueueDetail(ticker, address ? address : 'default');
         setIDOQueueDetail(data);
 
+        const { data: meme } = await getMeMemo(ticker);
+        setTotalPurchased(meme[0].balance);
         if (data.stageTwoClaim) {
           setStage('2st-claim');
         } else if (data.stageOneClaim) {

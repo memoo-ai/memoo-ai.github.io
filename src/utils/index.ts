@@ -194,3 +194,6 @@ export function formatRestTime(timestamp: number) {
     return seconds + ' seconds';
   }
 }
+export function getNumberOrDefault(value: any): number {
+  return !isNaN(Number(value)) ? Number(value) : 0;
+}

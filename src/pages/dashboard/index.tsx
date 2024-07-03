@@ -99,7 +99,7 @@ const Dashboard = () => {
           setCommonBanner({
             title: 'Don’t Miss Out on Airdrops.',
             desc: 'Your Chance to Score Free Meme Treasures.',
-            link: '/launchpad',
+            link: '/',
             linkText: 'LAUNCHPAD',
           });
           break;

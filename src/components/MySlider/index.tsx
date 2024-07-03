@@ -9,6 +9,7 @@ interface MySliderProps {
   step?: number;
   value?: number;
   defaultValue?: number;
+  isPercent?: boolean;
   onChange?: (value: number) => void;
 }
 

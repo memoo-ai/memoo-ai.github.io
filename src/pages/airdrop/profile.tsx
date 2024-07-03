@@ -1,13 +1,25 @@
 /* eslint-disable react/no-unstable-nested-components */
-import { FC, useContext, useMemo, useRef } from 'react';
+import { FC, useContext, useMemo, useRef, useEffect } from 'react';
 import './profile.scss';
 import { AirdropContext } from '.';
 import { clipAddress, extractDomainName, formatTs, handleCopy } from '@/utils';
 import { IconCopy, IconTwitter, IconTelegram, IconShare } from '@/components/icons';
+import { getToolsUrls } from '@/api/common';
 
 const Profile: FC = () => {
   const { idoQueueDetail } = useContext(AirdropContext);
   const iconRefs = useRef<any>({});
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await getToolsUrls();
+        console.log(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    })();
+  }, [idoQueueDetail]);
 
   const params = useMemo(() => {
     return [
@@ -24,7 +36,8 @@ const Profile: FC = () => {
           </label>
         ),
         formatValue: (value: string) => (
-          <ul className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1">
+          <ul className=" flex flex-wrap col-span-6 gap-y-1.5 gap-x-1">
+            {/* <ul className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1"> */}
             {[
               { name: 'De.Fi Scanner', icon: '/create/icon-tool-defi-scanner.png' },
               { name: 'DEX Screener', icon: '/create/icon-tool-dex-screener.png' },
@@ -32,7 +45,7 @@ const Profile: FC = () => {
               { name: 'GeckoTerminal', icon: '/create/icon-tool-gecko-terminal.png' },
             ].map((token) => (
               <li key={token.name} className="flex items-center gap-x-1.5 h-8 token_list_hover">
-                <img className="w-5 object-contain" src={token.icon} /> {token.name}
+                {/* <img className="w-5 object-contain" src={token.icon} /> {token.name} */}
               </li>
             ))}
           </ul>
@@ -47,12 +60,17 @@ const Profile: FC = () => {
         key: 'Project Website',
         value: '',
         formatValue: (value: string) => (
-          <ul className={`${idoQueueDetail?.website ? 'token_list' : ''}flex flex-wrap col-span-6 gap-y-1.5 gap-x-1`}>
-            {idoQueueDetail?.website && (
-              <li className="h-8 cursor-pointer">
+          <ul className={`${idoQueueDetail?.website ? 'token_list' : ''} flex flex-wrap col-span-6 gap-y-1.5 gap-x-1`}>
+            {idoQueueDetail?.website ? (
+              <li className="h-8 cursor-pointer token_list_hover">
                 <a href={idoQueueDetail?.website} target="_blank" className="flex items-center gap-x-1.5">
                   {extractDomainName(idoQueueDetail?.website ?? '')}
                 </a>
+              </li>
+            ) : (
+              <li className="flex items-center gap-x-1.5 h-8">
+                {' '}
+                <span className="col-span-6 text-white font-OCR leading-5">NA</span>
               </li>
             )}
           </ul>
@@ -140,11 +158,13 @@ const Profile: FC = () => {
         value: '',
         formatValue: (value: string) => (
           <ul
-            className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1"
+            className={`${
+              idoQueueDetail?.creatorTwitter ? 'token_list' : ''
+            } flex flex-wrap col-span-6 gap-y-1.5 gap-x-1`}
             onMouseOver={() => iconRefs.current['IconTwitterCreator'].setHovered(true)}
             onMouseLeave={() => iconRefs.current['IconTwitterCreator'].setHovered(false)}
           >
-            {idoQueueDetail?.creatorTwitter && (
+            {idoQueueDetail?.creatorTwitter ? (
               <li className="flex items-center gap-x-1.5 h-8 token_list_hover">
                 <a
                   href={`https://x.com/${idoQueueDetail?.creatorTwitter}`}
@@ -159,6 +179,11 @@ const Profile: FC = () => {
                   />{' '}
                   {idoQueueDetail?.creatorTwitter}
                 </a>
+              </li>
+            ) : (
+              <li className="flex items-center gap-x-1.5 h-8">
+                {' '}
+                <span className="col-span-6 text-white font-OCR leading-5">NA</span>
               </li>
             )}
           </ul>

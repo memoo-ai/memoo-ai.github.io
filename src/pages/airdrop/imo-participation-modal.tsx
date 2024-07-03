@@ -17,6 +17,7 @@ import { AirdropContext } from '.';
 import BigNumber from 'bignumber.js';
 import { formatDecimals } from '@/utils';
 import { DEFAULT_IDO_LIMIT, zeroBN } from '@/constants';
+import ITooltip from '@/components/ITooltip';
 
 const grades = [1 / 4, 1 / 2, 1];
 
@@ -98,7 +99,17 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
           <div className="flex justify-between items-start">
             <div className="flex items-center gap-x-3">
               <span className="text-white font-OCR text-base leading-[18px]">Contribute</span>
-              <img src="/create/tip.png" />
+              <ITooltip
+                className="h-[12px] "
+                placement="bottom"
+                title={`${
+                  (Number(formatDecimals(capped)) / 7) * 6
+                } ETH will be used to create liquidity pair while${Number(
+                  Number(formatDecimals(capped)) / 7,
+                )}  ETH is collected as IMO platform fee.`}
+                color="#fff"
+                bgColor="#396D93"
+              />
             </div>
             <p className="whitespace-pre font-OCR text-white text-base leading-[18px]">{`Total IDO raise is always\ncapped at ${formatDecimals(
               capped,

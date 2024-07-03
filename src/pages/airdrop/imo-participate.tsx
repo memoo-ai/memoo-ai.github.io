@@ -1,11 +1,12 @@
 import { FC, useContext, useMemo, useState } from 'react';
 import './imo-participate.scss';
 import Countdown from './countdown';
-import { Button, Popover } from 'antd';
+import { Button } from 'antd';
 import classNames from 'classnames';
 import { AirdropContext } from '.';
 import ImoParticipationModal from './imo-participation-modal';
 import { formatDecimals } from '@/utils';
+import ITooltip from '@/components/ITooltip';
 
 const IMOParticipate: FC = () => {
   const { idoActiveDetail, idoQueueDetail } = useContext(AirdropContext);
@@ -19,11 +20,15 @@ const IMOParticipate: FC = () => {
         tip: null,
       },
       // { key: 'Price', value: `$${Number(idoActiveDetail?.price).toLocaleString() ?? 0}`, tip: null },
-      { key: 'Total Raised', value: `${idoActiveDetail?.totalRaised ?? 'NA/NA'} ETH`, tip: '1' },
+      {
+        key: 'Total Raised',
+        value: `${idoActiveDetail?.totalRaised === '' ? 0 : idoActiveDetail?.totalRaised ?? 'NA/NA'} ETH`,
+        tip: 'Total IMO raise is always capped \n at 2.33 ETH',
+      },
       {
         key: 'Contributed',
         value: `${idoQueueDetail?.contributed ?? 'NA'}/${idoQueueDetail?.maxContributed ?? 'NA'} ETH`,
-        tip: '1',
+        tip: 'Contributed per wallet \n is capped at 0.066 ETH',
       },
     ],
     [idoActiveDetail, idoQueueDetail],
@@ -78,9 +83,7 @@ const IMOParticipate: FC = () => {
               <label className="text-white text-xs font-OCR leading-4 flex items-center gap-x-1.5">
                 {item.key}{' '}
                 {item.tip && (
-                  <Popover content={item.tip}>
-                    <img src="/create/tip.png" />
-                  </Popover>
+                  <ITooltip className="h-[12px] " placement="bottom" title={item.tip} color="#fff" bgColor="#396D93" />
                 )}
               </label>
               <var className="text-white text-lg font-OCR leading-5">{item.value}</var>
