@@ -1,15 +1,20 @@
 /* eslint-disable react/no-unstable-nested-components */
-import { FC, useContext, useMemo, useRef, useEffect } from 'react';
+import { FC, useContext, useMemo, useRef, useEffect, useState } from 'react';
 import './profile.scss';
 import { AirdropContext } from '.';
 import { clipAddress, extractDomainName, formatTs, handleCopy } from '@/utils';
-import { IconCopy, IconTwitter, IconTelegram, IconShare } from '@/components/icons';
+import { IconCopy, IconTwitter, IconTelegram, IconShare, IconFacebook } from '@/components/icons';
 import { getToolsUrls } from '@/api/common';
 
 const Profile: FC = () => {
   const { idoQueueDetail } = useContext(AirdropContext);
   const iconRefs = useRef<any>({});
+  const [showShare, setShowShare] = useState(false);
+  const shareText = 'From The Ultimate Memecoin Infrastructure.';
 
+  const shareUrl = useMemo(() => {
+    return `${import.meta.env.VITE_SHARE_URI}airdrop/${idoQueueDetail?.ticker}`;
+  }, [idoQueueDetail]);
   useEffect(() => {
     (async () => {
       try {
@@ -198,9 +203,38 @@ const Profile: FC = () => {
         {/* <li>
           <img className="w-10 h-10 object-cover" src="/create/icon-collect.png" />
         </li> */}
-        <li>
+        <li className="profile-share" onMouseMove={() => setShowShare(true)} onMouseLeave={() => setShowShare(false)}>
           <img className="w-10 h-10 object-cover" src="/create/icon-share.png" />
-          {/* <IconShare /> */}
+          {showShare && (
+            <div className="profile-share-content pt-2">
+              <ul className="content flex items-center justify-center gap-[11px]">
+                <a
+                  className="rounded-[7px] bg-[#07E993] w-[40px] h-[40px] p-[10px] flex justify-center items-center"
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                    shareText,
+                  )}&url=${encodeURIComponent(shareUrl)}`}
+                >
+                  <IconTwitter color="#1F3B4F" className="cursor-pointer " />
+                </a>
+                <a
+                  className="rounded-[7px] bg-[#07E993] w-[40px] h-[40px] p-[10px] flex justify-center items-center"
+                  href={`https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(
+                    shareText,
+                  )}`}
+                >
+                  <IconTelegram color="#1F3B4F" className="cursor-pointer " />
+                </a>
+                <a
+                  className="rounded-[7px] bg-[#07E993] w-[40px] h-[40px] p-[10px] flex justify-center items-center"
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                    shareUrl,
+                  )}&quote=${encodeURIComponent(shareText)}`}
+                >
+                  <IconFacebook color="#1F3B4F" className="cursor-pointer " />
+                </a>
+              </ul>
+            </div>
+          )}
         </li>
         {/* <li>
           <img className="w-10 h-10 object-cover" src="/create/icon-more.png" />

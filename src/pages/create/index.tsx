@@ -545,7 +545,7 @@ export default function Create() {
             >
               <MySlider
                 defaultValue={preMarketAcquisition}
-                min={firstProportion}
+                min={0}
                 max={maxProportion}
                 // min={firstProportion}
                 // max={100}
