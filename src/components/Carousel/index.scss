@@ -1,0 +1,35 @@
+.carousel-container {
+  overflow: hidden;
+  position: relative;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 40px;
+  background: #312145;
+  margin-left: 50%;
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+
+
+.carousel-track{
+  display: inline-flex;
+  animation: scroll 30s linear infinite;
+}
+
+.carousel-item {
+  flex: 0 0 auto;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.carousel-container:hover .carousel-track {
+  animation-play-state: paused;
+}

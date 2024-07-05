@@ -11,12 +11,21 @@ import type { GetProp, TableProps } from 'antd';
 import IPagination from '@/components/IPagination';
 import type { PaginationProps } from 'antd';
 import { BrowserRouter as Router, useLocation } from 'react-router-dom';
-import { AirDrop } from './airDrop';
+import Carousel from './Carousel';
 import { SectionListWithSeparator } from './sectionListWithSeparator';
 import { getLaunchpadAirdrop, getLaunchpadImo } from '@/api/launchpad';
 import { useNavigate } from 'react-router-dom';
 import { LaunchpadAirdrop, LaunchpadIMO } from '@/types';
 import HeaderBannerBg from './assets/header-banner-bg.png';
+import BannerRightBox from '@/components/BannerRightBox';
+import BannerBox from '@/components/BannerBox';
+import GeckoBannerBg from '@/assets/imgs/gecko-banner-bg.png';
+import MemooGeckoIcon from '@/assets/imgs/memoogecko.png';
+import AirdropsIcon from '@/assets/imgs/airdrops.png';
+import CreateTokensIcon from '@/assets/imgs/create-token.png';
+import LaunchpadIcon from '@/assets/imgs/launchpad.png';
+import { IconHorn } from '@/components/icons';
+import { getRandomColor } from '@/utils';
 
 type ColumnsType<T> = TableProps<T>['columns'];
 type TablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;
@@ -73,12 +82,86 @@ export default function LaunchPad() {
   const handleTableChange: TableProps['onChange'] = (pagination, filters, sorter) => {
     setSorters(sorter);
   };
+  const banners = [
+    {
+      icon: MemooGeckoIcon,
+      text: 'Memoogecko',
+    },
+    {
+      icon: AirdropsIcon,
+      text: 'Airdrops',
+    },
+    {
+      icon: CreateTokensIcon,
+      text: 'Create Tokens',
+    },
+    {
+      icon: LaunchpadIcon,
+      text: 'Launchpad',
+    },
+  ];
+  const generateRandomTokenName = () => {
+    const tokenNames = ['BTC', 'ETH', 'XRP', 'LTC', 'ADA'];
+    return tokenNames[Math.floor(Math.random() * tokenNames.length)];
+  };
+
+  const list = new Array(5).fill(undefined).map((_, i) => ({
+    id: i,
+    address: 'Rg7GG...kf9Lj7' + i,
+    tokenName: generateRandomTokenName(),
+    ticker: 'Tick',
+  }));
 
   return (
     <div className="page">
-      {/* <AirDrop /> */}
       <div className="base-container">
-        <div
+        <Carousel />
+        <div className="flex justify-between mt-[21px]">
+          <div className="w-[835px] h-[469px]">
+            <BannerBox background={GeckoBannerBg} title="MEMOOGECKO">
+              <div className="pt-[60px] flex items-center flex-col">
+                <img className="w-[159px] h-[159px]" src="/logo.svg" alt="" />
+                <h3 className="font-Kitty mt-[13px] banner-title text-[40px]">Welcome to Memoo.</h3>
+                <h3 className="font-Kitty mt-[13px] banner-title text-[40px]">Trade, Hunt, Create, Launch.</h3>
+                <div className="flex items-center justify-center gap-[41px]">
+                  {banners.map((banner) => {
+                    return (
+                      <div className="flex flex-col font-404px items-center justify-center" key={banner.text}>
+                        <img className="w-[106px] h-[100px]" src={banner.icon} alt="" />
+                        <p className="text-[16px] text-[#fff] font-OCR">{banner.text}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </BannerBox>
+          </div>
+          <div className="w-[406px] h-[470px]">
+            <BannerRightBox title="POWERED ON">
+              <div className="flex flex-col items-center w-[338px]">
+                <div className="flex justify-center items-center w-[100%] mb-[11px]">
+                  <IconHorn className="mr-[7px]" />
+                  <span className="font-404px text-[16px] text-green">LIVE DEGEN ACTIVITY</span>
+                </div>
+                {list.map((item) => {
+                  return (
+                    <div
+                      className="w-[100%] bg-[#2B526E] rounded-sm mb-[2px] px-[9px] py-[6px] flex items-center  cursor-pointer"
+                      key={item.id}
+                      onClick={() => navigate(`/airdrop/${item.ticker}`)}
+                    >
+                      <img className="w-[30px]" src="./temp/1.png" alt="" />{' '}
+                      <span className="font-404px ml-[5px] text-[#fff] text-[12px]" style={{ color: getRandomColor() }}>
+                        {item.address}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </BannerRightBox>
+          </div>
+        </div>
+        {/* <div
           className="header-banner-bg"
           style={{ background: `url(${HeaderBannerBg}) no-repeat`, backgroundSize: 'cover' }}
         >
@@ -94,7 +177,7 @@ export default function LaunchPad() {
               <img className="w-[363px] h-[392px]" src="./dashboard/img-banner-right.png" alt="" />
             </div>
           </div>
-        </div>
+        </div> */}
         <div className="flex items-center justify-between my-[70px]">
           <Tabs
             value={tab}

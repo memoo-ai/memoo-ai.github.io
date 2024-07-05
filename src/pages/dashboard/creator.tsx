@@ -91,7 +91,10 @@ export const Creator = () => {
     const idoPriceBN = new BigNumber(Number(defaultConfig?.idoPrice)).dividedBy(10 ** defaultConfig?.defaultDecimals);
     return parseFloat(formatDecimals(totalPurchasedBN.multipliedBy(idoPriceBN)));
   }, [memooConfig, defaultConfig, totalPurchased]);
-  const maxProportion = useMemo(() => Number(memooConfig?.idoCreatorBuyLimit) / 10000, [memooConfig]);
+  const maxProportion = useMemo(
+    () => (Number(memooConfig?.idoCreatorBuyLimit) + Number(memooConfig?.allocation.creator)) / 10000,
+    [memooConfig],
+  );
   const firstIncrease = useMemo(() => {
     if (!memooConfig || !defaultConfig) return 0;
     const totalSupplyBN = new BigNumber(Number(defaultConfig?.totalSupply)).dividedBy(

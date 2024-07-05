@@ -30,7 +30,10 @@ const Progress: FC = () => {
     return parseFloat(formatDecimals(totalPurchasedBN.multipliedBy(idoPriceBN)));
   }, [memooConfig, defaultConfig, totalPurchased]);
 
-  const maxProportion = useMemo(() => Number(memooConfig?.idoCreatorBuyLimit) / 10000, [memooConfig]);
+  const maxProportion = useMemo(
+    () => (Number(memooConfig?.idoCreatorBuyLimit) + Number(memooConfig?.allocation.creator)) / 10000,
+    [memooConfig],
+  );
 
   const firstIncrease = useMemo(() => {
     if (!memooConfig || !defaultConfig) return 0;

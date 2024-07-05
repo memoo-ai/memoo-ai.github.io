@@ -197,3 +197,10 @@ export function formatRestTime(timestamp: number) {
 export function getNumberOrDefault(value: any): number {
   return !isNaN(Number(value)) ? Number(value) : 0;
 }
+export function getRandomColor() {
+  const minBrightness = 50;
+  const maxBrightness = 90;
+  const randomBrightness = minBrightness + Math.random() * (maxBrightness - minBrightness);
+  const randomColor = `hsl(${Math.random() * 360}, 100%, ${randomBrightness}%)`;
+  return randomColor;
+}
