@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import './index.scss';
 import { getRandomColor } from '@/utils';
 import { useNavigate } from 'react-router-dom';
+import { getCrossDirection } from '@/api/common';
 
 export const Carousel = () => {
   const [list, setList] = useState<any>([]);

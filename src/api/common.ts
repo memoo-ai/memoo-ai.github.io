@@ -9,3 +9,10 @@ export const getMeMemo = (ticker: string) => {
 export const getToolsUrls = () => {
   return http.get<getMeMeme[]>(`${prefix}/web-unauthorized/tools`);
 };
+
+export const getCrossDirection = () => {
+  return http.get<getMeMeme[]>(`${prefix}/web-unauthorized/cross-direction`);
+};
+export const getCrowdsourcing = () => {
+  return http.get<getMeMeme[]>(`${prefix}/web-unauthorized/crowdsourcing`);
+};

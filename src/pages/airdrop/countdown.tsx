@@ -7,7 +7,8 @@ const Countdown: FC<{
   instant: number;
   onEnded?: (ended: boolean) => void;
   format?: (timeFragments: number[]) => (string | ReactNode)[];
-}> = ({ instant, onEnded, format, className }) => {
+  symbol?: string;
+}> = ({ instant, onEnded, format, className, symbol = ':' }) => {
   const [update, setUpdate] = useState(0);
 
   const remainingTime = useMemo(() => {
@@ -62,7 +63,7 @@ const Countdown: FC<{
       {remainingTime.map((time, index) => (
         <Fragment key={index}>
           <span className="timefragments text-lg text-white font-404px">{time}</span>
-          {index < remainingTime.length - 1 && <span className="splitor text-lg text-white font-404px">:</span>}
+          {index < remainingTime.length - 1 && <span className="splitor text-lg text-white font-404px">{symbol}</span>}
         </Fragment>
       ))}
     </div>

@@ -60,7 +60,7 @@ const IMOParticipate: FC = () => {
               </div>,
               <div key="minutes">
                 <time>{minutes}</time>
-                <span>H</span>
+                <span>M</span>
               </div>,
               <div key="seconds">
                 <time>{seconds}</time>

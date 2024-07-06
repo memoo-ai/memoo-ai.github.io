@@ -11,7 +11,8 @@ import type { GetProp, TableProps } from 'antd';
 import IPagination from '@/components/IPagination';
 import type { PaginationProps } from 'antd';
 import { BrowserRouter as Router, useLocation } from 'react-router-dom';
-import Carousel from './Carousel';
+import Carousel from '@/components/Carousel';
+import CarouselColumn from '@/components/CarouselColumn';
 import { SectionListWithSeparator } from './sectionListWithSeparator';
 import { getLaunchpadAirdrop, getLaunchpadImo } from '@/api/launchpad';
 import { useNavigate } from 'react-router-dom';
@@ -25,7 +26,9 @@ import AirdropsIcon from '@/assets/imgs/airdrops.png';
 import CreateTokensIcon from '@/assets/imgs/create-token.png';
 import LaunchpadIcon from '@/assets/imgs/launchpad.png';
 import { IconHorn } from '@/components/icons';
-import { getRandomColor } from '@/utils';
+import KingsCards from '@/components/KingsCards';
+import ISelect from '@/components/ISelect';
+import Empty from '@/components/Empty';
 
 type ColumnsType<T> = TableProps<T>['columns'];
 type TablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;
@@ -112,6 +115,33 @@ export default function LaunchPad() {
     ticker: 'Tick',
   }));
 
+  const options = [
+    {
+      value: '1',
+      label: 'Not Identified',
+    },
+    {
+      value: '2',
+      label: 'Closed',
+    },
+    {
+      value: '3',
+      label: 'Communicated',
+    },
+    {
+      value: '4',
+      label: 'Identified',
+    },
+    {
+      value: '5',
+      label: 'Resolved',
+    },
+    {
+      value: '6',
+      label: 'Cancelled',
+    },
+  ];
+
   return (
     <div className="page">
       <div className="base-container">
@@ -143,7 +173,8 @@ export default function LaunchPad() {
                   <IconHorn className="mr-[7px]" />
                   <span className="font-404px text-[16px] text-green">LIVE DEGEN ACTIVITY</span>
                 </div>
-                {list.map((item) => {
+                <CarouselColumn />
+                {/* {list.map((item) => {
                   return (
                     <div
                       className="w-[100%] bg-[#2B526E] rounded-sm mb-[2px] px-[9px] py-[6px] flex items-center  cursor-pointer"
@@ -156,7 +187,7 @@ export default function LaunchPad() {
                       </span>
                     </div>
                   );
-                })}
+                })} */}
               </div>
             </BannerRightBox>
           </div>
@@ -178,6 +209,7 @@ export default function LaunchPad() {
             </div>
           </div>
         </div> */}
+
         <div className="flex items-center justify-between my-[70px]">
           <Tabs
             value={tab}
@@ -196,6 +228,10 @@ export default function LaunchPad() {
             </TabsList>
           </Tabs>
         </div>
+        <KingsCards />
+        {/* <div className="flex justify-between">
+          <ISelect options={options} />
+        </div> */}
         {tab === 'imo' ? (
           <Table
             columns={columns(navigate)}
@@ -204,6 +240,9 @@ export default function LaunchPad() {
             loading={loading}
             onChange={handleTableChange}
             className="mb-[58px]"
+            locale={{
+              emptyText: <Empty />,
+            }}
           />
         ) : (
           <Table
@@ -213,6 +252,9 @@ export default function LaunchPad() {
             loading={loading}
             onChange={handleTableChange}
             className="mb-[58px]"
+            locale={{
+              emptyText: <Empty />,
+            }}
           />
         )}
 

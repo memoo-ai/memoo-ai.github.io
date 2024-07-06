@@ -1,0 +1,16 @@
+@import url('@/assets/styles/button.scss');
+
+.kings-cards{
+  width: 100%;
+
+  .kings-cards-item{
+    flex: 1;
+    border: 1px solid #B53BFF;
+    border-radius: 15px;
+    box-shadow: 0px 0px 20px 0px #B53BFF;
+
+    .border_b{
+      border-bottom: 1px solid #5D64A2;
+    }
+  }
+}

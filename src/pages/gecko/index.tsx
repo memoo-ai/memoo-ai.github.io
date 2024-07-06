@@ -12,6 +12,7 @@ import { SorterResult } from 'antd/es/table/interface';
 import { getTrendingTokens, getTopTokens } from '@/api/gecko';
 import { TrendingTokens } from '@/types';
 import HeaderBannerBg from './assets/header-banner-bg.png';
+import Empty from '@/components/Empty';
 
 type ColumnsType<T> = TableProps<T>['columns'];
 type TablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;
@@ -97,6 +98,9 @@ const Gecko = () => {
               navigate(`/airdrop/${record.ticker}`);
             },
           };
+        }}
+        locale={{
+          emptyText: <Empty />,
         }}
       />
       <IPagination
