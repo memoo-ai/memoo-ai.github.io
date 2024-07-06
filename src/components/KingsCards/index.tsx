@@ -7,25 +7,32 @@ import { IconCollect } from '@/components/icons';
 import IProgress from '@/components/IProgress';
 import { Button } from 'antd';
 import Countdown from '@/pages/airdrop/countdown';
-
-const KingsCards = () => {
-  const data = new Array(3).fill(undefined).map((_, i) => ({
-    id: i,
-    address: 'Rg7GG...kf9Lj7' + i,
-    tokenName: 'tokenName',
-    ticker: 'Tick',
-    banner: '',
-    icon: '',
-    description: 'description',
-  }));
+import { useNavigate } from 'react-router-dom';
+interface KingsCardsProps {
+  btnText?: string;
+  btnType?: string;
+  path?: string;
+  data: any[];
+}
+const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data }: KingsCardsProps) => {
+  const navigate = useNavigate();
+  // const data = new Array(3).fill(undefined).map((_, i) => ({
+  //   id: i,
+  //   address: 'Rg7GG...kf9Lj7' + i,
+  //   tokenName: 'tokenName',
+  //   ticker: 'Tick',
+  //   banner: '',
+  //   icon: '',
+  //   description: 'description',
+  // }));
   return (
-    <div className="pb-[81px]" style={{ background: `url(${KingsBg}) no-repeat`, backgroundSize: 'cover' }}>
+    <div className="w-[100%] pb-[81px]" style={{ background: `url(${KingsBg}) no-repeat`, backgroundSize: 'cover' }}>
       <div className="flex items-center my-[42px]">
         <span className="font-404px text-green text-[24px] mr-[20px]">KINGS OF THE LAND</span>
         <img className="w-[121px] h-[106px]" src={KingsIcon} alt="" />
       </div>
-      <div className="kings-cards flex items-center gap-[22px] justify-between">
-        {data.map((item) => {
+      <div className="kings-cards flex items-center gap-[22px] justify-center">
+        {data.slice(0, 3).map((item) => {
           return (
             <div
               className="kings-cards-item flex flex-col"
@@ -35,7 +42,7 @@ const KingsCards = () => {
               <div className="kings-cards-item-banner">
                 <img
                   className="w-[100%] rounded-tl-[15px] rounded-tr-[15px] "
-                  src={item.banner ? item.banner : DefaultBannerBg}
+                  src={item.banners ? item.banners[0] : DefaultBannerBg}
                   alt=""
                 />
               </div>
@@ -69,7 +76,7 @@ const KingsCards = () => {
                             <span>S</span>
                           </div>,
                         ]}
-                        instant={1720252240 * 1000}
+                        instant={(item.endsIn || item.airdropEndsIn * 1000) ?? 0}
                         onEnded={(ended) => {
                           // setEnded(ended);
                         }}
@@ -91,7 +98,12 @@ const KingsCards = () => {
                   </div>
                 </div>
 
-                <Button className="memoo_button w-[100%] reverse h-[56px] rounded-[7px]">PARTICIPATE</Button>
+                <Button
+                  className={`memoo_button w-[100%] h-[56px] rounded-[7px] ${btnType}`}
+                  onClick={() => navigate(`/${path}/${item.ticker}`)}
+                >
+                  {btnText}
+                </Button>
               </div>
             </div>
           );

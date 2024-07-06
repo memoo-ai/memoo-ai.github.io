@@ -1,90 +1,49 @@
 import './index.scss';
 import CommonBanner from '@/components/Banner';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useEffect, useState } from 'react';
-import { columns, columnsAirdrop, IDOStatus } from './columns';
-import SwipeCard from '@/components/SwipeCard';
-import { Table } from 'antd';
+import { Tabs } from 'antd';
 
 import { ActiveIdoCard } from './card';
-import type { GetProp, TableProps } from 'antd';
-import IPagination from '@/components/IPagination';
-import type { PaginationProps } from 'antd';
 import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 import Carousel from '@/components/Carousel';
 import CarouselColumn from '@/components/CarouselColumn';
-import { SectionListWithSeparator } from './sectionListWithSeparator';
-import { getLaunchpadAirdrop, getLaunchpadImo } from '@/api/launchpad';
-import { useNavigate } from 'react-router-dom';
-import { LaunchpadAirdrop, LaunchpadIMO } from '@/types';
-import HeaderBannerBg from './assets/header-banner-bg.png';
 import BannerRightBox from '@/components/BannerRightBox';
 import BannerBox from '@/components/BannerBox';
 import GeckoBannerBg from '@/assets/imgs/gecko-banner-bg.png';
+import LaunchpadAirdropBg from '@/assets/imgs/launchpad-airdrop-bg.png';
 import MemooGeckoIcon from '@/assets/imgs/memoogecko.png';
 import AirdropsIcon from '@/assets/imgs/airdrops.png';
 import CreateTokensIcon from '@/assets/imgs/create-token.png';
 import LaunchpadIcon from '@/assets/imgs/launchpad.png';
 import { IconHorn } from '@/components/icons';
-import KingsCards from '@/components/KingsCards';
-import ISelect from '@/components/ISelect';
-import Empty from '@/components/Empty';
+import LaunchPadImo from './launchpad-imo';
+import LaunchPadAirdrop from './launchpad-airdrop';
 
-type ColumnsType<T> = TableProps<T>['columns'];
-type TablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;
-type LaunchpadData = LaunchpadIMO | LaunchpadAirdrop;
-interface TableParams {
-  pagination?: TablePaginationConfig;
-  sortField?: string;
-  sortOrder?: string;
-}
 export type LaunchpadType = 'imo' | 'airdrop';
-const pageSize = 10;
 export default function LaunchPad() {
-  const [tab, setTab] = useState<any>('imo');
-  const [data, setData] = useState<LaunchpadIMO[] | LaunchpadAirdrop[]>([]);
-  const [total, setTotal] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [pagination, setPagination] = useState<PaginationProps>({
-    current: 1,
-    pageSize: 10,
-    total: 30,
-  });
-  const [sorters, setSorters] = useState<any>([]);
+  const [activeKey, setActiveKey] = useState<LaunchpadType>('imo');
   const location = useLocation();
-  const navigate = useNavigate();
   useEffect(() => {
     const query = new URLSearchParams(location.search);
-    const type = query.get('type');
+    const type = query.get('type') as LaunchpadType;
     if (type) {
-      setTab(type);
+      setActiveKey(type);
     }
   }, [location.search]);
 
-  const fetchData = async () => {
-    let params = {
-      pageNumber: pagination.current ?? 1,
-      pageSize: pagination.pageSize ?? 10,
-    };
-    const { data } = tab === 'imo' ? await getLaunchpadImo(params) : await getLaunchpadAirdrop(params);
-    // console.log(data);
-    if (data) {
-      setData(data.records ?? []);
-      setPagination({
-        ...pagination,
-        total: data.total_record ?? 0,
-      });
-    }
-  };
+  const items = [
+    {
+      key: 'imo',
+      label: 'IMO',
+      children: <LaunchPadImo />,
+    },
+    {
+      key: 'airdrop',
+      label: 'Airdrop',
+      children: <LaunchPadAirdrop />,
+    },
+  ];
 
-  useEffect(() => {
-    fetchData();
-  }, [pagination.current, sorters, tab]);
-
-  const handleTableChange: TableProps['onChange'] = (pagination, filters, sorter) => {
-    setSorters(sorter);
-  };
   const banners = [
     {
       icon: MemooGeckoIcon,
@@ -103,17 +62,11 @@ export default function LaunchPad() {
       text: 'Launchpad',
     },
   ];
-  const generateRandomTokenName = () => {
-    const tokenNames = ['BTC', 'ETH', 'XRP', 'LTC', 'ADA'];
-    return tokenNames[Math.floor(Math.random() * tokenNames.length)];
-  };
 
-  const list = new Array(5).fill(undefined).map((_, i) => ({
-    id: i,
-    address: 'Rg7GG...kf9Lj7' + i,
-    tokenName: generateRandomTokenName(),
-    ticker: 'Tick',
-  }));
+  const onChange = (e: any) => {
+    setActiveKey(e);
+    // onChangeType(e);
+  };
 
   const options = [
     {
@@ -148,22 +101,33 @@ export default function LaunchPad() {
         <Carousel />
         <div className="flex justify-between mt-[21px]">
           <div className="w-[835px] h-[469px]">
-            <BannerBox background={GeckoBannerBg} title="MEMOOGECKO">
-              <div className="pt-[60px] flex items-center flex-col">
-                <img className="w-[159px] h-[159px]" src="/logo.svg" alt="" />
-                <h3 className="font-Kitty mt-[13px] banner-title text-[40px]">Welcome to Memoo.</h3>
-                <h3 className="font-Kitty mt-[13px] banner-title text-[40px]">Trade, Hunt, Create, Launch.</h3>
-                <div className="flex items-center justify-center gap-[41px]">
-                  {banners.map((banner) => {
-                    return (
-                      <div className="flex flex-col font-404px items-center justify-center" key={banner.text}>
-                        <img className="w-[106px] h-[100px]" src={banner.icon} alt="" />
-                        <p className="text-[16px] text-[#fff] font-OCR">{banner.text}</p>
-                      </div>
-                    );
-                  })}
+            <BannerBox background={activeKey === 'imo' ? GeckoBannerBg : LaunchpadAirdropBg} title="MEMOOGECKO">
+              {activeKey === 'imo' ? (
+                <div className="pt-[60px] flex items-center flex-col">
+                  <img className="w-[159px] h-[159px]" src="/logo.svg" alt="" />
+                  <h3 className="font-Kitty mt-[13px] banner-title text-[40px]">Welcome to Memoo.</h3>
+                  <h3 className="font-Kitty mt-[13px] banner-title text-[40px]">Trade, Hunt, Create, Launch.</h3>
+                  <div className="flex items-center justify-center gap-[41px]">
+                    {banners.map((banner) => {
+                      return (
+                        <div className="flex flex-col font-404px items-center justify-center" key={banner.text}>
+                          <img className="w-[106px] h-[100px]" src={banner.icon} alt="" />
+                          <p className="text-[16px] text-[#fff] font-OCR">{banner.text}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className=" flex items-start flex-col">
+                  <img className="w-[309px] h-[292px]" src={AirdropsIcon} alt="" />
+                  <div className="ml-[52px]">
+                    <h3 className="font-Kitty mt-[13px] banner-title text-[40px]">Hunt For</h3>
+                    <h3 className="font-Kitty mt-[13px] banner-title text-[40px]">Meme Token Airdrops.</h3>
+                    <p className="font-OCR text-[20px] text-[#FFFFFF]">Collect Airdrops That Just Might 1000x.</p>
+                  </div>
+                </div>
+              )}
             </BannerBox>
           </div>
           <div className="w-[406px] h-[470px]">
@@ -192,80 +156,9 @@ export default function LaunchPad() {
             </BannerRightBox>
           </div>
         </div>
-        {/* <div
-          className="header-banner-bg"
-          style={{ background: `url(${HeaderBannerBg}) no-repeat`, backgroundSize: 'cover' }}
-        >
-          <div className="header-banner-content">
-            <div className="header-banner-left flex  flex-col">
-              <p className="left-text">
-                <span> Memoo Launchpad.</span> <br />
-                <span> Your Ticket to Memo Stardom.</span>
-              </p>
-              <p className="left-sub-text">Get in on the Action with the Hottest Meme Project Picks.</p>
-            </div>
-            <div>
-              <img className="w-[363px] h-[392px]" src="./dashboard/img-banner-right.png" alt="" />
-            </div>
-          </div>
-        </div> */}
-
         <div className="flex items-center justify-between my-[70px]">
-          <Tabs
-            value={tab}
-            onValueChange={(value) => {
-              setTab(value as LaunchpadType);
-              setCurrentPage(1);
-            }}
-          >
-            <TabsList>
-              <TabsTrigger value="imo" className="text-[38px]">
-                Imo
-              </TabsTrigger>
-              <TabsTrigger value="airdrop" className="text-[38px]">
-                Airdrop
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
+          <Tabs activeKey={activeKey} onChange={onChange} items={items} />
         </div>
-        <KingsCards />
-        {/* <div className="flex justify-between">
-          <ISelect options={options} />
-        </div> */}
-        {tab === 'imo' ? (
-          <Table
-            columns={columns(navigate)}
-            dataSource={data as LaunchpadIMO[]}
-            pagination={false}
-            loading={loading}
-            onChange={handleTableChange}
-            className="mb-[58px]"
-            locale={{
-              emptyText: <Empty />,
-            }}
-          />
-        ) : (
-          <Table
-            columns={columnsAirdrop(navigate)}
-            dataSource={data as LaunchpadAirdrop[]}
-            pagination={false}
-            loading={loading}
-            onChange={handleTableChange}
-            className="mb-[58px]"
-            locale={{
-              emptyText: <Empty />,
-            }}
-          />
-        )}
-
-        <IPagination
-          currentPage={pagination.current ?? 0}
-          total={pagination.total ?? 0}
-          pageSize={pagination.pageSize}
-          onChangePageNumber={(page) => {
-            setPagination({ ...pagination, current: page });
-          }}
-        />
         <ActiveIdoCard />
         <CommonBanner
           title="Supercharge Your Meme Creation."

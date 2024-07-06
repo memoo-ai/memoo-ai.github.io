@@ -63,7 +63,7 @@ export const Carousel = () => {
                     {item.ticker}
                   </span>
                 </span>
-                <img className="w-10 mr-2" src={item.icon} alt="" />
+                <img className="w-[30px] h-[30px] mr-2 rounded-[50%]" src={item.icon} alt="" />
               </div>
             ))
           : ''}

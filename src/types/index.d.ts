@@ -403,3 +403,21 @@ declare interface AirdropDetail {
   signature: string;
   airdropCount: number;
 }
+declare interface ImoPvCard {
+  banners: [];
+  contributed: number;
+  description: string;
+  endsIn: number;
+  icon: string;
+  idoPrice: number;
+  maxContributed: number;
+  projectId: number;
+  ticker: string;
+  tokenName: string;
+}
+declare interface AirdropCard {
+  address: string;
+  icon: string;
+  ticker: string;
+  tokenName: string;
+}
