@@ -8,7 +8,7 @@ const Banner: FC = () => {
   return (
     <div className="banner w-full relative">
       <img
-        className="w-full min-h-[200px] object-cover max-h-[307px] rounded-tl-[15px] rounded-tr-[15px] border-1px border-[#5D64A2]"
+        className="w-full min-h-[200px]  max-h-[307px] rounded-tl-[15px] rounded-tr-[15px] border-1px border-[#5D64A2]"
         src={idoQueueDetail?.banners?.[0] ?? ProfileDefaultBannerBg}
       />
       <img

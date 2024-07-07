@@ -15,6 +15,7 @@ import './increase-acquisition-modal.scss';
 import { formatDecimals } from '@/utils';
 import { AirdropContext } from '.';
 import BigNumber from 'bignumber.js';
+import ITooltip from '@/components/ITooltip';
 
 const IncreaseAcquisitionModal: FC<{
   children: ReactNode;
@@ -73,7 +74,16 @@ const IncreaseAcquisitionModal: FC<{
             <div className="flex items-end">
               <span className="whitespace-pre-wrap text-base font-OCR text-white leading-[18px]">{`Pre-Market\nAcquisition`}</span>
               <div className="tip_ico_wrapper h-[18px] flex items-center ml-[12px]">
-                <img className="h-[12px] object-contain" src="/create/tip.png" />
+                <ITooltip
+                  className="h-[12px] "
+                  placement="bottom"
+                  title="Lorem ipsum dolor sit amet consectetur adipiscing elit.
+                Morbi fringilla ipsum turpisı sit amet tempus est malesuadased.
+                Integer fringilla magnavel orci ultricies fermentum.
+                Suspendisse sem est."
+                  color="#fff"
+                  bgColor="#396D93"
+                />
               </div>
             </div>
             <div className="flex flex-auto items-center gap-x-3">

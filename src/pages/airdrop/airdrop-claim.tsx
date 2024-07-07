@@ -14,8 +14,9 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import BigNumber from 'bignumber.js';
 import { IconWallet } from '@/components/icons';
 import Wallet from '@/components/SolanaWallet';
-import { useAccount } from '@/hooks/useWeb3';
+import useAccount from '@/hooks/useWeb3';
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
+import ITooltip from '@/components/ITooltip';
 let isRequestFollowing = false;
 export default function AirdropClaim() {
   const { stage, idoQueueDetail, idoLaunchedDetail, idoActiveDetail, triggerRefresh, ticker, airdropClaim } =
@@ -163,9 +164,14 @@ export default function AirdropClaim() {
       <div className="head flex justify-between">
         <h3 className="flex items-center gap-x-2 font-404px text-green text text-lg">
           airdrop{' '}
-          <Popover>
-            <img src="/create/tip.png" />
-          </Popover>
+          <ITooltip
+            title="Lorem ipsum dolor sit amet consectetur adipiscing elit.
+                Morbi fringilla ipsum turpisı sit amet tempus est malesuadased.
+                Integer fringilla magnavel orci ultricies fermentum.
+                Suspendisse sem est."
+            color="#fff"
+            bgColor="#396D93"
+          />
         </h3>
         {doingTask && <span className="endsin font-OCR text-white">Ends in</span>}
       </div>

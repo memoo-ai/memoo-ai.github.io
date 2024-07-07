@@ -78,6 +78,7 @@ const Home = () => {
   const { createMint1 } = useTestSql();
   const { transfer } = useTransfer();
   const send = async () => {
+    console.log('send');
     await mintTokenSql();
     // await createMint1();
   };

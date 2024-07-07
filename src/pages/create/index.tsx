@@ -40,11 +40,12 @@ import { parseEther, formatEther } from 'ethers';
 import { useMemeFactoryContract } from '@/hooks/useMemeFactoryContract';
 import { ZERO_ADDRESS } from '@/constants';
 // import { useAccount, useSwitchChain } from 'wagmi';
-import { useAccount } from '@/hooks/useWeb3';
+import useAccount from '@/hooks/useWeb3';
 import { formatDecimals, authorizeTwitter } from '@/utils';
 import BigNumber from 'bignumber.js';
 import { CHAIN_ID } from '@/constants';
 import CreatedTokenCompleteConnectedModal from './create-token-complete-connected-modal';
+import ITooltip from '@/components/ITooltip';
 
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
@@ -501,9 +502,22 @@ export default function Create() {
 
             <Form.Item
               label={
-                <p>
-                  Pre-Launch Duration <span>*</span>
-                </p>
+                <div className="flex items-end">
+                  <p>
+                    Pre-Launch Duration <span>*</span>
+                  </p>
+                  <p>
+                    <ITooltip
+                      placement="bottom"
+                      title="Lorem ipsum dolor sit amet consectetur adipiscing elit.
+                        Morbi fringilla ipsum turpisı sit amet tempus est malesuadased.
+                        Integer fringilla magnavel orci ultricies fermentum.
+                        Suspendisse sem est."
+                      color="#fff"
+                      bgColor="#4A5082"
+                    />
+                  </p>
+                </div>
               }
               name="preLaunchDuration"
             >
