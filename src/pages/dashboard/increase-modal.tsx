@@ -140,7 +140,7 @@ const IncreaseModal: FC<{
           >
             I accept MeMoo’s <a className="contents text-green">Terms & Conditions.</a>
           </Checkbox>
-          <div className="confirm_btn">
+          <div>
             <Button
               disabled={!accepted && Number(formatDecimals(result)) - purchased <= 0}
               className="modal_button h-[50px]"

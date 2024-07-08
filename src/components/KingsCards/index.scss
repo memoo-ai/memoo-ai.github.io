@@ -6,6 +6,8 @@
 
   .kings-cards-item{
     max-width: 33%;
+    height: max-content;
+    min-height: 100%;
     flex: 1;
     border: 1px solid #B53BFF;
     border-radius: 15px;

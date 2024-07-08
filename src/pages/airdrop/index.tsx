@@ -152,7 +152,7 @@ const Airdrop: FC = () => {
         setIDOQueueDetail(data);
 
         const { data: meme } = await getMeMemo(ticker);
-        setTotalPurchased(meme[0].balance);
+        setTotalPurchased(meme[0]?.balance ?? 0);
         if (data.stageTwoClaim) {
           setStage('2st-claim');
         } else if (data.stageOneClaim) {
@@ -172,6 +172,7 @@ const Airdrop: FC = () => {
           setStage('launch');
         } else if (data.status === 'IDO') {
           const { data } = await getIDOActiveDetail(ticker, address ? address : 'default');
+          console.log('data.status:IDO');
           setIDOActiveDetail(data);
           setStage('imo');
         } else {

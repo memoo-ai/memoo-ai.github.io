@@ -41,8 +41,8 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data 
             >
               <div className="kings-cards-item-banner">
                 <img
-                  className="w-[100%] rounded-tl-[15px] rounded-tr-[15px] "
-                  src={item.banners ? item.banners[0] : DefaultBannerBg}
+                  className="w-[100%] h-[158px] rounded-tl-[15px] rounded-tr-[15px] "
+                  src={item?.banners[0] ? item.banners[0] : DefaultBannerBg}
                   alt=""
                 />
               </div>
@@ -55,7 +55,7 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data 
                     <h5 className="font-OCR text-[12px] text-green">{item.ticker}</h5>
                   </div>
                 </div>
-                <p className="py-[26px] font-OCR text-[14px] border_b text-[#7D83B5]">{item.description}</p>
+                <p className="my-[26px] font-OCR text-[14px] border_b text-[#7D83B5] h-[48px]">{item.description}</p>
                 <div className="py-[24px]">
                   <div className="flex justify-between items-center">
                     <div className="font-OCR text-[14px] text-[#7D83B5] line-[13px]">Ends in</div>
@@ -93,7 +93,7 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data 
                     <div className="font-OCR text-[14px] text-[#7D83B5] line-[13px]">Total Raised</div>
                     <IProgress className="w-[83px]" />
                     <div className="font-OCR text-[18px] text-[#fff] line-[13px] w-[153px] text-right">
-                      1.82/2.3 ETH
+                      {item.contributed}/{item.maxContributed} ETH
                     </div>
                   </div>
                 </div>

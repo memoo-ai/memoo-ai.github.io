@@ -137,7 +137,10 @@ export default function LaunchPad() {
                   <IconHorn className="mr-[7px]" />
                   <span className="font-404px text-[16px] text-green">LIVE DEGEN ACTIVITY</span>
                 </div>
-                <CarouselColumn />
+                {/* <CarouselColumn /> */}
+                {/* <Swipe>
+
+                </Swipe> */}
                 {/* {list.map((item) => {
                   return (
                     <div

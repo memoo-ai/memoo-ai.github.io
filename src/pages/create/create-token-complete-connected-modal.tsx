@@ -37,8 +37,8 @@ const CreatedTokenCompleteConnectedModal = forwardRef(({ data, iconUrl }: any, r
             <div className="flex items-center  ">
               <img className="w-[84px] h-[84px] rounded-[50%] mr-[11px]" src={iconUrl} alt="" />
               <div>
-                <h5 className="font-404px text-[#fff] font-[24px]">{data.tokenName}</h5>
-                <span className="font-404px text-[#07E993] font-[16px]">{data.ticker}</span>
+                <h5 className="font-404px text-[#fff] text-[24px]">{data.tokenName}</h5>
+                <span className="font-404px text-[#07E993] text-[16px]">{data.ticker}</span>
               </div>
             </div>
             {/* <span className="absolute bottom-2 right-5 text-[#7D83B5] text-[10px] font-OCR">View Token Profile</span> */}

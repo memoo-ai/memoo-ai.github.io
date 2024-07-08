@@ -73,13 +73,14 @@ const ClaimModal = ({ children }: any) => {
       <Modal
         className="min-w-[604px]"
         wrapClassName="memoo_modal"
-        title="Claim Tokens"
+        title=""
         open={open}
         onCancel={() => setOpen(false)}
         footer={null}
         destroyOnClose
         closeIcon={<IconClose className="close" />}
       >
+        <div className="modal_title">Claim Tokens</div>
         <div className="claim_tokens flex flex-col">
           <div className="flex justify-between">
             <div className="flex items-center gap-x-[15px]">
@@ -119,7 +120,7 @@ const ClaimModal = ({ children }: any) => {
               </span>
             }
           />
-          <Button loading={confirming} className="memoo_button mt-[77px] h-[50px]" onClick={onConfirm}>
+          <Button loading={confirming} className="confirm_btn mt-[77px] h-[50px]" onClick={onConfirm}>
             Confirm
           </Button>
         </div>
