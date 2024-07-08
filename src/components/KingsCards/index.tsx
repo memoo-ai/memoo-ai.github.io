@@ -59,9 +59,10 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data 
                 <div className="py-[24px]">
                   <div className="flex justify-between items-center">
                     <div className="font-OCR text-[14px] text-[#7D83B5] line-[13px]">Ends in</div>
-                    <div className=" w-[153px] text-right">
+                    <div className="text-right">
                       <Countdown
                         className=" flex gap-x-2 mt-5 font-OCR text-[18px] text-[#fff] line-[13px]"
+                        timefragments="timefragments-kings"
                         format={([days, hours, minutes, seconds]) => [
                           <div key="hours">
                             <time>{hours}</time>
@@ -77,6 +78,7 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data 
                           </div>,
                         ]}
                         instant={(item.endsIn || item.airdropEndsIn * 1000) ?? 0}
+                        // instant={1720510654000}
                         onEnded={(ended) => {
                           // setEnded(ended);
                         }}
@@ -91,8 +93,8 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data 
                   </div> */}
                   <div className="flex justify-between items-center">
                     <div className="font-OCR text-[14px] text-[#7D83B5] line-[13px]">Total Raised</div>
-                    <IProgress className="w-[83px]" />
-                    <div className="font-OCR text-[18px] text-[#fff] line-[13px] w-[153px] text-right">
+                    <IProgress className="w-[83px]" percent={(item.contributed / item.maxContributed) * 100} />
+                    <div className="font-OCR text-[18px] text-[#fff] line-[13px]  text-right">
                       {item.contributed}/{item.maxContributed} ETH
                     </div>
                   </div>

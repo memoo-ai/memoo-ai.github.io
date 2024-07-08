@@ -4,11 +4,12 @@ import { FC, Fragment, ReactNode, useEffect, useMemo, useState } from 'react';
 
 const Countdown: FC<{
   className?: string;
+  timefragments?: string;
   instant: number;
   onEnded?: (ended: boolean) => void;
   format?: (timeFragments: number[]) => (string | ReactNode)[];
   symbol?: string;
-}> = ({ instant, onEnded, format, className, symbol = ':' }) => {
+}> = ({ instant, onEnded, format, className, timefragments = 'timefragments', symbol = ':' }) => {
   const [update, setUpdate] = useState(0);
 
   const remainingTime = useMemo(() => {
@@ -62,7 +63,7 @@ const Countdown: FC<{
     <div className={classNames('countdown', className)}>
       {remainingTime.map((time, index) => (
         <Fragment key={index}>
-          <span className="timefragments text-lg text-white font-404px">{time}</span>
+          <span className={`${timefragments} text-lg text-white font-404px`}>{time}</span>
           {index < remainingTime.length - 1 && <span className="splitor text-lg text-white font-404px">{symbol}</span>}
         </Fragment>
       ))}
