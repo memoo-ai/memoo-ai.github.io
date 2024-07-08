@@ -1,1 +1,0 @@
-import{h as e,p as t}from"./index-DwUyMUcZ.js";const s=r=>e.get(`${t}/web-oriented/get-me-meme`,{params:{ticker:r}}),n=()=>e.get(`${t}/web-unauthorized/tools`),a=()=>e.get(`${t}/web-unauthorized/cross-direction`),g=()=>e.get(`${t}/web-unauthorized/crowdsourcing`);export{s as a,g as b,a as c,n as g};
