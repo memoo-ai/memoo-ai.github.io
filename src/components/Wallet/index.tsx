@@ -27,7 +27,7 @@ const Wallet: FC<{ children: ReactNode }> = ({ children }) => {
 
   return (
     <div>
-      {openConnectModal && (
+      {openConnectModal ? (
         <div>
           <div onClick={openConnectModal}>{children}</div>
           {isModalOpen && (
@@ -64,6 +64,8 @@ const Wallet: FC<{ children: ReactNode }> = ({ children }) => {
             return child;
           })} */}
         </div>
+      ) : (
+        <div> {children}</div>
       )}
     </div>
     // <ConnectButton.Custom>

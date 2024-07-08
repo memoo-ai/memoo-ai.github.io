@@ -7,6 +7,7 @@ import Transfer from '@/hooks/useSolanaSend';
 import useTestSql from '@/hooks/useTestSql';
 import useTransfer from '@/hooks/useTransfer';
 
+import Wallet from '@/components/Wallet';
 const Revolutions = [
   {
     title: (

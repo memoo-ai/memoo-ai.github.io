@@ -63,6 +63,9 @@ export default function AirdropClaim() {
     const idoStatus = idoLaunchedDetail?.status === 'Launched' || idoLaunchedDetail?.status === 'IDO';
     const taskCompleted = idoQueueDetail?.projectTwitterBind && idoQueueDetail?.platformTwitterBind;
     return idoStatus && taskCompleted;
+    const idoStatus = idoLaunchedDetail?.status === 'Launched' || idoLaunchedDetail?.status === 'IDO';
+    const taskCompleted = idoQueueDetail?.projectTwitterBind && idoQueueDetail?.platformTwitterBind;
+    return idoStatus && taskCompleted;
   }, [idoLaunchedDetail, idoActiveDetail, stage]);
 
   const airdropUnlocked = useMemo(() => stage === 'launch' || stage === '1st-claim' || stage === '2st-claim', [stage]);
@@ -194,7 +197,7 @@ export default function AirdropClaim() {
           <li key={index} className="follow_list_item flex items-center w-full justify-between px-3 py-3.5">
             <p
               className={classNames('leading-5 font-OCR whitespace-pre-wrap', {
-                'text-white': (!item.followed && stage !== 'imo') || !address,
+                'text-white': (!item.followed && stage !== 'imo' && stage !== 'imo') || !address,
                 'text-deep-green': item.followed || stage === 'imo',
               })}
             >
@@ -202,14 +205,19 @@ export default function AirdropClaim() {
               {'\n'}on twitter
             </p>
             <Wallet>
+              <Wallet>
               <img
-                onClick={() => (item.followed || stage === 'imo' ? null : handleFollow(item.user ? item.user : ''))}
-                className={classNames('w-5', {
+                  onClick={() => (item.followed || stage === 'imo' ? null : handleFollow(item.user ? item.user : ''))}
+                  className={classNames('w-5', {
+
                   'cursor-pointer': !item.followed,
-                  'opacity-30': (item.followed || stage === 'imo') && address,
+
+                  'opacity-30': (item.followed || stage === 'imo',
+                || stage === 'imo') && address,
                 })}
-                src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
-              />
+                  src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
+                />
+            </Wallet>
             </Wallet>
           </li>
         ))}

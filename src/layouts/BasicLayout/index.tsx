@@ -37,12 +37,13 @@ const BasicLayout: React.FC = () => {
   useEffect(() => {
     if (connected && !localStorage.getItem(MEMOO_TOKEN_STORAGE)) {
       (async () => {
-        // if (!signer) return;
+        if (!signer) return;
         // const msg = String(Date.now());
         // const rawSignature = await signer.signMessage(msg);
         // console.log('rawSignature', rawSignature);
         console.log('loginMeme');
         // // TODO
+        console.log('useEffect,loginMeme');
         await loginMeme();
         window.location.reload();
       })();
