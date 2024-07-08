@@ -5,8 +5,6 @@ import { Tabs } from 'antd';
 
 import { ActiveIdoCard } from './card';
 import { BrowserRouter as Router, useLocation } from 'react-router-dom';
-import Carousel from '@/components/Carousel';
-import CarouselColumn from '@/components/CarouselColumn';
 import BannerRightBox from '@/components/BannerRightBox';
 import BannerBox from '@/components/BannerBox';
 import GeckoBannerBg from '@/assets/imgs/gecko-banner-bg.png';
@@ -18,6 +16,7 @@ import LaunchpadIcon from '@/assets/imgs/launchpad.png';
 import { IconHorn } from '@/components/icons';
 import LaunchPadImo from './launchpad-imo';
 import LaunchPadAirdrop from './launchpad-airdrop';
+import Swipe from '@/components/Swipe';
 
 export type LaunchpadType = 'imo' | 'airdrop';
 export default function LaunchPad() {
@@ -98,7 +97,7 @@ export default function LaunchPad() {
   return (
     <div className="page">
       <div className="base-container">
-        <Carousel />
+        <Swipe direction="left" />
         <div className="flex justify-between mt-[21px]">
           <div className="w-[835px] h-[469px]">
             <BannerBox background={activeKey === 'imo' ? GeckoBannerBg : LaunchpadAirdropBg} title="MEMOOGECKO">
@@ -138,9 +137,7 @@ export default function LaunchPad() {
                   <span className="font-404px text-[16px] text-green">LIVE DEGEN ACTIVITY</span>
                 </div>
                 {/* <CarouselColumn /> */}
-                {/* <Swipe>
-
-                </Swipe> */}
+                <Swipe />
                 {/* {list.map((item) => {
                   return (
                     <div

@@ -421,3 +421,18 @@ declare interface AirdropCard {
   ticker: string;
   tokenName: string;
 }
+declare interface CrossDirection {
+  address: string;
+  icon: string;
+  ticker: string;
+  tokenName: string;
+}
+
+declare interface CrowdSourcing {
+  address: string;
+  amout: string;
+  icon: string;
+  ticker: string;
+  tokenName: string;
+  tradeType: string;
+}
