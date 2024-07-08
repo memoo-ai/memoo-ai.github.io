@@ -18,16 +18,22 @@ const SwipeY = ({ item }: SwipeXProps) => {
         src={item?.icon && item?.icon !== '' ? item?.icon : DefaultAvatar}
         alt=""
       />{' '}
-      <span className="font-404px ml-[5px] text-[#fff] text-[12px]" style={{ color: getRandomColor() }}>
-        {item.address.slice(0, 6)}...{item.address.slice(-4)}
+      <span className="font-REV ml-[5px] text-[#fff] text-[12px]" style={{ color: getRandomColor() }}>
+        {item.address.slice(0, 4)}...{item.address.slice(-4)}
       </span>
-      <span className="font-404px ml-[5px] text-[#fff] text-[12px]">{item.tradeType}</span>
-      <span className="font-404px ml-[5px] text-[#fff] text-[12px]">{item.tradeType === 'airdrop' ? 'in' : 'of'}</span>
-      <span className="font-404px ml-[5px] text-[#fff] text-[12px]" style={{ color: getRandomColor() }}>
+      <span className="font-REV ml-[5px] text-[#fff] text-[12px]">
+        {item.tradeType === 'airdrop' ? 'participated' : 'contributed'}
+      </span>
+      <span className="font-REV ml-[5px] text-[#fff] text-[12px]">
+        {/* {item.tradeType === 'airdrop' ? 'in' : 'of'} */}
+        {item.amout} in
+      </span>
+      <span className="font-REV ml-[5px] text-[#fff] text-[12px]" style={{ color: getRandomColor() }}>
         {item.ticker}
       </span>
-      <span className="font-404px ml-[5px] text-[#fff] text-[12px]">
-        {item.tradeType === 'airdrop' ? 'airdrop' : ''}
+      <span className="font-REV ml-[5px] text-[#fff] text-[12px]">
+        {/* {item.tradeType === 'airdrop' ? 'airdrop' : ''} */}
+        {item.tradeType === 'airdrop' ? 'airdrop' : 'imo'}
       </span>
     </div>
   );

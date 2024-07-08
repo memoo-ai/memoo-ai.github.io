@@ -32,7 +32,7 @@ export const columns = (navigate: (path: string) => void) => [
     ),
   },
   {
-    title: 'Total Raissed',
+    title: 'Total Raised',
     dataIndex: 'totalRaised',
     key: 'totalRaised',
     sorter: true,
@@ -98,5 +98,16 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
         airdrop
       </Button>
     ),
+  },
+];
+
+export const selectOptions = [
+  {
+    value: 'Ends in',
+    label: 'Ends in',
+  },
+  {
+    value: 'ToTal Raised',
+    label: 'ToTal Raised',
   },
 ];

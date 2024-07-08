@@ -5,10 +5,12 @@ import Empty from '@/components/Empty';
 import { Table } from 'antd';
 import KingsCards from '@/components/KingsCards';
 import IPagination from '@/components/IPagination';
-import { columns } from './columns';
+import { columns, selectOptions } from './columns';
 import { useNavigate } from 'react-router-dom';
 import { getLaunchpadImo, getImoPvCard } from '@/api/launchpad';
 import { LaunchpadIMO, ImoPvCard } from '@/types';
+import ISelect from '@/components/ISelect';
+
 const LaunchPadImo = () => {
   const navigate = useNavigate();
   const [pagination, setPagination] = useState<PaginationProps>({
@@ -50,6 +52,10 @@ const LaunchPadImo = () => {
   return (
     <div className="launchpad-imo">
       <KingsCards btnText="PARTICIPATE" btnType="reverse" data={cardData} />
+      <div className="flex justify-between">
+        <div />
+        <ISelect options={selectOptions} />
+      </div>
       <Table
         columns={columns(navigate)}
         dataSource={data as LaunchpadIMO[]}

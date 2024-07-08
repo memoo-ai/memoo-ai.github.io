@@ -32,6 +32,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { REQUEST_FOLLOWING_STORAGE, UPDATE_PROJECT_TWITTER_STORAGE } from '@/constants';
 import { IconEdit, IconBack } from '@/components/icons';
 import { getMeMemo } from '@/api/common';
+import PreMarketAcqusition from '@/pages/airdrop/pre-market-acquisition';
 
 interface AirdropContext {
   stage: TokenCreateStage;
@@ -92,6 +93,7 @@ const Airdrop: FC = () => {
     unlockInfo: UnlockPeriod;
   }>();
   const [totalPurchased, setTotalPurchased] = useState('0');
+  const [totalAmount, setTotalAmount] = useState('0');
   const { config, idoBuy, unlockMeme, defaultConfig, airdropClaim, getCanUnlockCount, memeUnlockPeriods } =
     useManageContract();
   const navigate = useNavigate();
@@ -153,6 +155,7 @@ const Airdrop: FC = () => {
 
         const { data: meme } = await getMeMemo(ticker);
         setTotalPurchased(meme[0]?.balance ?? 0);
+        setTotalAmount(meme[0]?.ethAmout ?? 0);
         if (data.stageTwoClaim) {
           setStage('2st-claim');
         } else if (data.stageOneClaim) {
@@ -247,6 +250,7 @@ const Airdrop: FC = () => {
           {/* <Status /> */}
           {idoQueueDetail?.status === 'Launched' && <PublicSale />}
           {stage === 'imo' && <IMOParticipate />}
+          {stage === 'in-queue' && <PreMarketAcqusition amount={totalAmount ?? 0} />}
           <AirdropClaim />
           <IDODetail />
         </AirdropContext.Provider>
