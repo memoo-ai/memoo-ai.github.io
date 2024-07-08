@@ -43,7 +43,10 @@
   src: url(../fonts/DKFatKittyKat.otf);
 }
 
-
+@font-face {
+  font-family: '04b03rev';
+  src: url(../fonts/04B03REV_4.TTF);
+}
 
 @layer base {
   :root {
@@ -133,10 +136,18 @@
     letter-spacing: -0.05em;
     text-align: left;
     color: #ffffff;
-    background: transparent;
+    background: #131522 !important;
 
+    &:hover{
+      background: #131522;
+    }
   }
-
+  .ant-table .ant-table-tbody > tr > td{
+    background: #131522 !important;
+    &:hover{
+      background: #131522 !important;
+    }
+  }
   .ant-table-cell-row-hover {
     background: #131522 !important;
   }
@@ -280,15 +291,7 @@
 }
 
 
-.confirm_btn {
-  .ant-btn {
-    background: $mainColor !important;
 
-    span {
-      color: $mainBgColor !important;
-    }
-  }
-}
 
 .ant-form-item .ant-form-item-label {
   text-align: start;
@@ -341,9 +344,9 @@
     background: #1F3B4F;
   }
 }
-.ant-input{
-  background: #1F3B4F !important;
-}
+// .ant-input{
+//   background: #1F3B4F !important;
+// }
 
 .ant-upload.ant-upload-select {
   border: 1px solid $mainColor !important;

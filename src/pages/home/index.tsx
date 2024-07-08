@@ -2,12 +2,6 @@ import './index.scss';
 import { Button } from '@/components/ui/button';
 import { IconTwitter, IconTelegram, IconVector } from '@/components/icons';
 import { useNavigate } from 'react-router-dom';
-import useSolana from '@/hooks/useSolanaContract';
-import Transfer from '@/hooks/useSolanaSend';
-import useTestSql from '@/hooks/useTestSql';
-import useTransfer from '@/hooks/useTransfer';
-
-import Wallet from '@/components/Wallet';
 const Revolutions = [
   {
     title: (
@@ -74,15 +68,6 @@ const Revolutions = [
 ];
 const Home = () => {
   const navigate = useNavigate();
-  const { mintTokenSql } = useSolana();
-  const { handleTransfer } = Transfer();
-  const { createMint1 } = useTestSql();
-  const { transfer } = useTransfer();
-  const send = async () => {
-    console.log('send');
-    await mintTokenSql();
-    // await createMint1();
-  };
 
   return (
     <div>
@@ -111,14 +96,6 @@ const Home = () => {
                 onClick={() => navigate('/launchpad?type=airdrop')}
               >
                 Hunt for airdrops
-              </Button>
-              <Button
-                variant="secondary"
-                className="font-404px text-lg  w-[298px] h-[53px] uppercase"
-                onClick={() => send()}
-                // onClick={() => handleTransfer()}
-              >
-                Send Tokens
               </Button>
             </div>
             <div className="flex items-center gap-12 mt-[50px]">

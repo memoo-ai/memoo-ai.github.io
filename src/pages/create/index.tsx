@@ -40,7 +40,7 @@ import { parseEther, formatEther } from 'ethers';
 import { useMemeFactoryContract } from '@/hooks/useMemeFactoryContract';
 import { ZERO_ADDRESS } from '@/constants';
 // import { useAccount, useSwitchChain } from 'wagmi';
-import useAccount from '@/hooks/useWeb3';
+import { useAccount } from '@/hooks/useWeb3';
 import { formatDecimals, authorizeTwitter } from '@/utils';
 import BigNumber from 'bignumber.js';
 import { CHAIN_ID } from '@/constants';
@@ -273,7 +273,7 @@ export default function Create() {
       preLaunchSecond = 3 * 24 * 3600;
     }
 
-    const preValue = totalCapInitial * data.preMarketAcquisition;
+    const preValue = totalCapInitial * (data.preMarketAcquisition / 0.3);
     console.log('preValue: ', preValue);
     const value = parseEther(String(preValue)) + memooConfig!.platformFeeCreateMeme;
     const res = await createMeme(data.tokenName, data.ticker, preLaunchSecond, value);
@@ -525,26 +525,39 @@ export default function Create() {
             </Form.Item>
             <Form.Item
               label={
-                <p>
-                  Pre-Market Acquisition <span>*</span>
-                </p>
+                <div className="flex items-end">
+                  <p className="mr-[10px]">
+                    Pre-Market Acquisition<span>*</span>
+                  </p>
+                  <p>
+                    <ITooltip
+                      placement="bottom"
+                      title="Lorem ipsum dolor sit amet consectetur adipiscing elit.
+                     Morbi fringilla ipsum turpisı sit amet tempus est malesuadased.
+                     Integer fringilla magnavel orci ultricies fermentum.
+                     Suspendisse sem est."
+                      color="#fff"
+                      bgColor="#4A5082"
+                    />
+                  </p>
+                </div>
               }
               name="preMarketAcquisition"
               style={{ marginTop: '40px' }}
             >
-              {/* <MySlider
+              <MySlider
                 defaultValue={preMarketAcquisition}
+                min={0}
+                max={maxProportion}
                 // min={firstProportion}
-                // max={maxProportion}
-                min={firstProportion}
-                max={100}
+                // max={100}
                 minPrice={0}
                 maxPrice={totalCapInitial}
-              /> */}
-              <MySlider min={0} max={1} minPrice={0} maxPrice={totalCapInitial} />
+              />
+              {/* <MySlider min={0} max={1} minPrice={0} maxPrice={totalCapInitial} /> */}
             </Form.Item>
             <p className="create_tip_for_acquisition">
-              The creator can enhance the initial allocation by purchasing an additional 30%
+              The creator can enhance the initial allocation by purchasing an additional {maxProportion * 100}%
             </p>
 
             <div className="create_optional_info">
@@ -607,7 +620,7 @@ export default function Create() {
                     </div>
                   </Form.Item>
                   <Form.Item label={<p>Website</p>} name="website">
-                    <Input maxLength={20} className="custom-input" />
+                    <Input className="custom-input" />
                   </Form.Item>
                   {/* <Form.Item label="Creator's Twitter">
                     <Input maxLength={20} />

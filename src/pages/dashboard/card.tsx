@@ -70,10 +70,10 @@ export const Card = ({ data, children }: CardProps) => {
         <div className="dashboard_item_content_left">Launch Date</div>
         <div className="dashboard_item_content_right">{data.launchDate ? formatTs(data.launchDate ?? 0) : ''}</div>
       </div>
-      <div className="dashboard_item_content">
+      {/* <div className="dashboard_item_content">
         <div className="dashboard_item_content_left">MeMoo Score</div>
         <div className="dashboard_item_content_right">{data.meMooScore}</div>
-      </div>
+      </div> */}
       <div onClick={(event) => event.stopPropagation()}>{children}</div>
     </div>
   );

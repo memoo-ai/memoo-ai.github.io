@@ -1,14 +1,18 @@
-.ant-modal  .ant-modal-content{
-  background: #1F3B4F !important;
+@import url('@/assets/styles/modal.scss');
+@import url('@/assets/styles/slider.scss');
+@import url('@/assets/styles/input.scss');
+@import url('@/assets/styles/button.scss');
+// .ant-modal  .ant-modal-content{
+//   background: #1F3B4F !important;
 
-  .ant-btn{
-    width: 100%;
-    background: $dashboardBtnBorderColor !important;
-    span{
-      color: $color !important;
-    }
-  }
-}
+//   .ant-btn{
+//     width: 100%;
+//     background: $dashboardBtnBorderColor !important;
+//     span{
+//       color: $color !important;
+//     }
+//   }
+// }
 .ant-modal .ant-modal-title {
   font-family: '404px';
   font-size: 24px;
@@ -87,4 +91,5 @@
     text-align: right;
   }
 }
+
 

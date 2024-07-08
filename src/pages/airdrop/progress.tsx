@@ -14,12 +14,27 @@ import { compareAddrs, formatDecimals, formatNumberDecimal, formatRestTime } fro
 import BigNumber from 'bignumber.js';
 
 const Progress: FC = () => {
-  const { stage, idoQueueDetail, _2ndStage, _1stStage, memooConfig, defaultConfig, mine } = useContext(AirdropContext);
+  const { stage, idoQueueDetail, _2ndStage, _1stStage, memooConfig, defaultConfig, mine, totalPurchased } =
+    useContext(AirdropContext);
   const { address } = useAccount();
 
   const firstProportion = useMemo(() => Number(memooConfig?.allocation.creator) / 10000, [memooConfig]);
+  console.log('firstProportion:', firstProportion);
+  console.log('memooConfig?.allocation.creator:', Number(memooConfig?.allocation.creator));
+  console.log('totalPurchased:', Number(totalPurchased) * Number(defaultConfig?.idoPrice));
+  const purchased = useMemo(() => {
+    if (!memooConfig || !defaultConfig) return 0;
 
-  const maxProportion = useMemo(() => Number(memooConfig?.idoCreatorBuyLimit) / 10000, [memooConfig]);
+    const totalPurchasedBN = new BigNumber(Number(totalPurchased));
+    const idoPriceBN = new BigNumber(Number(defaultConfig?.idoPrice)).dividedBy(10 ** defaultConfig?.defaultDecimals);
+    console.log('purchased:', parseFloat(formatDecimals(totalPurchasedBN.multipliedBy(idoPriceBN))));
+    return parseFloat(formatDecimals(totalPurchasedBN.multipliedBy(idoPriceBN)));
+  }, [memooConfig, defaultConfig, totalPurchased]);
+
+  const maxProportion = useMemo(
+    () => (Number(memooConfig?.idoCreatorBuyLimit) + Number(memooConfig?.allocation.creator)) / 10000,
+    [memooConfig],
+  );
 
   const firstIncrease = useMemo(() => {
     if (!memooConfig || !defaultConfig) return 0;
@@ -62,6 +77,7 @@ const Progress: FC = () => {
           firstProportion={firstProportion}
           maxProportion={maxProportion}
           firstIncrease={firstIncrease}
+          purchased={purchased}
         >
           {node}
         </IncreaseAcquisitionModal>
@@ -107,7 +123,7 @@ const Progress: FC = () => {
               new BigNumber(_1stStage?.unlockCount ?? 0).dividedBy(10 ** (defaultConfig?.defaultDecimals ?? 0)),
             ),
           )}
-          lockinPeriod={formatRestTime(Number(_2ndStage?.unlockInfo?.value) / 1000)}
+          lockinPeriod={formatRestTime(Number(_1stStage?.unlockInfo?.value) / 1000)}
           rate={new BigNumber(Number(_1stStage?.unlockInfo?.unlockRate)).dividedBy(1e4).multipliedBy(1e2).toNumber()}
           stage="1st"
         >

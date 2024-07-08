@@ -1,13 +1,30 @@
 /* eslint-disable react/no-unstable-nested-components */
-import { FC, useContext, useMemo, useRef } from 'react';
+import { FC, useContext, useMemo, useRef, useEffect, useState } from 'react';
 import './profile.scss';
 import { AirdropContext } from '.';
 import { clipAddress, extractDomainName, formatTs, handleCopy } from '@/utils';
-import { IconCopy, IconTwitter, IconTelegram, IconShare } from '@/components/icons';
+import { IconCopy, IconTwitter, IconTelegram, IconShare, IconFacebook } from '@/components/icons';
+import { getToolsUrls } from '@/api/common';
 
 const Profile: FC = () => {
   const { idoQueueDetail } = useContext(AirdropContext);
   const iconRefs = useRef<any>({});
+  const [showShare, setShowShare] = useState(false);
+  const shareText = 'From The Ultimate Memecoin Infrastructure.';
+
+  const shareUrl = useMemo(() => {
+    return `${import.meta.env.VITE_SHARE_URI}airdrop/${idoQueueDetail?.ticker}`;
+  }, [idoQueueDetail]);
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await getToolsUrls();
+        console.log(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    })();
+  }, [idoQueueDetail]);
 
   const params = useMemo(() => {
     return [
@@ -24,7 +41,8 @@ const Profile: FC = () => {
           </label>
         ),
         formatValue: (value: string) => (
-          <ul className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1">
+          <ul className=" flex flex-wrap col-span-6 gap-y-1.5 gap-x-1">
+            {/* <ul className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1"> */}
             {[
               { name: 'De.Fi Scanner', icon: '/create/icon-tool-defi-scanner.png' },
               { name: 'DEX Screener', icon: '/create/icon-tool-dex-screener.png' },
@@ -32,7 +50,7 @@ const Profile: FC = () => {
               { name: 'GeckoTerminal', icon: '/create/icon-tool-gecko-terminal.png' },
             ].map((token) => (
               <li key={token.name} className="flex items-center gap-x-1.5 h-8 token_list_hover">
-                <img className="w-5 object-contain" src={token.icon} /> {token.name}
+                {/* <img className="w-5 object-contain" src={token.icon} /> {token.name} */}
               </li>
             ))}
           </ul>
@@ -47,12 +65,17 @@ const Profile: FC = () => {
         key: 'Project Website',
         value: '',
         formatValue: (value: string) => (
-          <ul className={`${idoQueueDetail?.website ? 'token_list' : ''}flex flex-wrap col-span-6 gap-y-1.5 gap-x-1`}>
-            {idoQueueDetail?.website && (
-              <li className="h-8 cursor-pointer">
+          <ul className={`${idoQueueDetail?.website ? 'token_list' : ''} flex flex-wrap col-span-6 gap-y-1.5 gap-x-1`}>
+            {idoQueueDetail?.website ? (
+              <li className="h-8 cursor-pointer token_list_hover">
                 <a href={idoQueueDetail?.website} target="_blank" className="flex items-center gap-x-1.5">
                   {extractDomainName(idoQueueDetail?.website ?? '')}
                 </a>
+              </li>
+            ) : (
+              <li className="flex items-center gap-x-1.5 h-8">
+                {' '}
+                <span className="col-span-6 text-white font-OCR leading-5">NA</span>
               </li>
             )}
           </ul>
@@ -140,11 +163,13 @@ const Profile: FC = () => {
         value: '',
         formatValue: (value: string) => (
           <ul
-            className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1"
+            className={`${
+              idoQueueDetail?.creatorTwitter ? 'token_list' : ''
+            } flex flex-wrap col-span-6 gap-y-1.5 gap-x-1`}
             onMouseOver={() => iconRefs.current['IconTwitterCreator'].setHovered(true)}
             onMouseLeave={() => iconRefs.current['IconTwitterCreator'].setHovered(false)}
           >
-            {idoQueueDetail?.creatorTwitter && (
+            {idoQueueDetail?.creatorTwitter ? (
               <li className="flex items-center gap-x-1.5 h-8 token_list_hover">
                 <a
                   href={`https://x.com/${idoQueueDetail?.creatorTwitter}`}
@@ -160,6 +185,11 @@ const Profile: FC = () => {
                   {idoQueueDetail?.creatorTwitter}
                 </a>
               </li>
+            ) : (
+              <li className="flex items-center gap-x-1.5 h-8">
+                {' '}
+                <span className="col-span-6 text-white font-OCR leading-5">NA</span>
+              </li>
             )}
           </ul>
         ),
@@ -173,9 +203,38 @@ const Profile: FC = () => {
         {/* <li>
           <img className="w-10 h-10 object-cover" src="/create/icon-collect.png" />
         </li> */}
-        <li>
+        <li className="profile-share" onMouseMove={() => setShowShare(true)} onMouseLeave={() => setShowShare(false)}>
           <img className="w-10 h-10 object-cover" src="/create/icon-share.png" />
-          {/* <IconShare /> */}
+          {showShare && (
+            <div className="profile-share-content pt-2">
+              <ul className="content flex items-center justify-center gap-[11px]">
+                <a
+                  className="rounded-[7px] bg-[#07E993] w-[40px] h-[40px] p-[10px] flex justify-center items-center"
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                    shareText,
+                  )}&url=${encodeURIComponent(shareUrl)}`}
+                >
+                  <IconTwitter color="#1F3B4F" className="cursor-pointer " />
+                </a>
+                <a
+                  className="rounded-[7px] bg-[#07E993] w-[40px] h-[40px] p-[10px] flex justify-center items-center"
+                  href={`https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(
+                    shareText,
+                  )}`}
+                >
+                  <IconTelegram color="#1F3B4F" className="cursor-pointer " />
+                </a>
+                <a
+                  className="rounded-[7px] bg-[#07E993] w-[40px] h-[40px] p-[10px] flex justify-center items-center"
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                    shareUrl,
+                  )}&quote=${encodeURIComponent(shareText)}`}
+                >
+                  <IconFacebook color="#1F3B4F" className="cursor-pointer " />
+                </a>
+              </ul>
+            </div>
+          )}
         </li>
         {/* <li>
           <img className="w-10 h-10 object-cover" src="/create/icon-more.png" />

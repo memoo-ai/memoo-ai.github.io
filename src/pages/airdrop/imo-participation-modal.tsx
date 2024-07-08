@@ -31,7 +31,8 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
   const totalSupplyBN = useMemo(() => {
     if (!memooConfig || !defaultConfig) return zeroBN;
     return new BigNumber(Number(defaultConfig.totalSupply)).dividedBy(10 ** defaultConfig.defaultDecimals);
-  }, [memooConfig]);
+  }, [memooConfig, defaultConfig]);
+  console.log('config-totalSupplyBN:', totalSupplyBN);
 
   const capped = useMemo(() => {
     if (!memooConfig || !defaultConfig) return zeroBN;
@@ -39,7 +40,7 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
     // const idoPriceBN = new BigNumber(defaultConfig.idoPrice).dividedBy(10 ** defaultConfig.defaultDecimals);
     const idoPriceBN = new BigNumber(Number(defaultConfig.idoPrice)).dividedBy(10 ** defaultConfig.defaultDecimals);
     return totalSupplyBN.multipliedBy(idoQuotaBN).multipliedBy(idoPriceBN);
-  }, [memooConfig, totalSupplyBN]);
+  }, [memooConfig, totalSupplyBN, defaultConfig]);
 
   const idoUserBuyLimitBN = useMemo(() => {
     if (!memooConfig) return zeroBN;

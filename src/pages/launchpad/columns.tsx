@@ -17,8 +17,8 @@ export const columns = (navigate: (path: string) => void) => [
     render: (tokenName: string, record: LaunchpadIMO) => (
       <div className="flex items-center">
         <img src={record.icon} alt="" className="w-[84px] h-[84px] rounded-full mr-5" />
-        <span className="font-OCR font-bold text-lg mr-2 text-[#ffffff]">{tokenName}</span>
-        <span className="font-OCR font-normal text-sm text-[#07E993]">{record.ticker}</span>
+        <span className="font-OCR font-normal text-lg mr-2 text-[#ffffff]">{tokenName}</span>
+        <span className="font-OCR font-normal text-[12px] text-[#07E993] mt-2">{record.ticker}</span>
       </div>
     ),
   },
@@ -28,15 +28,15 @@ export const columns = (navigate: (path: string) => void) => [
     key: 'endsIn',
     sorter: true,
     render: (endsIn: number) => (
-      <div className="font-OCR font-semibold text-lg ">{endsIn ? formatTs(endsIn ?? 0) : ''}</div>
+      <div className="font-OCR font-normal text-lg ">{endsIn ? formatTs(endsIn ?? 0) : ''}</div>
     ),
   },
   {
-    title: 'Total Raissed',
+    title: 'Total Raised',
     dataIndex: 'totalRaised',
     key: 'totalRaised',
     sorter: true,
-    render: (totalRaised: number) => <span className="font-OCR font-semibold text-lg">{totalRaised}E</span>,
+    render: (totalRaised: number) => <span className="font-OCR font-norma text-lg">{totalRaised}E</span>,
   },
   {
     title: 'Action',
@@ -65,8 +65,6 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
       <div className="flex items-center">
         <img src={record.icon} alt="" className="w-[84px] h-[84px] rounded-full mr-5" />
         <span className="font-OCR font-bold text-lg mr-2">{tokenName}</span>
-        <span className="font-OCR font-normal text-sm ">{record.ticker}</span>
-        <span className="font-OCR font-bold text-lg mr-2">{tokenName}</span>
         <span className="font-OCR font-normal text-[12px] text-[#07E993] mt-2">{record.ticker}</span>
       </div>
     ),
@@ -77,7 +75,7 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
     key: 'idoDate',
     sorter: true,
     render: (idoDate: number) => (
-      <div className="font-OCR font-semibold text-lg ">{idoDate ? formatTs(idoDate ?? 0) : ''}</div>
+      <div className="font-OCR font-normal text-lg ">{idoDate ? formatTs(idoDate ?? 0) : ''}</div>
     ),
   },
   {
@@ -85,7 +83,7 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
     dataIndex: 'participants',
     key: 'participants',
     sorter: true,
-    render: (participants: number) => <span className="font-OCR font-semibold text-lg">{participants}E</span>,
+    render: (participants: number) => <span className="font-OCR font-normal text-lg">{participants}E</span>,
   },
   {
     title: 'Action',
@@ -100,5 +98,16 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
         airdrop
       </Button>
     ),
+  },
+];
+
+export const selectOptions = [
+  {
+    value: 'Ends in',
+    label: 'Ends in',
+  },
+  {
+    value: 'ToTal Raised',
+    label: 'ToTal Raised',
   },
 ];

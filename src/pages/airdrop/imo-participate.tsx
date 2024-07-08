@@ -1,7 +1,7 @@
 import { FC, useContext, useMemo, useState } from 'react';
 import './imo-participate.scss';
 import Countdown from './countdown';
-import { Button, Popover } from 'antd';
+import { Button } from 'antd';
 import classNames from 'classnames';
 import { AirdropContext } from '.';
 import ImoParticipationModal from './imo-participation-modal';
@@ -22,7 +22,7 @@ const IMOParticipate: FC = () => {
       // { key: 'Price', value: `$${Number(idoActiveDetail?.price).toLocaleString() ?? 0}`, tip: null },
       {
         key: 'Total Raised',
-        value: `${idoActiveDetail?.totalRaised ?? 'NA/NA'} ETH`,
+        value: `${idoActiveDetail?.totalRaised === '' ? 0 : idoActiveDetail?.totalRaised ?? 'NA/NA'} ETH`,
         tip: 'Total IMO raise is always capped \n at 2.33 ETH',
       },
       {
@@ -60,7 +60,7 @@ const IMOParticipate: FC = () => {
               </div>,
               <div key="minutes">
                 <time>{minutes}</time>
-                <span>H</span>
+                <span>M</span>
               </div>,
               <div key="seconds">
                 <time>{seconds}</time>

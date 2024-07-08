@@ -1,6 +1,7 @@
 .ant-modal  .ant-modal-content{
   background: #1F3B4F !important;
-
+  border-radius: 15px;
+  border: 1px solid #07E993;
   .ant-btn{
     width: 100%;
     background: $dashboardBtnBorderColor !important;
@@ -16,6 +17,8 @@
   line-height: 29px;
   text-align: left;
   background: #1F3B4F !important;
+  border-radius: 15px;
+  // border: 1px solid #07E993;
 }
 .confirm_title{
   width: 365px;

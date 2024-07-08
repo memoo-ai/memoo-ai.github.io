@@ -30,7 +30,7 @@
    }
    .ant-select-dropdown {
     background-color: #07E993 !important;
-    border: 1px solid #d9d9d9;
+    border: 1px solid #07E993 !important;
   }
 
   .ant-select-item {
@@ -45,6 +45,11 @@
    .ant-select-item:hover {
     background-color: #07E993;
   }
-
+  .ant-select-outlined{
+    color: #07E993 !important;
+  }
+  .ant-select-open{
+    color: #07E993 !important;
+  }
 
 }

@@ -13,10 +13,10 @@ import { authorizeTwitter } from '@/utils';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import BigNumber from 'bignumber.js';
 import { IconWallet } from '@/components/icons';
-import Wallet from '@/components/SolanaWallet';
-import useAccount from '@/hooks/useWeb3';
-const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
+import Wallet from '@/components/Wallet';
+import { useAccount } from 'wagmi';
 import ITooltip from '@/components/ITooltip';
+const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
 let isRequestFollowing = false;
 export default function AirdropClaim() {
   const { stage, idoQueueDetail, idoLaunchedDetail, idoActiveDetail, triggerRefresh, ticker, airdropClaim } =
@@ -60,9 +60,6 @@ export default function AirdropClaim() {
   }, [idoLaunchedDetail, idoActiveDetail, stage]);
 
   const showAirdropClaim = useMemo(() => {
-    const idoStatus = idoLaunchedDetail?.status === 'Launched' || idoLaunchedDetail?.status === 'IDO';
-    const taskCompleted = idoQueueDetail?.projectTwitterBind && idoQueueDetail?.platformTwitterBind;
-    return idoStatus && taskCompleted;
     const idoStatus = idoLaunchedDetail?.status === 'Launched' || idoLaunchedDetail?.status === 'IDO';
     const taskCompleted = idoQueueDetail?.projectTwitterBind && idoQueueDetail?.platformTwitterBind;
     return idoStatus && taskCompleted;
@@ -167,14 +164,17 @@ export default function AirdropClaim() {
       <div className="head flex justify-between">
         <h3 className="flex items-center gap-x-2 font-404px text-green text text-lg">
           airdrop{' '}
-          <ITooltip
-            title="Lorem ipsum dolor sit amet consectetur adipiscing elit.
+          <Popover>
+            {/* <img src="/create/tip.png" /> */}
+            <ITooltip
+              title="Lorem ipsum dolor sit amet consectetur adipiscing elit.
                 Morbi fringilla ipsum turpisı sit amet tempus est malesuadased.
                 Integer fringilla magnavel orci ultricies fermentum.
                 Suspendisse sem est."
-            color="#fff"
-            bgColor="#396D93"
-          />
+              color="#fff"
+              bgColor="#396D93"
+            />
+          </Popover>
         </h3>
         {doingTask && <span className="endsin font-OCR text-white">Ends in</span>}
       </div>
@@ -197,7 +197,7 @@ export default function AirdropClaim() {
           <li key={index} className="follow_list_item flex items-center w-full justify-between px-3 py-3.5">
             <p
               className={classNames('leading-5 font-OCR whitespace-pre-wrap', {
-                'text-white': (!item.followed && stage !== 'imo' && stage !== 'imo') || !address,
+                'text-white': (!item.followed && stage !== 'imo') || !address,
                 'text-deep-green': item.followed || stage === 'imo',
               })}
             >
@@ -206,18 +206,15 @@ export default function AirdropClaim() {
             </p>
             <Wallet>
               <Wallet>
-              <img
+                <img
                   onClick={() => (item.followed || stage === 'imo' ? null : handleFollow(item.user ? item.user : ''))}
                   className={classNames('w-5', {
-
-                  'cursor-pointer': !item.followed,
-
-                  'opacity-30': (item.followed || stage === 'imo',
-                || stage === 'imo') && address,
-                })}
+                    'cursor-pointer': !item.followed,
+                    'opacity-30': (item.followed || stage === 'imo') && address,
+                  })}
                   src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
                 />
-            </Wallet>
+              </Wallet>
             </Wallet>
           </li>
         ))}
@@ -256,7 +253,7 @@ export default function AirdropClaim() {
       <AirdropClaimModal>
         <Button
           disabled={!idoQueueDetail?.claimFlag}
-          className={classNames('uppercase w-full claim_btn h-12 font–404px', {
+          className={classNames('uppercase w-full claim_btn h-12 font–404px mt-5', {
             'mt-20': doingTask,
             'mt-5': airdropUnlocking || airdropUnlocked,
           })}

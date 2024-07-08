@@ -17,7 +17,8 @@ module.exports = {
         OpenSans: ['OpenSans Semibold'],
         '404px': ['"404px"'],
         OCR: ['OCR A Extended'],
-        Kitty: ['Kitty Kat']
+        Kitty: ['Kitty Kat'],
+        REV: ['04b03rev'],
       },
       colors: {
         ['bluish-purple']: '#5D64A2',
