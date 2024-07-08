@@ -14,7 +14,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import BigNumber from 'bignumber.js';
 import { IconWallet } from '@/components/icons';
 import Wallet from '@/components/SolanaWallet';
-import useAccount from '@/hooks/useWeb3';
+import { useAccount } from '@/hooks/useWeb3';
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
 import ITooltip from '@/components/ITooltip';
 let isRequestFollowing = false;

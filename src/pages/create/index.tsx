@@ -40,7 +40,7 @@ import { parseEther, formatEther } from 'ethers';
 import { useMemeFactoryContract } from '@/hooks/useMemeFactoryContract';
 import { ZERO_ADDRESS } from '@/constants';
 // import { useAccount, useSwitchChain } from 'wagmi';
-import useAccount from '@/hooks/useWeb3';
+import { useAccount } from '@/hooks/useWeb3';
 import { formatDecimals, authorizeTwitter } from '@/utils';
 import BigNumber from 'bignumber.js';
 import { CHAIN_ID } from '@/constants';
