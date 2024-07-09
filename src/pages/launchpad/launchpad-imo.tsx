@@ -32,8 +32,8 @@ const LaunchPadImo = () => {
     const { data } = await getLaunchpadImo(params);
     // console.log(data);
     if (data) {
-      // setData(data.records ?? []);
-      setData([]);
+      setData(data.records ?? []);
+      // setData([]);
       setPagination({
         ...pagination,
         total: data.total_record ?? 0,
