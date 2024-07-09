@@ -12,7 +12,7 @@ const SwipeX = ({ item }: SwipeXProps) => {
       key={item.ticker}
       onClick={() => navigate(`/airdrop/${item.ticker}`)}
     >
-      <span className=" font-404px text-[12px]">
+      <span className=" font-REV text-[12px]">
         {' '}
         <span style={{ color: getRandomColor() }}>
           {item.address.slice(0, 6)}...{item.address.slice(-4)}

@@ -18,7 +18,7 @@ module.exports = {
         '404px': ['"404px"'],
         OCR: ['OCR A Extended'],
         Kitty: ['Kitty Kat'],
-        REV: ['04b03rev'],
+        REV: ['REV'],
       },
       colors: {
         ['bluish-purple']: '#5D64A2',

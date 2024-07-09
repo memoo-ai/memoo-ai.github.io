@@ -109,3 +109,21 @@ export const columns = [
     render: (marketCap: number) => <div className="font-semibold text-lg ">${formatDecimals(marketCap)}</div>,
   },
 ];
+export const rankingSelectOptions = [
+  {
+    key: 'price',
+    label: 'price',
+  },
+  {
+    key: '1h',
+    label: '1h',
+  },
+  {
+    key: '24hVolume',
+    label: '24 Volume',
+  },
+  {
+    key: 'marketCap',
+    label: 'MarketCap',
+  },
+];

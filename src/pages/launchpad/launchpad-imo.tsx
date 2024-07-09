@@ -5,7 +5,7 @@ import Empty from '@/components/Empty';
 import { Table } from 'antd';
 import KingsCards from '@/components/KingsCards';
 import IPagination from '@/components/IPagination';
-import { columns, selectOptions } from './columns';
+import { columns, imoSelectOptions } from './columns';
 import { useNavigate } from 'react-router-dom';
 import { getLaunchpadImo, getImoPvCard } from '@/api/launchpad';
 import { LaunchpadIMO, ImoPvCard } from '@/types';
@@ -13,6 +13,8 @@ import ISelect from '@/components/ISelect';
 
 const LaunchPadImo = () => {
   const navigate = useNavigate();
+  const [activeKey, setActiveKey] = useState('');
+  const [orderBy, setOrderBy] = useState('desc');
   const [pagination, setPagination] = useState<PaginationProps>({
     current: 1,
     pageSize: 10,
@@ -40,7 +42,7 @@ const LaunchPadImo = () => {
 
   useEffect(() => {
     fetchData();
-  }, [pagination.current]);
+  }, [pagination.current, activeKey, orderBy]);
 
   useEffect(() => {
     (async () => {
@@ -54,7 +56,13 @@ const LaunchPadImo = () => {
       <KingsCards btnText="PARTICIPATE" btnType="reverse" data={cardData} />
       <div className="flex justify-between">
         <div />
-        <ISelect options={selectOptions} />
+        <ISelect
+          options={imoSelectOptions}
+          onSelectChange={(key, orderBy) => {
+            setActiveKey(key);
+            setOrderBy(orderBy);
+          }}
+        />
       </div>
       <Table
         columns={columns(navigate)}

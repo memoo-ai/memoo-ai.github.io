@@ -196,22 +196,24 @@ export default function AirdropClaim() {
           <li key={index} className="follow_list_item flex items-center w-full justify-between px-3 py-3.5">
             <p
               className={classNames('leading-5 font-OCR whitespace-pre-wrap', {
-                'text-white': (!item.followed && stage !== 'imo') || !address,
-                'text-deep-green': item.followed || stage === 'imo',
+                'text-white': (!item.followed && stage === 'in-queue') || !address,
+                'text-deep-green': item.followed || stage !== 'in-queue',
               })}
             >
               Follow @{item.user}
               {'\n'}on twitter
             </p>
             <Wallet>
-              <img
-                onClick={() => (item.followed || stage === 'imo' ? null : handleFollow(item.user ? item.user : ''))}
-                className={classNames('w-5', {
-                  'cursor-pointer': !item.followed,
-                  'opacity-30': (item.followed || stage === 'imo') && address,
-                })}
-                src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
-              />
+              {stage === 'in-queue' && (
+                <img
+                  onClick={() => (item.followed ? null : handleFollow(item.user ? item.user : ''))}
+                  className={classNames('w-5', {
+                    'cursor-pointer': !item.followed,
+                    'opacity-30': item.followed && address,
+                  })}
+                  src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
+                />
+              )}
             </Wallet>
           </li>
         ))}
