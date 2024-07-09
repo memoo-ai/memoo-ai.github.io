@@ -26,7 +26,7 @@ export const columns = (navigate: (path: string) => void) => [
     title: 'Ends In',
     dataIndex: 'endsIn',
     key: 'endsIn',
-    sorter: true,
+    sorter: false,
     render: (endsIn: number) => (
       <div className="font-OCR font-normal text-lg ">{endsIn ? formatTs(endsIn ?? 0) : ''}</div>
     ),
@@ -35,7 +35,7 @@ export const columns = (navigate: (path: string) => void) => [
     title: 'Total Raised',
     dataIndex: 'totalRaised',
     key: 'totalRaised',
-    sorter: true,
+    sorter: false,
     render: (totalRaised: number) => <span className="font-OCR font-norma text-lg">{totalRaised}E</span>,
   },
   {
@@ -73,7 +73,7 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
     title: 'IDO Date',
     dataIndex: 'idoDate',
     key: 'idoDate',
-    sorter: true,
+    sorter: false,
     render: (idoDate: number) => (
       <div className="font-OCR font-normal text-lg ">{idoDate ? formatTs(idoDate ?? 0) : ''}</div>
     ),
@@ -82,7 +82,7 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
     title: 'Participants',
     dataIndex: 'participants',
     key: 'participants',
-    sorter: true,
+    sorter: false,
     render: (participants: number) => <span className="font-OCR font-normal text-lg">{participants}E</span>,
   },
   {
@@ -113,11 +113,11 @@ export const imoSelectOptions = [
 ];
 export const airdropSelectOptions = [
   {
-    key: 'endsIn',
+    key: 'idoDate',
     label: 'IDO Date',
   },
   {
-    key: 'totalRaised',
+    key: 'participants',
     label: 'Participants',
   },
 ];

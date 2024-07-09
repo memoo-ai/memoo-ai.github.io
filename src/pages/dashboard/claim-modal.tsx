@@ -120,7 +120,7 @@ const ClaimModal = ({ children }: any) => {
               </span>
             }
           />
-          <Button loading={confirming} className="confirm_btn mt-[77px] h-[50px]" onClick={onConfirm}>
+          <Button loading={confirming} className="memoo_button w-[100%] mt-[77px] h-[50px]" onClick={onConfirm}>
             Confirm
           </Button>
         </div>

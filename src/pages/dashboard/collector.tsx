@@ -121,8 +121,8 @@ export const Collector = () => {
                           <Button
                             className="flex items-center justify-between collector-btn"
                             key="increase"
-                            onMouseOver={() => iconRefs.current['AirdropBtn'].setHovered(true)}
-                            onMouseLeave={() => iconRefs.current['AirdropBtn'].setHovered(false)}
+                            onMouseOver={() => iconRefs.current[`AirdropBtn${index}`].setHovered(true)}
+                            onMouseLeave={() => iconRefs.current[`AirdropBtn${index}`].setHovered(false)}
                             disabled={!item.claimFlag}
                             onClick={() => {
                               getLaunchedDetail(item.ticker);
@@ -131,7 +131,7 @@ export const Collector = () => {
                             <IconAirdropBtn
                               className="IconAirdropBtn"
                               color="#07E993"
-                              ref={(ref) => (iconRefs.current['AirdropBtn'] = ref)}
+                              ref={(ref) => (iconRefs.current[`AirdropBtn${index}`] = ref)}
                             />
                             <span className="ml-[9px]">CLAIM AIRDROP</span>
                           </Button>

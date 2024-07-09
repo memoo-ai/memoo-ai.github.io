@@ -70,7 +70,7 @@ const LaunchPadAirdrop = () => {
         loading={loading}
         className="mb-[58px]"
         locale={{
-          emptyText: <Empty />,
+          emptyText: <Empty showBorder={false} />,
         }}
       />
       <IPagination

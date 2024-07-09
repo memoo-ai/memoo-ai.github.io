@@ -85,11 +85,14 @@ const AirdropModal = ({ children }: any) => {
             {getNumberOrDefault(Number(idoLaunchedDetail?.count).toLocaleString())}
             {/* {idoLaunchedDetail?.count} */}
           </div>
-          <div className="airdrop_confirm_btn">
-            <Button className="mt-[16px] custom_ant_btn" onClick={onConfirm} loading={confirming}>
-              CLAIM ALL
-            </Button>
-          </div>
+          <Button
+            className="mt-[16px] memoo_button w-[100%] h-[50px]"
+            onClick={onConfirm}
+            loading={confirming}
+            disabled={getNumberOrDefault(Number(idoLaunchedDetail?.count).toLocaleString()) === 0}
+          >
+            CLAIM ALL
+          </Button>
         </div>
       </Modal>
       {Children.map(children, (child) => {
