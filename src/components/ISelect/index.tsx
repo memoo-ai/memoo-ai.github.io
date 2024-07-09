@@ -42,6 +42,7 @@ const ISelect = ({ options, onSelectChange }: ISelectProps) => {
         <p
           className={`${orderBy === 'asc' ? 'text-[#A005FE]' : 'text-[#07E993]'} font-404px text-[16px]`}
           onClick={() => {
+            setOrderBy('asc');
             onSelectChange(activeKey, 'asc');
           }}
         >

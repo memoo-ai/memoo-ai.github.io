@@ -1,25 +1,18 @@
-.ant-modal  .ant-modal-content{
-  background: #1F3B4F !important;
-  border-radius: 15px;
-  border: 1px solid #07E993;
-  .ant-btn{
-    width: 100%;
-    background: $dashboardBtnBorderColor !important;
-    span{
-      color: $color !important;
-    }
-  }
-}
-.ant-modal .ant-modal-title {
-  font-family: '404px';
-  font-size: 24px;
-  font-weight: 800;
-  line-height: 29px;
-  text-align: left;
-  background: #1F3B4F !important;
-  border-radius: 15px;
-  // border: 1px solid #07E993;
-}
+@import url('@/assets/styles/modal.scss');
+@import url('@/assets/styles/slider.scss');
+@import url('@/assets/styles/input.scss');
+@import url('@/assets/styles/button.scss');
+
+// .ant-modal .ant-modal-title {
+//   font-family: '404px';
+//   font-size: 24px;
+//   font-weight: 800;
+//   line-height: 29px;
+//   text-align: left;
+//   background: #1F3B4F !important;
+//   border-radius: 15px;
+//   // border: 1px solid #07E993;
+// }
 .confirm_title{
   width: 365px;
   font-family: '404px';
@@ -79,48 +72,7 @@
       transform: translateY(-50%);
     }
   }
-  .airdrop_confirm_btn{
-    width: 100%;
-    .ant-btn{
 
-      width: 100%!important;
-      height: 50px;
-      border: none;
-      background: $mainColor !important;
-      display: flex;
-      justify-content: center;
-      border-radius: 7px !important;
-
-      span{
-        color: #B53BFF !important;
-        font-family: '404px';
-        font-size: 14px;
-        font-weight: 800;
-        text-align: left;
-        line-height: 40px;
-      }
-
-      &:hover{
-        border-color: transparent!important;
-        background: $mainColor !important;
-        span{
-          color: #242842 !important;
-        }
-
-      }
-
-  }
-    .custom_ant_btn{
-      &:hover{
-
-        background: $mainBgColor !important;
-
-        span{
-          color: $mainColor !important;
-        }
-      }
-    }
-  }
 }
 
 

@@ -250,7 +250,7 @@ const Airdrop: FC = () => {
           {/* <Status /> */}
           {idoQueueDetail?.status === 'Launched' && <PublicSale />}
           {stage === 'imo' && <IMOParticipate />}
-          {stage === 'in-queue' && <PreMarketAcqusition amount={totalAmount ?? 0} />}
+          {stage === 'in-queue' && mine && <PreMarketAcqusition amount={totalAmount ?? 0} />}
           <AirdropClaim />
           <IDODetail />
         </AirdropContext.Provider>

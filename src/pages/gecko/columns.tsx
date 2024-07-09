@@ -51,6 +51,13 @@ export const columnsOld: ColumnDef<TrendingTokens>[] = [
 
 export const columns = [
   {
+    title: '#',
+    dataIndex: 'index',
+    key: 'index',
+    width: 20,
+    render: (_: any, __: any, index: number) => <div className="flex items-center text-[#fff]">{index + 1}</div>,
+  },
+  {
     title: 'Token',
     dataIndex: 'tokenName',
     key: 'tokenName',
@@ -66,14 +73,14 @@ export const columns = [
     title: 'Price',
     dataIndex: 'price',
     key: 'price',
-    sorter: true,
+    sorter: false,
     render: (price: number) => <div className="font-semibold text-lg ">${formatDecimals(price)}</div>,
   },
   {
     title: '1h',
     dataIndex: 'increase1H',
     key: 'increase1H',
-    sorter: true,
+    sorter: false,
     render: (increase1H: number) => (
       <span className={`font-semibold text-lg ${increase1H < 0 ? 'text-red' : 'text-green'}`}>
         {increase1H}
@@ -86,7 +93,7 @@ export const columns = [
     title: '24h',
     dataIndex: 'increase24H',
     key: 'increase24H',
-    sorter: true,
+    sorter: false,
     render: (increase24H: number) => (
       <span className={`font-semibold text-lg ${increase24H < 0 ? 'text-red' : 'text-green'}`}>
         {increase24H}
@@ -99,7 +106,7 @@ export const columns = [
     title: '24h Volume',
     dataIndex: 'volume24H',
     key: 'volume24H',
-    sorter: true,
+    sorter: false,
     render: (volume24H: number) => <div className="font-semibold text-lg ">${volume24H}</div>,
   },
   {

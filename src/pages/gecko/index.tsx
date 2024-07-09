@@ -2,7 +2,7 @@ import './index.scss';
 import CommonBanner from '@/components/Banner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useEffect, useState } from 'react';
-import { columns } from './columns';
+import { columns, rankingSelectOptions } from './columns';
 import IPagination from '@/components/IPagination';
 import { useNavigate } from 'react-router-dom';
 import { Table } from 'antd';
@@ -13,6 +13,7 @@ import { getTrendingTokens, getTopTokens } from '@/api/gecko';
 import { TrendingTokens } from '@/types';
 import HeaderBannerBg from './assets/header-banner-bg.png';
 import Empty from '@/components/Empty';
+import ISelect from '@/components/ISelect';
 
 type ColumnsType<T> = TableProps<T>['columns'];
 type TablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;
@@ -100,7 +101,7 @@ const Gecko = () => {
           };
         }}
         locale={{
-          emptyText: <Empty />,
+          emptyText: <Empty showBorder={false} />,
         }}
       />
       <IPagination

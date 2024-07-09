@@ -143,7 +143,7 @@ const IncreaseModal: FC<{
           <div>
             <Button
               disabled={!accepted && Number(formatDecimals(result)) - purchased <= 0}
-              className="modal_button h-[50px]"
+              className="memoo_button w-[100%] h-[50px]"
               loading={confirming}
               onClick={onConfirm}
             >
