@@ -16,7 +16,6 @@ import { IconWallet } from '@/components/icons';
 import Wallet from '@/components/Wallet';
 import { useAccount } from 'wagmi';
 import ITooltip from '@/components/ITooltip';
-import ITooltip from '@/components/ITooltip';
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
 let isRequestFollowing = false;
 export default function AirdropClaim() {
