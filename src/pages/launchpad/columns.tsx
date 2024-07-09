@@ -113,11 +113,11 @@ export const imoSelectOptions = [
 ];
 export const airdropSelectOptions = [
   {
-    key: 'endsIn',
+    key: 'idoDate',
     label: 'IDO Date',
   },
   {
-    key: 'totalRaised',
+    key: 'participants',
     label: 'Participants',
   },
 ];
