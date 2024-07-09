@@ -21,7 +21,7 @@ const SwipeY = ({ item }: SwipeXProps) => {
       <span className="font-REV ml-[5px] text-[#fff] text-[12px]" style={{ color: getRandomColor() }}>
         {item.address.slice(0, 4)}...{item.address.slice(-4)}
       </span>
-      <span className="font-REV ml-[5px] text-[#fff] text-[12px]">
+      <span className="font-REV ml-[5px] text-[#fff] text-[12px]" style={{ fontFamily: 'REV' }}>
         {item.tradeType === 'airdrop' ? 'participated' : 'contributed'}
       </span>
       <span className="font-REV ml-[5px] text-[#fff] text-[12px]">

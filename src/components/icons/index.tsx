@@ -1228,3 +1228,29 @@ export const IconSetting = forwardRef(
     );
   },
 );
+export const IconArrow = forwardRef(
+  ({ className, hoverColor = '#A005FE', color = '#07E993', ...rest }: IconProps, ref) => {
+    const [hovered, setHovered] = useState(false);
+    useImperativeHandle(ref, () => ({
+      setHovered,
+    }));
+    return (
+      <svg
+        width="22"
+        height="12"
+        viewBox="0 0 22 12"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        onMouseOver={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        className={className}
+        {...rest}
+      >
+        <path
+          d="M22 1.4277C21.7955 1.77867 21.6579 2.19277 21.375 2.46761C18.2922 5.48707 15.1903 8.48981 12.0827 11.4888C11.3717 12.1759 10.5059 12.1666 9.8007 11.4833C6.71409 8.48796 3.63321 5.48892 0.552324 2.48803C0.110834 2.05721 -0.131891 1.5484 0.0745201 0.933737C0.254175 0.397067 0.672731 0.103664 1.23081 0.0163852C1.83093 -0.0783211 2.26477 0.252223 2.65466 0.629191C5.09911 3.00242 7.53591 5.38122 9.98036 7.75259C10.29 8.05342 10.6244 8.52324 10.9665 8.53995C11.2647 8.55481 11.603 8.05157 11.905 7.75816C14.3666 5.37936 16.8206 2.99499 19.2784 0.612478C19.697 0.207655 20.1576 -0.102462 20.8036 0.046097C21.5012 0.205798 21.8968 0.677472 22 1.4277Z"
+          fill={hovered ? hoverColor : color}
+        />
+      </svg>
+    );
+  },
+);

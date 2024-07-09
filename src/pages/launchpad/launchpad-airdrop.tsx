@@ -5,12 +5,15 @@ import Empty from '@/components/Empty';
 import { Table } from 'antd';
 import KingsCards from '@/components/KingsCards';
 import IPagination from '@/components/IPagination';
-import { columnsAirdrop } from './columns';
+import { columnsAirdrop, airdropSelectOptions } from './columns';
 import { useNavigate } from 'react-router-dom';
 import { getLaunchpadAirdrop, getAirdropCard } from '@/api/launchpad';
 import { LaunchpadAirdrop, AirdropCard } from '@/types';
+import ISelect from '@/components/ISelect';
 const LaunchPadAirdrop = () => {
   const navigate = useNavigate();
+  const [activeKey, setActiveKey] = useState('');
+  const [orderBy, setOrderBy] = useState('desc');
   const [pagination, setPagination] = useState<PaginationProps>({
     current: 1,
     pageSize: 10,
@@ -38,7 +41,7 @@ const LaunchPadAirdrop = () => {
 
   useEffect(() => {
     fetchData();
-  }, [pagination.current]);
+  }, [pagination.current, activeKey, orderBy]);
 
   useEffect(() => {
     (async () => {
@@ -50,6 +53,16 @@ const LaunchPadAirdrop = () => {
   return (
     <div className="w-[100%] launchpad-airdrop">
       <KingsCards btnText="AIRDROP" btnType="" data={cardData} />
+      <div className="flex justify-between">
+        <div />
+        <ISelect
+          options={airdropSelectOptions}
+          onSelectChange={(key, orderBy) => {
+            setActiveKey(key);
+            setOrderBy(orderBy);
+          }}
+        />
+      </div>
       <Table
         columns={columnsAirdrop(navigate)}
         dataSource={data as LaunchpadAirdrop[]}

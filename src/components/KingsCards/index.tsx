@@ -32,7 +32,7 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data 
         <span className="font-404px text-green text-[24px] mr-[20px]">KINGS OF THE LAND</span>
         <img className="w-[121px] h-[106px]" src={KingsIcon} alt="" />
       </div>
-      <div className="kings-cards flex items-center gap-[22px] justify-center">
+      <div className="kings-cards flex items-center gap-[22px] justify-between">
         {data && data.length > 0 ? (
           data.slice(0, 3).map((item) => {
             return (

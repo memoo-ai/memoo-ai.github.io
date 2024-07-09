@@ -34,6 +34,8 @@ import { REQUEST_FOLLOWING_STORAGE, UPDATE_PROJECT_TWITTER_STORAGE } from '@/con
 import { IconEdit, IconBack } from '@/components/icons';
 import { getMeMemo } from '@/api/common';
 import PreMarketAcqusition from '@/pages/airdrop/pre-market-acquisition';
+import { getMeMemo } from '@/api/common';
+import PreMarketAcqusition from '@/pages/airdrop/pre-market-acquisition';
 
 interface AirdropContext {
   stage: TokenCreateStage;
@@ -62,6 +64,7 @@ interface AirdropContext {
     unlockCount: BigNumber;
     unlockInfo: UnlockPeriod;
   };
+  totalPurchased?: string;
   totalPurchased?: string;
 }
 
@@ -95,6 +98,8 @@ const Airdrop: FC = () => {
   }>();
   const [totalPurchased, setTotalPurchased] = useState('0');
   const [totalAmount, setTotalAmount] = useState('0');
+  const [totalPurchased, setTotalPurchased] = useState('0');
+  const [totalAmount, setTotalAmount] = useState('0');
   const { config, idoBuy, unlockMeme, defaultConfig, airdropClaim, getCanUnlockCount, memeUnlockPeriods } =
     useManageContract();
   const navigate = useNavigate();
@@ -124,6 +129,7 @@ const Airdrop: FC = () => {
       _2ndStage,
       defaultConfig,
       triggerRefresh,
+      totalPurchased,
       totalPurchased,
     }),
     [
@@ -175,6 +181,7 @@ const Airdrop: FC = () => {
           setStage('launch');
         } else if (data.status === 'IDO') {
           const { data } = await getIDOActiveDetail(ticker, address ? address : 'default');
+          console.log('data.status:IDO');
           console.log('data.status:IDO');
           setIDOActiveDetail(data);
           setStage('imo');
@@ -250,6 +257,7 @@ const Airdrop: FC = () => {
           {/* <Status /> */}
           {idoQueueDetail?.status === 'Launched' && <PublicSale />}
           {stage === 'imo' && <IMOParticipate />}
+          {stage === 'in-queue' && <PreMarketAcqusition amount={totalAmount ?? 0} />}
           {stage === 'in-queue' && <PreMarketAcqusition amount={totalAmount ?? 0} />}
           <AirdropClaim />
           <IDODetail />
