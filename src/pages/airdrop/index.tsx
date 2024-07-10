@@ -46,6 +46,7 @@ interface AirdropContext {
   defaultConfig?: DefaultMemooConfig;
   idoBuy?: (project: `0x${string}`, amount: BigNumber) => Promise<TransactionReceipt | undefined>;
   unlockMeme?: (project: `0x${string}`, index: number) => Promise<TransactionReceipt | undefined>;
+  idoClaim?: (project: `0x${string}`) => Promise<TransactionReceipt | undefined>;
   triggerRefresh?: Function;
   airdropClaim?: (
     project: `0x${string}`,
@@ -94,7 +95,7 @@ const Airdrop: FC = () => {
   }>();
   const [totalPurchased, setTotalPurchased] = useState('0');
   const [totalAmount, setTotalAmount] = useState('0');
-  const { config, idoBuy, unlockMeme, defaultConfig, airdropClaim, getCanUnlockCount, memeUnlockPeriods } =
+  const { config, idoBuy, unlockMeme, defaultConfig, airdropClaim, getCanUnlockCount, memeUnlockPeriods, idoClaim } =
     useManageContract();
   const navigate = useNavigate();
   const mine = useMemo(
@@ -119,6 +120,7 @@ const Airdrop: FC = () => {
       idoBuy,
       unlockMeme,
       airdropClaim,
+      idoClaim,
       _1stStage,
       _2ndStage,
       defaultConfig,
@@ -137,6 +139,7 @@ const Airdrop: FC = () => {
       idoBuy,
       unlockMeme,
       airdropClaim,
+      idoClaim,
       _1stStage,
       _2ndStage,
       defaultConfig,

@@ -151,6 +151,11 @@ declare interface IDOLaunchedDetail extends IDOClaimStage {
   rewardEndsIn: number;
   count: number;
   website: string;
+  claimImoFlag: boolean;
+  isParticipateImo: boolean;
+  imoBalance: number;
+  claimImoBalance: number;
+  contributed: number;
 }
 
 declare interface PageWrapper<T> {
@@ -214,6 +219,10 @@ declare interface IDOQueueDetail extends IDOClaimStage {
   maxContributed: number;
   rewardEndsIn: number;
   count: number;
+  claimImoFlag: boolean;
+  isParticipateImo: boolean;
+  imoBalance: number;
+  claimImoBalance: number;
 }
 
 declare type IDOStatus = 'Draft' | 'QUEUE' | 'IDO' | 'Launched';

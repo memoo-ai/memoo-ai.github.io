@@ -10,6 +10,7 @@ const Profile: FC = () => {
   const { idoQueueDetail } = useContext(AirdropContext);
   const iconRefs = useRef<any>({});
   const [showShare, setShowShare] = useState(false);
+  const [tools, setTools] = useState<any>([]);
   const shareText = 'From The Ultimate Memecoin Infrastructure.';
 
   const shareUrl = useMemo(() => {
@@ -19,7 +20,7 @@ const Profile: FC = () => {
     (async () => {
       try {
         const { data } = await getToolsUrls();
-        console.log(data);
+        setTools(data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -41,16 +42,18 @@ const Profile: FC = () => {
           </label>
         ),
         formatValue: (value: string) => (
-          <ul className=" flex flex-wrap col-span-6 gap-y-1.5 gap-x-1">
-            {/* <ul className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1"> */}
+          // <ul className=" flex flex-wrap col-span-6 gap-y-1.5 gap-x-1">
+          <ul className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1">
             {[
-              { name: 'De.Fi Scanner', icon: '/create/icon-tool-defi-scanner.png' },
-              { name: 'DEX Screener', icon: '/create/icon-tool-dex-screener.png' },
-              { name: 'Bubblemaps', icon: '/create/icon-tool-bubble-maps.png' },
-              { name: 'GeckoTerminal', icon: '/create/icon-tool-gecko-terminal.png' },
+              { name: 'De.Fi Scanner', icon: '/create/icon-tool-defi-scanner.png', url: tools[0]?.toolUrl },
+              { name: 'DEX Screener', icon: '/create/icon-tool-dex-screener.png', url: tools[1]?.toolUrl },
+              { name: 'Bubblemaps', icon: '/create/icon-tool-bubble-maps.png', url: tools[2]?.toolUrl },
+              { name: 'GeckoTerminal', icon: '/create/icon-tool-gecko-terminal.png', url: tools[4]?.toolUrl },
             ].map((token) => (
               <li key={token.name} className="flex items-center gap-x-1.5 h-8 token_list_hover">
-                {/* <img className="w-5 object-contain" src={token.icon} /> {token.name} */}
+                <a href={token.url} target="_black" className="flex items-center gap-x-1.5 h-8">
+                  <img className="w-5 object-contain" src={token.icon} /> {token.name}
+                </a>
               </li>
             ))}
           </ul>

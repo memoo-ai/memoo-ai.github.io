@@ -172,6 +172,25 @@ export const useManageContract = () => {
     },
     [config, baseConfig, walletClient, address, defaultConfig],
   );
+  const idoClaim = useCallback(
+    async (meme: Address) => {
+      if (!config || !baseConfig || !walletClient || !address || !defaultConfig) return;
+      const tx = {
+        address: baseConfig.MemooManageContract as Hash,
+        abi: Abi,
+        functionName: 'idoClaim',
+        args: [meme],
+      } as any;
+      console.log('tx:', tx);
+      const hash = await walletClient.writeContract(tx);
+      console.log('idoClaimHash', hash);
+      const res = await publicClient?.waitForTransactionReceipt({
+        hash,
+      });
+      return res;
+    },
+    [config, baseConfig, walletClient, address, defaultConfig],
+  );
 
   const createMeme = useCallback(
     // eslint-disable-next-line max-params
@@ -265,5 +284,6 @@ export const useManageContract = () => {
     createMeme,
     createMemeLoading,
     getCanUnlockCount,
+    idoClaim,
   };
 };
