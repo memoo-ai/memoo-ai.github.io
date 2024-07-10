@@ -103,21 +103,21 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
 
 export const imoSelectOptions = [
   {
-    key: 'endsIn',
+    key: 'EndsIn',
     label: 'Ends in',
   },
   {
-    key: 'totalRaised',
-    label: 'ToTal Raised',
+    key: 'TotalRaised',
+    label: 'Total Raised',
   },
 ];
 export const airdropSelectOptions = [
   {
-    key: 'idoDate',
+    key: 'IDODate',
     label: 'IDO Date',
   },
   {
-    key: 'participants',
+    key: 'Participants',
     label: 'Participants',
   },
 ];

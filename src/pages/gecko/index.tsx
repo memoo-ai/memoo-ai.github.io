@@ -49,6 +49,8 @@ const Gecko = () => {
     let params = {
       pageNumber: pagination.current ?? 1,
       pageSize: pagination.pageSize ?? 10,
+      sortField: activeKey,
+      sortDirection: orderBy,
     };
     const { data } = tab === 'trending' ? await getTrendingTokens(params) : await getTopTokens(params);
     // console.log(data);

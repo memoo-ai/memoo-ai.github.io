@@ -28,6 +28,8 @@ const LaunchPadImo = () => {
     let params = {
       pageNumber: pagination.current ?? 1,
       pageSize: pagination.pageSize ?? 10,
+      sortField: activeKey,
+      sortDirection: orderBy,
     };
     const { data } = await getLaunchpadImo(params);
     // console.log(data);

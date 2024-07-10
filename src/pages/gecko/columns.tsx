@@ -130,7 +130,7 @@ export const tokenSelectOptions = [
     label: '24h',
   },
   {
-    key: '24h Volume',
+    key: '24hVolume',
     label: '24H Volume',
   },
   {
