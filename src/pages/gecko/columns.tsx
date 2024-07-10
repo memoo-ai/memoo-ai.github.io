@@ -116,7 +116,7 @@ export const columns = [
     render: (marketCap: number) => <div className="font-semibold text-lg ">${formatDecimals(marketCap)}</div>,
   },
 ];
-export const rankingSelectOptions = [
+export const tokenSelectOptions = [
   {
     key: 'price',
     label: 'price',
@@ -126,8 +126,12 @@ export const rankingSelectOptions = [
     label: '1h',
   },
   {
-    key: '24hVolume',
-    label: '24 Volume',
+    key: '24h',
+    label: '24h',
+  },
+  {
+    key: '24h Volume',
+    label: '24H Volume',
   },
   {
     key: 'marketCap',

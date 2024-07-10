@@ -2,7 +2,7 @@ import './index.scss';
 import CommonBanner from '@/components/Banner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useEffect, useState } from 'react';
-import { columns, rankingSelectOptions } from './columns';
+import { columns, tokenSelectOptions } from './columns';
 import IPagination from '@/components/IPagination';
 import { useNavigate } from 'react-router-dom';
 import { Table } from 'antd';
@@ -33,6 +33,8 @@ interface TableParams {
 export type GeckoType = 'trending' | 'top';
 const Gecko = () => {
   const navigate = useNavigate();
+  const [activeKey, setActiveKey] = useState('');
+  const [orderBy, setOrderBy] = useState('desc');
   const [tab, setTab] = useState<GeckoType>('trending');
   const [data, setData] = useState<TrendingTokens[]>([]);
   const [loading, setLoading] = useState(false);
@@ -61,7 +63,7 @@ const Gecko = () => {
 
   useEffect(() => {
     fetchData();
-  }, [pagination.current, sorters, tab]);
+  }, [pagination.current, activeKey, tab, orderBy]);
 
   const handleTableChange: TableProps['onChange'] = (pagination, filters, sorter) => {
     setPagination(pagination);
@@ -159,6 +161,16 @@ const Gecko = () => {
             <TabsTrigger value="top">Top</TabsTrigger>
           </TabsList>
         </Tabs>
+      </div>
+      <div className="flex justify-between">
+        <div />
+        <ISelect
+          options={tokenSelectOptions}
+          onSelectChange={(key, orderBy) => {
+            setActiveKey(key);
+            setOrderBy(orderBy);
+          }}
+        />
       </div>
       <Table
         className="common-table mb-10"
