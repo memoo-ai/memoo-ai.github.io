@@ -2,6 +2,7 @@ import './index.scss';
 import { Button } from '@/components/ui/button';
 import { IconTwitter, IconTelegram, IconVector } from '@/components/icons';
 import { useNavigate } from 'react-router-dom';
+import { IconCoin } from '@/components/icons';
 const Revolutions = [
   {
     title: (
@@ -74,7 +75,10 @@ const Home = () => {
         <div className="content-banner-bg" />
         <div className="content-banner flex justify-between ">
           <div className="content-banner-left items pt-[6rem]">
-            <img src="/img-powered-base.png" className="w-[168px] ml-2" />
+            {/* <img src="/img-powered-base.png" className="w-[168px] ml-2" /> */}
+            <div className="flex items-center">
+              <span className="font-REV text-[#07E993] text-[12px] mr-[9px]">POWERED ON</span> <IconCoin />{' '}
+            </div>
             <p className="text-ultimate">The Ultimate Memecoin Infrastructure.</p>
             <p className="text-sub">
               Enabling the memecoin industry with a wide range of resources, tools & launchpad.

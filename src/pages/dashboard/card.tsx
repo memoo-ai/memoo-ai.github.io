@@ -71,10 +71,10 @@ export const Card = ({ data, children, participated = false }: CardProps) => {
         <div className="dashboard_item_content_left">Launch Date</div>
         <div className="dashboard_item_content_right">{data.launchDate ? formatTs(data.launchDate ?? 0) : ''}</div>
       </div>
-      {/* <div className="dashboard_item_content">
+      <div className="dashboard_item_content">
         <div className="dashboard_item_content_left">MeMoo Score</div>
         <div className="dashboard_item_content_right">{data.meMooScore}</div>
-      </div> */}
+      </div>
       {participated && (
         <div className="dashboard_item_content">
           <div className="dashboard_item_content_left">Contributed</div>

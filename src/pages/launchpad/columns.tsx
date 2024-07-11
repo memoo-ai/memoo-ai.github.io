@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { LaunchpadIMO, LaunchpadAirdrop } from '@/types';
 import { formatTs } from '@/utils';
-import Wallet from '@/components/Wallet';
+import IProgress from '@/components/IProgress';
 export enum IDOStatus {
   active = 'active',
   upcoming = 'upcoming',
@@ -29,6 +29,18 @@ export const columns = (navigate: (path: string) => void) => [
     sorter: false,
     render: (endsIn: number) => (
       <div className="font-OCR font-normal text-lg ">{endsIn ? formatTs(endsIn ?? 0) : ''}</div>
+    ),
+  },
+  {
+    title: 'Memoo Score',
+    dataIndex: 'memooScore',
+    key: 'memooScore',
+    sorter: false,
+    render: (endsIn: number) => (
+      <div className="flex flex-col justify-end items-end">
+        <span>100</span>
+        <IProgress percent={100} />
+      </div>
     ),
   },
   {
@@ -76,6 +88,18 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
     sorter: false,
     render: (idoDate: number) => (
       <div className="font-OCR font-normal text-lg ">{idoDate ? formatTs(idoDate ?? 0) : ''}</div>
+    ),
+  },
+  {
+    title: 'Memoo Score',
+    dataIndex: 'memooScore',
+    key: 'memooScore',
+    sorter: false,
+    render: (endsIn: number) => (
+      <div className="flex flex-col justify-end items-end">
+        <span>100</span>
+        <IProgress percent={100} />
+      </div>
     ),
   },
   {
