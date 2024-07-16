@@ -1,11 +1,13 @@
 import './memoo-score-breakdown.scss';
 import { FC, useContext } from 'react';
 import IProgress from '@/components/IProgress';
+import { AirdropContext } from '.';
 
 const MeMooScoreBreakdown: FC = () => {
+  const { idoQueueDetail } = useContext(AirdropContext);
   // const { memooScore } = useContext(AirdropContext);
-  const getMessage = (value: string): string => {
-    const messages: { [key: string]: string } = {
+  const getMessage = (value: number): string => {
+    const messages: { [key: number]: string } = {
       1: 'Mild',
       2: 'OK',
       3: 'Fairly Good',
@@ -23,12 +25,16 @@ const MeMooScoreBreakdown: FC = () => {
     <div className="memoo-score-breakdown px-[22px] pt-[33px] pb-[37px] mt-[11px]">
       <div className="font-404px text-[18px] text-green">MeMoo Score Breakdown</div>
       <div className="memoo-score-breakdown__content flex flex-col items-start mt-[11px]">
-        <div className="flex items-center mt-[14px] leading-[16px]">
-          <div className="font-OCR text-[14px] text-[#7D83B5] w-[125px]">Social Info</div>
-          <IProgress className="w-[214px]" percent={(5 / 6) * 100} />
-          <div className="font-OCR text-[14px] text-[#fff] ml-[11px]">{getMessage('5')}</div>
-        </div>
-        <div className="flex items-center mt-[14px] leading-[16px]">
+        {idoQueueDetail?.memooScore.map((meme) => {
+          return (
+            <div className="flex items-center mt-[14px] leading-[16px]" key={meme.scoreField}>
+              <div className="font-OCR text-[14px] text-[#7D83B5] w-[125px]">{meme.scoreField}</div>
+              <IProgress className="w-[214px]" percent={(meme.scoreValue / 6) * 100} />
+              <div className="font-OCR text-[14px] text-[#fff] ml-[11px]">{getMessage(meme.scoreValue ?? 0)}</div>
+            </div>
+          );
+        })}
+        {/* <div className="flex items-center mt-[14px] leading-[16px]">
           <div className="font-OCR text-[14px] text-[#7D83B5] w-[125px]">Community Size</div>
           <IProgress className="w-[214px]" />
           <div className="font-OCR text-[14px] text-[#fff] ml-[11px]">{getMessage('4')}</div>
@@ -72,7 +78,7 @@ const MeMooScoreBreakdown: FC = () => {
           <div className="font-OCR text-[14px] text-[#7D83B5] w-[125px]">Holders</div>
           <IProgress className="w-[214px]" percent={0} />
           <div className="font-OCR text-[14px] text-[#fff] ml-[11px]">{getMessage('0')}</div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

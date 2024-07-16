@@ -174,7 +174,10 @@ declare interface IDOLaunchedDetailTop10 {
   address: string;
   proportion: string;
 }
-
+interface memooScore {
+  scoreField: string;
+  scoreValue: number;
+}
 declare interface IDOQueueDetail extends IDOClaimStage {
   commitment: string;
   communityActivit: string;
@@ -223,6 +226,7 @@ declare interface IDOQueueDetail extends IDOClaimStage {
   isParticipateImo: boolean;
   imoBalance: number;
   claimImoBalance: number;
+  memooScore: memooScore[];
 }
 
 declare type IDOStatus = 'Draft' | 'QUEUE' | 'IDO' | 'Launched';

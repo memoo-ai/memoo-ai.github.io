@@ -33,13 +33,13 @@ export const columns = (navigate: (path: string) => void) => [
   },
   {
     title: 'Memoo Score',
-    dataIndex: 'memooScore',
-    key: 'memooScore',
+    dataIndex: 'meMooScore',
+    key: 'meMooScore',
     sorter: false,
-    render: (endsIn: number) => (
+    render: (meMooScore: number) => (
       <div className="flex flex-col justify-end items-end">
-        <span>100</span>
-        <IProgress percent={100} />
+        <span>{meMooScore ?? 0}</span>
+        <IProgress percent={meMooScore} />
       </div>
     ),
   },
@@ -95,10 +95,10 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
     dataIndex: 'memooScore',
     key: 'memooScore',
     sorter: false,
-    render: (endsIn: number) => (
+    render: (meMooScore: number) => (
       <div className="flex flex-col justify-end items-end">
-        <span>100</span>
-        <IProgress percent={100} />
+        <span>{meMooScore ?? 0}</span>
+        <IProgress percent={meMooScore} />
       </div>
     ),
   },
