@@ -33,6 +33,7 @@ import { REQUEST_FOLLOWING_STORAGE, UPDATE_PROJECT_TWITTER_STORAGE } from '@/con
 import { IconEdit, IconBack } from '@/components/icons';
 import { getMeMemo } from '@/api/common';
 import PreMarketAcqusition from '@/pages/airdrop/pre-market-acquisition';
+import MeMooScoreBreakdown from './memoo-score-breakdown';
 
 interface AirdropContext {
   stage: TokenCreateStage;
@@ -263,6 +264,7 @@ const Airdrop: FC = () => {
         <AirdropContext.Provider value={context}>
           <Banner />
           <Profile />
+          <MeMooScoreBreakdown />
         </AirdropContext.Provider>
       </div>
     </div>

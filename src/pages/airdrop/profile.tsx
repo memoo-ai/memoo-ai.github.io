@@ -201,7 +201,7 @@ const Profile: FC = () => {
   }, [idoQueueDetail]);
 
   return (
-    <div className="profile relative pt-20">
+    <div className="profile relative pt-20 pb-[67px]">
       <ul className="relationship_fracture absolute flex gap-x-2.5 top-5 right-5">
         {/* <li>
           <img className="w-10 h-10 object-cover" src="/create/icon-collect.png" />
@@ -243,7 +243,7 @@ const Profile: FC = () => {
           <img className="w-10 h-10 object-cover" src="/create/icon-more.png" />
         </li> */}
       </ul>
-      <div className="head">
+      <div className="head pl-[20px]">
         <h1 className="font-404px text-white leading-7 text-3xl">
           {idoQueueDetail?.tokenName} <span className="text-green text-base ml-1">{idoQueueDetail?.ticker}</span>
         </h1>
@@ -252,7 +252,7 @@ const Profile: FC = () => {
         </time>
         <p className="mt-2 font-OCR text-white text-sm leading-5 max-w-2xl">{idoQueueDetail?.description}</p>
       </div>
-      <div className="content">
+      <div className="content p-[22px]">
         <ul className="basic_list mt-14 flex flex-col gap-y-6">
           {params.map((item) => (
             <li key={item.key} className="grid grid-cols-12">

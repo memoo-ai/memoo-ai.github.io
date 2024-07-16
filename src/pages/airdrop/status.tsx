@@ -1,12 +1,22 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import './status.scss';
 import { Popover, Progress } from 'antd';
 import { IconTranspond } from '@/components/icons';
 import ScoreShareModal from './score-share-modal';
 import ITooltip from '@/components/ITooltip';
-
+const MESSAGE_THRESHOLDS: [number, string][] = [
+  [30, 'GTFO!'],
+  [45, 'Take some luck to\nmake this work!'],
+  [60, 'There is room\nfor Improvement'],
+  [75, 'Might Consider\nAdding it to my Wishlist'],
+  [85, 'Has Potential to\nbe a Meme Star'],
+  [95, 'Near Purfect! LFG!'],
+  [100, 'Mother of all Memes!'],
+];
 export default function Status() {
   const [process, setProcess] = useState<'in-queue' | 'active'>('in-queue');
+  const p = 70;
+  const meMessage = useMemo(() => MESSAGE_THRESHOLDS.find(([threshold]) => p <= threshold)?.[1] || 'GTFO!', [p]);
 
   return (
     <div className="status w-full flex flex-col">
@@ -40,7 +50,8 @@ export default function Status() {
           <Progress className="status_memo_score_bar" showInfo={false} percent={70} />
         </div>
       </div>
-      <p className="mt-3 consider">Might consider{'\n'}adding it to my wishlist.</p>
+      {/* <p className="mt-3 consider">Might consider{'\n'}adding it to my wishlist.</p> */}
+      <p className="mt-3 consider">{meMessage}</p>
       <div className="mt-4 intend flex justify-between">
         <p>MeMoo Score is an indicative metric.{'\n'}Users are advised to DYOR.</p>
         <ScoreShareModal>

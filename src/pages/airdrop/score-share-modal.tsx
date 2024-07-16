@@ -1,4 +1,13 @@
-import React, { useState, Children, cloneElement, isValidElement, useContext, useCallback, useRef } from 'react';
+import React, {
+  useState,
+  Children,
+  cloneElement,
+  isValidElement,
+  useContext,
+  useCallback,
+  useRef,
+  useMemo,
+} from 'react';
 
 import './score-share-modal.scss';
 import { Modal, Button, message } from 'antd';
@@ -42,6 +51,28 @@ const CreatorRankingShareModal = ({ children, ticker }: any) => {
       });
   }, [ref]);
 
+  const shareUrl = useMemo(() => {
+    return `${BaseUrl}${idoQueueDetail?.ticker}`;
+  }, [BaseUrl, idoQueueDetail]);
+
+  // const handleShare = (type: 'twitter' | 'telegram') => {
+  //   switch (type) {
+  //     case 'twitter':
+  //       window.open(
+  //         `https://twitter.com/intent/tweet?text=Check%20out%20this%20meme%20token%20at%20https://memoo.ai/${ticker}`,
+  //         '_black',
+  //       );
+  //       break;
+  //     case 'telegram':
+  //       window.open(`https://t.me/share/url?url=https://memoo.ai/${ticker}&text=Check%20out%20this%20meme%20token%`);
+  //     case 'telegram':
+  //       window.open(`https://t.me/share/url?url=https://memoo.ai/${ticker}&text=Check%20out%20this%20meme%20token%`);
+
+  //     case 'facebook':
+  //       window.open(`https://t.me/share/url?url=https://memoo.ai/${ticker}&text=Check%20out%20this%20meme%20token%`,'_black');
+  //   }
+  // };
+
   return (
     <div>
       <Modal
@@ -71,8 +102,7 @@ const CreatorRankingShareModal = ({ children, ticker }: any) => {
               <h5 className="text-[#fff] text-[14px] font-OCR text-left">{idoQueueDetail?.ticker}</h5>
               <h5 className="text-[#fff] text-[14px] font-OCR text-left mt-[36px]">Check out this meme token at</h5>
               <div className="w-fit text-[#07E993] bg-[#29455b] font-OCR text-xl font-normal rounded-[7px] px-[16px] py-[6px] mt-[7px]">
-                {BaseUrl}
-                {idoQueueDetail?.ticker}
+                {shareUrl}
               </div>
               <h3 className="font-404px text-[#fff] mt-[36px]">MeMoo Score</h3>
               <p className="text-[#fff] text-[24px] font-404px leading-[5px] mt-[55px]">
@@ -86,18 +116,30 @@ const CreatorRankingShareModal = ({ children, ticker }: any) => {
         </div>
         <div className="w-[100%] text-center  text-[#fff] text-[16px] font-OCR">Share MeMoo Score</div>
         <div className="flex items-center justify-center gap-x-1 mt-[16px]">
-          <div className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]">
+          <a
+            href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}`}
+            target="_black"
+            className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]"
+          >
             <IconTwitter className="w-[20px] h-[18px]" color="#1F3B4F" />
-          </div>
-          <div className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]">
+          </a>
+          <a
+            href={`https://t.me/share/url?url=${encodeURIComponent(shareUrl)}`}
+            target="_black"
+            className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]"
+          >
             <IconTelegram className="w-[20px] h-[18px]" color="#1F3B4F" />
-          </div>
-          <div className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]">
+          </a>
+          <a className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]">
             <IconGame />
-          </div>
-          <div className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]">
+          </a>
+          <a
+            href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
+            target="_black"
+            className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]"
+          >
             <IconFacebook />
-          </div>
+          </a>
           <div
             className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]"
             onClick={downloadImg}

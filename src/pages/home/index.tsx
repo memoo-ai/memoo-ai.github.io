@@ -96,7 +96,7 @@ const Home = () => {
               <Button
                 variant="secondary"
                 className="font-404px text-lg  w-[298px] h-[53px] uppercase"
-                onClick={() => navigate('/launchpad?type=airdrop')}
+                onClick={() => navigate('/?type=airdrop')}
               >
                 Hunt for airdrops
               </Button>
