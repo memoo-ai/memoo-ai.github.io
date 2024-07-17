@@ -2,11 +2,11 @@ import './memoo-score-breakdown.scss';
 import { FC, useContext } from 'react';
 import IProgress from '@/components/IProgress';
 import { AirdropContext } from '.';
-
+import { memooScore } from '@/types';
 const MeMooScoreBreakdown: FC = () => {
   const { idoQueueDetail } = useContext(AirdropContext);
   // const { memooScore } = useContext(AirdropContext);
-  const getMessage = (value: number): string => {
+  const getMessage = (meme: memooScore): string => {
     const messages: { [key: number]: string } = {
       1: 'Mild',
       2: 'OK',
@@ -15,8 +15,14 @@ const MeMooScoreBreakdown: FC = () => {
       5: 'Very good',
       6: 'Exceptional',
     };
-    if (messages[value]) {
-      return messages[value];
+    if (meme.scoreField === 'Top Up' || meme.totalScore === 4) {
+      return meme.scoreValue === 4 ? 'Just Enough' : 'Loaded';
+    }
+    if (meme.scoreField === 'Total Raised') {
+      return `${(meme.scoreValue / meme.totalScore).toString()}%`;
+    }
+    if (messages[meme.scoreValue]) {
+      return messages[meme.scoreValue];
     }
     return 'NA';
   };
@@ -29,8 +35,8 @@ const MeMooScoreBreakdown: FC = () => {
           return (
             <div className="flex items-center mt-[14px] leading-[16px]" key={meme.scoreField}>
               <div className="font-OCR text-[14px] text-[#7D83B5] w-[125px]">{meme.scoreField}</div>
-              <IProgress className="w-[214px]" percent={(meme.scoreValue / 6) * 100} />
-              <div className="font-OCR text-[14px] text-[#fff] ml-[11px]">{getMessage(meme.scoreValue ?? 0)}</div>
+              <IProgress className="w-[214px]" percent={(meme.scoreValue / meme.totalScore) * 100} />
+              <div className="font-OCR text-[14px] text-[#fff] ml-[11px]">{getMessage(meme ?? 0)}</div>
             </div>
           );
         })}

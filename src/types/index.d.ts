@@ -174,9 +174,10 @@ declare interface IDOLaunchedDetailTop10 {
   address: string;
   proportion: string;
 }
-interface memooScore {
+declare interface memooScore {
   scoreField: string;
   scoreValue: number;
+  totalScore: number;
 }
 declare interface IDOQueueDetail extends IDOClaimStage {
   commitment: string;
