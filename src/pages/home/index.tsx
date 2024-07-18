@@ -11,7 +11,7 @@ const Revolutions = [
         <br /> <span>Smart Contract Rails</span>
       </>
     ),
-    desc: 'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    desc: 'Fair pricing and access is prioritized here.\n Memoo’s no code solution with standardized smart \n contract is also music to creator’s ear.',
     img: './SVG/img-revolution-1.svg',
     width: 280,
   },
@@ -22,7 +22,7 @@ const Revolutions = [
         <br /> <span>Capture Flywheel</span>
       </>
     ),
-    desc: 'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    desc: 'Establishing standards to encourage transparencies on critical metrics and applying the same score standard across thousands of memes.',
     img: './SVG/img-revolution-2.svg',
     width: 280,
   },
@@ -32,7 +32,7 @@ const Revolutions = [
         <span>Organic</span> <br /> <span>Growth Loop</span>
       </>
     ),
-    desc: 'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    desc: 'Variety of incentives for every stakeholders. \n Airdrops deliver instant exposure for new tokens and tools for creators to promote their memes.',
     img: './SVG/img-revolution-3.svg',
     width: 350,
   },
@@ -42,7 +42,7 @@ const Revolutions = [
         <span>Tools to Stay Updated with</span> <br /> <span>the Latest Memecoins</span>
       </>
     ),
-    desc: 'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    desc: 'Memoo’s revenue model offer multi-layer value creation that benefits $MOO token holders, creators \n and buyers on the platform.',
     img: './SVG/img-revolution-4.svg',
     width: 280,
   },
@@ -52,7 +52,7 @@ const Revolutions = [
         <span>Memecoin</span> <br /> <span>Metrics</span>
       </>
     ),
-    desc: 'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    desc: 'A wikipedia for meme will emerge to let you follow your portfolio of memes and track other emerging meme easily. ',
     img: './SVG/img-revolution-5.svg',
     width: 150,
   },
@@ -62,7 +62,7 @@ const Revolutions = [
         <span>AI Powered Infrastructure</span> <br /> <span>for Creators</span>
       </>
     ),
-    desc: 'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    desc: 'Creators will be able to leverage AI to bring ease and creativity to their meme empire building practice.',
     img: './SVG/img-revolution-6.svg',
     width: 280,
   },
