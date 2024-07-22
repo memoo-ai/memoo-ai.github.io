@@ -11,7 +11,7 @@ import { useAccountEffect } from 'wagmi';
 import { useLogin } from '@/hooks/useLogin';
 import { MEMOO_TOKEN_STORAGE, SOL_DEMO_SPL_USDC } from '@/constants';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { usePhantom } from '@/hooks/useSolana';
+import { useSolanaWallet } from '@/hooks/useSolana';
 import useSPLToken from '@/utils/solanaWeb3/slpToken';
 import { PublicKey } from '@solana/web3.js';
 const BasicLayout: React.FC = () => {
@@ -19,7 +19,6 @@ const BasicLayout: React.FC = () => {
   // const [connected, setConnected] = useState(false);
   const { loginMeme } = useLogin();
   const { connected, publicKey } = useWallet();
-  const { pubKey } = usePhantom();
   const location = useLocation();
   const navigate = useNavigate();
   // useAccountEffect({
@@ -37,7 +36,7 @@ const BasicLayout: React.FC = () => {
   useEffect(() => {
     if (connected && !localStorage.getItem(MEMOO_TOKEN_STORAGE)) {
       (async () => {
-        if (!signer) return;
+        // if (!signer) return;
         // const msg = String(Date.now());
         // const rawSignature = await signer.signMessage(msg);
         // console.log('rawSignature', rawSignature);
@@ -45,10 +44,10 @@ const BasicLayout: React.FC = () => {
         // // TODO
         console.log('useEffect,loginMeme');
         await loginMeme();
-        window.location.reload();
+        // window.location.reload();
       })();
     }
-  }, [connected]);
+  }, [connected, publicKey]);
   // const whitelist = ['/', '/launchpad', '/gecko'];
   // useEffect(() => {
   //   (async () => {

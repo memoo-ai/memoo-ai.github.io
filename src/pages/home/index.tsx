@@ -2,6 +2,7 @@ import './index.scss';
 import { Button } from '@/components/ui/button';
 import { IconTwitter, IconTelegram, IconVector } from '@/components/icons';
 import { useNavigate } from 'react-router-dom';
+import { useContract } from '@/hooks/useSolanaProgram';
 const Revolutions = [
   {
     title: (
@@ -68,6 +69,10 @@ const Revolutions = [
 ];
 const Home = () => {
   const navigate = useNavigate();
+  const { createTokenMint } = useContract();
+  const send = () => {
+    createTokenMint();
+  };
 
   return (
     <div>
@@ -93,9 +98,16 @@ const Home = () => {
               <Button
                 variant="secondary"
                 className="font-404px text-lg  w-[298px] h-[53px] uppercase"
-                onClick={() => navigate('/launchpad?type=airdrop')}
+                onClick={() => navigate('/?type=airdrop')}
               >
                 Hunt for airdrops
+              </Button>
+              <Button
+                variant="secondary"
+                className="font-404px text-lg  w-[298px] h-[53px] uppercase"
+                onClick={() => send()}
+              >
+                Test
               </Button>
             </div>
             <div className="flex items-center gap-12 mt-[50px]">
