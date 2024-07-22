@@ -18,6 +18,7 @@ import { CollectorType } from './type';
 import { IDOLaunchedDetail, DashboardCollectorParticipated, DashboardCollectorAirdrop } from '@/types';
 import { getIDOQueueDetail, getIDOLaunchedDetail } from '@/api/airdrop';
 import { useAccount } from 'wagmi';
+import ClaimImoTokensModal from './claim-imo-tokens-modal';
 
 interface CollectorContext {
   idoLaunchedDetail?: IDOLaunchedDetail;
@@ -111,9 +112,9 @@ export const Collector = () => {
         <CollectorContext.Provider value={context}>
           {list.map((item, index) => {
             return (
-              <Card key={index} data={item}>
-                <div className="flex justify-between items-center mt-[15px]">
-                  {tab === 'Airdrop' ? (
+              <Card key={index} data={item} participated={tab === 'Participated'}>
+                <div className="flex justify-between items-end mt-[15px]">
+                  {tab === 'Airdrop' && (
                     <div>
                       {item && 'claimFlag' in item && item?.claimFlag ? (
                         <AirdropModal ticker={item.ticker}>
@@ -143,13 +144,39 @@ export const Collector = () => {
                         </div>
                       )}
                     </div>
-                  ) : (
-                    <div className="font-OCR text-[#7D83B5]">Contributed</div>
                   )}
-                  {tab === 'Airdrop' ? (
-                    <div />
-                  ) : (
-                    <div className="font-OCR text-[#ffffff]">{'contributed' in item ? item?.contributed : ''}</div>
+                  {/* <ClaimImoTokensModal>
+                    <div className="font-OCR text-[#7D83B5]">Contributed</div>
+                  </ClaimImoTokensModal> */}
+                  {tab === 'Participated' && (
+                    <div>
+                      {item && 'isParticipateImo' in item && item?.isParticipateImo ? (
+                        <ClaimImoTokensModal ticker={item.ticker}>
+                          {' '}
+                          <Button
+                            className="flex items-center justify-between collector-btn"
+                            key="increase"
+                            onMouseOver={() => iconRefs.current[`AirdropBtn${index}`].setHovered(true)}
+                            onMouseLeave={() => iconRefs.current[`AirdropBtn${index}`].setHovered(false)}
+                            onClick={() => {
+                              getLaunchedDetail(item.ticker);
+                            }}
+                          >
+                            <IconAirdropBtn
+                              className="IconAirdropBtn"
+                              color="#07E993"
+                              ref={(ref) => (iconRefs.current[`AirdropBtn${index}`] = ref)}
+                            />
+                            <span className="ml-[9px]">CLAIM IMO TOKENS</span>
+                          </Button>
+                        </ClaimImoTokensModal>
+                      ) : (
+                        <div className="flex">
+                          <IconAwaiting className="IconAwaiting" />{' '}
+                          <span className="font-404px text-[#07E993] ml-[11px]">AWAITING</span>
+                        </div>
+                      )}
+                    </div>
                   )}
                 </div>
               </Card>

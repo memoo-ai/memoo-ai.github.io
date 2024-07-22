@@ -2,6 +2,7 @@
 
 import type { ColumnDef } from '@tanstack/react-table';
 import { ArrowUp, ArrowDown } from 'lucide-react';
+import IProgress from '@/components/IProgress';
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
@@ -115,8 +116,20 @@ export const columns = [
     key: 'marketCap',
     render: (marketCap: number) => <div className="font-semibold text-lg ">${formatDecimals(marketCap)}</div>,
   },
+  {
+    title: 'Memoo Score',
+    dataIndex: 'meMooScore',
+    key: 'meMooScore',
+    sorter: false,
+    render: (meMooScore: number) => (
+      <div className="flex flex-col justify-end items-end">
+        <span>{meMooScore ?? 0}</span>
+        <IProgress percent={meMooScore} />
+      </div>
+    ),
+  },
 ];
-export const rankingSelectOptions = [
+export const tokenSelectOptions = [
   {
     key: 'price',
     label: 'price',
@@ -126,8 +139,12 @@ export const rankingSelectOptions = [
     label: '1h',
   },
   {
+    key: '24h',
+    label: '24h',
+  },
+  {
     key: '24hVolume',
-    label: '24 Volume',
+    label: '24H Volume',
   },
   {
     key: 'marketCap',

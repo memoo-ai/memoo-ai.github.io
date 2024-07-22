@@ -1,13 +1,18 @@
-import { FC, useCallback, useContext, useMemo } from 'react';
+import { FC, useCallback, useContext, useMemo, useRef } from 'react';
 import './public-sale.scss';
 import { Button, Popover } from 'antd';
 import classNames from 'classnames';
 import { AirdropContext } from '.';
 import { formatDecimals } from '@/utils';
+import Wallet from '@/components/Wallet';
+import { useAccount } from 'wagmi';
+import { IconLaunchedBtn } from '@/components/icons';
+import ClaimImoTokensModal from './claim-imo-tokens-modal';
 
 const PublicSale: FC = () => {
   const { idoLaunchedDetail, idoQueueDetail, stage } = useContext(AirdropContext);
-
+  const { address } = useAccount();
+  const iconRef = useRef<any>();
   const params = useMemo(
     () => [
       { key: 'Market Cap', value: `$${formatDecimals(idoQueueDetail?.marketCap ?? 0)}`, tip: null },
@@ -29,7 +34,11 @@ const PublicSale: FC = () => {
   return (
     <div className="pubsale px-5 pt-9 pb-5">
       <div className="head flex justify-center">
-        <img src="/create/img-pubsale.png" />
+        {address ? (
+          <img className="w-[220px]" src="/create/img-pubsale-success.png" />
+        ) : (
+          <img className="w-[220px]" src="/create/img-pubsale.png" />
+        )}
       </div>
       <div className="content flex flex-col items-center">
         <ul className="mt-6 params_list flex flex-col gap-y-6 w-full">
@@ -47,9 +56,38 @@ const PublicSale: FC = () => {
             </li>
           ))}
         </ul>
-        <Button className={classNames('mt-5 uppercase w-full pubsale_btn h-12 font–404px', {})} onClick={onConfirm}>
-          Buy
-        </Button>
+
+        {address && idoQueueDetail?.isParticipateImo ? (
+          <div className="flex gap-[11px] w-full">
+            <Button
+              className={classNames('mt-5 uppercase flex-1 memoo_button reverse h-12 font–404px', {})}
+              onClick={onConfirm}
+            >
+              Buy
+            </Button>
+            <ClaimImoTokensModal>
+              <Button
+                className={classNames(
+                  'mt-5 uppercase w--[207px] memoo_button reverse h-12 font–404px flex items-center',
+                  {},
+                )}
+                onMouseOver={() => iconRef.current?.setHovered(true)}
+                onMouseLeave={() => iconRef.current?.setHovered(false)}
+                disabled={!idoQueueDetail?.claimImoFlag}
+              >
+                <IconLaunchedBtn ref={iconRef} className="mr-[7px]" hoverColor="#B53BFF" /> CLAIM IMO TOKENS
+              </Button>
+            </ClaimImoTokensModal>
+          </div>
+        ) : (
+          <div className="w-full">
+            <Wallet>
+              <Button className={classNames('mt-5 uppercase w-full memoo_button reverse h-12 font–404px', {})}>
+                Buy
+              </Button>
+            </Wallet>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -6,8 +6,9 @@ import { formatTs } from '@/utils';
 interface CardProps {
   data: any;
   children: any;
+  participated?: boolean;
 }
-export const Card = ({ data, children }: CardProps) => {
+export const Card = ({ data, children, participated = false }: CardProps) => {
   const navigate = useNavigate();
   const renderIcon = (type: string) => {
     let icon;
@@ -70,10 +71,16 @@ export const Card = ({ data, children }: CardProps) => {
         <div className="dashboard_item_content_left">Launch Date</div>
         <div className="dashboard_item_content_right">{data.launchDate ? formatTs(data.launchDate ?? 0) : ''}</div>
       </div>
-      {/* <div className="dashboard_item_content">
+      <div className="dashboard_item_content">
         <div className="dashboard_item_content_left">MeMoo Score</div>
         <div className="dashboard_item_content_right">{data.meMooScore}</div>
-      </div> */}
+      </div>
+      {participated && (
+        <div className="dashboard_item_content">
+          <div className="dashboard_item_content_left">Contributed</div>
+          <div className="dashboard_item_content_right">{data.contributed ?? 0}</div>
+        </div>
+      )}
       <div onClick={(event) => event.stopPropagation()}>{children}</div>
     </div>
   );

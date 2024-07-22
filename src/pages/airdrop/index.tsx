@@ -34,6 +34,7 @@ import { REQUEST_FOLLOWING_STORAGE, UPDATE_PROJECT_TWITTER_STORAGE } from '@/con
 import { IconEdit, IconBack } from '@/components/icons';
 import { getMeMemo } from '@/api/common';
 import PreMarketAcqusition from '@/pages/airdrop/pre-market-acquisition';
+import MeMooScoreBreakdown from './memoo-score-breakdown';
 
 interface AirdropContext {
   stage: TokenCreateStage;
@@ -45,8 +46,9 @@ interface AirdropContext {
   ticker: string;
   memooConfig?: MemooConfig;
   defaultConfig?: DefaultMemooConfig;
-  idoBuy?: (project: `0x${string}` | string, amount: BigNumber) => Promise<TransactionReceipt | undefined>;
-  unlockMeme?: (project: `0x${string}` | string, index: number) => Promise<TransactionReceipt | undefined>;
+  idoBuy?: (project: `0x${string}`, amount: BigNumber) => Promise<TransactionReceipt | undefined>;
+  unlockMeme?: (project: `0x${string}`, index: number) => Promise<TransactionReceipt | undefined>;
+  idoClaim?: (project: `0x${string}`) => Promise<TransactionReceipt | undefined>;
   triggerRefresh?: Function;
   airdropClaim?: (
     project: `0x${string}` | string,
@@ -95,7 +97,7 @@ const Airdrop: FC = () => {
   }>();
   const [totalPurchased, setTotalPurchased] = useState('0');
   const [totalAmount, setTotalAmount] = useState('0');
-  const { config, idoBuy, unlockMeme, defaultConfig, airdropClaim, getCanUnlockCount, memeUnlockPeriods } =
+  const { config, idoBuy, unlockMeme, defaultConfig, airdropClaim, getCanUnlockCount, memeUnlockPeriods, idoClaim } =
     useManageContract();
   const navigate = useNavigate();
   const mine = useMemo(
@@ -120,6 +122,7 @@ const Airdrop: FC = () => {
       idoBuy,
       unlockMeme,
       airdropClaim,
+      idoClaim,
       _1stStage,
       _2ndStage,
       defaultConfig,
@@ -138,6 +141,7 @@ const Airdrop: FC = () => {
       idoBuy,
       unlockMeme,
       airdropClaim,
+      idoClaim,
       _1stStage,
       _2ndStage,
       defaultConfig,
@@ -248,8 +252,9 @@ const Airdrop: FC = () => {
       )}
       <div className="airdrop_left flex flex-col gap-y-3.5">
         <AirdropContext.Provider value={context}>
-          {/* <Status /> */}
+          <Status />
           {idoQueueDetail?.status === 'Launched' && <PublicSale />}
+          <PublicSale />
           {stage === 'imo' && <IMOParticipate />}
           {stage === 'in-queue' && mine && <PreMarketAcqusition amount={totalAmount ?? 0} />}
           <AirdropClaim />
@@ -260,6 +265,7 @@ const Airdrop: FC = () => {
         <AirdropContext.Provider value={context}>
           <Banner />
           <Profile />
+          <MeMooScoreBreakdown />
         </AirdropContext.Provider>
       </div>
     </div>

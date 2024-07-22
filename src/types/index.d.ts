@@ -151,6 +151,11 @@ declare interface IDOLaunchedDetail extends IDOClaimStage {
   rewardEndsIn: number;
   count: number;
   website: string;
+  claimImoFlag: boolean;
+  isParticipateImo: boolean;
+  imoBalance: number;
+  claimImoBalance: number;
+  contributed: number;
 }
 
 declare interface PageWrapper<T> {
@@ -169,7 +174,11 @@ declare interface IDOLaunchedDetailTop10 {
   address: string;
   proportion: string;
 }
-
+declare interface memooScore {
+  scoreField: string;
+  scoreValue: number;
+  totalScore: number;
+}
 declare interface IDOQueueDetail extends IDOClaimStage {
   commitment: string;
   communityActivit: string;
@@ -214,6 +223,11 @@ declare interface IDOQueueDetail extends IDOClaimStage {
   maxContributed: number;
   rewardEndsIn: number;
   count: number;
+  claimImoFlag: boolean;
+  isParticipateImo: boolean;
+  imoBalance: number;
+  claimImoBalance: number;
+  memooScore: memooScore[];
 }
 
 declare type IDOStatus = 'Draft' | 'QUEUE' | 'IDO' | 'Launched';

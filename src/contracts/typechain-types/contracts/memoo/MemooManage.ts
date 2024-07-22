@@ -239,6 +239,7 @@ export interface MemooManageInterface extends Interface {
       | "grantRole"
       | "hasRole"
       | "idoBuy"
+      | "idoClaim"
       | "idoEnd"
       | "initialize"
       | "memeDefaultConfig"
@@ -260,6 +261,7 @@ export interface MemooManageInterface extends Interface {
     nameOrSignatureOrTopic:
       | "AirdropClaimed"
       | "ClaimToken"
+      | "IdoClaimed"
       | "Initialized"
       | "MemeConfigured"
       | "MemeCreated"
@@ -327,6 +329,10 @@ export interface MemooManageInterface extends Interface {
   encodeFunctionData(
     functionFragment: "idoBuy",
     values: [AddressLike, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "idoClaim",
+    values: [AddressLike]
   ): string;
   encodeFunctionData(functionFragment: "idoEnd", values: [AddressLike]): string;
   encodeFunctionData(
@@ -414,6 +420,7 @@ export interface MemooManageInterface extends Interface {
   decodeFunctionResult(functionFragment: "grantRole", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "hasRole", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "idoBuy", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "idoClaim", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "idoEnd", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(
@@ -483,6 +490,24 @@ export namespace ClaimTokenEvent {
   export interface OutputObject {
     token: string;
     to: string;
+    count: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace IdoClaimedEvent {
+  export type InputTuple = [
+    meme: AddressLike,
+    user: AddressLike,
+    count: BigNumberish
+  ];
+  export type OutputTuple = [meme: string, user: string, count: bigint];
+  export interface OutputObject {
+    meme: string;
+    user: string;
     count: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
@@ -857,6 +882,8 @@ export interface MemooManage extends BaseContract {
     "payable"
   >;
 
+  idoClaim: TypedContractMethod<[meme: AddressLike], [void], "nonpayable">;
+
   idoEnd: TypedContractMethod<[meme: AddressLike], [void], "nonpayable">;
 
   initialize: TypedContractMethod<
@@ -1032,6 +1059,9 @@ export interface MemooManage extends BaseContract {
     "payable"
   >;
   getFunction(
+    nameOrSignature: "idoClaim"
+  ): TypedContractMethod<[meme: AddressLike], [void], "nonpayable">;
+  getFunction(
     nameOrSignature: "idoEnd"
   ): TypedContractMethod<[meme: AddressLike], [void], "nonpayable">;
   getFunction(
@@ -1146,6 +1176,13 @@ export interface MemooManage extends BaseContract {
     ClaimTokenEvent.InputTuple,
     ClaimTokenEvent.OutputTuple,
     ClaimTokenEvent.OutputObject
+  >;
+  getEvent(
+    key: "IdoClaimed"
+  ): TypedContractEvent<
+    IdoClaimedEvent.InputTuple,
+    IdoClaimedEvent.OutputTuple,
+    IdoClaimedEvent.OutputObject
   >;
   getEvent(
     key: "Initialized"
@@ -1267,6 +1304,17 @@ export interface MemooManage extends BaseContract {
       ClaimTokenEvent.InputTuple,
       ClaimTokenEvent.OutputTuple,
       ClaimTokenEvent.OutputObject
+    >;
+
+    "IdoClaimed(address,address,uint256)": TypedContractEvent<
+      IdoClaimedEvent.InputTuple,
+      IdoClaimedEvent.OutputTuple,
+      IdoClaimedEvent.OutputObject
+    >;
+    IdoClaimed: TypedContractEvent<
+      IdoClaimedEvent.InputTuple,
+      IdoClaimedEvent.OutputTuple,
+      IdoClaimedEvent.OutputObject
     >;
 
     "Initialized(uint64)": TypedContractEvent<

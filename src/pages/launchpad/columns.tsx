@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { LaunchpadIMO, LaunchpadAirdrop } from '@/types';
 import { formatTs } from '@/utils';
-import Wallet from '@/components/Wallet';
+import IProgress from '@/components/IProgress';
 export enum IDOStatus {
   active = 'active',
   upcoming = 'upcoming',
@@ -29,6 +29,18 @@ export const columns = (navigate: (path: string) => void) => [
     sorter: false,
     render: (endsIn: number) => (
       <div className="font-OCR font-normal text-lg ">{endsIn ? formatTs(endsIn ?? 0) : ''}</div>
+    ),
+  },
+  {
+    title: 'Memoo Score',
+    dataIndex: 'meMooScore',
+    key: 'meMooScore',
+    sorter: false,
+    render: (meMooScore: number) => (
+      <div className="flex flex-col justify-end items-end">
+        <span>{meMooScore ?? 0}</span>
+        <IProgress percent={meMooScore} />
+      </div>
     ),
   },
   {
@@ -79,6 +91,18 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
     ),
   },
   {
+    title: 'Memoo Score',
+    dataIndex: 'memooScore',
+    key: 'memooScore',
+    sorter: false,
+    render: (meMooScore: number) => (
+      <div className="flex flex-col justify-end items-end">
+        <span>{meMooScore ?? 0}</span>
+        <IProgress percent={meMooScore} />
+      </div>
+    ),
+  },
+  {
     title: 'Participants',
     dataIndex: 'participants',
     key: 'participants',
@@ -103,21 +127,21 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
 
 export const imoSelectOptions = [
   {
-    key: 'endsIn',
+    key: 'EndsIn',
     label: 'Ends in',
   },
   {
-    key: 'totalRaised',
-    label: 'ToTal Raised',
+    key: 'TotalRaised',
+    label: 'Total Raised',
   },
 ];
 export const airdropSelectOptions = [
   {
-    key: 'idoDate',
+    key: 'IDODate',
     label: 'IDO Date',
   },
   {
-    key: 'participants',
+    key: 'Participants',
     label: 'Participants',
   },
 ];

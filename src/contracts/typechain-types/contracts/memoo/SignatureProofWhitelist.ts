@@ -45,11 +45,12 @@ export interface SignatureProofWhitelistInterface extends Interface {
       | "DEFAULT_ADMIN_ROLE"
       | "PAUSER_ROLE"
       | "WHITELIST_SETTER_ROLE"
+      | "abiEncode"
       | "claimToken"
       | "getRoleAdmin"
-      | "getSolidityPacked"
       | "grantRole"
       | "hasRole"
+      | "hashMessage"
       | "initialize"
       | "pause"
       | "paused"
@@ -84,6 +85,10 @@ export interface SignatureProofWhitelistInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "abiEncode",
+    values: [AddressLike, AddressLike, BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "claimToken",
     values: [AddressLike, AddressLike, BigNumberish]
   ): string;
@@ -92,16 +97,16 @@ export interface SignatureProofWhitelistInterface extends Interface {
     values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "getSolidityPacked",
-    values: [AddressLike, AddressLike, BigNumberish, BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "grantRole",
     values: [BytesLike, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "hasRole",
     values: [BytesLike, AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "hashMessage",
+    values: [BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
@@ -139,17 +144,18 @@ export interface SignatureProofWhitelistInterface extends Interface {
     functionFragment: "WHITELIST_SETTER_ROLE",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "abiEncode", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "claimToken", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getRoleAdmin",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "getSolidityPacked",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "grantRole", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "hasRole", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "hashMessage",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
@@ -327,15 +333,7 @@ export interface SignatureProofWhitelist extends BaseContract {
 
   WHITELIST_SETTER_ROLE: TypedContractMethod<[], [string], "view">;
 
-  claimToken: TypedContractMethod<
-    [token: AddressLike, to: AddressLike, count: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
-  getRoleAdmin: TypedContractMethod<[role: BytesLike], [string], "view">;
-
-  getSolidityPacked: TypedContractMethod<
+  abiEncode: TypedContractMethod<
     [
       token: AddressLike,
       user: AddressLike,
@@ -345,6 +343,14 @@ export interface SignatureProofWhitelist extends BaseContract {
     [string],
     "view"
   >;
+
+  claimToken: TypedContractMethod<
+    [token: AddressLike, to: AddressLike, count: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+
+  getRoleAdmin: TypedContractMethod<[role: BytesLike], [string], "view">;
 
   grantRole: TypedContractMethod<
     [role: BytesLike, account: AddressLike],
@@ -357,6 +363,8 @@ export interface SignatureProofWhitelist extends BaseContract {
     [boolean],
     "view"
   >;
+
+  hashMessage: TypedContractMethod<[message: BytesLike], [string], "view">;
 
   initialize: TypedContractMethod<
     [
@@ -412,17 +420,7 @@ export interface SignatureProofWhitelist extends BaseContract {
     nameOrSignature: "WHITELIST_SETTER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "claimToken"
-  ): TypedContractMethod<
-    [token: AddressLike, to: AddressLike, count: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "getRoleAdmin"
-  ): TypedContractMethod<[role: BytesLike], [string], "view">;
-  getFunction(
-    nameOrSignature: "getSolidityPacked"
+    nameOrSignature: "abiEncode"
   ): TypedContractMethod<
     [
       token: AddressLike,
@@ -433,6 +431,16 @@ export interface SignatureProofWhitelist extends BaseContract {
     [string],
     "view"
   >;
+  getFunction(
+    nameOrSignature: "claimToken"
+  ): TypedContractMethod<
+    [token: AddressLike, to: AddressLike, count: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "getRoleAdmin"
+  ): TypedContractMethod<[role: BytesLike], [string], "view">;
   getFunction(
     nameOrSignature: "grantRole"
   ): TypedContractMethod<
@@ -447,6 +455,9 @@ export interface SignatureProofWhitelist extends BaseContract {
     [boolean],
     "view"
   >;
+  getFunction(
+    nameOrSignature: "hashMessage"
+  ): TypedContractMethod<[message: BytesLike], [string], "view">;
   getFunction(
     nameOrSignature: "initialize"
   ): TypedContractMethod<
