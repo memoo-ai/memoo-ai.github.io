@@ -1,0 +1,1 @@
+import{j as e}from"./rainbowkit-BY-sVMnm.js";import{P as m}from"./progress-eomQmTBk.js";const p=({className:s="",showInfo:r=!1,percent:o=0})=>e.jsx(m,{className:`${s} memoo_progress`,showInfo:r,percent:o});export{p as I};
