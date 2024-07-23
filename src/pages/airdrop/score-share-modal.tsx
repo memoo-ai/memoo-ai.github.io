@@ -23,6 +23,7 @@ import {
 } from '@/components/icons';
 import { toPng } from 'html-to-image';
 import { AirdropContext } from '.';
+import ShareButton from '@/components/ShareButton';
 
 const BaseUrl = import.meta.env.VITE_SHARE_URI;
 const CreatorRankingShareModal = ({ children, ticker }: any) => {
@@ -116,6 +117,17 @@ const CreatorRankingShareModal = ({ children, ticker }: any) => {
         </div>
         <div className="w-[100%] text-center  text-[#fff] text-[16px] font-OCR">Share MeMoo Score</div>
         <div className="flex items-center justify-center gap-x-1 mt-[16px]">
+          <ShareButton
+            text="Check out this awesome content!"
+            imageUrl="https://example.com/my-image.jpg"
+            url="https://mywebsite.com/awesome-content"
+            title="Awesome Content Title"
+            description="This is a description of the awesome content"
+          >
+            <a className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]">
+              <IconTwitter className="w-[20px] h-[18px]" color="#1F3B4F" />
+            </a>
+          </ShareButton>
           <a
             href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}`}
             target="_black"

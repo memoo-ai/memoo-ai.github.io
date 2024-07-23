@@ -91,7 +91,7 @@ export const columns = [
     ),
   },
   {
-    title: '24h',
+    title: '6h',
     dataIndex: 'increase24H',
     key: 'increase24H',
     sorter: false,
