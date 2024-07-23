@@ -117,9 +117,9 @@ const CreatorRankingShareModal = ({ children, ticker }: any) => {
         </div>
         <div className="w-[100%] text-center  text-[#fff] text-[16px] font-OCR">Share MeMoo Score</div>
         <div className="flex items-center justify-center gap-x-1 mt-[16px]">
-          <ShareButton
+          {/* <ShareButton
             text="Check out this awesome content!"
-            imageUrl="https://example.com/my-image.jpg"
+            imageUrl="https://memoo-res.s3.amazonaws.com/0efb9bec-8021-4047-a964-fdcf5dc5ecad?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAZ5SIXM4BHIM2XBI5%2F20240717%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240717T073004Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=802051885a1c022872a67083757ed87d3496fa212f88fa77548535227a532149"
             url="https://mywebsite.com/awesome-content"
             title="Awesome Content Title"
             description="This is a description of the awesome content"
@@ -127,7 +127,7 @@ const CreatorRankingShareModal = ({ children, ticker }: any) => {
             <a className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]">
               <IconTwitter className="w-[20px] h-[18px]" color="#1F3B4F" />
             </a>
-          </ShareButton>
+          </ShareButton> */}
           <a
             href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}`}
             target="_black"
