@@ -27,6 +27,10 @@ const Progress: FC = () => {
     console.log('purchased:', parseFloat(formatDecimals(totalPurchasedBN.multipliedBy(idoPriceBN))));
     return parseFloat(formatDecimals(totalPurchasedBN.multipliedBy(idoPriceBN)));
   }, [memooConfig, totalPurchased]);
+  console.log('firstProportion:', firstProportion);
+  console.log('maxProportion:', maxProportion);
+  console.log('firstIncrease:', firstIncrease);
+  console.log('maxIncrease:', maxIncrease);
 
   // const firstIncrease = useMemo(() => {
   //   if (!memooConfig || !defaultConfig) return 0;
@@ -74,8 +78,8 @@ const Progress: FC = () => {
           {node}
         </IncreaseAcquisitionModal>
       ),
-      enabled: mine && (['QUEUE', 'IDO'] as IDOStatus[]).includes(idoQueueDetail?.status ?? 'Draft'),
-      // enabled: true,
+      // enabled: mine && (['QUEUE', 'IDO'] as IDOStatus[]).includes(idoQueueDetail?.status ?? 'Draft'),
+      enabled: true,
     },
     {
       key: 'imo',

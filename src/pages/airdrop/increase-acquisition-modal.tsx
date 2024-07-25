@@ -16,6 +16,8 @@ import { formatDecimals } from '@/utils';
 import { AirdropContext } from '.';
 import BigNumber from 'bignumber.js';
 import ITooltip from '@/components/ITooltip';
+import { useAccount } from '@/hooks/useWeb3';
+import { getMemeConfigId } from '@/api/base';
 
 const IncreaseAcquisitionModal: FC<{
   children: ReactNode;
@@ -31,7 +33,9 @@ const IncreaseAcquisitionModal: FC<{
   const [confirming, setConfirming] = useState(false);
   const [proportion, setProportion] = useState(purchased);
   const [result, setResult] = useState(0);
-  const { idoBuy, idoQueueDetail } = useContext(AirdropContext);
+  // const { idoBuy, idoQueueDetail } = useContext(AirdropContext);
+  const { idoQueueDetail } = useContext(AirdropContext);
+  const { idoBuy } = useAccount();
   const defaultValue = purchased * 1000;
   useEffect(() => {
     setProportion(firstProportion * 100);
@@ -56,7 +60,8 @@ const IncreaseAcquisitionModal: FC<{
       setConfirming(true);
       console.log(result);
       console.log('firstIncreaseD:', firstIncrease);
-      await idoBuy(idoQueueDetail.contractAddress, new BigNumber(result - purchased));
+      const { data: config } = await getMemeConfigId(idoQueueDetail.ticker);
+      await idoBuy(config.memeConfigId, 1000000);
       setOpen(false);
       message.success('Buy Successful');
     } catch (error) {

@@ -31,6 +31,17 @@ interface memooConfig {
   tokenAllocationPlatform: number;
   totalSupply: BN;
 }
+interface memeConfig {
+  createTimestamp: BN;
+  creator: PublicKey;
+  creatorTotal: BN;
+  id: PublicKey;
+  memeIdoCount: BN;
+  memeIdoMoney: BN;
+  platformTotal: BN;
+  preLaunchSecond: BN;
+  totalSupply: BN;
+}
 export const useAccount = () => {
   const { publicKey, signTransaction, signAllTransactions } = useWallet();
   // const RPC_URL = 'https://api.devnet.solana.com';
@@ -152,8 +163,8 @@ export const useAccount = () => {
         transaction.recentBlockhash = latestBlockhash.blockhash;
         transaction.feePayer = publicKey;
         const signedTransaction = await signTransaction(transaction);
-        const fee = await transaction.getEstimatedFee(connection);
-        console.log('fee:', fee);
+        // const fee = await transaction.getEstimatedFee(connection);
+        // console.log('fee:', fee);
         const signature = await connection.sendRawTransaction(signedTransaction.serialize());
 
         console.log('Transaction sent. Signature:', signature);
@@ -179,11 +190,9 @@ export const useAccount = () => {
   );
 
   const idoBuy = useCallback(
-    async (memeId: string) => {
+    async (memeId: string, amount: number | string | bigint) => {
       if (!memooConfig || !program || !publicKey) return;
       const memeConfigId = new PublicKey(memeId);
-      const idoBuyCost = memooConfig?.idoUserBuyLimit * memooConfig?.idoPrice;
-
       const memeUserDataPda_idoBuy = PublicKey.findProgramAddressSync(
         [Buffer.from('meme_user_data'), memeConfigId.toBuffer(), publicKey.toBuffer()],
         programId,
@@ -193,7 +202,11 @@ export const useAccount = () => {
         [Buffer.from('meme_config'), memeConfigId.toBuffer()],
         programId,
       )[0];
-
+      const memeConfig: memeConfig = (await program.account.memeConfig.fetch(memeConfigPda)) as any;
+      console.log('memeConfig:', memeConfig);
+      debugger;
+      const idoUserBuyLimit = memeConfig?.totalSupply.mul(new BN(memooConfig.idoUserBuyLimit)).div(new BN(amount));
+      const idoBuyCost = idoUserBuyLimit.mul(memooConfig.idoPrice);
       const poolSolAuthority = PublicKey.findProgramAddressSync(
         [Buffer.from('authority'), memeConfigId.toBuffer(), NATIVE_MINT.toBuffer()],
         programId,
