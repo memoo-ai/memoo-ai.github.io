@@ -23,6 +23,7 @@ const MySlider = ({
   defaultValue = 0,
   onChange,
 }: MySliderProps) => {
+  const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
   const handleSliderChange = (newValue: number) => {
     const newProgress = newValue / 100;
     if (onChange) {
@@ -32,7 +33,10 @@ const MySlider = ({
 
   return (
     <div className="flex-1 flex items-center progress">
-      <div className="mr-[14px]">{minPrice}ETH</div>{' '}
+      <div className="mr-[14px]">
+        {minPrice}
+        {tokenSymbol}
+      </div>{' '}
       <Slider
         className="flex-1 progress_slider"
         min={min * 100}
@@ -45,7 +49,9 @@ const MySlider = ({
         tipFormatter={(value: any) => `${value}%`}
         tooltip={{ open: true }}
       />
-      <div className="ml-[14px]">{maxPrice} ETH</div>
+      <div className="ml-[14px]">
+        {maxPrice} {tokenSymbol}
+      </div>
     </div>
   );
 };

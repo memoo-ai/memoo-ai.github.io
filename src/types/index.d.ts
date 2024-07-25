@@ -450,3 +450,26 @@ declare interface CrowdSourcing {
   tokenName: string;
   tradeType: string;
 }
+declare interface SolanaConfig {
+  globalMemooConfigId: string;
+  memeConfigId: string;
+  platformFeeRecipientPublicKey: string;
+}
+declare interface memooConfig {
+  admin: string;
+  airdropPrice: string;
+  id: string;
+  idoPrice: string;
+  idoCreatorBuyLimit: number;
+  idoUserBuyLimit: number;
+  openTime: string;
+  platformFeeCreateMemeSol: string;
+  platformFeeRateDenominatorIdo: number;
+  platformFeeRateIdo: number;
+  tokenAllocationAirdrop: number;
+  tokenAllocationCreator: number;
+  tokenAllocationIdo: number;
+  tokenAllocationLp: number;
+  tokenAllocationPlatform: number;
+  totalSupply: string;
+}

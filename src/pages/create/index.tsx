@@ -1,3 +1,5 @@
+/* eslint-disable no-debugger */
+/* eslint-disable react/jsx-curly-brace-presence */
 import './index.scss';
 import BackButton from '@/components/BackButton';
 import { Button } from '@/components/ui/button';
@@ -46,6 +48,9 @@ import BigNumber from 'bignumber.js';
 import { CHAIN_ID } from '@/constants';
 import CreatedTokenCompleteConnectedModal from './create-token-complete-connected-modal';
 import ITooltip from '@/components/ITooltip';
+import { getMemeConfigId } from '@/api/base';
+import { memooConfig } from '@/types';
+import { useProportion } from '@/hooks/useProportion';
 
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
@@ -67,9 +72,12 @@ const CurrentProductDescriptions = [
 interface CreatedTokenCompleteConnectedModalRef {
   setOpen: (open: boolean) => void;
 }
+const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 export default function Create() {
   // const { address, chainId } = useAccount();
-  const { address } = useAccount();
+  const { address, registerTokenMint } = useAccount();
+  const { firstProportion, maxProportion, totalCapInitial, totalCap } = useProportion();
+  // const [memeConfigId, setmemeConfigId] = useState<memeConfigId>({});
   // const { switchChain } = useSwitchChain();
   const [searchParams] = useSearchParams();
   const [isAccept, setIsAccept] = useState(false);
@@ -79,47 +87,30 @@ export default function Create() {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [iconUrl, setIconUrl] = useState('');
   const [bannerUrl, setBannerUrl] = useState('');
-  const { config: memooConfig, defaultConfig, createMeme, createMemeLoading } = useManageContract();
   const [connectTwitterLoading, setConnectTwitterLoading] = useState(false);
   const [twitter, setTwitter] = useState('');
   const [twitterAccessToken, setTwitterAccessToken] = useState('');
   const [clientId, setClientId] = useState('');
   const [preMarketAcquisition, setPreMarketAcquisition] = useState(0);
-  console.log('memooConfig: ', memooConfig);
   const { getMemeAddressWithSymbol } = useMemeFactoryContract();
   const navigate = useNavigate();
   const createdTokenRef = useRef<CreatedTokenCompleteConnectedModalRef>(null);
+  // const [memooConfig, setMemooConfig] = useState<memooConfig>();
+  // useEffect(() => {
+  //   (async () => {
+  //     const config = await getMemooConfig();
+  //     // setMemooConfig(config);
+  //     console.log('config:', config);
+  //     console.log('firstProportion:', Number(config?.tokenAllocationCreator) / 10000);
+  //     console.log('maxProportion:', Number(config?.idoCreatorBuyLimit) / 10000);
+  //     // console.log('totalCap:', new BigNumber(Number(config?.platformFeeCreateMemeSol)).dividedBy(10 ** 18));
+  //     console.log('totalCap:', config?.platformFeeCreateMemeSol.toNumber());
+  //     const rate = Number(config?.idoCreatorBuyLimit) / 10000;
+  //     console.log('totalCapInitial:', Number(config?.idoPrice) * Number(config?.totalSupply) * rate);
+  //   })();
+  // }, [address]);
 
-  const firstProportion = useMemo(() => Number(memooConfig?.allocation.creator) / 10000, [memooConfig]);
-  const maxProportion = useMemo(() => Number(memooConfig?.idoCreatorBuyLimit) / 10000, [memooConfig]);
-  const firstIncrease = useMemo(() => {
-    if (!memooConfig || !defaultConfig) return 0;
-
-    const totalSupplyBN = new BigNumber(Number(defaultConfig?.totalSupply)).dividedBy(
-      10 ** defaultConfig?.defaultDecimals,
-    );
-    const idoPriceBN = new BigNumber(Number(defaultConfig?.idoPrice)).dividedBy(10 ** defaultConfig?.defaultDecimals);
-    const result = totalSupplyBN.multipliedBy(idoPriceBN).multipliedBy(firstProportion);
-    return parseFloat(formatDecimals(result));
-  }, [memooConfig, firstProportion, defaultConfig]);
-  // console.log('memooConfig.platformFeeCreateMeme:', formatDecimals(memooConfig.platformFeeCreateMeme));
-  const totalCap = useMemo(() => {
-    if (!memooConfig || !defaultConfig) return 0;
-    // // eslint-disable-next-line no-debugger
-    // debugger;
-    const platformFeeCreateMeme = new BigNumber(Number(memooConfig?.platformFeeCreateMeme)).dividedBy(
-      10 ** defaultConfig?.defaultDecimals,
-    );
-    return parseFloat(platformFeeCreateMeme.toString());
-  }, [memooConfig, defaultConfig]);
-
-  const totalCapInitial = useMemo(() => {
-    if (!memooConfig || !defaultConfig) return 0;
-    const rate = Number(memooConfig.idoCreatorBuyLimit) / 10000;
-    return Number(formatEther(defaultConfig?.idoPrice)) * Number(formatEther(defaultConfig?.totalSupply)) * rate;
-  }, [memooConfig, defaultConfig]);
-  console.log('memooConfig: ', memooConfig);
-  console.log('totalCapInitial: ', totalCapInitial);
+  // console.log('totalCapInitial: ', totalCapInitial);
   const normFile = (e: any) => {
     if (Array.isArray(e)) {
       return e;
@@ -261,25 +252,35 @@ export default function Create() {
     }
   }, [form, searchParams]);
 
-  const payFee = useCallback(async () => {
-    const data = form.getFieldsValue();
+  const payFee = useCallback(
+    async (memeConfigId: string) => {
+      const data = form.getFieldsValue();
 
-    let preLaunchSecond = 0;
-    if (data.preLaunchDuration === PreLaunchDurationEnum.IMMEDIATE) {
-      preLaunchSecond = 0;
-    } else if (data.preLaunchDuration === PreLaunchDurationEnum['1DAY']) {
-      preLaunchSecond = 24 * 3600;
-    } else {
-      preLaunchSecond = 3 * 24 * 3600;
-    }
+      let preLaunchSecond = 0;
+      if (data.preLaunchDuration === PreLaunchDurationEnum.IMMEDIATE) {
+        preLaunchSecond = 0;
+      } else if (data.preLaunchDuration === PreLaunchDurationEnum['1DAY']) {
+        preLaunchSecond = 24 * 3600;
+      } else {
+        preLaunchSecond = 3 * 24 * 3600;
+      }
 
-    const preValue = totalCapInitial * (data.preMarketAcquisition / 0.3);
-    console.log('preValue: ', preValue);
-    const value = parseEther(String(preValue)) + memooConfig!.platformFeeCreateMeme;
-    const res = await createMeme(data.tokenName, data.ticker, preLaunchSecond, value);
-    console.log('res: ', res);
-    return res;
-  }, [createMeme, form, memooConfig, totalCapInitial]);
+      const preValue = totalCapInitial * (data.preMarketAcquisition / 0.3);
+      console.log('totalCapInitial:', totalCapInitial);
+      console.log('preValue: ', preValue);
+      // const value = parseEther(String(preValue)) + memeConfigId!.platformFeeCreateMeme;
+      // const value = parseEther(String(preValue));
+      const value = new BigNumber(preValue).multipliedBy(new BigNumber(10).pow(9));
+      console.log('value1:', value);
+      // const value = parseEther(String(preValue)) + memooConfig!.platformFeeCreateMeme;
+      // const res = await createMeme(data.tokenName, data.ticker, preLaunchSecond, value);
+
+      const res = await registerTokenMint(memeConfigId!, Number(value).toString());
+      console.log('res: ', res);
+      return res;
+    },
+    [registerTokenMint, form, totalCapInitial],
+  );
 
   const handleSave = useCallback(
     // TODO check login
@@ -322,8 +323,12 @@ export default function Create() {
           }
           setConfirmLoading(true);
           const res = await confirmTokenCreate(data);
+
           console.log('res: ', res);
-          const feeRes = await payFee();
+          const { data: config } = await getMemeConfigId(res.data.Ticker);
+          console.log('sonalaConfigMemeId:', config);
+
+          const feeRes = await payFee(config.memeConfigId);
           if (!feeRes) {
             message.error('Create failed.');
             return;
@@ -449,11 +454,22 @@ export default function Create() {
                     accept="image/*"
                     maxCount={1}
                     beforeUpload={(file) => handleUpload(file, 'icon')}
-                    showUploadList={{ showPreviewIcon: false, showRemoveIcon: true }}
+                    showUploadList={{
+                      showPreviewIcon: false,
+                      showRemoveIcon: true,
+                    }}
                     style={{ width: 140, height: 140 }}
                     className="custom-upload-icon"
                   >
-                    <button style={{ border: 0, background: 'none', width: '100%', height: '100%' }} type="button">
+                    <button
+                      style={{
+                        border: 0,
+                        background: 'none',
+                        width: '100%',
+                        height: '100%',
+                      }}
+                      type="button"
+                    >
                       <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
                         <img src="./token/icon-upload.svg" alt="upload" className="w-[30px] h-[30px]" />
                         <p className="font-OCR text-[10px] text-green leading-4">Upload Image</p>
@@ -554,7 +570,7 @@ export default function Create() {
                 minPrice={0}
                 maxPrice={totalCapInitial}
               />
-              {/* <MySlider min={0} max={1} minPrice={0} maxPrice={totalCapInitial} /> */}
+              {/* <MySlider min={0} max={1} minPrice={0} maxPrice={100} /> */}
             </Form.Item>
             <p className="create_tip_for_acquisition">
               The creator can enhance the initial allocation by purchasing an additional {maxProportion * 100}%
@@ -595,7 +611,10 @@ export default function Create() {
                           accept="image/*"
                           maxCount={1}
                           beforeUpload={(file) => handleUpload(file, 'banners')}
-                          showUploadList={{ showPreviewIcon: false, showRemoveIcon: true }}
+                          showUploadList={{
+                            showPreviewIcon: false,
+                            showRemoveIcon: true,
+                          }}
                           className="custom-upload-banner"
                           previewFile={(file) => {
                             return new Promise((resolve) => {
@@ -638,9 +657,9 @@ export default function Create() {
 
           <div>
             <p className="create_fee_desc">
-              A platform Fee of {totalCap} ETH is applicable to facilitate your meme token creation. You will <br /> be
-              entitled to {firstProportion * 100}% supply of your meme token. The token will be distributed post <br />{' '}
-              TGE after <span className="text-[#07E993]">‘fair conditions’</span> are met.{' '}
+              A platform Fee of {totalCap} {tokenSymbol} is applicable to facilitate your meme token creation. You will{' '}
+              <br /> be entitled to {firstProportion * 100}% supply of your meme token. The token will be distributed
+              post <br /> TGE after <span className="text-[#07E993]">‘fair conditions’</span> are met.{' '}
               <span className="text-[#07E993]">Click here</span>
               for the tokenomics disclosures.
             </p>

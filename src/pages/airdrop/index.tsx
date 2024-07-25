@@ -82,7 +82,7 @@ const Airdrop: FC = () => {
   const [idoQueueDetail, setIDOQueueDetail] = useState<IDOQueueDetail>();
   const { ticker = import.meta.env.VITE_DEMO_TICKER } = useParams<{ ticker: string }>();
   const [refresh, setRefresh] = useState(0);
-  const { address } = useAccount();
+  const { address, memooConfig } = useAccount();
   console.log('my-address:', address);
   const [loading, setLoading] = useState(false);
   const [searchParams] = useSearchParams();
@@ -118,7 +118,7 @@ const Airdrop: FC = () => {
       idoQueueDetail,
       mine,
       ticker,
-      memooConfig: config,
+      memooConfig,
       idoBuy,
       unlockMeme,
       airdropClaim,
