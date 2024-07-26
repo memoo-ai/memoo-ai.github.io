@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-curly-brace-presence */
 import './index.scss';
 import BackButton from '@/components/BackButton';
 import { Button } from '@/components/ui/button';
@@ -103,7 +104,7 @@ export default function Create() {
   // console.log('memooConfig.platformFeeCreateMeme:', formatDecimals(memooConfig.platformFeeCreateMeme));
   const totalCap = useMemo(() => {
     if (!memooConfig || !defaultConfig) return 0;
-    // // eslint-disable-next-line no-debugger
+    // eslint-disable-next-line no-debugger
     // debugger;
     const platformFeeCreateMeme = new BigNumber(Number(memooConfig?.platformFeeCreateMeme)).dividedBy(
       10 ** defaultConfig?.defaultDecimals,
