@@ -20,7 +20,7 @@ import { CollectorContext } from './collector';
 import { getNumberOrDefault } from '@/utils';
 
 type ChildWithOnClick = ReactElement<{ onClick?: (e: React.MouseEvent) => void }>;
-
+const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const ClaimImoTokensModal = ({ children }: any) => {
   const [open, setOpen] = useState(false);
   const { idoClaim } = useManageContract();
@@ -72,8 +72,8 @@ const ClaimImoTokensModal = ({ children }: any) => {
           <img className="mt-[15px]" src="./dashboard/reward.svg" alt="" />
           <div className="confirm_content_title mt-[18px]">{idoLaunchedDetail?.tokenName} has arrived!</div>
           <div className="confirm_content_describe mt-[18px]">
-            For your participation of {idoLaunchedDetail?.contributed} ETH in {idoLaunchedDetail?.tokenName} IMO, <br />{' '}
-            you can now unlock you allocation below.
+            For your participation of {idoLaunchedDetail?.contributed} {tokenSymbol} in {idoLaunchedDetail?.tokenName}{' '}
+            IMO, <br /> you can now unlock you allocation below.
           </div>
           <div className="relative mt-[26px] w-full">
             <IconLock className="absolute left-[25px] top-[50%] translate-y-[-50%] z-10" />

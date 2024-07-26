@@ -47,6 +47,7 @@ import { CHAIN_ID } from '@/constants';
 import CreatedTokenCompleteConnectedModal from './create-token-complete-connected-modal';
 import ITooltip from '@/components/ITooltip';
 
+const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
 const FORM_STORAGE_KEY = 'create_token_storage';
@@ -637,9 +638,9 @@ export default function Create() {
 
           <div>
             <p className="create_fee_desc">
-              A platform Fee of {totalCap} ETH is applicable to facilitate your meme token creation. You will <br /> be
-              entitled to {firstProportion * 100}% supply of your meme token. The token will be distributed post <br />{' '}
-              TGE after <span className="text-[#07E993]">‘fair conditions’</span> are met.{' '}
+              A platform Fee of {totalCap} {tokenSymbol} is applicable to facilitate your meme token creation. You will{' '}
+              <br /> be entitled to {firstProportion * 100}% supply of your meme token. The token will be distributed
+              post <br /> TGE after <span className="text-[#07E993]">‘fair conditions’</span> are met.{' '}
               <span className="text-[#07E993]">Click here</span>
               for the tokenomics disclosures.
             </p>

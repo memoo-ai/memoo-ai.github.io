@@ -9,12 +9,14 @@ import { Button } from 'antd';
 import Countdown from '@/pages/airdrop/countdown';
 import { useNavigate } from 'react-router-dom';
 import Empty from '@/components/Empty';
+
 interface KingsCardsProps {
   btnText?: string;
   btnType?: string;
   path?: string;
   data: any[];
 }
+const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data }: KingsCardsProps) => {
   const navigate = useNavigate();
   // const data = new Array(3).fill(undefined).map((_, i) => ({
@@ -97,7 +99,7 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data 
                       <div className="font-OCR text-[14px] text-[#7D83B5] line-[13px]">Total Raised</div>
                       <IProgress className="w-[83px]" percent={(item.contributed / item.maxContributed) * 100} />
                       <div className="font-OCR text-[18px] text-[#fff] line-[13px]  text-right">
-                        {item.contributed}/{item.maxContributed} ETH
+                        {item.contributed}/{item.maxContributed} {tokenSymbol}
                       </div>
                     </div>
                   </div>

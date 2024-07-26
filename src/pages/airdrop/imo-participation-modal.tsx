@@ -20,6 +20,7 @@ import { DEFAULT_IDO_LIMIT, zeroBN } from '@/constants';
 import ITooltip from '@/components/ITooltip';
 
 const grades = [1 / 4, 1 / 2, 1];
+const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 
 const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
   const [open, setOpen] = useState(false);
@@ -61,7 +62,9 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
     return grades.map((g, i) => ({
       label: (
         <div key={i} className="imo_opt">
-          <span>{formatDecimals(capped.multipliedBy(g).multipliedBy(idoUserBuyLimitBN))} ETH</span>
+          <span>
+            {formatDecimals(capped.multipliedBy(g).multipliedBy(idoUserBuyLimitBN))} {tokenSymbol}
+          </span>
           <span>{formatDecimals(totalSupplyBN.multipliedBy(g).multipliedBy(idoUserBuyLimitBN))} TOKEN</span>
         </div>
       ),
@@ -105,16 +108,16 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
                 placement="bottom"
                 title={`${
                   (Number(formatDecimals(capped)) / 7) * 6
-                } ETH will be used to create liquidity pair while${Number(
+                } ${tokenSymbol} will be used to create liquidity pair while${Number(
                   Number(formatDecimals(capped)) / 7,
-                )}  ETH is collected as IMO platform fee.`}
+                )}  ${tokenSymbol} is collected as IMO platform fee.`}
                 color="#fff"
                 bgColor="#396D93"
               />
             </div>
             <p className="whitespace-pre font-OCR text-white text-base leading-[18px]">{`Total IDO raise is always\ncapped at ${formatDecimals(
               capped,
-            )} ETH`}</p>
+            )} ${tokenSymbol}`}</p>
           </div>
           <Radio.Group
             className="memoo_radio_group mt-[28px] mb-[28px] grid grid-cols-3"
@@ -125,7 +128,7 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
           />
           <p className="whitespace-pre font-OCR text-[#4889B7] text-[10px] leading-[14px]">{`Contribution capped at ${formatDecimals(
             maxContributed,
-          )} ETH per wallet: To counteract potential centralization,\nindividual wallet holding limits will be established, ensuring that every purchasing\nentity's holding is limited to maximum of ${idoUserBuyLimitBN
+          )} ${tokenSymbol} per wallet: To counteract potential centralization,\nindividual wallet holding limits will be established, ensuring that every purchasing\nentity's holding is limited to maximum of ${idoUserBuyLimitBN
             .multipliedBy(100)
             .toString()}% percentage of the total supply.`}</p>
           <Checkbox
