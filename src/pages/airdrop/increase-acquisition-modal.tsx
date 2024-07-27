@@ -18,7 +18,8 @@ import BigNumber from 'bignumber.js';
 import ITooltip from '@/components/ITooltip';
 import { useAccount } from '@/hooks/useWeb3';
 import { getMemeConfigId } from '@/api/base';
-
+import { BN } from '@coral-xyz/anchor';
+const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const IncreaseAcquisitionModal: FC<{
   children: ReactNode;
   maxIncrease: number;
@@ -61,7 +62,11 @@ const IncreaseAcquisitionModal: FC<{
       console.log(result);
       console.log('firstIncreaseD:', firstIncrease);
       const { data: config } = await getMemeConfigId(idoQueueDetail.ticker);
-      await idoBuy(config.memeConfigId, 1000000);
+      console.log('result:', result);
+      const billion = new BN(10).pow(new BN(9));
+      const tx = await idoBuy(config.memeConfigId, new BN(result * 100).mul(billion) / 100);
+      // const tx = await idoBuy(config.memeConfigId, new BN(Math.floor(result * 1_000_000_000)));
+      console.log('idoBuy-tx:', tx);
       setOpen(false);
       message.success('Buy Successful');
     } catch (error) {
@@ -102,7 +107,7 @@ const IncreaseAcquisitionModal: FC<{
             </div>
             <div className="flex flex-auto items-center gap-x-3">
               <span className="whitespace-nowrap text-base font-OCR text-white leading-[16px]">
-                {firstIncrease} ETH
+                {firstIncrease} {tokenSymbol}
               </span>
               <Slider
                 className="memoo_slider flex-auto"
@@ -119,7 +124,9 @@ const IncreaseAcquisitionModal: FC<{
                 min={firstProportion * 100}
                 defaultValue={defaultValue}
               />
-              <span className="whitespace-nowrap text-base font-OCR text-white leading-[16px]">{maxIncrease} ETH</span>
+              <span className="whitespace-nowrap text-base font-OCR text-white leading-[16px]">
+                {maxIncrease} {tokenSymbol}
+              </span>
             </div>
           </div>
           <p className="font-OCR text-[#4889B7] whitespace-pre-wrap mt-[7px] mb-[19px]">
@@ -132,7 +139,7 @@ const IncreaseAcquisitionModal: FC<{
               <span className="text-[24px] text-white font-404px leading-[22px]">{`${
                 // Number(formatDecimals(result - purchased)) > 0 ? formatDecimals(result - purchased) : 0
                 formatDecimals(result - purchased)
-              } ETH`}</span>
+              } ${tokenSymbol}`}</span>
             }
           />
           <Checkbox

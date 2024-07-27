@@ -9,6 +9,7 @@ import { useAccount } from 'wagmi';
 import { IconLaunchedBtn } from '@/components/icons';
 import ClaimImoTokensModal from './claim-imo-tokens-modal';
 
+const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const PublicSale: FC = () => {
   const { idoLaunchedDetail, idoQueueDetail, stage } = useContext(AirdropContext);
   const { address } = useAccount();
@@ -17,10 +18,10 @@ const PublicSale: FC = () => {
     () => [
       { key: 'Market Cap', value: `$${formatDecimals(idoQueueDetail?.marketCap ?? 0)}`, tip: null },
       { key: 'Price', value: `$${formatDecimals(idoQueueDetail?.price ?? 0)}`, tip: null },
-      { key: 'Total Raised', value: `${idoQueueDetail?.totalRaised ?? 'NA/NA'} ETH`, tip: '1' },
+      { key: 'Total Raised', value: `${idoQueueDetail?.totalRaised ?? 'NA/NA'} ${tokenSymbol}`, tip: '1' },
       {
         key: 'Contributed',
-        value: `${idoQueueDetail?.contributed ?? 'NA'}/${idoQueueDetail?.maxContributed ?? 'NA'} ETH`,
+        value: `${idoQueueDetail?.contributed ?? 'NA'}/${idoQueueDetail?.maxContributed ?? 'NA'} ${tokenSymbol}`,
         tip: '1',
       },
     ],

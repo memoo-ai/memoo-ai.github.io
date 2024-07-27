@@ -7,7 +7,7 @@ import { AirdropContext } from '.';
 import ImoParticipationModal from './imo-participation-modal';
 import { formatDecimals } from '@/utils';
 import ITooltip from '@/components/ITooltip';
-
+const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const IMOParticipate: FC = () => {
   const { idoActiveDetail, idoQueueDetail } = useContext(AirdropContext);
   const [ended, setEnded] = useState(false);
@@ -22,13 +22,13 @@ const IMOParticipate: FC = () => {
       // { key: 'Price', value: `$${Number(idoActiveDetail?.price).toLocaleString() ?? 0}`, tip: null },
       {
         key: 'Total Raised',
-        value: `${idoActiveDetail?.totalRaised === '' ? 0 : idoActiveDetail?.totalRaised ?? 'NA/NA'} ETH`,
-        tip: 'Total IMO raise is always capped \n at 2.33 ETH',
+        value: `${idoActiveDetail?.totalRaised === '' ? 0 : idoActiveDetail?.totalRaised ?? 'NA/NA'} ${tokenSymbol}`,
+        tip: `Total IMO raise is always capped \n at 2.33 ${tokenSymbol}`,
       },
       {
         key: 'Contributed',
-        value: `${idoQueueDetail?.contributed ?? 'NA'}/${idoQueueDetail?.maxContributed ?? 'NA'} ETH`,
-        tip: 'Contributed per wallet \n is capped at 0.066 ETH',
+        value: `${idoQueueDetail?.contributed ?? 'NA'}/${idoQueueDetail?.maxContributed ?? 'NA'} ${tokenSymbol}`,
+        tip: `Contributed per wallet \n is capped at 0.066 ${tokenSymbol}`,
       },
     ],
     [idoActiveDetail, idoQueueDetail],

@@ -19,7 +19,7 @@ import ITooltip from '@/components/ITooltip';
 import { CreatorContext } from './creator';
 
 type ChildWithOnClick = ReactElement<{ onClick?: (e: React.MouseEvent) => void }>;
-
+const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const IncreaseModal: FC<{
   children: ReactNode;
   maxIncrease: number;
@@ -101,7 +101,7 @@ const IncreaseModal: FC<{
             </div>
             <div className="flex flex-auto items-center gap-x-3">
               <span className="whitespace-nowrap text-base font-OCR text-white leading-[16px]">
-                {firstIncrease} ETH
+                {firstIncrease} {tokenSymbol}
               </span>
               <Slider
                 className="memoo_slider flex-auto"
@@ -118,7 +118,9 @@ const IncreaseModal: FC<{
                 min={firstProportion * 100}
                 defaultValue={defaultValue}
               />
-              <span className="whitespace-nowrap text-base font-OCR text-white leading-[16px]">{maxIncrease} ETH</span>
+              <span className="whitespace-nowrap text-base font-OCR text-white leading-[16px]">
+                {maxIncrease} {tokenSymbol}
+              </span>
             </div>
           </div>
           <p className="font-OCR text-[#4889B7] whitespace-pre-wrap mt-[7px] mb-[19px]">
@@ -131,7 +133,7 @@ const IncreaseModal: FC<{
               <span className="text-[24px] text-white font-404px leading-[22px]">{`${
                 // Number(formatDecimals(result - purchased)) > 0 ? formatDecimals(result - purchased) : 0
                 formatDecimals(result - purchased)
-              } ETH`}</span>
+              } ${tokenSymbol}`}</span>
             }
           />
           <Checkbox

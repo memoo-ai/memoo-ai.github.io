@@ -35,7 +35,7 @@ export const useProportion = () => {
     if (!memooConfig) return 0;
 
     const totalSupplyBN = new BigNumber(Number(memooConfig?.totalSupply)).dividedBy(10 ** 9);
-    const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 9);
+    const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice));
     const result = totalSupplyBN.multipliedBy(idoPriceBN).multipliedBy(firstProportion);
     return parseFloat(formatDecimals(result));
   }, [memooConfig, firstProportion]);

@@ -204,9 +204,11 @@ export const useAccount = () => {
       )[0];
       const memeConfig: memeConfig = (await program.account.memeConfig.fetch(memeConfigPda)) as any;
       console.log('memeConfig:', memeConfig);
-      debugger;
+      // debugger;
+      console.log(amount);
       const idoUserBuyLimit = memeConfig?.totalSupply.mul(new BN(memooConfig.idoUserBuyLimit)).div(new BN(amount));
       const idoBuyCost = idoUserBuyLimit.mul(memooConfig.idoPrice);
+      console.log('idoBuyCost', idoBuyCost);
       const poolSolAuthority = PublicKey.findProgramAddressSync(
         [Buffer.from('authority'), memeConfigId.toBuffer(), NATIVE_MINT.toBuffer()],
         programId,

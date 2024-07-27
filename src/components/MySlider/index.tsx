@@ -34,7 +34,7 @@ const MySlider = ({
   return (
     <div className="flex-1 flex items-center progress">
       <div className="mr-[14px]">
-        {minPrice}
+        {minPrice}&nbsp;
         {tokenSymbol}
       </div>{' '}
       <Slider

@@ -6,7 +6,7 @@ import { getImoCompleted } from '@/api/launchpad';
 import { useNavigate } from 'react-router-dom';
 import { LaunchpadIDOCompeted } from '@/types';
 import Empty from '@/components/Empty';
-
+const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 export const ActiveIdoCard = () => {
   const [idos, setIdos] = useState<LaunchpadIDOCompeted[]>([]);
   const navigate = useNavigate();
@@ -46,7 +46,9 @@ export const ActiveIdoCard = () => {
               <div className="ido-info-item">
                 <img src="./dashboard/icon-raised-target.svg" alt="" className="w-5 h-5 mr-1" />
                 <span className="whitespace-nowrap">Total Raised</span>
-                <span className="overflow-hidden whitespace-nowrap text-ellipsis">{ido.totalRaised} ETH</span>
+                <span className="overflow-hidden whitespace-nowrap text-ellipsis">
+                  {ido.totalRaised} {tokenSymbol}
+                </span>
               </div>
               <Button
                 variant="second"
