@@ -13,7 +13,7 @@ import IDL from '@/contracts/idl/memoo.json';
 import { useBaseConfig } from '@/hooks/useBaseConfig';
 import { useAnchorProgram } from './useProgram';
 // import { memooConfig } from '@/types';
-interface MemooConfig {
+export interface MemooConfig {
   admin: PublicKey;
   airdropPrice: BN;
   id: PublicKey;
@@ -31,7 +31,7 @@ interface MemooConfig {
   tokenAllocationPlatform: number;
   totalSupply: BN;
 }
-interface MemeConfig {
+export interface MemeConfig {
   createTimestamp: BN;
   creator: PublicKey;
   creatorTotal: BN;
@@ -42,7 +42,7 @@ interface MemeConfig {
   preLaunchSecond: BN;
   totalSupply: BN;
 }
-interface MemeUserIdoData {
+export interface MemeUserIdoData {
   isInitialized: boolean;
   lockCount: BN;
   memeId: PublicKey;

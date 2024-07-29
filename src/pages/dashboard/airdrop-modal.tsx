@@ -18,15 +18,16 @@ import { myAirdropDetail } from '@/api/airdrop';
 import BigNumber from 'bignumber.js';
 import { CollectorContext } from './collector';
 import { getNumberOrDefault } from '@/utils';
-
+import { useSolana } from '@/hooks/useSolana';
 type ChildWithOnClick = ReactElement<{ onClick?: (e: React.MouseEvent) => void }>;
 
 const AirdropModal = ({ children }: any) => {
   const [open, setOpen] = useState(false);
   const { airdropClaim } = useManageContract();
   const [confirming, setConfirming] = useState(false);
-  const { getSign } = useSign();
+  // const { getSign } = useSign();
   const { idoLaunchedDetail } = useContext(CollectorContext);
+  const { getSign } = useSolana();
 
   const onConfirm = useCallback(async () => {
     if (!airdropClaim || !idoLaunchedDetail) return;

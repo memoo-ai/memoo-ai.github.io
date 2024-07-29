@@ -401,7 +401,7 @@ declare interface TokenDetail {
   website: string;
 }
 declare interface LoginParams {
-  address: `0x${string}`;
+  address: any;
   message: string;
   signature: string;
   chain: 'Ethereum' | 'Solana';

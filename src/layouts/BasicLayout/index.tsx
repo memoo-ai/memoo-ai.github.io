@@ -34,7 +34,7 @@ const BasicLayout: React.FC = () => {
   console.log('USDC balance on testnet', balance?.toNumber());
 
   useEffect(() => {
-    if (connected && !localStorage.getItem(MEMOO_TOKEN_STORAGE)) {
+    if (connected) {
       (async () => {
         // if (!signer) return;
         // const msg = String(Date.now());

@@ -32,7 +32,7 @@ export const getIDOLaunchedDetailTop10 = (params: {
   return http.get<IDOLaunchedDetailTop10[]>(`${prefix}/web-unauthorized/ido-launched-detail-top10`, { params });
 };
 
-export const getIDOQueueDetail = (ticker: string, address?: string) => {
+export const getIDOQueueDetail = (ticker: string, address?: any) => {
   return http.get<IDOQueueDetail>(`${prefix}/web-unauthorized/ido-queue-detail`, { params: { ticker, address } });
 };
 

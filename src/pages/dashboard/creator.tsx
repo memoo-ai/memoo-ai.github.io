@@ -13,21 +13,30 @@ import { getCreator, deleteToken } from '@/api/dashboard';
 import { CreatorStatus } from './type';
 import { DashboardCreator } from '@/types';
 import { getMeMemo } from '@/api/common';
-import { DefaultMemooConfig, MemooConfig, useManageContract } from '@/hooks/useManageContract';
+import { useManageContract } from '@/hooks/useManageContract';
 import { formatDecimals } from '@/utils';
 import BigNumber from 'bignumber.js';
 import { TransactionReceipt } from 'viem';
 import { getIDOQueueDetail, getIDOLaunchedDetail } from '@/api/airdrop';
 import { IDOQueueDetail, IDOLaunchedDetail, UnlockPeriod } from '@/types';
-import { useAccount } from 'wagmi';
+// import { useAccount } from 'wagmi';
+import { useAccount, MemooConfig } from '@/hooks/useWeb3';
 import { useProportion } from '@/hooks/useProportion';
+import { getMemeConfigId } from '@/api/base';
+import { BN } from '@coral-xyz/anchor';
 
 interface CreatorContext {
   memooConfig?: MemooConfig;
-  defaultConfig?: DefaultMemooConfig;
+  // defaultConfig?: DefaultMemooConfig;
   idoQueueDetail?: IDOQueueDetail;
   idoLaunchedDetail?: IDOLaunchedDetail;
-  idoBuy?: (project: `0x${string}`, amount: BigNumber) => Promise<TransactionReceipt | undefined>;
+  idoBuy?: (
+    memeId: string,
+    amount: BN,
+    isCreate: boolean,
+    proportion: number,
+  ) => Promise<TransactionReceipt | undefined>;
+  // idoBuy?: (project: `0x${string}`, amount: BigNumber) => Promise<TransactionReceipt | undefined>;
   unlockMeme?: (project: `0x${string}`, index: number) => Promise<TransactionReceipt | undefined>;
   airdropClaim?: (
     project: `0x${string}`,
@@ -46,6 +55,7 @@ interface CreatorContext {
   stage?: '1st' | '2nd';
   totalPurchased?: string;
   rate?: number;
+  memeConfigId?: string;
 }
 export const CreatorContext = createContext<CreatorContext>({
   totalPurchased: '',
@@ -62,6 +72,7 @@ export const Creator = () => {
   const [list, setList] = useState<DashboardCreator[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const iconRefs = useRef<any>({});
+  const [memeConfigId, setMemeConfigId] = useState();
   const [idoQueueDetail, setIDOQueueDetail] = useState<IDOQueueDetail>();
 
   const [stage, setStage] = useState<'1st' | '2nd'>('1st');
@@ -74,10 +85,10 @@ export const Creator = () => {
     unlockCount: BigNumber;
     unlockInfo: UnlockPeriod;
   }>();
-  const { address } = useAccount();
+  const { address, memooConfig, idoBuy } = useAccount();
   const {
-    config: memooConfig,
-    idoBuy,
+    // config: memooConfig,
+    // idoBuy,
     defaultConfig,
     airdropClaim,
     unlockMeme,
@@ -89,11 +100,13 @@ export const Creator = () => {
 
   // const firstProportion = useMemo(() => Number(memooConfig?.allocation.creator) / 10000, [memooConfig]);
   const purchased = useMemo(() => {
-    if (!memooConfig || !defaultConfig) return 0;
+    if (!memooConfig) return 0;
+
     const totalPurchasedBN = new BigNumber(Number(totalPurchased));
-    const idoPriceBN = new BigNumber(Number(defaultConfig?.idoPrice)).dividedBy(10 ** defaultConfig?.defaultDecimals);
+    const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 9);
+    console.log('purchased:', parseFloat(formatDecimals(totalPurchasedBN.multipliedBy(idoPriceBN))));
     return parseFloat(formatDecimals(totalPurchasedBN.multipliedBy(idoPriceBN)));
-  }, [memooConfig, defaultConfig, totalPurchased]);
+  }, [memooConfig, totalPurchased]);
   // const maxProportion = useMemo(
   //   () => (Number(memooConfig?.idoCreatorBuyLimit) + Number(memooConfig?.allocation.creator)) / 10000,
   //   [memooConfig],
@@ -124,17 +137,20 @@ export const Creator = () => {
       totalPurchased,
       stage,
       unlockMeme,
+      memeConfigId,
     }),
-    [idoQueueDetail, idoBuy, airdropClaim, unlockMeme, memooConfig, defaultConfig, totalPurchased, stage],
+    [idoQueueDetail, idoBuy, airdropClaim, unlockMeme, memooConfig, defaultConfig, totalPurchased, stage, memeConfigId],
   );
 
   const getIDOAndPurchased = async (ticker: string) => {
     try {
       setLoading(true);
-      const { data } = await getIDOQueueDetail(ticker, address ? address : 'default');
+      const { data } = await getIDOQueueDetail(ticker, address ?? 'default');
       setIDOQueueDetail(data);
+      const { data: config } = await getMemeConfigId(ticker);
+      setMemeConfigId(config.memeConfigId);
       const { data: meme } = await getMeMemo(ticker);
-      setTotalPurchased(meme[0].balance);
+      setTotalPurchased(meme[0].balance ?? 0);
       setLoading(false);
       if (data.stageTwoClaim && address) {
         setStage('2nd');

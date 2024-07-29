@@ -2,11 +2,11 @@ import { useCallback } from 'react';
 import { useAccount } from 'wagmi';
 import { login } from '@/api/login';
 import { useSign } from '@/hooks/useEthers';
-import { usePhantom } from '@/hooks/useSolana';
+import { useSolana } from '@/hooks/useSolana';
 import { MEMOO_TOKEN_STORAGE } from '@/constants';
 import { useWallet } from '@solana/wallet-adapter-react';
 export const useLogin = () => {
-  const { getSign } = usePhantom();
+  const { getSign } = useSolana();
   const { publicKey } = useWallet();
   const loginMeme = useCallback(async () => {
     console.log('loginMeme');

@@ -17,6 +17,7 @@ import { formatDecimals } from '@/utils';
 import BigNumber from 'bignumber.js';
 import ITooltip from '@/components/ITooltip';
 import { CreatorContext } from './creator';
+import { BN } from '@coral-xyz/anchor';
 
 type ChildWithOnClick = ReactElement<{ onClick?: (e: React.MouseEvent) => void }>;
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
@@ -35,7 +36,7 @@ const IncreaseModal: FC<{
   const [proportion, setProportion] = useState(purchased);
   const [result, setResult] = useState(0);
   const defaultValue = purchased * 1000;
-  const { idoBuy, idoQueueDetail } = useContext(CreatorContext);
+  const { idoBuy, idoQueueDetail, memeConfigId } = useContext(CreatorContext);
   useEffect(() => {
     setProportion(firstProportion * 100);
   }, [firstProportion]);
@@ -54,14 +55,21 @@ const IncreaseModal: FC<{
   }, [purchased]);
 
   const onConfirm = useCallback(async () => {
-    if (!idoBuy || !idoQueueDetail) return;
+    console.log('onConfirm');
+    console.log('idoBuy:', idoBuy);
+    console.log('idoQueueDetail:', idoQueueDetail);
+    console.log('memeConfigId:', memeConfigId);
+
+    if (!idoBuy || !idoQueueDetail || !memeConfigId) return;
     try {
       setConfirming(true);
       console.log(result);
       console.log('firstIncreaseD:', firstIncrease);
-      await idoBuy(idoQueueDetail.contractAddress, new BigNumber(result - purchased));
-      setOpen(false);
-      message.success('Buy Successful');
+      const tx = await idoBuy(memeConfigId!, new BN(result - purchased), true, proportion);
+      if (tx) {
+        setOpen(false);
+        message.success('Buy Successful');
+      }
     } catch (error) {
       console.error(error);
       message.error('Buy Failed');
