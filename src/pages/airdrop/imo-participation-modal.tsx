@@ -3,7 +3,7 @@ import { Button, Checkbox, Input, Modal, Progress, Radio, RadioChangeEvent, Slid
 import {
   Children,
   FC,
-  Fragment,
+  useEffect,
   ReactNode,
   cloneElement,
   isValidElement,
@@ -11,6 +11,7 @@ import {
   useContext,
   useMemo,
   useState,
+  SetStateAction,
 } from 'react';
 import './imo-participation-modal.scss';
 import { AirdropContext } from '.';
@@ -24,23 +25,24 @@ const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(0);
-  const { memooConfig, defaultConfig, idoBuy, idoQueueDetail } = useContext(AirdropContext);
+  const { memooConfig, defaultConfig, idoBuy, idoQueueDetail, memeConfigId, mine } = useContext(AirdropContext);
   const [accepted, setAccepted] = useState(false);
   const [confirming, setConfirming] = useState(false);
+  const [selectedGrade, setSelectedGrade] = useState(grades[0]);
 
   const totalSupplyBN = useMemo(() => {
-    if (!memooConfig || !defaultConfig) return zeroBN;
-    return new BigNumber(Number(defaultConfig.totalSupply)).dividedBy(10 ** defaultConfig.defaultDecimals);
-  }, [memooConfig, defaultConfig]);
+    if (!memooConfig) return zeroBN;
+    return new BigNumber(Number(memooConfig.totalSupply)).dividedBy(10 ** 9);
+  }, [memooConfig]);
   console.log('config-totalSupplyBN:', totalSupplyBN);
 
   const capped = useMemo(() => {
-    if (!memooConfig || !defaultConfig) return zeroBN;
+    if (!memooConfig) return zeroBN;
     const idoQuotaBN = new BigNumber(Number(memooConfig.allocation.ido)).dividedBy(10000);
     // const idoPriceBN = new BigNumber(defaultConfig.idoPrice).dividedBy(10 ** defaultConfig.defaultDecimals);
-    const idoPriceBN = new BigNumber(Number(defaultConfig.idoPrice)).dividedBy(10 ** defaultConfig.defaultDecimals);
+    const idoPriceBN = new BigNumber(Number(memooConfig.idoPrice)).dividedBy(10 ** 9);
     return totalSupplyBN.multipliedBy(idoQuotaBN).multipliedBy(idoPriceBN);
-  }, [memooConfig, totalSupplyBN, defaultConfig]);
+  }, [memooConfig, totalSupplyBN]);
 
   const idoUserBuyLimitBN = useMemo(() => {
     if (!memooConfig) return zeroBN;
@@ -68,15 +70,25 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
         </div>
       ),
       value: parseFloat(formatDecimals(capped.multipliedBy(g).multipliedBy(idoUserBuyLimitBN))),
+      grade: g,
     }));
   }, [capped, idoUserBuyLimitBN, totalSupplyBN]);
+
+  const handleChange = (e: RadioChangeEvent) => {
+    const selectedOption = options.find((option) => option.value === e.target.value);
+    if (selectedOption) {
+      setSelected(e.target.value);
+      setSelectedGrade(selectedOption.grade);
+      console.log('Selected grade:', selectedOption.grade);
+    }
+  };
 
   const onConfirm = useCallback(async () => {
     if (!idoBuy || !idoQueueDetail) return;
     try {
       setConfirming(true);
       // TODO
-      await idoBuy(idoQueueDetail?.contractAddress, new BigNumber(selected));
+      await idoBuy(memeConfigId!, new BigNumber(selected), mine, selectedGrade);
       setOpen(false);
       message.success('Participate Successful');
     } catch (error) {
@@ -121,7 +133,7 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
           <Radio.Group
             className="memoo_radio_group mt-[28px] mb-[28px] grid grid-cols-3"
             options={options}
-            onChange={(e) => setSelected(e.target.value)}
+            onChange={handleChange}
             value={selected}
             optionType="button"
           />

@@ -35,8 +35,8 @@ const IncreaseAcquisitionModal: FC<{
   const [proportion, setProportion] = useState(purchased);
   const [result, setResult] = useState(0);
   // const { idoBuy, idoQueueDetail } = useContext(AirdropContext);
-  const { idoQueueDetail } = useContext(AirdropContext);
-  const { idoBuy } = useAccount();
+  const { idoQueueDetail, mine, idoBuy, memeConfigId } = useContext(AirdropContext);
+  // const { idoBuy } = useAccount();
   const defaultValue = purchased * 1000;
   useEffect(() => {
     setProportion(firstProportion * 100);
@@ -61,14 +61,16 @@ const IncreaseAcquisitionModal: FC<{
       setConfirming(true);
       console.log(result);
       console.log('firstIncreaseD:', firstIncrease);
-      const { data: config } = await getMemeConfigId(idoQueueDetail.ticker);
+      // const { data: config } = await getMemeConfigId(idoQueueDetail.ticker);
       console.log('result:', result);
-      const billion = new BN(10).pow(new BN(9));
-      const tx = await idoBuy(config.memeConfigId, new BN(result * 100).mul(billion) / 100);
+      console.log('proportion:', proportion);
+      const tx = await idoBuy(memeConfigId!, new BN(result * 1e9).mul(new BN(1)), mine, proportion);
       // const tx = await idoBuy(config.memeConfigId, new BN(Math.floor(result * 1_000_000_000)));
-      console.log('idoBuy-tx:', tx);
-      setOpen(false);
-      message.success('Buy Successful');
+      if (tx) {
+        console.log('idoBuy-tx:', tx);
+        setOpen(false);
+        message.success('Buy Successful');
+      }
     } catch (error) {
       console.error(error);
       message.error('Buy Failed');

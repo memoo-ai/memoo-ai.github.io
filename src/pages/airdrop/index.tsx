@@ -35,6 +35,8 @@ import { IconEdit, IconBack } from '@/components/icons';
 import { getMeMemo } from '@/api/common';
 import PreMarketAcqusition from '@/pages/airdrop/pre-market-acquisition';
 import MeMooScoreBreakdown from './memoo-score-breakdown';
+import { BN } from '@coral-xyz/anchor';
+import { getMemeConfigId } from '@/api/base';
 
 interface AirdropContext {
   stage: TokenCreateStage;
@@ -45,8 +47,14 @@ interface AirdropContext {
   mine: boolean;
   ticker: string;
   memooConfig?: MemooConfig;
-  defaultConfig?: DefaultMemooConfig;
-  idoBuy?: (project: `0x${string}`, amount: BigNumber) => Promise<TransactionReceipt | undefined>;
+  // defaultConfig?: DefaultMemooConfig;
+  // idoBuy?: (project: `0x${string}`, amount: BigNumber) => Promise<TransactionReceipt | undefined>;
+  idoBuy?: (
+    memeId: string,
+    amount: BN,
+    isCreate: boolean,
+    proportion: number,
+  ) => Promise<TransactionReceipt | undefined>;
   unlockMeme?: (project: `0x${string}`, index: number) => Promise<TransactionReceipt | undefined>;
   idoClaim?: (project: `0x${string}`) => Promise<TransactionReceipt | undefined>;
   triggerRefresh?: Function;
@@ -65,6 +73,7 @@ interface AirdropContext {
     unlockInfo: UnlockPeriod;
   };
   totalPurchased?: string;
+  memeConfigId?: string;
 }
 
 export const AirdropContext = createContext<AirdropContext>({
@@ -80,9 +89,10 @@ const Airdrop: FC = () => {
   const [idoLaunchedDetail, setIDOLaunchedDetail] = useState<IDOLaunchedDetail>();
   const [idoLaunchedDetailTop10, setIDOLaunchedDetailTop10] = useState<IDOLaunchedDetailTop10[]>([]);
   const [idoQueueDetail, setIDOQueueDetail] = useState<IDOQueueDetail>();
+  const [memeConfigId, setMemeConfigId] = useState();
   const { ticker = import.meta.env.VITE_DEMO_TICKER } = useParams<{ ticker: string }>();
   const [refresh, setRefresh] = useState(0);
-  const { address, memooConfig } = useAccount();
+  const { address, memooConfig, idoBuy } = useAccount();
   console.log('my-address:', address);
   const [loading, setLoading] = useState(false);
   const [searchParams] = useSearchParams();
@@ -97,7 +107,7 @@ const Airdrop: FC = () => {
   }>();
   const [totalPurchased, setTotalPurchased] = useState('0');
   const [totalAmount, setTotalAmount] = useState('0');
-  const { config, idoBuy, unlockMeme, defaultConfig, airdropClaim, getCanUnlockCount, memeUnlockPeriods, idoClaim } =
+  const { config, unlockMeme, defaultConfig, airdropClaim, getCanUnlockCount, memeUnlockPeriods, idoClaim } =
     useManageContract();
   const navigate = useNavigate();
   const mine = useMemo(
@@ -125,9 +135,10 @@ const Airdrop: FC = () => {
       idoClaim,
       _1stStage,
       _2ndStage,
-      defaultConfig,
+      // defaultConfig,
       triggerRefresh,
       totalPurchased,
+      memeConfigId,
     }),
     [
       stage,
@@ -144,9 +155,10 @@ const Airdrop: FC = () => {
       idoClaim,
       _1stStage,
       _2ndStage,
-      defaultConfig,
+      // defaultConfig,
       triggerRefresh,
       totalPurchased,
+      memeConfigId,
     ],
   );
 
@@ -155,30 +167,32 @@ const Airdrop: FC = () => {
       try {
         setLoading(true);
         // For testin: BigEgg or NewCake
-        const { data } = await getIDOQueueDetail(ticker, address ? address : 'default');
+        const { data } = await getIDOQueueDetail(ticker, address ?? 'default');
         setIDOQueueDetail(data);
         const { data: meme } = await getMeMemo(ticker);
         setTotalPurchased(meme[0]?.balance ?? 0);
         setTotalAmount(meme[0]?.ethAmout ?? 0);
+        const { data: config } = await getMemeConfigId(ticker);
+        setMemeConfigId(config.memeConfigId);
         if (data.stageTwoClaim) {
           setStage('2st-claim');
         } else if (data.stageOneClaim) {
           setStage('1st-claim');
         } else if (data.status === 'Launched') {
           const [p1, p2] = await Promise.all([
-            getIDOLaunchedDetail(ticker, address ? address : 'default'),
+            getIDOLaunchedDetail(ticker, address ?? 'default'),
             getIDOLaunchedDetailTop10({
               pageNumber: 1,
               pageSize: 10,
               ticker: ticker,
-              address: address ? address : 'default',
+              address: address ?? 'default',
             }),
           ]);
           setIDOLaunchedDetail(p1.data);
           setIDOLaunchedDetailTop10(p2.data);
           setStage('launch');
         } else if (data.status === 'IDO') {
-          const { data } = await getIDOActiveDetail(ticker, address ? address : 'default');
+          const { data } = await getIDOActiveDetail(ticker, address ?? 'default');
           console.log('data.status:IDO');
           console.log('data.status:IDO');
           setIDOActiveDetail(data);

@@ -20,6 +20,7 @@ import { TransactionReceipt } from 'viem';
 import { getIDOQueueDetail, getIDOLaunchedDetail } from '@/api/airdrop';
 import { IDOQueueDetail, IDOLaunchedDetail, UnlockPeriod } from '@/types';
 import { useAccount } from 'wagmi';
+import { useProportion } from '@/hooks/useProportion';
 
 interface CreatorContext {
   memooConfig?: MemooConfig;
@@ -84,30 +85,32 @@ export const Creator = () => {
     memeUnlockPeriods,
   } = useManageContract();
 
-  const firstProportion = useMemo(() => Number(memooConfig?.allocation.creator) / 10000, [memooConfig]);
+  const { firstProportion, maxProportion, firstIncrease, maxIncrease } = useProportion();
+
+  // const firstProportion = useMemo(() => Number(memooConfig?.allocation.creator) / 10000, [memooConfig]);
   const purchased = useMemo(() => {
     if (!memooConfig || !defaultConfig) return 0;
     const totalPurchasedBN = new BigNumber(Number(totalPurchased));
     const idoPriceBN = new BigNumber(Number(defaultConfig?.idoPrice)).dividedBy(10 ** defaultConfig?.defaultDecimals);
     return parseFloat(formatDecimals(totalPurchasedBN.multipliedBy(idoPriceBN)));
   }, [memooConfig, defaultConfig, totalPurchased]);
-  const maxProportion = useMemo(
-    () => (Number(memooConfig?.idoCreatorBuyLimit) + Number(memooConfig?.allocation.creator)) / 10000,
-    [memooConfig],
-  );
-  const firstIncrease = useMemo(() => {
-    if (!memooConfig || !defaultConfig) return 0;
-    const totalSupplyBN = new BigNumber(Number(defaultConfig?.totalSupply)).dividedBy(
-      10 ** defaultConfig?.defaultDecimals,
-    );
-    const idoPriceBN = new BigNumber(Number(defaultConfig?.idoPrice)).dividedBy(10 ** defaultConfig?.defaultDecimals);
-    const result = totalSupplyBN.multipliedBy(idoPriceBN).multipliedBy(firstProportion);
-    return parseFloat(formatDecimals(result));
-  }, [memooConfig, firstProportion, defaultConfig]);
-  const maxIncrease = useMemo(
-    () => parseFloat(formatDecimals(firstIncrease * (maxProportion / firstProportion))),
-    [firstProportion, maxProportion, firstIncrease],
-  );
+  // const maxProportion = useMemo(
+  //   () => (Number(memooConfig?.idoCreatorBuyLimit) + Number(memooConfig?.allocation.creator)) / 10000,
+  //   [memooConfig],
+  // );
+  // const firstIncrease = useMemo(() => {
+  //   if (!memooConfig || !defaultConfig) return 0;
+  //   const totalSupplyBN = new BigNumber(Number(defaultConfig?.totalSupply)).dividedBy(
+  //     10 ** defaultConfig?.defaultDecimals,
+  //   );
+  //   const idoPriceBN = new BigNumber(Number(defaultConfig?.idoPrice)).dividedBy(10 ** defaultConfig?.defaultDecimals);
+  //   const result = totalSupplyBN.multipliedBy(idoPriceBN).multipliedBy(firstProportion);
+  //   return parseFloat(formatDecimals(result));
+  // }, [memooConfig, firstProportion, defaultConfig]);
+  // const maxIncrease = useMemo(
+  //   () => parseFloat(formatDecimals(firstIncrease * (maxProportion / firstProportion))),
+  //   [firstProportion, maxProportion, firstIncrease],
+  // );
 
   const context: CreatorContext = useMemo(
     () => ({

@@ -13,7 +13,7 @@ import IDL from '@/contracts/idl/memoo.json';
 import { useBaseConfig } from '@/hooks/useBaseConfig';
 import { useAnchorProgram } from './useProgram';
 // import { memooConfig } from '@/types';
-interface memooConfig {
+interface MemooConfig {
   admin: PublicKey;
   airdropPrice: BN;
   id: PublicKey;
@@ -31,7 +31,7 @@ interface memooConfig {
   tokenAllocationPlatform: number;
   totalSupply: BN;
 }
-interface memeConfig {
+interface MemeConfig {
   createTimestamp: BN;
   creator: PublicKey;
   creatorTotal: BN;
@@ -42,6 +42,15 @@ interface memeConfig {
   preLaunchSecond: BN;
   totalSupply: BN;
 }
+interface MemeUserIdoData {
+  isInitialized: boolean;
+  lockCount: BN;
+  memeId: PublicKey;
+  memeUserIdoClaimedCount: BN;
+  memeUserIdoCount: BN;
+  memeUserIdoMoney: BN;
+  user: PublicKey;
+}
 export const useAccount = () => {
   const { publicKey, signTransaction, signAllTransactions } = useWallet();
   // const RPC_URL = 'https://api.devnet.solana.com';
@@ -50,7 +59,7 @@ export const useAccount = () => {
   const programId = new PublicKey(import.meta.env.VITE_PROGRAM_ID);
   const { solanaConfig } = useBaseConfig();
   const program = useAnchorProgram(programId, IDL as Idl);
-  const [memooConfig, setMemooConfig] = useState<memooConfig>();
+  const [memooConfig, setMemooConfig] = useState<MemooConfig>();
   // const globalMemeConfigId = 'ErhiExGpYiotsV11EGsALXBG2CCzB23Xr4cFyjwDdcEu';
   // const platform_fee_recipient = '5cfF3vsmKvLqNfQTWsNEvYWG4Af6XVwZ2WNy2YZP7UdG';
 
@@ -190,61 +199,89 @@ export const useAccount = () => {
   );
 
   const idoBuy = useCallback(
-    async (memeId: string, amount: number | string | bigint) => {
+    // eslint-disable-next-line max-params
+    async (memeId: string, amount: BN, isCreate: boolean, proportion: number) => {
       if (!memooConfig || !program || !publicKey) return;
-      const memeConfigId = new PublicKey(memeId);
-      const memeUserDataPda_idoBuy = PublicKey.findProgramAddressSync(
-        [Buffer.from('meme_user_data'), memeConfigId.toBuffer(), publicKey.toBuffer()],
-        programId,
-      )[0];
-      const memeConfigPda = PublicKey.findProgramAddressSync(
-        // [Buffer.from('meme_config'), new PublicKey(memeConfigId).toBuffer()],
-        [Buffer.from('meme_config'), memeConfigId.toBuffer()],
-        programId,
-      )[0];
-      const memeConfig: memeConfig = (await program.account.memeConfig.fetch(memeConfigPda)) as any;
-      console.log('memeConfig:', memeConfig);
-      // debugger;
-      console.log(amount);
-      const idoUserBuyLimit = memeConfig?.totalSupply.mul(new BN(memooConfig.idoUserBuyLimit)).div(new BN(amount));
-      const idoBuyCost = idoUserBuyLimit.mul(memooConfig.idoPrice);
-      console.log('idoBuyCost', idoBuyCost);
-      const poolSolAuthority = PublicKey.findProgramAddressSync(
-        [Buffer.from('authority'), memeConfigId.toBuffer(), NATIVE_MINT.toBuffer()],
-        programId,
-      )[0];
-      const poolAccountSol = await getAssociatedTokenAddress(NATIVE_MINT, poolSolAuthority, true);
-      const userWsolAddress = await getAssociatedTokenAddress(NATIVE_MINT, publicKey);
-      const userWsolAccountInfo = await connection.getAccountInfo(userWsolAddress);
-      const transaction = new Transaction();
-      let createAtaIx;
-      if (!userWsolAccountInfo) {
-        createAtaIx = createAssociatedTokenAccountInstruction(
-          publicKey, // payer
-          userWsolAddress, // associatedToken
-          publicKey, // owner
-          NATIVE_MINT, // mint
-        );
-        transaction.add(createAtaIx);
+      try {
+        console.log('memeId:', memeId);
+        const memeConfigId = new PublicKey(memeId);
+        const memeUserDataPda_idoBuy = PublicKey.findProgramAddressSync(
+          [Buffer.from('meme_user_data'), memeConfigId.toBuffer(), publicKey.toBuffer()],
+          programId,
+        )[0];
+        const memeConfigPda = PublicKey.findProgramAddressSync(
+          // [Buffer.from('meme_config'), new PublicKey(memeConfigId).toBuffer()],
+          [Buffer.from('meme_config'), memeConfigId.toBuffer()],
+          programId,
+        )[0];
+        const memeConfig: MemeConfig = (await program.account.memeConfig.fetch(memeConfigPda)) as any;
+        const memeUserIdoData: MemeUserIdoData = (await program.account.memeUserIdoData.fetch(
+          memeUserDataPda_idoBuy,
+        )) as any;
+        console.log('memeConfig:', memeConfig);
+        // debugger;
+        console.log('amount:', amount);
+        console.log('memeConfig?.totalSupply:', memeConfig?.totalSupply);
+        console.log('memooConfig.idoUserBuyLimit:', memooConfig.idoUserBuyLimit);
+        console.log('memooConfig.idoPrice:', memooConfig.idoPrice);
+        console.log('memeUserIdoData:', memeUserIdoData);
+        console.log('memeConfig:', memeConfig);
+        console.log('memooConfig:', memooConfig);
+        // const amount1 = new BN(18000000);
+        const idoUserBuyLimit = memeConfig?.totalSupply
+          .mul(new BN(isCreate ? memooConfig.idoCreatorBuyLimit : memooConfig.idoUserBuyLimit))
+          .div(new BN(10000));
+        const buyQuantity = memeConfig?.totalSupply.mul(new BN(proportion)).div(new BN(100));
+        console.log('idoUserBuyLimit:', idoUserBuyLimit);
+        console.log('goingBuy:', buyQuantity);
+        // if (memeUserIdoData?.memeUserIdoCount + goingBuy > idoUserBuyLimit) {
+        if (memeUserIdoData?.memeUserIdoCount.add(buyQuantity).gt(idoUserBuyLimit)) {
+          console.log('exceed the limit');
+          return;
+        }
+
+        const idoBuyCost = amount.mul(memooConfig.idoPrice);
+        console.log('idoBuyCost', idoBuyCost);
+        const poolSolAuthority = PublicKey.findProgramAddressSync(
+          [Buffer.from('authority'), memeConfigId.toBuffer(), NATIVE_MINT.toBuffer()],
+          programId,
+        )[0];
+        const poolAccountSol = await getAssociatedTokenAddress(NATIVE_MINT, poolSolAuthority, true);
+        const userWsolAddress = await getAssociatedTokenAddress(NATIVE_MINT, publicKey);
+        const userWsolAccountInfo = await connection.getAccountInfo(userWsolAddress);
+        const transaction = new Transaction();
+        let createAtaIx;
+        if (!userWsolAccountInfo) {
+          createAtaIx = createAssociatedTokenAccountInstruction(
+            publicKey, // payer
+            userWsolAddress, // associatedToken
+            publicKey, // owner
+            NATIVE_MINT, // mint
+          );
+          transaction.add(createAtaIx);
+        }
+        // debugger;
+        const tx = await program.methods
+          // .idoBuy(memeConfigId, idoBuyCost)
+          .idoBuy(memeConfigId, idoBuyCost)
+          .accounts({
+            memooConfig: memooConfigPda,
+            memeConfig: memeConfigPda,
+            memeUserData: memeUserDataPda_idoBuy,
+            payer: publicKey,
+            poolAuthorityWsol: poolSolAuthority,
+            poolAccountWsol: poolAccountSol,
+            mintAccountWsol: NATIVE_MINT,
+            userSolAccount: publicKey,
+            userWsolAccount: userWsolAddress,
+            wsolMint: NATIVE_MINT,
+          })
+          .rpc();
+
+        return tx;
+      } catch (e) {
+        console.log('error:', e);
       }
-
-      const tx = await program.methods
-        .idoBuy(memeConfigId, idoBuyCost)
-        .accounts({
-          memooConfig: memooConfigPda,
-          memeConfig: memeConfigPda,
-          memeUserData: memeUserDataPda_idoBuy,
-          payer: publicKey,
-          poolAuthorityWsol: poolSolAuthority,
-          poolAccountWsol: poolAccountSol,
-          mintAccountWsol: NATIVE_MINT,
-          userSolAccount: publicKey,
-          userWsolAccount: userWsolAddress,
-          wsolMint: NATIVE_MINT,
-        })
-        .rpc();
-
-      return tx;
     },
     [connection, publicKey],
   );

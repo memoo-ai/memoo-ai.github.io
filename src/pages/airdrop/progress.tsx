@@ -14,8 +14,7 @@ import { compareAddrs, formatDecimals, formatNumberDecimal, formatRestTime } fro
 import BigNumber from 'bignumber.js';
 import { useProportion } from '@/hooks/useProportion';
 const Progress: FC = () => {
-  const { stage, idoQueueDetail, _2ndStage, _1stStage, memooConfig, defaultConfig, mine, totalPurchased } =
-    useContext(AirdropContext);
+  const { stage, idoQueueDetail, _2ndStage, _1stStage, memooConfig, mine, totalPurchased } = useContext(AirdropContext);
   const { address } = useAccount();
   const { firstProportion, maxProportion, firstIncrease, maxIncrease } = useProportion();
 
@@ -116,7 +115,8 @@ const Progress: FC = () => {
         <ClaimTokensModal
           tokens={parseFloat(
             formatDecimals(
-              new BigNumber(_1stStage?.unlockCount ?? 0).dividedBy(10 ** (defaultConfig?.defaultDecimals ?? 0)),
+              // new BigNumber(_1stStage?.unlockCount ?? 0).dividedBy(10 ** (defaultConfig?.defaultDecimals ?? 0)),
+              new BigNumber(_1stStage?.unlockCount ?? 0).dividedBy(10 ** 9),
             ),
           )}
           lockinPeriod={formatRestTime(Number(_1stStage?.unlockInfo?.value) / 1000)}
@@ -160,7 +160,8 @@ const Progress: FC = () => {
         <ClaimTokensModal
           tokens={parseFloat(
             formatDecimals(
-              new BigNumber(_2ndStage?.unlockCount ?? 0).dividedBy(10 ** (defaultConfig?.defaultDecimals ?? 0)),
+              // new BigNumber(_2ndStage?.unlockCount ?? 0).dividedBy(10 ** (defaultConfig?.defaultDecimals ?? 0)),
+              new BigNumber(_2ndStage?.unlockCount ?? 0).dividedBy(10 ** 9),
             ),
           )}
           unlockTokens={parseFloat(formatDecimals(Number(_1stStage?.unlockInfo?.value ?? 0)))}
@@ -175,7 +176,7 @@ const Progress: FC = () => {
         idoQueueDetail?.status === 'Launched' &&
         (address
           ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
-              compareAddrs(addr, address),
+              compareAddrs(addr, address!),
             )
           : false),
       // enabled: true,
