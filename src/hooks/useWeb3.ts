@@ -64,11 +64,14 @@ export const useAccount = () => {
   // const globalMemeConfigId = 'ErhiExGpYiotsV11EGsALXBG2CCzB23Xr4cFyjwDdcEu';
   // const platform_fee_recipient = '5cfF3vsmKvLqNfQTWsNEvYWG4Af6XVwZ2WNy2YZP7UdG';
 
+  // const globalMemeConfigId = 'AwdE5XnEGnM7uYhuuXPs4MqGLsPU2e2CnUK6JTLAgm4W';
+  const globalMemeConfigId = 'AwdE5XnEGnM7uYhuuXPs4MqGLsPU2e2CnUK6JTLAgm4W';
+  console.log('programId:', import.meta.env.VITE_PROGRAM_ID);
   const memooConfigPda = useMemo(() => {
     if (!solanaConfig) return;
+
     return PublicKey.findProgramAddressSync(
-      [new PublicKey(solanaConfig?.globalMemooConfigId).toBuffer()],
-      // [new PublicKey(globalMemeConfigId).toBuffer()],
+      [Buffer.from('global_memoo_config'), new PublicKey(globalMemeConfigId).toBuffer()],
       programId,
     )[0];
   }, [solanaConfig]);
@@ -106,6 +109,7 @@ export const useAccount = () => {
         // const config = await program.account.globalMemooConfig.fetch(memooConfigPda);
         // console.log('globalMemooConfig:', config);
         // const memeConfigId = Keypair.generate().publicKey;
+        console.log('memooConfigPda:', memooConfigPda);
         const memeConfigId = new PublicKey(memeId);
         const memeConfigPda = PublicKey.findProgramAddressSync(
           // [Buffer.from('meme_config'), new PublicKey(memeConfigId).toBuffer()],
@@ -149,6 +153,7 @@ export const useAccount = () => {
         }
 
         console.log('transaction:', transaction);
+        debugger;
         console.log('totalPay:', new BN(totalPay).add(memooConfig?.platformFeeCreateMemeSol));
         const registerTokenMintIx = await program.methods
           .registerTokenMint(memeConfigId, new BN(totalPay).add(memooConfig?.platformFeeCreateMemeSol), new BN(0))
