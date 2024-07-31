@@ -71,7 +71,7 @@ export const Collector = () => {
   const getLaunchedDetail = async (ticker: string) => {
     try {
       setLoading(true);
-      const { data } = await getIDOLaunchedDetail(ticker, address ? address : 'default');
+      const { data } = await getIDOLaunchedDetail(ticker, address ?? 'default');
       setIdoLaunchedDetail(data);
       setLoading(false);
     } catch (error) {

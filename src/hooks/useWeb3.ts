@@ -7,6 +7,7 @@ import {
   createAssociatedTokenAccountInstruction,
   NATIVE_MINT,
   getAssociatedTokenAddress,
+  getAssociatedTokenAddressSync,
   getOrCreateAssociatedTokenAccount,
 } from '@solana/spl-token';
 import IDL from '@/contracts/idl/memoo.json';
@@ -150,7 +151,7 @@ export const useAccount = () => {
         console.log('transaction:', transaction);
         console.log('totalPay:', new BN(totalPay).add(memooConfig?.platformFeeCreateMemeSol));
         const registerTokenMintIx = await program.methods
-          .registerTokenMint(memeConfigId, new BN(totalPay).add(memooConfig?.platformFeeCreateMemeSol), new BN(0), 9)
+          .registerTokenMint(memeConfigId, new BN(totalPay).add(memooConfig?.platformFeeCreateMemeSol), new BN(0))
           // .registerTokenMint(memeConfigId, new BN(18000000).add(memooConfig?.platformFeeCreateMemeSol), new BN(0), 9)
           .accounts({
             memooConfig: memooConfigPda,
@@ -271,8 +272,8 @@ export const useAccount = () => {
             payer: publicKey,
             poolAuthorityWsol: poolSolAuthority,
             poolAccountWsol: poolAccountSol,
-            mintAccountWsol: NATIVE_MINT,
-            userSolAccount: publicKey,
+            // mintAccountWsol: NATIVE_MINT,
+            // userSolAccount: publicKey,
             userWsolAccount: userWsolAddress,
             wsolMint: NATIVE_MINT,
           })
@@ -286,11 +287,89 @@ export const useAccount = () => {
     [connection, publicKey],
   );
 
+  const creatorClaim = useCallback(
+    async (memeId: string, mintAPublicKey: PublicKey) => {
+      if (!memooConfig || !program || !publicKey) return;
+      try {
+        const memeConfigId = new PublicKey(memeId);
+        const memeUserDataPda_idoBuy = PublicKey.findProgramAddressSync(
+          [Buffer.from('meme_user_data'), memeConfigId.toBuffer(), publicKey.toBuffer()],
+          programId,
+        )[0];
+        const memeUserIdoData: MemeUserIdoData = (await program.account.memeUserIdoData.fetch(
+          memeUserDataPda_idoBuy,
+        )) as any;
+        const memeUserDataPda = PublicKey.findProgramAddressSync(
+          [Buffer.from('meme_user_data'), memeConfigId.toBuffer(), publicKey.toBuffer()],
+          programId,
+        )[0];
+        const adminAccountAPda = getAssociatedTokenAddressSync(mintAPublicKey, publicKey, true);
+        // const adminAccountAPda = getAssociatedTokenAddressSync(
+        //   mintAKeypair.publicKey,
+        //   values.payerAdmin.publicKey,
+        //   true
+        // );
+        const poolAuthorityA = PublicKey.findProgramAddressSync(
+          [Buffer.from('authority'), memeConfigId.toBuffer(), mintAPublicKey.toBuffer()],
+          programId,
+        )[0];
+        const poolAccountA = getAssociatedTokenAddressSync(mintAPublicKey, poolAuthorityA, true);
+        const tx = await program.methods.creatorClaim(memeConfigId).accounts({
+          payer: publicKey,
+          memooConfig: memooConfigPda,
+          memeUserData: memeUserDataPda,
+          // reatorAccountA: adminAccountAPda,
+          creatorAccountA: adminAccountAPda,
+          mintAccountA: mintAPublicKey,
+          poolAuthorityA,
+          poolAccountA: poolAccountA,
+        });
+        return tx;
+      } catch (e) {
+        console.log('error: ', e);
+      }
+    },
+    [connection, publicKey],
+  );
+  const idoClaim = useCallback(
+    async (memeId: string, mintAPublicKey: PublicKey) => {
+      if (!memooConfig || !program || !publicKey) return;
+      try {
+        const memeConfigId = new PublicKey(memeId);
+        const memeUserDataPda_idoBuy = PublicKey.findProgramAddressSync(
+          [Buffer.from('meme_user_data'), memeConfigId.toBuffer(), publicKey.toBuffer()],
+          programId,
+        )[0];
+        const idoBuyTokenAPda = getAssociatedTokenAddressSync(mintAPublicKey, publicKey, true);
+        const poolAuthorityA = PublicKey.findProgramAddressSync(
+          [Buffer.from('authority'), memeConfigId.toBuffer(), mintAPublicKey.toBuffer()],
+          programId,
+        )[0];
+        const poolAccountA = getAssociatedTokenAddressSync(mintAPublicKey, poolAuthorityA, true);
+        const tx = await program.methods.idoClaim(memeConfigId).accounts({
+          user: publicKey,
+          memeUserData: memeUserDataPda_idoBuy,
+
+          idoUserAccountA: idoBuyTokenAPda,
+          mintAccountA: mintAPublicKey,
+          poolAuthorityA,
+          poolAccountA: poolAccountA,
+        });
+        return tx;
+      } catch (e) {
+        console.log('error: ', e);
+      }
+    },
+    [connection, publicKey],
+  );
+
   return {
     address: publicKey,
     registerTokenMint,
     memooConfig,
     // getMemooConfig,
     idoBuy,
+    creatorClaim,
+    idoClaim,
   };
 };

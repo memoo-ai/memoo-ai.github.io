@@ -3,6 +3,11 @@ export type Memoo = {
   "name": "memoo",
   "constants": [
     {
+      "name": "GLOBAL_MEMOO_CONFIG",
+      "type": "string",
+      "value": "\"global_memoo_config\""
+    },
+    {
       "name": "MEME_CONFIG",
       "type": "string",
       "value": "\"meme_config\""
@@ -140,6 +145,10 @@ export type Memoo = {
       "args": [
         {
           "name": "id",
+          "type": "publicKey"
+        },
+        {
+          "name": "admin",
           "type": "publicKey"
         },
         {
@@ -302,10 +311,6 @@ export type Memoo = {
         {
           "name": "preLaunchSecond",
           "type": "i64"
-        },
-        {
-          "name": "tokenDecimals",
-          "type": "u8"
         }
       ]
     },
@@ -316,6 +321,11 @@ export type Memoo = {
           "name": "payer",
           "isMut": true,
           "isSigner": true
+        },
+        {
+          "name": "memeConfig",
+          "isMut": true,
+          "isSigner": false
         },
         {
           "name": "metadataAccount",
@@ -369,10 +379,6 @@ export type Memoo = {
           "type": "publicKey"
         },
         {
-          "name": "tokenDecimals",
-          "type": "u8"
-        },
-        {
           "name": "tokenName",
           "type": "string"
         },
@@ -383,10 +389,6 @@ export type Memoo = {
         {
           "name": "tokenUri",
           "type": "string"
-        },
-        {
-          "name": "totalSupply",
-          "type": "u64"
         }
       ]
     },
@@ -425,16 +427,6 @@ export type Memoo = {
           "name": "poolAccountWsol",
           "isMut": true,
           "isSigner": false
-        },
-        {
-          "name": "mintAccountWsol",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "userSolAccount",
-          "isMut": true,
-          "isSigner": true
         },
         {
           "name": "userWsolAccount",
@@ -491,7 +483,7 @@ export type Memoo = {
         },
         {
           "name": "admin",
-          "isMut": false,
+          "isMut": true,
           "isSigner": true,
           "docs": [
             "The admin of the MemooConfig"
@@ -501,14 +493,6 @@ export type Memoo = {
           "name": "memeConfig",
           "isMut": true,
           "isSigner": false
-        },
-        {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true,
-          "docs": [
-            "The account paying for all rents"
-          ]
         },
         {
           "name": "clock",
@@ -576,7 +560,7 @@ export type Memoo = {
       "name": "adminClaimWsol",
       "accounts": [
         {
-          "name": "payer",
+          "name": "admin",
           "isMut": true,
           "isSigner": true
         },
@@ -587,7 +571,7 @@ export type Memoo = {
         },
         {
           "name": "memeConfig",
-          "isMut": true,
+          "isMut": false,
           "isSigner": false
         },
         {
@@ -635,10 +619,6 @@ export type Memoo = {
         {
           "name": "memeId",
           "type": "publicKey"
-        },
-        {
-          "name": "tokenDecimals",
-          "type": "u8"
         }
       ]
     },
@@ -705,10 +685,6 @@ export type Memoo = {
         {
           "name": "memeId",
           "type": "publicKey"
-        },
-        {
-          "name": "tokenDecimals",
-          "type": "u8"
         }
       ]
     },
@@ -780,10 +756,6 @@ export type Memoo = {
         {
           "name": "memeId",
           "type": "publicKey"
-        },
-        {
-          "name": "tokenDecimals",
-          "type": "u8"
         }
       ]
     },
@@ -791,7 +763,7 @@ export type Memoo = {
       "name": "creatorClaim",
       "accounts": [
         {
-          "name": "admin",
+          "name": "payer",
           "isMut": true,
           "isSigner": true
         },
@@ -845,20 +817,21 @@ export type Memoo = {
         {
           "name": "memeId",
           "type": "publicKey"
-        },
-        {
-          "name": "tokenDecimals",
-          "type": "u8"
         }
       ]
     },
     {
-      "name": "dealHunterClaim",
+      "name": "creatorClaimPermission",
       "accounts": [
         {
-          "name": "payer",
+          "name": "admin",
           "isMut": true,
           "isSigner": true
+        },
+        {
+          "name": "creator",
+          "isMut": true,
+          "isSigner": false
         },
         {
           "name": "memooConfig",
@@ -866,80 +839,12 @@ export type Memoo = {
           "isSigner": false
         },
         {
-          "name": "platformFeeRecipient",
+          "name": "memeUserData",
           "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "memeConfig",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "admin",
-          "isMut": false,
-          "isSigner": true,
-          "docs": [
-            "The admin of the MemooConfig"
-          ]
-        },
-        {
-          "name": "adminAccountA",
-          "isMut": false,
-          "isSigner": true
-        },
-        {
-          "name": "adminAccountWsol",
-          "isMut": false,
-          "isSigner": true
-        },
-        {
-          "name": "mintAccountA",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "poolAuthorityA",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "poolAccountA",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "poolAuthorityWsol",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "poolAccountWsol",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "mintAccountWsol",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "tokenProgram",
-          "isMut": false,
           "isSigner": false
         },
         {
           "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "rent",
           "isMut": false,
           "isSigner": false
         }
@@ -950,8 +855,12 @@ export type Memoo = {
           "type": "publicKey"
         },
         {
-          "name": "tokenDecimals",
-          "type": "u8"
+          "name": "count",
+          "type": "u64"
+        },
+        {
+          "name": "period",
+          "type": "u64"
         }
       ]
     },
@@ -965,7 +874,7 @@ export type Memoo = {
         },
         {
           "name": "memeUserData",
-          "isMut": true,
+          "isMut": false,
           "isSigner": false
         },
         {
@@ -1013,10 +922,6 @@ export type Memoo = {
         {
           "name": "memeId",
           "type": "publicKey"
-        },
-        {
-          "name": "tokenDecimals",
-          "type": "u8"
         }
       ]
     }
@@ -1286,6 +1191,13 @@ export type Memoo = {
             "type": "publicKey"
           },
           {
+            "name": "admin",
+            "docs": [
+              "Account that has admin authority"
+            ],
+            "type": "publicKey"
+          },
+          {
             "name": "creator",
             "docs": [
               "Account of User"
@@ -1324,6 +1236,20 @@ export type Memoo = {
             "name": "memeIdoCount",
             "docs": [
               "ido count"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "memeAirdropCount",
+            "docs": [
+              "airdrop count"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "memeAirdropTotal",
+            "docs": [
+              "airdrop count"
             ],
             "type": "u64"
           },
@@ -1392,11 +1318,58 @@ export type Memoo = {
             "type": "u64"
           },
           {
-            "name": "lockCount",
+            "name": "creatorLockCount",
             "docs": [
               "Creator lock total"
             ],
             "type": "u64"
+          },
+          {
+            "name": "creatorLockCountPermission",
+            "docs": [
+              "Creator lock count_permission"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "creatorLockPeriod",
+            "docs": [
+              "Creator lock period"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "memeUserAirdropClaimedCount",
+            "docs": [
+              "ido buy count"
+            ],
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "AirdropMessage",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "address",
+            "type": "publicKey"
+          },
+          {
+            "name": "memeId",
+            "type": "publicKey"
+          },
+          {
+            "name": "count",
+            "type": "u64"
+          },
+          {
+            "name": "expiry",
+            "type": "u32"
           }
         ]
       }
@@ -1405,91 +1378,156 @@ export type Memoo = {
   "errors": [
     {
       "code": 6000,
+      "name": "Expired",
+      "msg": "Expired"
+    },
+    {
+      "code": 6001,
       "name": "InvalidFee",
       "msg": "Invalid fee value"
     },
     {
-      "code": 6001,
+      "code": 6002,
       "name": "InvalidTooMany",
       "msg": "Invalid buy too many tokens"
     },
     {
-      "code": 6002,
+      "code": 6003,
       "name": "BalanceTooSmall",
       "msg": "Balance is below the input"
     },
     {
-      "code": 6003,
+      "code": 6004,
       "name": "InputTooSmallThanFee",
       "msg": "Input too samll to pay fee"
     },
     {
-      "code": 6004,
+      "code": 6005,
       "name": "InputTooSmallThanIdoPrice",
       "msg": "Input too samll to buy one unit"
     },
     {
-      "code": 6005,
+      "code": 6006,
       "name": "IdoBuyExceedIdoTotal",
       "msg": "Ido Buy Exceed Ido Total"
     },
     {
-      "code": 6006,
+      "code": 6007,
       "name": "IdoBuyExceedIdoCreatorBuyLimit",
       "msg": "Ido Buy Exceed Creator Buy Limit"
     },
     {
-      "code": 6007,
+      "code": 6008,
       "name": "IdoBuyExceedIdoUserBuyLimit",
       "msg": "Ido Buy Exceed User Buy Limit"
     },
     {
-      "code": 6008,
+      "code": 6009,
       "name": "PreLaunchSecondLt0",
       "msg": "PreLaunchSecond < 0"
     },
     {
-      "code": 6009,
+      "code": 6010,
+      "name": "AdminMismatch",
+      "msg": "AdminMismatch"
+    },
+    {
+      "code": 6011,
       "name": "MemeConfigIsNotInitialized",
       "msg": "Meme Config Is Not Initialized"
     },
     {
-      "code": 6010,
+      "code": 6012,
+      "name": "UserDataIsNotInitialized",
+      "msg": "User Data Is Not Initialized"
+    },
+    {
+      "code": 6013,
+      "name": "MemeIDMismatch",
+      "msg": "Meme ID Mismatch"
+    },
+    {
+      "code": 6014,
+      "name": "UserMismatch",
+      "msg": "User Mismatch"
+    },
+    {
+      "code": 6015,
+      "name": "AirdropAlreadyClaimed",
+      "msg": "Airdrop Already Claimed"
+    },
+    {
+      "code": 6016,
       "name": "MemeConfigIsInitialized",
       "msg": "Meme Config Is Initialized"
     },
     {
-      "code": 6011,
+      "code": 6017,
       "name": "CreatorClaimExceed",
       "msg": "Creator Claim Exceed"
     },
     {
-      "code": 6012,
+      "code": 6018,
+      "name": "CreatorClaimPermissionExceed",
+      "msg": "Creator Claim Permission Exceed"
+    },
+    {
+      "code": 6019,
+      "name": "CreatorClaimPermissionSmalllerThanBefore",
+      "msg": "Creator Claim Permission Smalller Than Before"
+    },
+    {
+      "code": 6020,
+      "name": "CreatorClaimPeriodSmalllerThanBefore",
+      "msg": "Creator Claim Period Smalller Than Before"
+    },
+    {
+      "code": 6021,
       "name": "IdoUserClaimExceed",
       "msg": "Creator Claim Exceed"
     },
     {
-      "code": 6013,
+      "code": 6022,
+      "name": "DealHunterClaimExceed",
+      "msg": "Deal Hunter Claim Exceed"
+    },
+    {
+      "code": 6023,
+      "name": "NotAdminSignature",
+      "msg": "Not Admin Signature"
+    },
+    {
+      "code": 6024,
+      "name": "VerifySignatureFail",
+      "msg": "Verify Signature Fail"
+    },
+    {
+      "code": 6025,
       "name": "MemeUserDataConfigIsInitialized",
       "msg": "Meme User Data Config Is Initialized"
     },
     {
-      "code": 6014,
+      "code": 6026,
       "name": "MemeUserDataConfigIsNotInitialized",
       "msg": "Meme User Data Config Is Not Initialized"
     },
     {
-      "code": 6015,
+      "code": 6027,
       "name": "MemeUserDataMemeIdOrUserMismatch",
       "msg": "Meme User Data Meme Id Or User Is Mismatch"
     },
     {
-      "code": 6016,
+      "code": 6028,
       "name": "IdoNotStarted",
       "msg": "IDO not started"
     },
     {
-      "code": 6017,
+      "code": 6029,
+      "name": "IdoNotEnd",
+      "msg": "IDO not end"
+    },
+    {
+      "code": 6030,
       "name": "MemeIdoCountLt0",
       "msg": "IDO Ccount < 0"
     }
@@ -1501,6 +1539,11 @@ export const IDL: Memoo = {
   "name": "memoo",
   "constants": [
     {
+      "name": "GLOBAL_MEMOO_CONFIG",
+      "type": "string",
+      "value": "\"global_memoo_config\""
+    },
+    {
       "name": "MEME_CONFIG",
       "type": "string",
       "value": "\"meme_config\""
@@ -1638,6 +1681,10 @@ export const IDL: Memoo = {
       "args": [
         {
           "name": "id",
+          "type": "publicKey"
+        },
+        {
+          "name": "admin",
           "type": "publicKey"
         },
         {
@@ -1800,10 +1847,6 @@ export const IDL: Memoo = {
         {
           "name": "preLaunchSecond",
           "type": "i64"
-        },
-        {
-          "name": "tokenDecimals",
-          "type": "u8"
         }
       ]
     },
@@ -1814,6 +1857,11 @@ export const IDL: Memoo = {
           "name": "payer",
           "isMut": true,
           "isSigner": true
+        },
+        {
+          "name": "memeConfig",
+          "isMut": true,
+          "isSigner": false
         },
         {
           "name": "metadataAccount",
@@ -1867,10 +1915,6 @@ export const IDL: Memoo = {
           "type": "publicKey"
         },
         {
-          "name": "tokenDecimals",
-          "type": "u8"
-        },
-        {
           "name": "tokenName",
           "type": "string"
         },
@@ -1881,10 +1925,6 @@ export const IDL: Memoo = {
         {
           "name": "tokenUri",
           "type": "string"
-        },
-        {
-          "name": "totalSupply",
-          "type": "u64"
         }
       ]
     },
@@ -1923,16 +1963,6 @@ export const IDL: Memoo = {
           "name": "poolAccountWsol",
           "isMut": true,
           "isSigner": false
-        },
-        {
-          "name": "mintAccountWsol",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "userSolAccount",
-          "isMut": true,
-          "isSigner": true
         },
         {
           "name": "userWsolAccount",
@@ -1989,7 +2019,7 @@ export const IDL: Memoo = {
         },
         {
           "name": "admin",
-          "isMut": false,
+          "isMut": true,
           "isSigner": true,
           "docs": [
             "The admin of the MemooConfig"
@@ -1999,14 +2029,6 @@ export const IDL: Memoo = {
           "name": "memeConfig",
           "isMut": true,
           "isSigner": false
-        },
-        {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true,
-          "docs": [
-            "The account paying for all rents"
-          ]
         },
         {
           "name": "clock",
@@ -2074,7 +2096,7 @@ export const IDL: Memoo = {
       "name": "adminClaimWsol",
       "accounts": [
         {
-          "name": "payer",
+          "name": "admin",
           "isMut": true,
           "isSigner": true
         },
@@ -2085,7 +2107,7 @@ export const IDL: Memoo = {
         },
         {
           "name": "memeConfig",
-          "isMut": true,
+          "isMut": false,
           "isSigner": false
         },
         {
@@ -2133,10 +2155,6 @@ export const IDL: Memoo = {
         {
           "name": "memeId",
           "type": "publicKey"
-        },
-        {
-          "name": "tokenDecimals",
-          "type": "u8"
         }
       ]
     },
@@ -2203,10 +2221,6 @@ export const IDL: Memoo = {
         {
           "name": "memeId",
           "type": "publicKey"
-        },
-        {
-          "name": "tokenDecimals",
-          "type": "u8"
         }
       ]
     },
@@ -2278,10 +2292,6 @@ export const IDL: Memoo = {
         {
           "name": "memeId",
           "type": "publicKey"
-        },
-        {
-          "name": "tokenDecimals",
-          "type": "u8"
         }
       ]
     },
@@ -2289,7 +2299,7 @@ export const IDL: Memoo = {
       "name": "creatorClaim",
       "accounts": [
         {
-          "name": "admin",
+          "name": "payer",
           "isMut": true,
           "isSigner": true
         },
@@ -2343,20 +2353,21 @@ export const IDL: Memoo = {
         {
           "name": "memeId",
           "type": "publicKey"
-        },
-        {
-          "name": "tokenDecimals",
-          "type": "u8"
         }
       ]
     },
     {
-      "name": "dealHunterClaim",
+      "name": "creatorClaimPermission",
       "accounts": [
         {
-          "name": "payer",
+          "name": "admin",
           "isMut": true,
           "isSigner": true
+        },
+        {
+          "name": "creator",
+          "isMut": true,
+          "isSigner": false
         },
         {
           "name": "memooConfig",
@@ -2364,80 +2375,12 @@ export const IDL: Memoo = {
           "isSigner": false
         },
         {
-          "name": "platformFeeRecipient",
+          "name": "memeUserData",
           "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "memeConfig",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "admin",
-          "isMut": false,
-          "isSigner": true,
-          "docs": [
-            "The admin of the MemooConfig"
-          ]
-        },
-        {
-          "name": "adminAccountA",
-          "isMut": false,
-          "isSigner": true
-        },
-        {
-          "name": "adminAccountWsol",
-          "isMut": false,
-          "isSigner": true
-        },
-        {
-          "name": "mintAccountA",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "poolAuthorityA",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "poolAccountA",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "poolAuthorityWsol",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "poolAccountWsol",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "mintAccountWsol",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "tokenProgram",
-          "isMut": false,
           "isSigner": false
         },
         {
           "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "rent",
           "isMut": false,
           "isSigner": false
         }
@@ -2448,8 +2391,12 @@ export const IDL: Memoo = {
           "type": "publicKey"
         },
         {
-          "name": "tokenDecimals",
-          "type": "u8"
+          "name": "count",
+          "type": "u64"
+        },
+        {
+          "name": "period",
+          "type": "u64"
         }
       ]
     },
@@ -2463,7 +2410,7 @@ export const IDL: Memoo = {
         },
         {
           "name": "memeUserData",
-          "isMut": true,
+          "isMut": false,
           "isSigner": false
         },
         {
@@ -2511,10 +2458,6 @@ export const IDL: Memoo = {
         {
           "name": "memeId",
           "type": "publicKey"
-        },
-        {
-          "name": "tokenDecimals",
-          "type": "u8"
         }
       ]
     }
@@ -2784,6 +2727,13 @@ export const IDL: Memoo = {
             "type": "publicKey"
           },
           {
+            "name": "admin",
+            "docs": [
+              "Account that has admin authority"
+            ],
+            "type": "publicKey"
+          },
+          {
             "name": "creator",
             "docs": [
               "Account of User"
@@ -2822,6 +2772,20 @@ export const IDL: Memoo = {
             "name": "memeIdoCount",
             "docs": [
               "ido count"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "memeAirdropCount",
+            "docs": [
+              "airdrop count"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "memeAirdropTotal",
+            "docs": [
+              "airdrop count"
             ],
             "type": "u64"
           },
@@ -2890,11 +2854,58 @@ export const IDL: Memoo = {
             "type": "u64"
           },
           {
-            "name": "lockCount",
+            "name": "creatorLockCount",
             "docs": [
               "Creator lock total"
             ],
             "type": "u64"
+          },
+          {
+            "name": "creatorLockCountPermission",
+            "docs": [
+              "Creator lock count_permission"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "creatorLockPeriod",
+            "docs": [
+              "Creator lock period"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "memeUserAirdropClaimedCount",
+            "docs": [
+              "ido buy count"
+            ],
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "AirdropMessage",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "address",
+            "type": "publicKey"
+          },
+          {
+            "name": "memeId",
+            "type": "publicKey"
+          },
+          {
+            "name": "count",
+            "type": "u64"
+          },
+          {
+            "name": "expiry",
+            "type": "u32"
           }
         ]
       }
@@ -2903,91 +2914,156 @@ export const IDL: Memoo = {
   "errors": [
     {
       "code": 6000,
+      "name": "Expired",
+      "msg": "Expired"
+    },
+    {
+      "code": 6001,
       "name": "InvalidFee",
       "msg": "Invalid fee value"
     },
     {
-      "code": 6001,
+      "code": 6002,
       "name": "InvalidTooMany",
       "msg": "Invalid buy too many tokens"
     },
     {
-      "code": 6002,
+      "code": 6003,
       "name": "BalanceTooSmall",
       "msg": "Balance is below the input"
     },
     {
-      "code": 6003,
+      "code": 6004,
       "name": "InputTooSmallThanFee",
       "msg": "Input too samll to pay fee"
     },
     {
-      "code": 6004,
+      "code": 6005,
       "name": "InputTooSmallThanIdoPrice",
       "msg": "Input too samll to buy one unit"
     },
     {
-      "code": 6005,
+      "code": 6006,
       "name": "IdoBuyExceedIdoTotal",
       "msg": "Ido Buy Exceed Ido Total"
     },
     {
-      "code": 6006,
+      "code": 6007,
       "name": "IdoBuyExceedIdoCreatorBuyLimit",
       "msg": "Ido Buy Exceed Creator Buy Limit"
     },
     {
-      "code": 6007,
+      "code": 6008,
       "name": "IdoBuyExceedIdoUserBuyLimit",
       "msg": "Ido Buy Exceed User Buy Limit"
     },
     {
-      "code": 6008,
+      "code": 6009,
       "name": "PreLaunchSecondLt0",
       "msg": "PreLaunchSecond < 0"
     },
     {
-      "code": 6009,
+      "code": 6010,
+      "name": "AdminMismatch",
+      "msg": "AdminMismatch"
+    },
+    {
+      "code": 6011,
       "name": "MemeConfigIsNotInitialized",
       "msg": "Meme Config Is Not Initialized"
     },
     {
-      "code": 6010,
+      "code": 6012,
+      "name": "UserDataIsNotInitialized",
+      "msg": "User Data Is Not Initialized"
+    },
+    {
+      "code": 6013,
+      "name": "MemeIDMismatch",
+      "msg": "Meme ID Mismatch"
+    },
+    {
+      "code": 6014,
+      "name": "UserMismatch",
+      "msg": "User Mismatch"
+    },
+    {
+      "code": 6015,
+      "name": "AirdropAlreadyClaimed",
+      "msg": "Airdrop Already Claimed"
+    },
+    {
+      "code": 6016,
       "name": "MemeConfigIsInitialized",
       "msg": "Meme Config Is Initialized"
     },
     {
-      "code": 6011,
+      "code": 6017,
       "name": "CreatorClaimExceed",
       "msg": "Creator Claim Exceed"
     },
     {
-      "code": 6012,
+      "code": 6018,
+      "name": "CreatorClaimPermissionExceed",
+      "msg": "Creator Claim Permission Exceed"
+    },
+    {
+      "code": 6019,
+      "name": "CreatorClaimPermissionSmalllerThanBefore",
+      "msg": "Creator Claim Permission Smalller Than Before"
+    },
+    {
+      "code": 6020,
+      "name": "CreatorClaimPeriodSmalllerThanBefore",
+      "msg": "Creator Claim Period Smalller Than Before"
+    },
+    {
+      "code": 6021,
       "name": "IdoUserClaimExceed",
       "msg": "Creator Claim Exceed"
     },
     {
-      "code": 6013,
+      "code": 6022,
+      "name": "DealHunterClaimExceed",
+      "msg": "Deal Hunter Claim Exceed"
+    },
+    {
+      "code": 6023,
+      "name": "NotAdminSignature",
+      "msg": "Not Admin Signature"
+    },
+    {
+      "code": 6024,
+      "name": "VerifySignatureFail",
+      "msg": "Verify Signature Fail"
+    },
+    {
+      "code": 6025,
       "name": "MemeUserDataConfigIsInitialized",
       "msg": "Meme User Data Config Is Initialized"
     },
     {
-      "code": 6014,
+      "code": 6026,
       "name": "MemeUserDataConfigIsNotInitialized",
       "msg": "Meme User Data Config Is Not Initialized"
     },
     {
-      "code": 6015,
+      "code": 6027,
       "name": "MemeUserDataMemeIdOrUserMismatch",
       "msg": "Meme User Data Meme Id Or User Is Mismatch"
     },
     {
-      "code": 6016,
+      "code": 6028,
       "name": "IdoNotStarted",
       "msg": "IDO not started"
     },
     {
-      "code": 6017,
+      "code": 6029,
+      "name": "IdoNotEnd",
+      "msg": "IDO not end"
+    },
+    {
+      "code": 6030,
       "name": "MemeIdoCountLt0",
       "msg": "IDO Ccount < 0"
     }
