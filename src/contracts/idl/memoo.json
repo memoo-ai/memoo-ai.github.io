@@ -865,6 +865,62 @@
       ]
     },
     {
+      "name": "dealHunterClaim",
+      "accounts": [
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "payerAccountA",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "memeConfig",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "memeUserData",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mintAccountA",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "instructionsSysvar",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "memeId",
+          "type": "publicKey"
+        }
+      ]
+    },
+    {
       "name": "idoClaim",
       "accounts": [
         {
@@ -1360,7 +1416,7 @@
             "type": "publicKey"
           },
           {
-            "name": "memeId",
+            "name": "meme",
             "type": "publicKey"
           },
           {
@@ -1369,7 +1425,7 @@
           },
           {
             "name": "expiry",
-            "type": "u32"
+            "type": "i64"
           }
         ]
       }
@@ -1378,161 +1434,176 @@
   "errors": [
     {
       "code": 6000,
+      "name": "DeserializeAirdropMessageError",
+      "msg": "Deserialize Airdrop Message Error"
+    },
+    {
+      "code": 6001,
+      "name": "PoolAuthorityAtaMissing",
+      "msg": "Pool Authority Ata Missing"
+    },
+    {
+      "code": 6002,
+      "name": "PoolTokenAtaMissing",
+      "msg": "Pool Token Ata Missing"
+    },
+    {
+      "code": 6003,
       "name": "Expired",
       "msg": "Expired"
     },
     {
-      "code": 6001,
+      "code": 6004,
       "name": "InvalidFee",
       "msg": "Invalid fee value"
     },
     {
-      "code": 6002,
+      "code": 6005,
       "name": "InvalidTooMany",
       "msg": "Invalid buy too many tokens"
     },
     {
-      "code": 6003,
+      "code": 6006,
       "name": "BalanceTooSmall",
       "msg": "Balance is below the input"
     },
     {
-      "code": 6004,
+      "code": 6007,
       "name": "InputTooSmallThanFee",
       "msg": "Input too samll to pay fee"
     },
     {
-      "code": 6005,
+      "code": 6008,
       "name": "InputTooSmallThanIdoPrice",
       "msg": "Input too samll to buy one unit"
     },
     {
-      "code": 6006,
+      "code": 6009,
       "name": "IdoBuyExceedIdoTotal",
       "msg": "Ido Buy Exceed Ido Total"
     },
     {
-      "code": 6007,
+      "code": 6010,
       "name": "IdoBuyExceedIdoCreatorBuyLimit",
       "msg": "Ido Buy Exceed Creator Buy Limit"
     },
     {
-      "code": 6008,
+      "code": 6011,
       "name": "IdoBuyExceedIdoUserBuyLimit",
       "msg": "Ido Buy Exceed User Buy Limit"
     },
     {
-      "code": 6009,
+      "code": 6012,
       "name": "PreLaunchSecondLt0",
       "msg": "PreLaunchSecond < 0"
     },
     {
-      "code": 6010,
+      "code": 6013,
       "name": "AdminMismatch",
       "msg": "AdminMismatch"
     },
     {
-      "code": 6011,
+      "code": 6014,
       "name": "MemeConfigIsNotInitialized",
       "msg": "Meme Config Is Not Initialized"
     },
     {
-      "code": 6012,
+      "code": 6015,
       "name": "UserDataIsNotInitialized",
       "msg": "User Data Is Not Initialized"
     },
     {
-      "code": 6013,
+      "code": 6016,
       "name": "MemeIDMismatch",
       "msg": "Meme ID Mismatch"
     },
     {
-      "code": 6014,
+      "code": 6017,
       "name": "UserMismatch",
       "msg": "User Mismatch"
     },
     {
-      "code": 6015,
+      "code": 6018,
       "name": "AirdropAlreadyClaimed",
       "msg": "Airdrop Already Claimed"
     },
     {
-      "code": 6016,
+      "code": 6019,
       "name": "MemeConfigIsInitialized",
       "msg": "Meme Config Is Initialized"
     },
     {
-      "code": 6017,
+      "code": 6020,
       "name": "CreatorClaimExceed",
       "msg": "Creator Claim Exceed"
     },
     {
-      "code": 6018,
+      "code": 6021,
       "name": "CreatorClaimPermissionExceed",
       "msg": "Creator Claim Permission Exceed"
     },
     {
-      "code": 6019,
+      "code": 6022,
       "name": "CreatorClaimPermissionSmalllerThanBefore",
       "msg": "Creator Claim Permission Smalller Than Before"
     },
     {
-      "code": 6020,
+      "code": 6023,
       "name": "CreatorClaimPeriodSmalllerThanBefore",
       "msg": "Creator Claim Period Smalller Than Before"
     },
     {
-      "code": 6021,
+      "code": 6024,
       "name": "IdoUserClaimExceed",
       "msg": "Creator Claim Exceed"
     },
     {
-      "code": 6022,
+      "code": 6025,
       "name": "DealHunterClaimExceed",
       "msg": "Deal Hunter Claim Exceed"
     },
     {
-      "code": 6023,
+      "code": 6026,
       "name": "NotAdminSignature",
       "msg": "Not Admin Signature"
     },
     {
-      "code": 6024,
+      "code": 6027,
       "name": "VerifySignatureFail",
       "msg": "Verify Signature Fail"
     },
     {
-      "code": 6025,
+      "code": 6028,
       "name": "MemeUserDataConfigIsInitialized",
       "msg": "Meme User Data Config Is Initialized"
     },
     {
-      "code": 6026,
+      "code": 6029,
       "name": "MemeUserDataConfigIsNotInitialized",
       "msg": "Meme User Data Config Is Not Initialized"
     },
     {
-      "code": 6027,
+      "code": 6030,
       "name": "MemeUserDataMemeIdOrUserMismatch",
       "msg": "Meme User Data Meme Id Or User Is Mismatch"
     },
     {
-      "code": 6028,
+      "code": 6031,
       "name": "IdoNotStarted",
       "msg": "IDO not started"
     },
     {
-      "code": 6029,
+      "code": 6032,
       "name": "IdoNotEnd",
       "msg": "IDO not end"
     },
     {
-      "code": 6030,
+      "code": 6033,
       "name": "MemeIdoCountLt0",
       "msg": "IDO Ccount < 0"
     }
   ],
   "metadata": {
-    "address": "9PzLonpjdBYaW8jG4hS3FrJ3RAXV4DJLsAoEfVVBGxu3"
+    "address": "8p6jLb3JkdopaYe8wTZysuc6Uz7qJCYQiUfQzLzp3ewX"
   }
 }

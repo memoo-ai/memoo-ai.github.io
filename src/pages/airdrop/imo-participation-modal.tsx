@@ -25,7 +25,7 @@ const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(0);
-  const { memooConfig, defaultConfig, idoBuy, idoQueueDetail, memeConfigId, mine } = useContext(AirdropContext);
+  const { memooConfig, idoBuy, idoQueueDetail, solanaMemeConfig, mine } = useContext(AirdropContext);
   const [accepted, setAccepted] = useState(false);
   const [confirming, setConfirming] = useState(false);
   const [selectedGrade, setSelectedGrade] = useState(grades[0]);
@@ -84,11 +84,11 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   const onConfirm = useCallback(async () => {
-    if (!idoBuy || !idoQueueDetail) return;
+    if (!idoBuy || !idoQueueDetail || !solanaMemeConfig) return;
     try {
       setConfirming(true);
       // TODO
-      await idoBuy(memeConfigId!, new BigNumber(selected), mine, selectedGrade);
+      await idoBuy(solanaMemeConfig?.memeConfigId, new BigNumber(selected), mine, selectedGrade);
       setOpen(false);
       message.success('Participate Successful');
     } catch (error) {
@@ -97,7 +97,7 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
     } finally {
       setConfirming(false);
     }
-  }, [idoQueueDetail, idoBuy, selected]);
+  }, [idoQueueDetail, idoBuy, selected, solanaMemeConfig]);
 
   return (
     <>

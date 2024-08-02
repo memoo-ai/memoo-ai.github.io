@@ -455,6 +455,10 @@ declare interface SolanaConfig {
   memeConfigId: string;
   platformFeeRecipientPublicKey: string;
 }
+declare interface SolanaMemeConfig {
+  memeConfigId: string;
+  mintaPublickey: string;
+}
 declare interface memooConfig {
   admin: string;
   airdropPrice: string;

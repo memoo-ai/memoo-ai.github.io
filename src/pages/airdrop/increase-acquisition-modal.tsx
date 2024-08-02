@@ -35,7 +35,7 @@ const IncreaseAcquisitionModal: FC<{
   const [proportion, setProportion] = useState(purchased);
   const [result, setResult] = useState(0);
   // const { idoBuy, idoQueueDetail } = useContext(AirdropContext);
-  const { idoQueueDetail, mine, idoBuy, memeConfigId } = useContext(AirdropContext);
+  const { idoQueueDetail, mine, idoBuy, solanaMemeConfig } = useContext(AirdropContext);
   // const { idoBuy } = useAccount();
   const defaultValue = purchased * 1000;
   useEffect(() => {
@@ -56,7 +56,7 @@ const IncreaseAcquisitionModal: FC<{
   }, [purchased]);
 
   const onConfirm = useCallback(async () => {
-    if (!idoBuy || !idoQueueDetail) return;
+    if (!idoBuy || !idoQueueDetail || !solanaMemeConfig) return;
     try {
       setConfirming(true);
       console.log(result);
@@ -64,7 +64,7 @@ const IncreaseAcquisitionModal: FC<{
       // const { data: config } = await getMemeConfigId(idoQueueDetail.ticker);
       console.log('result:', result);
       console.log('proportion:', proportion);
-      const tx = await idoBuy(memeConfigId!, new BN(result * 1e9).mul(new BN(1)), mine, proportion);
+      const tx = await idoBuy(solanaMemeConfig.memeConfigId, new BN(result * 1e9).mul(new BN(1)), mine, proportion);
       // const tx = await idoBuy(config.memeConfigId, new BN(Math.floor(result * 1_000_000_000)));
       if (tx) {
         console.log('idoBuy-tx:', tx);

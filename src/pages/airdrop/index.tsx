@@ -13,6 +13,7 @@ import {
   IDOQueueDetail,
   TokenCreateStage,
   UnlockPeriod,
+  SolanaMemeConfig,
 } from '@/types';
 import PublicSale from './public-sale';
 import IDODetail from './ido-detail';
@@ -23,9 +24,9 @@ import { Button, Spin } from 'antd';
 import { getIDOActiveDetail, getIDOLaunchedDetail, getIDOLaunchedDetailTop10, getIDOQueueDetail } from '@/api/airdrop';
 import { useParams } from 'react-router-dom';
 // import { useAccount } from 'wagmi';
-import { useAccount } from '@/hooks/useWeb3';
+import { useAccount, MemooConfig, MemeUserIdoData } from '@/hooks/useWeb3';
 import { compareAddrs } from '@/utils';
-import { DefaultMemooConfig, MemooConfig, useManageContract } from '@/hooks/useManageContract';
+import { DefaultMemooConfig, useManageContract } from '@/hooks/useManageContract';
 import BigNumber from 'bignumber.js';
 import { TransactionReceipt } from 'viem';
 import EditProjectModal from './edit-project-modal';
@@ -37,6 +38,7 @@ import PreMarketAcqusition from '@/pages/airdrop/pre-market-acquisition';
 import MeMooScoreBreakdown from './memoo-score-breakdown';
 import { BN } from '@coral-xyz/anchor';
 import { getMemeConfigId } from '@/api/base';
+import { PublicKey } from '@solana/web3.js';
 
 interface AirdropContext {
   stage: TokenCreateStage;
@@ -73,7 +75,12 @@ interface AirdropContext {
     unlockInfo: UnlockPeriod;
   };
   totalPurchased?: string;
-  memeConfigId?: string;
+  // memeConfigId?: string;
+  getMemeUserData?: (memeConfigId: string) => Promise<TransactionReceipt | undefined>;
+  memeUserData?: MemeUserIdoData;
+  creatorClaim?: (memeId: string, mintAPublicKey: PublicKey) => Promise<TransactionReceipt | undefined>;
+  // mintAPublickey?: PublicKey;
+  solanaMemeConfig?: SolanaMemeConfig;
 }
 
 export const AirdropContext = createContext<AirdropContext>({
@@ -89,10 +96,13 @@ const Airdrop: FC = () => {
   const [idoLaunchedDetail, setIDOLaunchedDetail] = useState<IDOLaunchedDetail>();
   const [idoLaunchedDetailTop10, setIDOLaunchedDetailTop10] = useState<IDOLaunchedDetailTop10[]>([]);
   const [idoQueueDetail, setIDOQueueDetail] = useState<IDOQueueDetail>();
-  const [memeConfigId, setMemeConfigId] = useState();
+  // const [memeConfigId, setMemeConfigId] = useState();
+  // const [mintAPublickey, setMintAPublickey] = useState();
+  const [solanaMemeConfig, setSolanaMemeConfig] = useState<SolanaMemeConfig>();
+  const [memeUserData, setMemeUserData] = useState<MemeUserIdoData>();
   const { ticker = import.meta.env.VITE_DEMO_TICKER } = useParams<{ ticker: string }>();
   const [refresh, setRefresh] = useState(0);
-  const { address, memooConfig, idoBuy } = useAccount();
+  const { address, memooConfig, idoBuy, getMemeUserData, idoClaim, creatorClaim } = useAccount();
   console.log('my-address:', address);
   const [loading, setLoading] = useState(false);
   const [searchParams] = useSearchParams();
@@ -107,8 +117,7 @@ const Airdrop: FC = () => {
   }>();
   const [totalPurchased, setTotalPurchased] = useState('0');
   const [totalAmount, setTotalAmount] = useState('0');
-  const { config, unlockMeme, defaultConfig, airdropClaim, getCanUnlockCount, memeUnlockPeriods, idoClaim } =
-    useManageContract();
+  const { config, unlockMeme, defaultConfig, airdropClaim, getCanUnlockCount, memeUnlockPeriods } = useManageContract();
   const navigate = useNavigate();
   const mine = useMemo(
     () => compareAddrs(idoQueueDetail?.creatorAddress as Address, address!),
@@ -138,7 +147,10 @@ const Airdrop: FC = () => {
       // defaultConfig,
       triggerRefresh,
       totalPurchased,
-      memeConfigId,
+      getMemeUserData,
+      memeUserData,
+      creatorClaim,
+      solanaMemeConfig,
     }),
     [
       stage,
@@ -158,7 +170,10 @@ const Airdrop: FC = () => {
       // defaultConfig,
       triggerRefresh,
       totalPurchased,
-      memeConfigId,
+      getMemeUserData,
+      memeUserData,
+      creatorClaim,
+      solanaMemeConfig,
     ],
   );
 
@@ -173,7 +188,12 @@ const Airdrop: FC = () => {
         setTotalPurchased(meme[0]?.balance ?? 0);
         setTotalAmount(meme[0]?.ethAmout ?? 0);
         const { data: config } = await getMemeConfigId(ticker);
-        setMemeConfigId(config.memeConfigId);
+        setSolanaMemeConfig(config);
+        // console.log('config.memeConfigId:', config.memeConfigId);
+        // debugger;
+        // const memeUser = await getMemeUserData(config.memeConfigId);
+        // console.log('memeUser:', memeUser);
+        // setMemeUserData(memeUser!);
         if (data.stageTwoClaim) {
           setStage('2st-claim');
         } else if (data.stageOneClaim) {
@@ -207,6 +227,20 @@ const Airdrop: FC = () => {
       }
     })();
   }, [refresh]);
+  useEffect(() => {
+    (async () => {
+      try {
+        if (!solanaMemeConfig) return;
+        const memeUser = await getMemeUserData(solanaMemeConfig?.memeConfigId);
+        console.log('memeUser:', memeUser);
+        setMemeUserData(memeUser!);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [solanaMemeConfig]);
 
   useEffect(() => {
     if (!idoQueueDetail || !address) return;

@@ -13,8 +13,10 @@ import { useAccount } from '@/hooks/useWeb3';
 import { compareAddrs, formatDecimals, formatNumberDecimal, formatRestTime } from '@/utils';
 import BigNumber from 'bignumber.js';
 import { useProportion } from '@/hooks/useProportion';
+import { BN } from '@coral-xyz/anchor';
 const Progress: FC = () => {
-  const { stage, idoQueueDetail, _2ndStage, _1stStage, memooConfig, mine, totalPurchased } = useContext(AirdropContext);
+  const { stage, idoQueueDetail, _2ndStage, _1stStage, memooConfig, mine, totalPurchased, memeUserData } =
+    useContext(AirdropContext);
   const { address } = useAccount();
   const { firstProportion, maxProportion, firstIncrease, maxIncrease } = useProportion();
 
@@ -31,6 +33,21 @@ const Progress: FC = () => {
   console.log('firstIncrease:', firstIncrease);
   console.log('maxIncrease:', maxIncrease);
 
+  const tokens = useMemo(() => {
+    if (!memeUserData) return 0;
+
+    const creatorLockCountPermission = new BN(memeUserData.creatorLockCountPermission);
+    const creatorLockCount = new BN(memeUserData.creatorLockCount);
+
+    console.log('creatorLockCountPermission:', creatorLockCountPermission.toString());
+    console.log('creatorLockCount:', creatorLockCount.toString());
+
+    const result = creatorLockCountPermission.sub(creatorLockCount);
+    console.log('tokens', result.toString());
+
+    return parseFloat(formatDecimals(result.toString()));
+  }, [memeUserData]);
+  console.log('tokens:', tokens);
   // const firstIncrease = useMemo(() => {
   //   if (!memooConfig || !defaultConfig) return 0;
 
@@ -113,12 +130,13 @@ const Progress: FC = () => {
       btnIcon: `/create/icon-claim${stage === '1st-claim' ? '-active' : ''}.svg`,
       wrapper: (node: ReactNode) => (
         <ClaimTokensModal
-          tokens={parseFloat(
-            formatDecimals(
-              // new BigNumber(_1stStage?.unlockCount ?? 0).dividedBy(10 ** (defaultConfig?.defaultDecimals ?? 0)),
-              new BigNumber(_1stStage?.unlockCount ?? 0).dividedBy(10 ** 9),
-            ),
-          )}
+          tokens={tokens}
+          // tokens={parseFloat(
+          //   formatDecimals(
+          //     // new BigNumber(_1stStage?.unlockCount ?? 0).dividedBy(10 ** (defaultConfig?.defaultDecimals ?? 0)),
+          //     new BigNumber(_1stStage?.unlockCount ?? 0).dividedBy(10 ** 9),
+          //   ),
+          // )}
           lockinPeriod={formatRestTime(Number(_1stStage?.unlockInfo?.value) / 1000)}
           rate={new BigNumber(Number(_1stStage?.unlockInfo?.unlockRate)).dividedBy(1e4).multipliedBy(1e2).toNumber()}
           stage="1st"
@@ -126,16 +144,16 @@ const Progress: FC = () => {
           {node}
         </ClaimTokensModal>
       ),
-      enabled:
-        idoQueueDetail?.stageOneClaim &&
-        Number(_1stStage?.unlockCount) > 0 &&
-        idoQueueDetail?.status === 'Launched' &&
-        (address
-          ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
-              compareAddrs(addr, address),
-            )
-          : false),
-      // enabled: true,
+      // enabled:
+      //   idoQueueDetail?.stageOneClaim &&
+      //   Number(_1stStage?.unlockCount) > 0 &&
+      //   idoQueueDetail?.status === 'Launched' &&
+      //   (address
+      //     ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
+      //         compareAddrs(addr, address),
+      //       )
+      //     : false),
+      enabled: true,
     },
     {
       key: '2st-claim',
@@ -158,28 +176,29 @@ const Progress: FC = () => {
       btnIcon: `/create/icon-claim${stage === '2st-claim' ? '-active' : ''}.svg`,
       wrapper: (node: ReactNode) => (
         <ClaimTokensModal
-          tokens={parseFloat(
-            formatDecimals(
-              // new BigNumber(_2ndStage?.unlockCount ?? 0).dividedBy(10 ** (defaultConfig?.defaultDecimals ?? 0)),
-              new BigNumber(_2ndStage?.unlockCount ?? 0).dividedBy(10 ** 9),
-            ),
-          )}
+          // tokens={parseFloat(
+          //   formatDecimals(
+          //     // new BigNumber(_2ndStage?.unlockCount ?? 0).dividedBy(10 ** (defaultConfig?.defaultDecimals ?? 0)),
+          //     new BigNumber(_2ndStage?.unlockCount ?? 0).dividedBy(10 ** 9),
+          //   ),
+          // )}
+          tokens={tokens}
           unlockTokens={parseFloat(formatDecimals(Number(_1stStage?.unlockInfo?.value ?? 0)))}
           stage="2nd"
         >
           {node}
         </ClaimTokensModal>
       ),
-      enabled:
-        idoQueueDetail?.stageTwoClaim &&
-        Number(_2ndStage?.unlockCount) > 0 &&
-        idoQueueDetail?.status === 'Launched' &&
-        (address
-          ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
-              compareAddrs(addr, address!),
-            )
-          : false),
-      // enabled: true,
+      // enabled:
+      //   idoQueueDetail?.stageTwoClaim &&
+      //   Number(_2ndStage?.unlockCount) > 0 &&
+      //   idoQueueDetail?.status === 'Launched' &&
+      //   (address
+      //     ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
+      //         compareAddrs(addr, address!),
+      //       )
+      //     : false),
+      enabled: true,
     },
   ];
 

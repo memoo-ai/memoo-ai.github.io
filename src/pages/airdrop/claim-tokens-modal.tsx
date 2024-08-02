@@ -22,17 +22,17 @@ const ClaimTokensModal: FC<{
   unlockTokens?: number;
 }> = ({ children, stage, lockinPeriod, tokens, unlockTokens, rate }) => {
   const [open, setOpen] = useState(false);
-  const { unlockMeme, idoQueueDetail } = useContext(AirdropContext);
+  const { creatorClaim, idoQueueDetail, solanaMemeConfig } = useContext(AirdropContext);
   const [confirming, setConfirming] = useState(false);
 
   const onConfirm = useCallback(async () => {
-    if (!unlockMeme || !idoQueueDetail) return;
+    if (!creatorClaim || !idoQueueDetail || !solanaMemeConfig) return;
     try {
       setConfirming(true);
       console.log('idoQueueDetail.contractAddress:', idoQueueDetail.contractAddress);
       const s = stage === '1st' ? 0 : 1;
       console.log(s);
-      await unlockMeme(idoQueueDetail.contractAddress, stage === '1st' ? 0 : 1);
+      await creatorClaim(solanaMemeConfig?.memeConfigId, solanaMemeConfig?.mintaPublickey);
       setOpen(false);
       message.success('Unlock Successful');
     } catch (error) {
@@ -41,7 +41,7 @@ const ClaimTokensModal: FC<{
     } finally {
       setConfirming(false);
     }
-  }, [unlockMeme, idoQueueDetail]);
+  }, [creatorClaim, idoQueueDetail, solanaMemeConfig]);
 
   return (
     <>
@@ -57,7 +57,9 @@ const ClaimTokensModal: FC<{
         <div className="claim_tokens flex flex-col">
           <div className="flex justify-between">
             <div className="flex items-center gap-x-[15px]">
-              <p className="whitespace-pre font-OCR text-base leading-[18px] text-white">{`Redeem ${stage} ${rate}%\nunlocked tokens`}</p>
+              <p className="whitespace-pre font-OCR text-base leading-[18px] text-white">{`Redeem ${stage} ${
+                rate ?? 50
+              }%\nunlocked tokens`}</p>
               <img className="w-[111px] object-contain" src="/create/img-claim.png" />
             </div>
             <div className="flex items-center gap-x-[14px]">
