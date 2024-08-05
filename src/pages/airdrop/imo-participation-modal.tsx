@@ -19,6 +19,7 @@ import BigNumber from 'bignumber.js';
 import { formatDecimals } from '@/utils';
 import { DEFAULT_IDO_LIMIT, zeroBN } from '@/constants';
 import ITooltip from '@/components/ITooltip';
+import { BN } from '@coral-xyz/anchor';
 
 const grades = [1 / 4, 1 / 2, 1];
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
@@ -38,7 +39,7 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
 
   const capped = useMemo(() => {
     if (!memooConfig) return zeroBN;
-    const idoQuotaBN = new BigNumber(Number(memooConfig.allocation.ido)).dividedBy(10000);
+    const idoQuotaBN = new BigNumber(Number(memooConfig.tokenAllocationIdo)).dividedBy(10000);
     // const idoPriceBN = new BigNumber(defaultConfig.idoPrice).dividedBy(10 ** defaultConfig.defaultDecimals);
     const idoPriceBN = new BigNumber(Number(memooConfig.idoPrice)).dividedBy(10 ** 9);
     return totalSupplyBN.multipliedBy(idoQuotaBN).multipliedBy(idoPriceBN);
@@ -88,9 +89,19 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
     try {
       setConfirming(true);
       // TODO
-      await idoBuy(solanaMemeConfig?.memeConfigId, new BigNumber(selected), mine, selectedGrade);
-      setOpen(false);
-      message.success('Participate Successful');
+      console.log('selected: ', selected);
+      // await idoBuy(solanaMemeConfig?.memeConfigId, new BigNumber(selected), mine, selectedGrade);
+      const tx = await idoBuy(
+        solanaMemeConfig?.memeConfigId,
+        new BN(selected * 1e9).mul(new BN(1)),
+        mine,
+        selectedGrade,
+      );
+      if (tx) {
+        console.log('idoBuy-tx:', tx);
+        setOpen(false);
+        message.success('Participate Successful');
+      }
     } catch (error) {
       console.error(error);
       message.error('Participate Failed');

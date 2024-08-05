@@ -1,8 +1,8 @@
 /* eslint-disable no-debugger */
 import { useWallet, useConnection, useAnchorWallet } from '@solana/wallet-adapter-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { AnchorProvider, Wallet, Program, BN, Idl } from '@coral-xyz/anchor';
-import { Keypair, PublicKey, Connection, Transaction } from '@solana/web3.js';
+import { Provider, BN, Idl } from '@coral-xyz/anchor';
+import { Keypair, PublicKey, Connection, Transaction, sendAndConfirmTransaction } from '@solana/web3.js';
 import {
   createAssociatedTokenAccountInstruction,
   NATIVE_MINT,
@@ -14,6 +14,8 @@ import IDL from '@/contracts/idl/memoo.json';
 import { useBaseConfig } from '@/hooks/useBaseConfig';
 import { useAnchorProgram } from './useProgram';
 import { useSolana } from '@/hooks/useSolana';
+import { AirdropTxns } from '@/utils/airdropTxns';
+
 // import { memooConfig } from '@/types';
 export interface MemooConfig {
   admin: PublicKey;
@@ -26,6 +28,7 @@ export interface MemooConfig {
   platformFeeCreateMemeSol: BN;
   platformFeeRateDenominatorIdo: number;
   platformFeeRateIdo: number;
+  platformFeeRecipient: PublicKey;
   tokenAllocationAirdrop: number;
   tokenAllocationCreator: number;
   tokenAllocationIdo: number;
@@ -59,7 +62,6 @@ export interface MemeUserIdoData {
 }
 export const useAccount = () => {
   const { publicKey, signTransaction, signAllTransactions } = useWallet();
-  const { getSign } = useSolana();
   // const RPC_URL = 'https://api.devnet.solana.com';
   const RPC_URL = import.meta.env.VITE_RPC_URL;
   const connection = new Connection(RPC_URL);
@@ -67,20 +69,18 @@ export const useAccount = () => {
   const { solanaConfig } = useBaseConfig();
   const program = useAnchorProgram(programId, IDL as Idl);
   const [memooConfig, setMemooConfig] = useState<MemooConfig>();
-  // const globalMemeConfigId = 'ErhiExGpYiotsV11EGsALXBG2CCzB23Xr4cFyjwDdcEu';
-  // const platform_fee_recipient = '5cfF3vsmKvLqNfQTWsNEvYWG4Af6XVwZ2WNy2YZP7UdG';
-
-  // const globalMemeConfigId = 'AwdE5XnEGnM7uYhuuXPs4MqGLsPU2e2CnUK6JTLAgm4W';
-  const globalMemeConfigId = '3TaKKUBMBeFNjh5abYCSfAfVKG1RodpAkezPdEj98g6r';
-  console.log('programId:', import.meta.env.VITE_PROGRAM_ID);
+  // const memooConfigPda = new PublicKey(import.meta.env.VITE_MEMOO_CONFIG_PDA);
+  // const memooConfigPda = import.meta.env.VITE_MEMOO_CONFIG_PDA;
   const memooConfigPda = useMemo(() => {
     if (!solanaConfig) return;
-
+    const globalMemeConfigId = 'HC4FUre8ht7yMhFPFxbGTCh2WZL7YXUhF4tEhS8FqgbR';
+    // const globalMemeConfigId = solanaConfig?.globalMemooConfigId;
     return PublicKey.findProgramAddressSync(
       [Buffer.from('global_memoo_config'), new PublicKey(globalMemeConfigId).toBuffer()],
       // [Buffer.from('global_memoo_config'), new PublicKey(solanaConfig?.globalMemooConfigId).toBuffer()],
       programId,
     )[0];
+    // return new PublicKey(import.meta.env.VITE_MEMOO_CONFIG_PDA);
   }, [solanaConfig]);
 
   // const getMemooConfig = useCallback(async () => {
@@ -92,6 +92,7 @@ export const useAccount = () => {
   useEffect(() => {
     (async () => {
       if (!memooConfigPda || !program) return;
+      // const config = (await program.account.globalMemooConfig.fetch(memooConfigPda)) as any;
       const config = (await program.account.globalMemooConfig.fetch(memooConfigPda)) as any;
       console.log('memooConfig:', config);
       setMemooConfig(config);
@@ -144,8 +145,8 @@ export const useAccount = () => {
         console.log('userWsolAccountInfo:', userWsolAccountInfo);
         console.log('Program ID:', program.programId.toBase58());
         console.log('memeConfigId:', memeConfigId);
-        console.log('memooConfigPda:', memooConfigPda.toBase58());
         console.log('memeConfigPda:', memeConfigPda.toBase58());
+        console.log('memooConfigPda:', memooConfigPda.toBase58());
         console.log('memeUserDataPda:', memeUserDataPda.toBase58());
         const transaction = new Transaction();
         let createAtaIx;
@@ -160,8 +161,7 @@ export const useAccount = () => {
         }
 
         console.log('transaction:', transaction);
-        // debugger;
-        const platform_fee_recipient = '3gqfohR6JVGBBnx7LWrMUoo4hyCdYjw4dsHggRUgFk4J';
+        console.log('amount- totalPay:', totalPay);
         console.log('totalPay:', new BN(totalPay).add(memooConfig?.platformFeeCreateMemeSol));
         const registerTokenMintIx = await program.methods
           .registerTokenMint(memeConfigId, new BN(totalPay).add(memooConfig?.platformFeeCreateMemeSol), new BN(0))
@@ -170,8 +170,8 @@ export const useAccount = () => {
             memooConfig: memooConfigPda,
             memeConfig: memeConfigPda,
             memeUserData: memeUserDataPda,
-            // platformFeeRecipient: solanaConfig.platformFeeRecipientPublicKey,
-            platformFeeRecipient: new PublicKey(platform_fee_recipient),
+            platformFeeRecipient: memooConfig?.platformFeeRecipient,
+            // platformFeeRecipient: new PublicKey(platform_fee_recipient),
             poolAuthorityWsol: poolSolAuthority,
             poolAccountWsol: poolAccountSol,
             mintAccountWsol: NATIVE_MINT,
@@ -237,12 +237,12 @@ export const useAccount = () => {
         console.log('memeConfig:', memeConfig);
         console.log('memooConfig:', memooConfig);
         // const amount1 = new BN(18000000);
-        const idoUserBuyLimit = memeConfig?.totalSupply
-          .mul(new BN(isCreate ? memooConfig.idoCreatorBuyLimit : memooConfig.idoUserBuyLimit))
-          .div(new BN(10000));
-        const buyQuantity = memeConfig?.totalSupply.mul(new BN(proportion)).div(new BN(100));
-        console.log('idoUserBuyLimit:', idoUserBuyLimit);
-        console.log('goingBuy:', buyQuantity);
+        // const idoUserBuyLimit = memeConfig?.totalSupply
+        //   .mul(new BN(isCreate ? memooConfig.idoCreatorBuyLimit : memooConfig.idoUserBuyLimit))
+        //   .div(new BN(10000));
+        // const buyQuantity = memeConfig?.totalSupply.mul(new BN(proportion)).div(new BN(100));
+        // console.log('idoUserBuyLimit:', idoUserBuyLimit);
+        // console.log('goingBuy:', buyQuantity);
         // debugger;
         // const transaction = new Transaction();
         // let createAtaIx;
@@ -257,7 +257,7 @@ export const useAccount = () => {
           [Buffer.from('meme_user_data'), memeConfigId.toBuffer(), publicKey.toBuffer()],
           programId,
         )[0];
-        debugger;
+        // debugger;
 
         const memeUserIdoData: MemeUserIdoData = (await program.account.memeUserIdoData.fetch(
           memeUserDataPda_idoBuy,
@@ -265,10 +265,10 @@ export const useAccount = () => {
         console.log('memeUserIdoData:', memeUserIdoData);
         console.log('memeConfig:', memeConfig);
         // if (memeUserIdoData?.memeUserIdoCount + goingBuy > idoUserBuyLimit) {
-        if (memeUserIdoData?.memeUserIdoCount.add(buyQuantity).gt(idoUserBuyLimit)) {
-          console.log('exceed the limit');
-          return;
-        }
+        // if (memeUserIdoData?.memeUserIdoCount.add(buyQuantity).gt(idoUserBuyLimit)) {
+        //   console.log('exceed the limit');
+        //   return;
+        // }
 
         const idoBuyCost = amount.mul(memooConfig.idoPrice);
         console.log('idoBuyCost', idoBuyCost);
@@ -300,7 +300,7 @@ export const useAccount = () => {
             memeConfig: memeConfigPda,
             memeUserData: memeUserDataPda_idoBuy,
             payer: publicKey,
-            poolAuthorityWsol: poolSolAuthority,
+            // poolAuthorityWsol: poolSolAuthority,
             poolAccountWsol: poolAccountSol,
             // mintAccountWsol: NATIVE_MINT,
             // userSolAccount: publicKey,
@@ -319,17 +319,19 @@ export const useAccount = () => {
 
   const creatorClaim = useCallback(
     async (memeId: string, mintPublicKey: string) => {
+      console.log('creatorClaim');
+      // debugger;
       if (!memooConfig || !program || !publicKey) return;
       try {
         const memeConfigId = new PublicKey(memeId);
         const mintAPublicKey = new PublicKey(mintPublicKey);
-        const memeUserDataPda_idoBuy = PublicKey.findProgramAddressSync(
-          [Buffer.from('meme_user_data'), memeConfigId.toBuffer(), publicKey.toBuffer()],
-          programId,
-        )[0];
-        const memeUserIdoData: MemeUserIdoData = (await program.account.memeUserIdoData.fetch(
-          memeUserDataPda_idoBuy,
-        )) as any;
+        // const memeUserDataPda_idoBuy = PublicKey.findProgramAddressSync(
+        //   [Buffer.from('meme_user_data'), memeConfigId.toBuffer(), publicKey.toBuffer()],
+        //   programId,
+        // )[0];
+        // const memeUserIdoData: MemeUserIdoData = (await program.account.memeUserIdoData.fetch(
+        //   memeUserDataPda_idoBuy,
+        // )) as any;
         const memeUserDataPda = PublicKey.findProgramAddressSync(
           [Buffer.from('meme_user_data'), memeConfigId.toBuffer(), publicKey.toBuffer()],
           programId,
@@ -345,22 +347,26 @@ export const useAccount = () => {
           programId,
         )[0];
         const poolAccountA = getAssociatedTokenAddressSync(mintAPublicKey, poolAuthorityA, true);
-        const tx = await program.methods.creatorClaim(memeConfigId).accounts({
-          payer: publicKey,
-          memooConfig: memooConfigPda,
-          memeUserData: memeUserDataPda,
-          // reatorAccountA: adminAccountAPda,
-          creatorAccountA: adminAccountAPda,
-          mintAccountA: mintAPublicKey,
-          poolAuthorityA,
-          poolAccountA: poolAccountA,
-        });
+        const tx = await program.methods
+          .creatorClaim(memeConfigId)
+          .accounts({
+            payer: publicKey,
+            memooConfig: memooConfigPda,
+            memeUserData: memeUserDataPda,
+            // reatorAccountA: adminAccountAPda,
+            creatorAccountA: adminAccountAPda,
+            mintAccountA: mintAPublicKey,
+            poolAuthorityA,
+            poolAccountA: poolAccountA,
+          })
+          .rpc();
+        console.log('creatorClaimTx:', tx);
         return tx;
       } catch (e) {
         console.log('error: ', e);
       }
     },
-    [connection, publicKey],
+    [connection, publicKey, program],
   );
   const idoClaim = useCallback(
     async (memeId: string, mintAPublicKey: PublicKey) => {
@@ -371,27 +377,30 @@ export const useAccount = () => {
           [Buffer.from('meme_user_data'), memeConfigId.toBuffer(), publicKey.toBuffer()],
           programId,
         )[0];
-        const idoBuyTokenAPda = getAssociatedTokenAddressSync(mintAPublicKey, publicKey, true);
+        const idoBuyerAccountA = getAssociatedTokenAddressSync(mintAPublicKey, publicKey, true);
         const poolAuthorityA = PublicKey.findProgramAddressSync(
           [Buffer.from('authority'), memeConfigId.toBuffer(), mintAPublicKey.toBuffer()],
           programId,
         )[0];
         const poolAccountA = getAssociatedTokenAddressSync(mintAPublicKey, poolAuthorityA, true);
-        const tx = await program.methods.idoClaim(memeConfigId).accounts({
-          user: publicKey,
-          memeUserData: memeUserDataPda_idoBuy,
+        const tx = await program.methods
+          .idoClaim(memeConfigId)
+          .accounts({
+            user: publicKey,
+            memeUserData: memeUserDataPda_idoBuy,
 
-          idoUserAccountA: idoBuyTokenAPda,
-          mintAccountA: mintAPublicKey,
-          poolAuthorityA,
-          poolAccountA: poolAccountA,
-        });
+            idoUserAccountA: idoBuyerAccountA,
+            mintAccountA: mintAPublicKey,
+            poolAuthorityA,
+            poolAccountA: poolAccountA,
+          })
+          .rpc();
         return tx;
       } catch (e) {
         console.log('error: ', e);
       }
     },
-    [connection, publicKey],
+    [connection, publicKey, program],
   );
   const getMemeUserData = useCallback(
     async (memeId: string) => {
@@ -412,16 +421,74 @@ export const useAccount = () => {
         console.log('error: ', e);
       }
     },
-    [connection, publicKey],
+    [connection, publicKey, program],
   );
 
-  const airDrop = useCallback(
-    async (memeId: string, mintAPublicKey: PublicKey) => {
-      if (!memooConfig || !program || !publicKey) return;
-      const data = await getSign();
-      console.log(data);
+  const airdropClaim = useCallback(
+    // eslint-disable-next-line max-params
+    async (memeId: string, mintAPublicKey: PublicKey, msg: any, signature: Uint8Array, signerPublicKey: PublicKey) => {
+      if (!memooConfig || !program || !publicKey || !signTransaction) return;
+      try {
+        const memeConfigId = new PublicKey(memeId);
+        const memeConfigPda = PublicKey.findProgramAddressSync(
+          [Buffer.from('meme_config'), memeConfigId.toBuffer()],
+          programId,
+        )[0];
+        // const memeConfig: MemeConfig = (await program.account.memeConfig.fetch(memeConfigPda)) as any;
+        const memeUserDataPda_idoBuy = PublicKey.findProgramAddressSync(
+          [Buffer.from('meme_user_data'), memeConfigId.toBuffer(), publicKey.toBuffer()],
+          programId,
+        )[0];
+        const idoBuyerAccountA = getAssociatedTokenAddressSync(mintAPublicKey, publicKey, true);
+
+        const poolAuthority = PublicKey.findProgramAddressSync(
+          [Buffer.from('authority'), memeConfigId.toBuffer(), mintAPublicKey.toBuffer()],
+          programId,
+        )[0];
+        const poolAccountA = getAssociatedTokenAddressSync(mintAPublicKey, poolAuthority, true);
+        const transaction = new Transaction();
+        const tx = await new AirdropTxns(program).createTx({
+          memeId: memeConfigId,
+          serialized: msg,
+          signature,
+          signerPublicKey,
+          payer: publicKey,
+          payerAccountA: idoBuyerAccountA,
+          memeConfig: memeConfigPda,
+          memeUserData: memeUserDataPda_idoBuy,
+          mintAccountA: mintAPublicKey,
+          poolAuthorityA: poolAuthority,
+          poolAccountA: poolAccountA,
+          addixEd25519Program: true,
+        });
+        transaction.add(tx);
+        const latestBlockhash = await connection.getLatestBlockhash('finalized');
+        transaction.recentBlockhash = latestBlockhash.blockhash;
+        transaction.feePayer = publicKey;
+
+        const signedTransaction = await signTransaction(transaction);
+        // const fee = await transaction.getEstimatedFee(connection);
+        // console.log('fee:', fee);
+        const sign = await connection.sendRawTransaction(signedTransaction.serialize());
+
+        console.log('Transaction sent. Signature:', sign);
+        const confirmationStrategy = {
+          signature: sign,
+          blockhash: latestBlockhash.blockhash,
+          lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+        };
+
+        const confirmation = await connection.confirmTransaction(confirmationStrategy, 'finalized');
+        console.log('confirmation:', confirmation);
+
+        if (confirmation.value.err) {
+          throw new Error(`Transaction failed: ${confirmation.value.err.toString()}`);
+        }
+      } catch (e) {
+        console.log('error: ', e);
+      }
     },
-    [connection, publicKey],
+    [connection, publicKey, program, signTransaction],
   );
 
   return {
@@ -433,5 +500,6 @@ export const useAccount = () => {
     creatorClaim,
     idoClaim,
     getMemeUserData,
+    airdropClaim,
   };
 };

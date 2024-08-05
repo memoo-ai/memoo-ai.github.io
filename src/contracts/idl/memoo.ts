@@ -60,6 +60,10 @@ export type Memoo = {
           "type": "publicKey"
         },
         {
+          "name": "platform",
+          "type": "publicKey"
+        },
+        {
           "name": "platformFeeRecipient",
           "type": "publicKey"
         },
@@ -127,7 +131,7 @@ export type Memoo = {
         },
         {
           "name": "admin",
-          "isMut": false,
+          "isMut": true,
           "isSigner": true,
           "docs": [
             "The admin of the MemooConfig"
@@ -149,6 +153,10 @@ export type Memoo = {
         },
         {
           "name": "admin",
+          "type": "publicKey"
+        },
+        {
+          "name": "platform",
           "type": "publicKey"
         },
         {
@@ -417,11 +425,6 @@ export type Memoo = {
           "docs": [
             "The account paying for all rents"
           ]
-        },
-        {
-          "name": "poolAuthorityWsol",
-          "isMut": true,
-          "isSigner": false
         },
         {
           "name": "poolAccountWsol",
@@ -980,6 +983,169 @@ export type Memoo = {
           "type": "publicKey"
         }
       ]
+    },
+    {
+      "name": "proxyInitialize",
+      "accounts": [
+        {
+          "name": "cpSwapProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "creator",
+          "isMut": true,
+          "isSigner": true,
+          "docs": [
+            "Address paying to create the pool. Can be anyone"
+          ]
+        },
+        {
+          "name": "ammConfig",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "Which config the pool belongs to."
+          ]
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "poolState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "token0Mint",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "Token_0 mint, the key must smaller then token_1 mint."
+          ]
+        },
+        {
+          "name": "token1Mint",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "Token_1 mint, the key must grater then token_0 mint."
+          ]
+        },
+        {
+          "name": "lpMint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "creatorToken0",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "payer token0 account"
+          ]
+        },
+        {
+          "name": "creatorToken1",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "creator token1 account"
+          ]
+        },
+        {
+          "name": "creatorLpToken",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "token0Vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "token1Vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "createPoolFee",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "create pool fee account"
+          ]
+        },
+        {
+          "name": "observationState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "Program to create mint account and mint tokens"
+          ]
+        },
+        {
+          "name": "token0Program",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "Spl token program or token program 2022"
+          ]
+        },
+        {
+          "name": "token1Program",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "Spl token program or token program 2022"
+          ]
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "Program to create an ATA for receiving position NFT"
+          ]
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "To create a new program account"
+          ]
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "Sysvar for program account"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "initAmount0",
+          "type": "u64"
+        },
+        {
+          "name": "initAmount1",
+          "type": "u64"
+        },
+        {
+          "name": "openTime",
+          "type": "u64"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -1108,6 +1274,13 @@ export type Memoo = {
             "name": "admin",
             "docs": [
               "Account that has admin authority over the MemooConfig"
+            ],
+            "type": "publicKey"
+          },
+          {
+            "name": "platform",
+            "docs": [
+              "Account that has platform authority over the MemooConfig"
             ],
             "type": "publicKey"
           },
@@ -1254,9 +1427,37 @@ export type Memoo = {
             "type": "publicKey"
           },
           {
+            "name": "platform",
+            "docs": [
+              "Account that has platform authority over the MemooConfig"
+            ],
+            "type": "publicKey"
+          },
+          {
+            "name": "poolA",
+            "docs": [
+              "pool a"
+            ],
+            "type": "publicKey"
+          },
+          {
+            "name": "poolWsol",
+            "docs": [
+              "pool wsol"
+            ],
+            "type": "publicKey"
+          },
+          {
             "name": "creator",
             "docs": [
               "Account of User"
+            ],
+            "type": "publicKey"
+          },
+          {
+            "name": "mintTokenAddress",
+            "docs": [
+              "mint token address"
             ],
             "type": "publicKey"
           },
@@ -1434,171 +1635,191 @@ export type Memoo = {
   "errors": [
     {
       "code": 6000,
+      "name": "BindToken",
+      "msg": "Bind Token"
+    },
+    {
+      "code": 6001,
       "name": "DeserializeAirdropMessageError",
       "msg": "Deserialize Airdrop Message Error"
     },
     {
-      "code": 6001,
+      "code": 6002,
       "name": "PoolAuthorityAtaMissing",
       "msg": "Pool Authority Ata Missing"
     },
     {
-      "code": 6002,
+      "code": 6003,
       "name": "PoolTokenAtaMissing",
       "msg": "Pool Token Ata Missing"
     },
     {
-      "code": 6003,
+      "code": 6004,
       "name": "Expired",
       "msg": "Expired"
     },
     {
-      "code": 6004,
+      "code": 6005,
       "name": "InvalidFee",
       "msg": "Invalid fee value"
     },
     {
-      "code": 6005,
+      "code": 6006,
       "name": "InvalidTooMany",
       "msg": "Invalid buy too many tokens"
     },
     {
-      "code": 6006,
+      "code": 6007,
       "name": "BalanceTooSmall",
       "msg": "Balance is below the input"
     },
     {
-      "code": 6007,
+      "code": 6008,
       "name": "InputTooSmallThanFee",
       "msg": "Input too samll to pay fee"
     },
     {
-      "code": 6008,
+      "code": 6009,
       "name": "InputTooSmallThanIdoPrice",
       "msg": "Input too samll to buy one unit"
     },
     {
-      "code": 6009,
+      "code": 6010,
       "name": "IdoBuyExceedIdoTotal",
       "msg": "Ido Buy Exceed Ido Total"
     },
     {
-      "code": 6010,
+      "code": 6011,
       "name": "IdoBuyExceedIdoCreatorBuyLimit",
       "msg": "Ido Buy Exceed Creator Buy Limit"
     },
     {
-      "code": 6011,
+      "code": 6012,
+      "name": "PoolAccountAError",
+      "msg": "Pool Account A Error"
+    },
+    {
+      "code": 6013,
+      "name": "PoolAccountWsolError",
+      "msg": "Pool Account Wsol Error"
+    },
+    {
+      "code": 6014,
       "name": "IdoBuyExceedIdoUserBuyLimit",
       "msg": "Ido Buy Exceed User Buy Limit"
     },
     {
-      "code": 6012,
+      "code": 6015,
       "name": "PreLaunchSecondLt0",
       "msg": "PreLaunchSecond < 0"
     },
     {
-      "code": 6013,
+      "code": 6016,
       "name": "AdminMismatch",
       "msg": "AdminMismatch"
     },
     {
-      "code": 6014,
+      "code": 6017,
+      "name": "PlatformAccountMismatch",
+      "msg": "Platform Account Mismatch"
+    },
+    {
+      "code": 6018,
       "name": "MemeConfigIsNotInitialized",
       "msg": "Meme Config Is Not Initialized"
     },
     {
-      "code": 6015,
+      "code": 6019,
       "name": "UserDataIsNotInitialized",
       "msg": "User Data Is Not Initialized"
     },
     {
-      "code": 6016,
+      "code": 6020,
       "name": "MemeIDMismatch",
       "msg": "Meme ID Mismatch"
     },
     {
-      "code": 6017,
+      "code": 6021,
       "name": "UserMismatch",
       "msg": "User Mismatch"
     },
     {
-      "code": 6018,
+      "code": 6022,
       "name": "AirdropAlreadyClaimed",
       "msg": "Airdrop Already Claimed"
     },
     {
-      "code": 6019,
+      "code": 6023,
       "name": "MemeConfigIsInitialized",
       "msg": "Meme Config Is Initialized"
     },
     {
-      "code": 6020,
+      "code": 6024,
       "name": "CreatorClaimExceed",
       "msg": "Creator Claim Exceed"
     },
     {
-      "code": 6021,
+      "code": 6025,
       "name": "CreatorClaimPermissionExceed",
       "msg": "Creator Claim Permission Exceed"
     },
     {
-      "code": 6022,
+      "code": 6026,
       "name": "CreatorClaimPermissionSmalllerThanBefore",
       "msg": "Creator Claim Permission Smalller Than Before"
     },
     {
-      "code": 6023,
+      "code": 6027,
       "name": "CreatorClaimPeriodSmalllerThanBefore",
       "msg": "Creator Claim Period Smalller Than Before"
     },
     {
-      "code": 6024,
+      "code": 6028,
       "name": "IdoUserClaimExceed",
       "msg": "Creator Claim Exceed"
     },
     {
-      "code": 6025,
+      "code": 6029,
       "name": "DealHunterClaimExceed",
       "msg": "Deal Hunter Claim Exceed"
     },
     {
-      "code": 6026,
+      "code": 6030,
       "name": "NotAdminSignature",
       "msg": "Not Admin Signature"
     },
     {
-      "code": 6027,
+      "code": 6031,
       "name": "VerifySignatureFail",
       "msg": "Verify Signature Fail"
     },
     {
-      "code": 6028,
+      "code": 6032,
       "name": "MemeUserDataConfigIsInitialized",
       "msg": "Meme User Data Config Is Initialized"
     },
     {
-      "code": 6029,
+      "code": 6033,
       "name": "MemeUserDataConfigIsNotInitialized",
       "msg": "Meme User Data Config Is Not Initialized"
     },
     {
-      "code": 6030,
+      "code": 6034,
       "name": "MemeUserDataMemeIdOrUserMismatch",
       "msg": "Meme User Data Meme Id Or User Is Mismatch"
     },
     {
-      "code": 6031,
+      "code": 6035,
       "name": "IdoNotStarted",
       "msg": "IDO not started"
     },
     {
-      "code": 6032,
+      "code": 6036,
       "name": "IdoNotEnd",
       "msg": "IDO not end"
     },
     {
-      "code": 6033,
+      "code": 6037,
       "name": "MemeIdoCountLt0",
       "msg": "IDO Ccount < 0"
     }
@@ -1667,6 +1888,10 @@ export const IDL: Memoo = {
           "type": "publicKey"
         },
         {
+          "name": "platform",
+          "type": "publicKey"
+        },
+        {
           "name": "platformFeeRecipient",
           "type": "publicKey"
         },
@@ -1734,7 +1959,7 @@ export const IDL: Memoo = {
         },
         {
           "name": "admin",
-          "isMut": false,
+          "isMut": true,
           "isSigner": true,
           "docs": [
             "The admin of the MemooConfig"
@@ -1756,6 +1981,10 @@ export const IDL: Memoo = {
         },
         {
           "name": "admin",
+          "type": "publicKey"
+        },
+        {
+          "name": "platform",
           "type": "publicKey"
         },
         {
@@ -2024,11 +2253,6 @@ export const IDL: Memoo = {
           "docs": [
             "The account paying for all rents"
           ]
-        },
-        {
-          "name": "poolAuthorityWsol",
-          "isMut": true,
-          "isSigner": false
         },
         {
           "name": "poolAccountWsol",
@@ -2587,6 +2811,169 @@ export const IDL: Memoo = {
           "type": "publicKey"
         }
       ]
+    },
+    {
+      "name": "proxyInitialize",
+      "accounts": [
+        {
+          "name": "cpSwapProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "creator",
+          "isMut": true,
+          "isSigner": true,
+          "docs": [
+            "Address paying to create the pool. Can be anyone"
+          ]
+        },
+        {
+          "name": "ammConfig",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "Which config the pool belongs to."
+          ]
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "poolState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "token0Mint",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "Token_0 mint, the key must smaller then token_1 mint."
+          ]
+        },
+        {
+          "name": "token1Mint",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "Token_1 mint, the key must grater then token_0 mint."
+          ]
+        },
+        {
+          "name": "lpMint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "creatorToken0",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "payer token0 account"
+          ]
+        },
+        {
+          "name": "creatorToken1",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "creator token1 account"
+          ]
+        },
+        {
+          "name": "creatorLpToken",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "token0Vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "token1Vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "createPoolFee",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "create pool fee account"
+          ]
+        },
+        {
+          "name": "observationState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "Program to create mint account and mint tokens"
+          ]
+        },
+        {
+          "name": "token0Program",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "Spl token program or token program 2022"
+          ]
+        },
+        {
+          "name": "token1Program",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "Spl token program or token program 2022"
+          ]
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "Program to create an ATA for receiving position NFT"
+          ]
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "To create a new program account"
+          ]
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "Sysvar for program account"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "initAmount0",
+          "type": "u64"
+        },
+        {
+          "name": "initAmount1",
+          "type": "u64"
+        },
+        {
+          "name": "openTime",
+          "type": "u64"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -2715,6 +3102,13 @@ export const IDL: Memoo = {
             "name": "admin",
             "docs": [
               "Account that has admin authority over the MemooConfig"
+            ],
+            "type": "publicKey"
+          },
+          {
+            "name": "platform",
+            "docs": [
+              "Account that has platform authority over the MemooConfig"
             ],
             "type": "publicKey"
           },
@@ -2861,9 +3255,37 @@ export const IDL: Memoo = {
             "type": "publicKey"
           },
           {
+            "name": "platform",
+            "docs": [
+              "Account that has platform authority over the MemooConfig"
+            ],
+            "type": "publicKey"
+          },
+          {
+            "name": "poolA",
+            "docs": [
+              "pool a"
+            ],
+            "type": "publicKey"
+          },
+          {
+            "name": "poolWsol",
+            "docs": [
+              "pool wsol"
+            ],
+            "type": "publicKey"
+          },
+          {
             "name": "creator",
             "docs": [
               "Account of User"
+            ],
+            "type": "publicKey"
+          },
+          {
+            "name": "mintTokenAddress",
+            "docs": [
+              "mint token address"
             ],
             "type": "publicKey"
           },
@@ -3041,171 +3463,191 @@ export const IDL: Memoo = {
   "errors": [
     {
       "code": 6000,
+      "name": "BindToken",
+      "msg": "Bind Token"
+    },
+    {
+      "code": 6001,
       "name": "DeserializeAirdropMessageError",
       "msg": "Deserialize Airdrop Message Error"
     },
     {
-      "code": 6001,
+      "code": 6002,
       "name": "PoolAuthorityAtaMissing",
       "msg": "Pool Authority Ata Missing"
     },
     {
-      "code": 6002,
+      "code": 6003,
       "name": "PoolTokenAtaMissing",
       "msg": "Pool Token Ata Missing"
     },
     {
-      "code": 6003,
+      "code": 6004,
       "name": "Expired",
       "msg": "Expired"
     },
     {
-      "code": 6004,
+      "code": 6005,
       "name": "InvalidFee",
       "msg": "Invalid fee value"
     },
     {
-      "code": 6005,
+      "code": 6006,
       "name": "InvalidTooMany",
       "msg": "Invalid buy too many tokens"
     },
     {
-      "code": 6006,
+      "code": 6007,
       "name": "BalanceTooSmall",
       "msg": "Balance is below the input"
     },
     {
-      "code": 6007,
+      "code": 6008,
       "name": "InputTooSmallThanFee",
       "msg": "Input too samll to pay fee"
     },
     {
-      "code": 6008,
+      "code": 6009,
       "name": "InputTooSmallThanIdoPrice",
       "msg": "Input too samll to buy one unit"
     },
     {
-      "code": 6009,
+      "code": 6010,
       "name": "IdoBuyExceedIdoTotal",
       "msg": "Ido Buy Exceed Ido Total"
     },
     {
-      "code": 6010,
+      "code": 6011,
       "name": "IdoBuyExceedIdoCreatorBuyLimit",
       "msg": "Ido Buy Exceed Creator Buy Limit"
     },
     {
-      "code": 6011,
+      "code": 6012,
+      "name": "PoolAccountAError",
+      "msg": "Pool Account A Error"
+    },
+    {
+      "code": 6013,
+      "name": "PoolAccountWsolError",
+      "msg": "Pool Account Wsol Error"
+    },
+    {
+      "code": 6014,
       "name": "IdoBuyExceedIdoUserBuyLimit",
       "msg": "Ido Buy Exceed User Buy Limit"
     },
     {
-      "code": 6012,
+      "code": 6015,
       "name": "PreLaunchSecondLt0",
       "msg": "PreLaunchSecond < 0"
     },
     {
-      "code": 6013,
+      "code": 6016,
       "name": "AdminMismatch",
       "msg": "AdminMismatch"
     },
     {
-      "code": 6014,
+      "code": 6017,
+      "name": "PlatformAccountMismatch",
+      "msg": "Platform Account Mismatch"
+    },
+    {
+      "code": 6018,
       "name": "MemeConfigIsNotInitialized",
       "msg": "Meme Config Is Not Initialized"
     },
     {
-      "code": 6015,
+      "code": 6019,
       "name": "UserDataIsNotInitialized",
       "msg": "User Data Is Not Initialized"
     },
     {
-      "code": 6016,
+      "code": 6020,
       "name": "MemeIDMismatch",
       "msg": "Meme ID Mismatch"
     },
     {
-      "code": 6017,
+      "code": 6021,
       "name": "UserMismatch",
       "msg": "User Mismatch"
     },
     {
-      "code": 6018,
+      "code": 6022,
       "name": "AirdropAlreadyClaimed",
       "msg": "Airdrop Already Claimed"
     },
     {
-      "code": 6019,
+      "code": 6023,
       "name": "MemeConfigIsInitialized",
       "msg": "Meme Config Is Initialized"
     },
     {
-      "code": 6020,
+      "code": 6024,
       "name": "CreatorClaimExceed",
       "msg": "Creator Claim Exceed"
     },
     {
-      "code": 6021,
+      "code": 6025,
       "name": "CreatorClaimPermissionExceed",
       "msg": "Creator Claim Permission Exceed"
     },
     {
-      "code": 6022,
+      "code": 6026,
       "name": "CreatorClaimPermissionSmalllerThanBefore",
       "msg": "Creator Claim Permission Smalller Than Before"
     },
     {
-      "code": 6023,
+      "code": 6027,
       "name": "CreatorClaimPeriodSmalllerThanBefore",
       "msg": "Creator Claim Period Smalller Than Before"
     },
     {
-      "code": 6024,
+      "code": 6028,
       "name": "IdoUserClaimExceed",
       "msg": "Creator Claim Exceed"
     },
     {
-      "code": 6025,
+      "code": 6029,
       "name": "DealHunterClaimExceed",
       "msg": "Deal Hunter Claim Exceed"
     },
     {
-      "code": 6026,
+      "code": 6030,
       "name": "NotAdminSignature",
       "msg": "Not Admin Signature"
     },
     {
-      "code": 6027,
+      "code": 6031,
       "name": "VerifySignatureFail",
       "msg": "Verify Signature Fail"
     },
     {
-      "code": 6028,
+      "code": 6032,
       "name": "MemeUserDataConfigIsInitialized",
       "msg": "Meme User Data Config Is Initialized"
     },
     {
-      "code": 6029,
+      "code": 6033,
       "name": "MemeUserDataConfigIsNotInitialized",
       "msg": "Meme User Data Config Is Not Initialized"
     },
     {
-      "code": 6030,
+      "code": 6034,
       "name": "MemeUserDataMemeIdOrUserMismatch",
       "msg": "Meme User Data Meme Id Or User Is Mismatch"
     },
     {
-      "code": 6031,
+      "code": 6035,
       "name": "IdoNotStarted",
       "msg": "IDO not started"
     },
     {
-      "code": 6032,
+      "code": 6036,
       "name": "IdoNotEnd",
       "msg": "IDO not end"
     },
     {
-      "code": 6033,
+      "code": 6037,
       "name": "MemeIdoCountLt0",
       "msg": "IDO Ccount < 0"
     }

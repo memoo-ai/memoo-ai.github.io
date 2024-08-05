@@ -31,15 +31,17 @@ const MeMooScoreBreakdown: FC = () => {
     <div className="memoo-score-breakdown px-[22px] pt-[33px] pb-[37px] mt-[11px]">
       <div className="font-404px text-[18px] text-green">MeMoo Score Breakdown</div>
       <div className="memoo-score-breakdown__content flex flex-col items-start mt-[11px]">
-        {idoQueueDetail?.memooScore.map((meme) => {
-          return (
-            <div className="flex items-center mt-[14px] leading-[16px]" key={meme.scoreField}>
-              <div className="font-OCR text-[14px] text-[#7D83B5] w-[125px]">{meme.scoreField}</div>
-              <IProgress className="w-[214px]" percent={(meme.scoreValue / meme.totalScore) * 100} />
-              <div className="font-OCR text-[14px] text-[#fff] ml-[11px]">{getMessage(meme ?? 0)}</div>
-            </div>
-          );
-        })}
+        {idoQueueDetail?.memooScore &&
+          Array.isArray(idoQueueDetail.memooScore) &&
+          idoQueueDetail?.memooScore.map((meme) => {
+            return (
+              <div className="flex items-center mt-[14px] leading-[16px]" key={meme.scoreField}>
+                <div className="font-OCR text-[14px] text-[#7D83B5] w-[125px]">{meme.scoreField}</div>
+                <IProgress className="w-[214px]" percent={(meme.scoreValue / meme.totalScore) * 100} />
+                <div className="font-OCR text-[14px] text-[#fff] ml-[11px]">{getMessage(meme ?? 0)}</div>
+              </div>
+            );
+          })}
         {/* <div className="flex items-center mt-[14px] leading-[16px]">
           <div className="font-OCR text-[14px] text-[#7D83B5] w-[125px]">Community Size</div>
           <IProgress className="w-[214px]" />

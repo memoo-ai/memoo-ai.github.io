@@ -416,6 +416,7 @@ declare interface AirdropDetail {
   jsonData: string;
   signature: string;
   airdropCount: number;
+  signPublickey: string;
 }
 declare interface ImoPvCard {
   banners: [];

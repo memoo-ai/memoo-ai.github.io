@@ -14,6 +14,11 @@ export const useProportion = () => {
     return Number(memooConfig?.idoCreatorBuyLimit) / 10000;
   }, [memooConfig]);
 
+  const createMaxProportion = useMemo(() => {
+    if (!memooConfig) return 0;
+    return (Number(memooConfig?.idoCreatorBuyLimit) + Number(memooConfig?.tokenAllocationCreator)) / 10000;
+  }, [memooConfig]);
+
   const totalCap = useMemo(() => {
     if (!memooConfig?.platformFeeCreateMemeSol) {
       return 0;
@@ -25,8 +30,11 @@ export const useProportion = () => {
 
   const totalCapInitial = useMemo(() => {
     const rate = Number(memooConfig?.idoCreatorBuyLimit) / 10000;
-    const total = Number(memooConfig?.idoPrice) * Number(memooConfig?.totalSupply) * rate;
-    return Number(new BigNumber(total).dividedBy(10 ** 9));
+    const total =
+      Number(new BigNumber(memooConfig?.idoPrice).dividedBy(10 ** 9)) *
+      Number(new BigNumber(memooConfig?.totalSupply).dividedBy(10 ** 9)) *
+      rate;
+    return Number(new BigNumber(total));
     // return Number(new BigNumber(total).dividedBy(new BigNumber(10).pow(9)));
     // return 0.03;
   }, [memooConfig]);
@@ -35,13 +43,13 @@ export const useProportion = () => {
     if (!memooConfig) return 0;
 
     const totalSupplyBN = new BigNumber(Number(memooConfig?.totalSupply)).dividedBy(10 ** 9);
-    const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice));
+    const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 9);
     const result = totalSupplyBN.multipliedBy(idoPriceBN).multipliedBy(firstProportion);
     return parseFloat(formatDecimals(result));
   }, [memooConfig, firstProportion]);
 
   const maxIncrease = useMemo(
-    () => parseFloat(formatDecimals(firstIncrease * (maxProportion / firstProportion))),
+    () => parseFloat(formatDecimals(firstIncrease * (createMaxProportion / firstProportion))),
     [firstProportion, maxProportion, firstIncrease],
   );
 
@@ -53,5 +61,6 @@ export const useProportion = () => {
     maxIncrease,
     firstIncrease,
     memooConfig,
+    createMaxProportion,
   };
 };

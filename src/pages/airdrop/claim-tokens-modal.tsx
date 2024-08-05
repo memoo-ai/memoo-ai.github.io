@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import { Button, Checkbox, Input, Modal, Progress, Slider, message } from 'antd';
 import {
   Children,
@@ -26,15 +27,15 @@ const ClaimTokensModal: FC<{
   const [confirming, setConfirming] = useState(false);
 
   const onConfirm = useCallback(async () => {
+    // debugger;
     if (!creatorClaim || !idoQueueDetail || !solanaMemeConfig) return;
     try {
       setConfirming(true);
-      console.log('idoQueueDetail.contractAddress:', idoQueueDetail.contractAddress);
-      const s = stage === '1st' ? 0 : 1;
-      console.log(s);
-      await creatorClaim(solanaMemeConfig?.memeConfigId, solanaMemeConfig?.mintaPublickey);
-      setOpen(false);
-      message.success('Unlock Successful');
+      const tx = await creatorClaim(solanaMemeConfig?.memeConfigId, solanaMemeConfig?.mintaPublickey);
+      if (tx) {
+        setOpen(false);
+        message.success('Unlock Successful');
+      }
     } catch (error) {
       console.error(error);
       message.error('Unlock Failed');

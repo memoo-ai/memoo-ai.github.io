@@ -37,10 +37,10 @@ const IncreaseAcquisitionModal: FC<{
   // const { idoBuy, idoQueueDetail } = useContext(AirdropContext);
   const { idoQueueDetail, mine, idoBuy, solanaMemeConfig } = useContext(AirdropContext);
   // const { idoBuy } = useAccount();
-  const defaultValue = purchased * 1000;
-  useEffect(() => {
-    setProportion(firstProportion * 100);
-  }, [firstProportion]);
+  const defaultValue = purchased * 100;
+  // useEffect(() => {
+  //   setProportion(firstProportion * 100);
+  // }, [firstProportion]);
 
   useEffect(() => {
     const increasePercent = proportion / 100;
@@ -52,6 +52,7 @@ const IncreaseAcquisitionModal: FC<{
 
   useEffect(() => {
     if (!purchased) return;
+    console.log('increase-purchased', defaultValue);
     setProportion(defaultValue);
   }, [purchased]);
 
@@ -63,8 +64,16 @@ const IncreaseAcquisitionModal: FC<{
       console.log('firstIncreaseD:', firstIncrease);
       // const { data: config } = await getMemeConfigId(idoQueueDetail.ticker);
       console.log('result:', result);
+      console.log('purchased:', purchased);
       console.log('proportion:', proportion);
-      const tx = await idoBuy(solanaMemeConfig.memeConfigId, new BN(result * 1e9).mul(new BN(1)), mine, proportion);
+      console.log('amount:', new BN((result * 10000 - purchased * 10000) * 1e9).mul(new BN(1)));
+
+      const tx = await idoBuy(
+        solanaMemeConfig.memeConfigId,
+        new BN(((result * 10000 - purchased * 10000) / 10000) * 1e9).mul(new BN(1)),
+        mine,
+        proportion,
+      );
       // const tx = await idoBuy(config.memeConfigId, new BN(Math.floor(result * 1_000_000_000)));
       if (tx) {
         console.log('idoBuy-tx:', tx);
@@ -115,10 +124,10 @@ const IncreaseAcquisitionModal: FC<{
                 className="memoo_slider flex-auto"
                 tooltip={{ open: true, rootClassName: 'memoo_slider_tooltip', formatter: (value) => `${value}%` }}
                 onChange={(value) => {
-                  if (value > purchased * 1000) {
+                  if (value > purchased * 100) {
                     setProportion(value);
                   } else {
-                    setProportion(purchased * 1000);
+                    setProportion(purchased * 100);
                   }
                 }}
                 value={proportion}
@@ -151,7 +160,7 @@ const IncreaseAcquisitionModal: FC<{
             I accept MeMoo’s <a className="contents text-green">Terms & Conditions.</a>
           </Checkbox>
           <Button
-            disabled={!accepted && Number(formatDecimals(result - purchased)) <= 0}
+            disabled={!accepted || result - purchased === 0}
             className="memoo_button h-[50px]"
             loading={confirming}
             onClick={onConfirm}

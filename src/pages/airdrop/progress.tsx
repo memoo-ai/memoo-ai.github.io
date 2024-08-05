@@ -18,20 +18,30 @@ const Progress: FC = () => {
   const { stage, idoQueueDetail, _2ndStage, _1stStage, memooConfig, mine, totalPurchased, memeUserData } =
     useContext(AirdropContext);
   const { address } = useAccount();
-  const { firstProportion, maxProportion, firstIncrease, maxIncrease } = useProportion();
+  const { firstProportion, maxProportion, firstIncrease, maxIncrease, createMaxProportion } = useProportion();
 
   const purchased = useMemo(() => {
-    if (!memooConfig) return 0;
+    if (!memooConfig || !memeUserData) return 0;
 
-    const totalPurchasedBN = new BigNumber(Number(totalPurchased));
+    const creatorLockCountBN = new BigNumber(Number(memeUserData?.creatorLockCount));
+    console.log('creatorLockCountBN:', Number(creatorLockCountBN));
+    const memeUserIdoCountBN = new BigNumber(Number(memeUserData?.memeUserIdoCount));
+    console.log('memeUserIdoCountBN:', Number(memeUserIdoCountBN));
     const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 9);
-    console.log('purchased:', parseFloat(formatDecimals(totalPurchasedBN.multipliedBy(idoPriceBN))));
-    return parseFloat(formatDecimals(totalPurchasedBN.multipliedBy(idoPriceBN)));
-  }, [memooConfig, totalPurchased]);
-  console.log('firstProportion:', firstProportion);
-  console.log('maxProportion:', maxProportion);
-  console.log('firstIncrease:', firstIncrease);
-  console.log('maxIncrease:', maxIncrease);
+    console.log('idoPriceBN:', Number(idoPriceBN));
+    const totalCountBN = creatorLockCountBN.plus(memeUserIdoCountBN);
+    console.log('totalCountBN:', Number(totalCountBN));
+    const totalPurchasedBN = totalCountBN.multipliedBy(idoPriceBN);
+    console.log('totalPurchasedBN:', Number(totalPurchasedBN));
+    const formattedResult = parseFloat(formatDecimals(totalPurchasedBN));
+    console.log('purchased:', formattedResult);
+
+    return formattedResult;
+  }, [memooConfig, memeUserData]);
+  // console.log('firstProportion:', firstProportion);
+  // console.log('maxProportion:', maxProportion);
+  // console.log('firstIncrease:', firstIncrease);
+  // console.log('maxIncrease:', maxIncrease);
 
   const tokens = useMemo(() => {
     if (!memeUserData) return 0;
@@ -87,7 +97,7 @@ const Progress: FC = () => {
         <IncreaseAcquisitionModal
           maxIncrease={maxIncrease}
           firstProportion={firstProportion}
-          maxProportion={maxProportion}
+          maxProportion={createMaxProportion}
           firstIncrease={firstIncrease}
           purchased={purchased}
         >

@@ -22,7 +22,7 @@ const ClaimModal = ({ children }: any) => {
   const { address } = useAccount();
   const [open, setOpen] = useState(false);
   const [confirming, setConfirming] = useState(false);
-  const { unlockMeme, defaultConfig, stage, idoQueueDetail, _1stStage, _2ndStage } = useContext(CreatorContext);
+  const { unlockMeme, stage, idoQueueDetail, _1stStage, _2ndStage } = useContext(CreatorContext);
 
   const rate = useMemo(() => {
     return getNumberOrDefault(
@@ -32,16 +32,8 @@ const ClaimModal = ({ children }: any) => {
   const tokens = useMemo(() => {
     const token =
       stage === '1st'
-        ? parseFloat(
-            formatDecimals(
-              new BigNumber(_1stStage?.unlockCount ?? 0).dividedBy(10 ** (defaultConfig?.defaultDecimals ?? 0)),
-            ),
-          )
-        : parseFloat(
-            formatDecimals(
-              new BigNumber(_2ndStage?.unlockCount ?? 0).dividedBy(10 ** (defaultConfig?.defaultDecimals ?? 0)),
-            ),
-          );
+        ? parseFloat(formatDecimals(new BigNumber(_1stStage?.unlockCount ?? 0).dividedBy(10 ** 9)))
+        : parseFloat(formatDecimals(new BigNumber(_2ndStage?.unlockCount ?? 0).dividedBy(10 ** 9)));
 
     return getNumberOrDefault(token);
   }, [stage, _1stStage, _2ndStage]);

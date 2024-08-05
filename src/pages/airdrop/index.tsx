@@ -21,7 +21,13 @@ import Banner from './banner';
 import Profile from './profile';
 import Progress from './progress';
 import { Button, Spin } from 'antd';
-import { getIDOActiveDetail, getIDOLaunchedDetail, getIDOLaunchedDetailTop10, getIDOQueueDetail } from '@/api/airdrop';
+import {
+  getIDOActiveDetail,
+  getIDOLaunchedDetail,
+  getIDOLaunchedDetailTop10,
+  getIDOQueueDetail,
+  getUnlockTimestamp,
+} from '@/api/airdrop';
 import { useParams } from 'react-router-dom';
 // import { useAccount } from 'wagmi';
 import { useAccount, MemooConfig, MemeUserIdoData } from '@/hooks/useWeb3';
@@ -61,10 +67,11 @@ interface AirdropContext {
   idoClaim?: (project: `0x${string}`) => Promise<TransactionReceipt | undefined>;
   triggerRefresh?: Function;
   airdropClaim?: (
-    project: `0x${string}` | string,
-    claimCount: BigNumber,
-    proof: string,
-    signature: string,
+    memeId: string,
+    mintAPublicKey: PublicKey,
+    msg: any,
+    signature: any,
+    signerPublicKey: PublicKey,
   ) => Promise<TransactionReceipt | undefined>;
   _1stStage?: {
     unlockCount: BigNumber;
@@ -78,9 +85,10 @@ interface AirdropContext {
   // memeConfigId?: string;
   getMemeUserData?: (memeConfigId: string) => Promise<TransactionReceipt | undefined>;
   memeUserData?: MemeUserIdoData;
-  creatorClaim?: (memeId: string, mintAPublicKey: PublicKey) => Promise<TransactionReceipt | undefined>;
+  creatorClaim?: (memeId: string, mintAPublicKey: string) => Promise<TransactionReceipt | undefined>;
   // mintAPublickey?: PublicKey;
   solanaMemeConfig?: SolanaMemeConfig;
+  unlockTimestamp?: number;
 }
 
 export const AirdropContext = createContext<AirdropContext>({
@@ -100,9 +108,10 @@ const Airdrop: FC = () => {
   // const [mintAPublickey, setMintAPublickey] = useState();
   const [solanaMemeConfig, setSolanaMemeConfig] = useState<SolanaMemeConfig>();
   const [memeUserData, setMemeUserData] = useState<MemeUserIdoData>();
+  const [unlockTimestamp, setUnlockTimestamp] = useState();
   const { ticker = import.meta.env.VITE_DEMO_TICKER } = useParams<{ ticker: string }>();
   const [refresh, setRefresh] = useState(0);
-  const { address, memooConfig, idoBuy, getMemeUserData, idoClaim, creatorClaim } = useAccount();
+  const { address, memooConfig, idoBuy, getMemeUserData, idoClaim, creatorClaim, airdropClaim } = useAccount();
   console.log('my-address:', address);
   const [loading, setLoading] = useState(false);
   const [searchParams] = useSearchParams();
@@ -117,7 +126,7 @@ const Airdrop: FC = () => {
   }>();
   const [totalPurchased, setTotalPurchased] = useState('0');
   const [totalAmount, setTotalAmount] = useState('0');
-  const { config, unlockMeme, defaultConfig, airdropClaim, getCanUnlockCount, memeUnlockPeriods } = useManageContract();
+  const { config, unlockMeme, getCanUnlockCount, memeUnlockPeriods } = useManageContract();
   const navigate = useNavigate();
   const mine = useMemo(
     () => compareAddrs(idoQueueDetail?.creatorAddress as Address, address!),
@@ -151,6 +160,7 @@ const Airdrop: FC = () => {
       memeUserData,
       creatorClaim,
       solanaMemeConfig,
+      unlockTimestamp,
     }),
     [
       stage,
@@ -174,6 +184,7 @@ const Airdrop: FC = () => {
       memeUserData,
       creatorClaim,
       solanaMemeConfig,
+      unlockTimestamp,
     ],
   );
 
@@ -199,7 +210,7 @@ const Airdrop: FC = () => {
         } else if (data.stageOneClaim) {
           setStage('1st-claim');
         } else if (data.status === 'Launched') {
-          const [p1, p2] = await Promise.all([
+          const [p1, p2, p3] = await Promise.all([
             getIDOLaunchedDetail(ticker, address ?? 'default'),
             getIDOLaunchedDetailTop10({
               pageNumber: 1,
@@ -207,9 +218,12 @@ const Airdrop: FC = () => {
               ticker: ticker,
               address: address ?? 'default',
             }),
+            getUnlockTimestamp(ticker),
           ]);
           setIDOLaunchedDetail(p1.data);
           setIDOLaunchedDetailTop10(p2.data);
+          console.log('setUnlockTimestamp:', p3.data);
+          setUnlockTimestamp(p3.data);
           setStage('launch');
         } else if (data.status === 'IDO') {
           const { data } = await getIDOActiveDetail(ticker, address ?? 'default');
@@ -231,6 +245,7 @@ const Airdrop: FC = () => {
     (async () => {
       try {
         if (!solanaMemeConfig) return;
+
         const memeUser = await getMemeUserData(solanaMemeConfig?.memeConfigId);
         console.log('memeUser:', memeUser);
         setMemeUserData(memeUser!);
@@ -240,7 +255,7 @@ const Airdrop: FC = () => {
         setLoading(false);
       }
     })();
-  }, [solanaMemeConfig]);
+  }, [ticker, solanaMemeConfig]);
 
   useEffect(() => {
     if (!idoQueueDetail || !address) return;
@@ -302,8 +317,9 @@ const Airdrop: FC = () => {
         <AirdropContext.Provider value={context}>
           <Status />
           {idoQueueDetail?.status === 'Launched' && <PublicSale />}
-          <PublicSale />
-          {stage === 'imo' && <IMOParticipate />}
+          {/* <PublicSale />  */}
+          {/* {stage === 'imo' && <IMOParticipate />} */}
+          <IMOParticipate />
           {stage === 'in-queue' && mine && <PreMarketAcqusition amount={totalAmount ?? 0} />}
           <AirdropClaim />
           <IDODetail />

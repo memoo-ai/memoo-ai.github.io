@@ -46,3 +46,7 @@ export const imoParticipate = (postBody: { balance: number; ethAmout: number; ti
 export const myAirdropDetail = (params: { ticker: string; signature: string; timestap: string }) => {
   return http.get<AirdropDetail>(`${prefix}/web-oriented/my-airdrop-detail`, { params });
 };
+
+export const getUnlockTimestamp = (ticker: string) => {
+  return http.get(`${prefix}/web-unauthorized/token-unlock-date`, { params: { ticker } });
+};
