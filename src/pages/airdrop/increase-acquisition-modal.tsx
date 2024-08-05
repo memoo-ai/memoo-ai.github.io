@@ -33,9 +33,9 @@ const IncreaseAcquisitionModal: FC<{
   const [result, setResult] = useState(0);
   const { idoBuy, idoQueueDetail } = useContext(AirdropContext);
   const defaultValue = purchased * 1000;
-  useEffect(() => {
-    setProportion(firstProportion * 100);
-  }, [firstProportion]);
+  // useEffect(() => {
+  //   setProportion(firstProportion * 100);
+  // }, [firstProportion]);
 
   useEffect(() => {
     const increasePercent = proportion / 100;
