@@ -12,37 +12,28 @@ import {
 } from 'react';
 import './airdrop-claim-modal.scss';
 import { AirdropContext } from '.';
-import { myAirdropDetail } from '@/api/airdrop';
-import { useSign } from '@/hooks/useEthers';
-import { useManageContract } from '@/hooks/useManageContract';
-import BigNumber from 'bignumber.js';
-import { getNumberOrDefault } from '@/utils';
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const ClaimImoTokensModal: FC<{ children: ReactNode }> = ({ children }) => {
   const [open, setOpen] = useState(false);
   const [confirming, setConfirming] = useState(false);
-  const { idoQueueDetail, idoClaim } = useContext(AirdropContext);
-  const { getSign } = useSign();
+  const { idoQueueDetail, idoClaim, solanaMemeConfig } = useContext(AirdropContext);
   const onConfirm = useCallback(async () => {
-    if (!idoClaim || !idoQueueDetail) return;
+    if (!idoClaim || !idoQueueDetail || !solanaMemeConfig) return;
     try {
       setConfirming(true);
-      const res = await getSign();
-      const { data } = await myAirdropDetail({
-        ticker: idoQueueDetail?.ticker ?? '',
-        signature: res?.rawSignature ?? '',
-        timestap: res?.msg ?? '',
-      });
-      await idoClaim(idoQueueDetail?.contractAddress);
-      setOpen(false);
-      message.success('Claim Successful');
+      const tx = await idoClaim(solanaMemeConfig?.memeConfigId, solanaMemeConfig?.mintaPublickey);
+      console.log('idoClaim tx:', tx);
+      if (tx) {
+        setOpen(false);
+        message.success('Claim Successful');
+      }
     } catch (error) {
       console.error(error);
       message.error('Claim Failed');
     } finally {
       setConfirming(false);
     }
-  }, [idoClaim, idoQueueDetail]);
+  }, [idoClaim, idoQueueDetail, solanaMemeConfig]);
 
   return (
     <>
@@ -79,7 +70,7 @@ const ClaimImoTokensModal: FC<{ children: ReactNode }> = ({ children }) => {
             className="memoo_button mt-4 h-[50px]"
             onClick={onConfirm}
             loading={confirming}
-            disabled={getNumberOrDefault(Number(idoQueueDetail?.count).toLocaleString()) === 0}
+            // disabled={getNumberOrDefault(Number(idoQueueDetail?.count).toLocaleString()) === 0}
           >
             Confirm
           </Button>

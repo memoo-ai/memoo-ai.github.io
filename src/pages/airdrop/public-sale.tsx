@@ -5,7 +5,8 @@ import classNames from 'classnames';
 import { AirdropContext } from '.';
 import { formatDecimals } from '@/utils';
 import Wallet from '@/components/Wallet';
-import { useAccount } from 'wagmi';
+// import { useAccount } from 'wagmi';
+import { useAccount } from '@/hooks/useWeb3';
 import { IconLaunchedBtn } from '@/components/icons';
 import ClaimImoTokensModal from './claim-imo-tokens-modal';
 
@@ -58,7 +59,8 @@ const PublicSale: FC = () => {
           ))}
         </ul>
 
-        {address && idoQueueDetail?.isParticipateImo ? (
+        {/* {address && idoQueueDetail?.isParticipateImo ? ( */}
+        {address ? (
           <div className="flex gap-[11px] w-full">
             <Button
               className={classNames('mt-5 uppercase flex-1 memoo_button reverse h-12 font–404px', {})}
@@ -74,7 +76,7 @@ const PublicSale: FC = () => {
                 )}
                 onMouseOver={() => iconRef.current?.setHovered(true)}
                 onMouseLeave={() => iconRef.current?.setHovered(false)}
-                disabled={!idoQueueDetail?.claimImoFlag}
+                // disabled={!idoQueueDetail?.claimImoFlag}
               >
                 <IconLaunchedBtn ref={iconRef} className="mr-[7px]" hoverColor="#B53BFF" /> CLAIM IMO TOKENS
               </Button>

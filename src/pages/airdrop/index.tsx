@@ -64,11 +64,12 @@ interface AirdropContext {
     proportion: number,
   ) => Promise<TransactionReceipt | undefined>;
   unlockMeme?: (project: `0x${string}`, index: number) => Promise<TransactionReceipt | undefined>;
-  idoClaim?: (project: `0x${string}`) => Promise<TransactionReceipt | undefined>;
+  // idoClaim?: (project: `0x${string}`) => Promise<TransactionReceipt | undefined>;
+  idoClaim?: (memeId: string, mintAPublicKey: string) => Promise<TransactionReceipt | undefined>;
   triggerRefresh?: Function;
   airdropClaim?: (
     memeId: string,
-    mintAPublicKey: PublicKey,
+    mintAPublicKey: string,
     msg: any,
     signature: any,
     signerPublicKey: PublicKey,
@@ -316,8 +317,8 @@ const Airdrop: FC = () => {
       <div className="airdrop_left flex flex-col gap-y-3.5">
         <AirdropContext.Provider value={context}>
           <Status />
-          {idoQueueDetail?.status === 'Launched' && <PublicSale />}
-          {/* <PublicSale />  */}
+          {/* {idoQueueDetail?.status === 'Launched' && <PublicSale />} */}
+          <PublicSale />
           {/* {stage === 'imo' && <IMOParticipate />} */}
           <IMOParticipate />
           {stage === 'in-queue' && mine && <PreMarketAcqusition amount={totalAmount ?? 0} />}

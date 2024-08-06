@@ -219,7 +219,7 @@ export const useAccount = () => {
       try {
         console.log('memeId:', memeId);
         const memeConfigId = new PublicKey(memeId);
-        // debugger;
+        debugger;
         const memeConfigPda = PublicKey.findProgramAddressSync(
           // [Buffer.from('meme_config'), new PublicKey(memeConfigId).toBuffer()],
           [Buffer.from('meme_config'), memeConfigId.toBuffer()],
@@ -259,10 +259,10 @@ export const useAccount = () => {
         )[0];
         // debugger;
 
-        const memeUserIdoData: MemeUserIdoData = (await program.account.memeUserIdoData.fetch(
-          memeUserDataPda_idoBuy,
-        )) as any;
-        console.log('memeUserIdoData:', memeUserIdoData);
+        // const memeUserIdoData: MemeUserIdoData = (await program.account.memeUserIdoData.fetch(
+        //   memeUserDataPda_idoBuy,
+        // )) as any;
+        // console.log('memeUserIdoData:', memeUserIdoData);
         console.log('memeConfig:', memeConfig);
         // if (memeUserIdoData?.memeUserIdoCount + goingBuy > idoUserBuyLimit) {
         // if (memeUserIdoData?.memeUserIdoCount.add(buyQuantity).gt(idoUserBuyLimit)) {
@@ -369,10 +369,11 @@ export const useAccount = () => {
     [connection, publicKey, program],
   );
   const idoClaim = useCallback(
-    async (memeId: string, mintAPublicKey: PublicKey) => {
+    async (memeId: string, mintaPublicKey: string) => {
       if (!memooConfig || !program || !publicKey) return;
       try {
         const memeConfigId = new PublicKey(memeId);
+        const mintAPublicKey = new PublicKey(mintaPublicKey);
         const memeUserDataPda_idoBuy = PublicKey.findProgramAddressSync(
           [Buffer.from('meme_user_data'), memeConfigId.toBuffer(), publicKey.toBuffer()],
           programId,
@@ -426,10 +427,11 @@ export const useAccount = () => {
 
   const airdropClaim = useCallback(
     // eslint-disable-next-line max-params
-    async (memeId: string, mintAPublicKey: PublicKey, msg: any, signature: Uint8Array, signerPublicKey: PublicKey) => {
+    async (memeId: string, mintaPublicKey: string, msg: any, signature: Uint8Array, signerPublicKey: PublicKey) => {
       if (!memooConfig || !program || !publicKey || !signTransaction) return;
       try {
         const memeConfigId = new PublicKey(memeId);
+        const mintAPublicKey = new PublicKey(mintaPublicKey);
         const memeConfigPda = PublicKey.findProgramAddressSync(
           [Buffer.from('meme_config'), memeConfigId.toBuffer()],
           programId,
@@ -447,6 +449,17 @@ export const useAccount = () => {
         )[0];
         const poolAccountA = getAssociatedTokenAddressSync(mintAPublicKey, poolAuthority, true);
         const transaction = new Transaction();
+        debugger;
+        console.log('createTx-memeId:', memeConfigId.toBase58());
+        console.log('createTx-serialized:', msg);
+        console.log('createTx-signature:', signature);
+        console.log('createTx-payer:', publicKey.toBase58());
+        console.log('createTx-payerAccountA:', idoBuyerAccountA.toBase58());
+        console.log('createTx-memeConfig:', memeConfigPda.toBase58());
+        console.log('createTx-memeUserData:', memeUserDataPda_idoBuy.toBase58());
+        console.log('createTx-mintAccountA:', mintAPublicKey.toBase58());
+        console.log('createTx-poolAuthorityA:', poolAuthority.toBase58());
+        console.log('createTx-poolAccountA:', poolAccountA.toBase58());
         const tx = await new AirdropTxns(program).createTx({
           memeId: memeConfigId,
           serialized: msg,

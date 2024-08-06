@@ -85,6 +85,7 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   const onConfirm = useCallback(async () => {
+    console.log('participationConfirm');
     if (!idoBuy || !idoQueueDetail || !solanaMemeConfig) return;
     try {
       setConfirming(true);

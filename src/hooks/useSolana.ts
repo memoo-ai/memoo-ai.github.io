@@ -1,19 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { MEMOO_TOKEN_STORAGE } from '@/constants';
 import { useWallet } from '@solana/wallet-adapter-react';
+import { uint8ArrayToBase64 } from '@/utils';
 
 export const useSolana = () => {
   const { publicKey, wallet, connect, disconnect, signMessage } = useWallet();
-
-  const uint8ArrayToBase64 = (uint8Array: any) => {
-    let binaryString = '';
-    const bytes = new Uint8Array(uint8Array);
-    const len = bytes.byteLength;
-    for (let i = 0; i < len; i++) {
-      binaryString += String.fromCharCode(bytes[i]);
-    }
-    return btoa(binaryString);
-  };
 
   const getSign = useCallback(async () => {
     if (!wallet || !signMessage) return;

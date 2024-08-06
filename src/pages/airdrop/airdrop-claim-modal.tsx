@@ -19,34 +19,40 @@ import { useSolana } from '@/hooks/useSolana';
 import { useManageContract } from '@/hooks/useManageContract';
 import BigNumber from 'bignumber.js';
 import { PublicKey } from '@solana/web3.js';
+import { base64ToUint8Array } from '@/utils';
 
 const AirdropClaimModal: FC<{ children: ReactNode }> = ({ children }) => {
   const [open, setOpen] = useState(false);
   const [confirming, setConfirming] = useState(false);
-  const { idoLaunchedDetail, airdropClaim, solanaMemeConfig } = useContext(AirdropContext);
+  const { idoLaunchedDetail, airdropClaim, solanaMemeConfig, idoQueueDetail } = useContext(AirdropContext);
   const { getSign } = useSolana();
+
   const onConfirm = useCallback(async () => {
     console.log('airdropConfirm');
-    debugger;
-    if (!airdropClaim || !idoLaunchedDetail || !solanaMemeConfig) return;
+    // debugger;
+    // if (!airdropClaim || !idoLaunchedDetail || !solanaMemeConfig) return;
+    if (!airdropClaim || !idoQueueDetail || !solanaMemeConfig) return;
     try {
       setConfirming(true);
       const res = await getSign();
       const { data } = await myAirdropDetail({
-        ticker: idoLaunchedDetail?.ticker ?? '',
+        ticker: idoQueueDetail?.ticker ?? '',
         signature: res?.rawSignature ?? '',
         timestap: res?.msg ?? '',
+        chain: 'Solana',
       });
       console.log('myAirdropDetail:', data);
-      console.log('contractAddress:', idoLaunchedDetail?.contractAddress);
+      console.log('contractAddress:', idoQueueDetail?.contractAddress);
       console.log('airdropCount:', new BigNumber(data?.airdropCount));
       console.log('jsonData:', data?.jsonData);
       console.log('signature:', data?.signature);
+      console.log('hexSignature):', base64ToUint8Array(data?.hexSignature));
+      console.log('hexMessage):', base64ToUint8Array(data?.hexMessage));
       const tx = await airdropClaim(
         solanaMemeConfig?.memeConfigId,
-        new PublicKey(solanaMemeConfig?.mintaPublickey),
-        data?.hexMessage,
-        data?.hexSignature,
+        solanaMemeConfig?.mintaPublickey,
+        base64ToUint8Array(data?.hexMessage),
+        base64ToUint8Array(data?.hexSignature),
         new PublicKey(data?.signPublickey),
       );
       if (tx) {
@@ -59,7 +65,7 @@ const AirdropClaimModal: FC<{ children: ReactNode }> = ({ children }) => {
     } finally {
       setConfirming(false);
     }
-  }, [airdropClaim, idoLaunchedDetail]);
+  }, [airdropClaim, idoQueueDetail]);
 
   return (
     <>

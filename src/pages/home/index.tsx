@@ -69,10 +69,6 @@ const Revolutions = [
 ];
 const Home = () => {
   const navigate = useNavigate();
-  const { createTokenMint } = useContract();
-  const send = () => {
-    createTokenMint();
-  };
 
   return (
     <div>
@@ -105,13 +101,13 @@ const Home = () => {
               >
                 Hunt for airdrops
               </Button>
-              <Button
+              {/* <Button
                 variant="secondary"
                 className="font-404px text-lg  w-[298px] h-[53px] uppercase"
                 onClick={() => send()}
               >
                 Test
-              </Button>
+              </Button> */}
             </div>
             <div className="flex items-center gap-12 mt-[50px]">
               {/* <img src="./SVG/icon-twitter.svg" className="w-8 cursor-pointer" alt="" /> */}

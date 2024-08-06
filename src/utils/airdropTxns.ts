@@ -73,39 +73,39 @@ export class AirdropTxns {
   }
 }
 
-// export class AirdropMessage {
-//   address: Uint8Array;
-//   meme: Uint8Array;
-//   count: BN;
-//   expiry: BN;
+export class AirdropMessage {
+  address: Uint8Array;
+  meme: Uint8Array;
+  count: BN;
+  expiry: BN;
 
-//   static schema: Schema = new Map([
-//     [
-//       AirdropMessage,
-//       {
-//         kind: 'struct',
-//         fields: [
-//           ['address', [32]],
-//           ['meme', [32]],
-//           ['count', 'u64'],
-//           ['expiry', 'u64'],
-//         ],
-//       },
-//     ],
-//   ]);
+  static schema: Schema = new Map([
+    [
+      AirdropMessage,
+      {
+        kind: 'struct',
+        fields: [
+          ['address', [32]],
+          ['meme', [32]],
+          ['count', 'u64'],
+          ['expiry', 'u64'],
+        ],
+      },
+    ],
+  ]);
 
-//   constructor(obj: { count: BN; expiry: BN; address: Uint8Array; meme: Uint8Array }) {
-//     this.meme = obj.meme;
-//     this.count = obj.count;
-//     this.address = obj.address;
-//     this.expiry = obj.expiry;
-//   }
+  constructor(obj: { count: BN; expiry: BN; address: Uint8Array; meme: Uint8Array }) {
+    this.meme = obj.meme;
+    this.count = obj.count;
+    this.address = obj.address;
+    this.expiry = obj.expiry;
+  }
 
-//   serialize(): Uint8Array {
-//     return serialize(AirdropMessage.schema, this);
-//   }
+  serialize(): Uint8Array {
+    return serialize(AirdropMessage.schema, this);
+  }
 
-//   deserialize(data: Buffer): AirdropMessage {
-//     return deserialize(AirdropMessage.schema, AirdropMessage, data);
-//   }
-// }
+  deserialize(data: Buffer): AirdropMessage {
+    return deserialize(AirdropMessage.schema, AirdropMessage, data);
+  }
+}

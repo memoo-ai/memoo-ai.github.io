@@ -43,7 +43,7 @@ export const follow = (twitter: string) => {
 export const imoParticipate = (postBody: { balance: number; ethAmout: number; ticker: string }) => {
   return http.get<string>(`${prefix}/web-oriented/imo-participate`, { data: postBody });
 };
-export const myAirdropDetail = (params: { ticker: string; signature: string; timestap: string }) => {
+export const myAirdropDetail = (params: { ticker: string; signature: string; timestap: string; chain: string }) => {
   return http.get<AirdropDetail>(`${prefix}/web-oriented/my-airdrop-detail`, { params });
 };
 
