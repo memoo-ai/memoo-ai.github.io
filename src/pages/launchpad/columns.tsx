@@ -7,7 +7,7 @@ export enum IDOStatus {
   upcoming = 'upcoming',
   completed = 'completed',
 }
-
+const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 export const columns = (navigate: (path: string) => void) => [
   {
     title: 'Token',
@@ -48,7 +48,12 @@ export const columns = (navigate: (path: string) => void) => [
     dataIndex: 'totalRaised',
     key: 'totalRaised',
     sorter: false,
-    render: (totalRaised: number) => <span className="font-OCR font-norma text-lg">{totalRaised}E</span>,
+    render: (totalRaised: number) => (
+      <span className="font-OCR font-norma text-lg">
+        {totalRaised}
+        {tokenSymbol}
+      </span>
+    ),
   },
   {
     title: 'Action',
@@ -107,7 +112,12 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
     dataIndex: 'participants',
     key: 'participants',
     sorter: false,
-    render: (participants: number) => <span className="font-OCR font-normal text-lg">{participants}E</span>,
+    render: (participants: number) => (
+      <span className="font-OCR font-normal text-lg">
+        {participants}
+        {tokenSymbol}
+      </span>
+    ),
   },
   {
     title: 'Action',

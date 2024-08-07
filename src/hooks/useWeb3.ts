@@ -73,8 +73,8 @@ export const useAccount = () => {
   // const memooConfigPda = import.meta.env.VITE_MEMOO_CONFIG_PDA;
   const memooConfigPda = useMemo(() => {
     if (!solanaConfig) return;
-    // const globalMemeConfigId = 'HC4FUre8ht7yMhFPFxbGTCh2WZL7YXUhF4tEhS8FqgbR';
-    const globalMemeConfigId = solanaConfig?.globalMemooConfigId;
+    const globalMemeConfigId = 'HC4FUre8ht7yMhFPFxbGTCh2WZL7YXUhF4tEhS8FqgbR';
+    // const globalMemeConfigId = solanaConfig?.globalMemooConfigId;
     return PublicKey.findProgramAddressSync(
       [Buffer.from('global_memoo_config'), new PublicKey(globalMemeConfigId).toBuffer()],
       // [Buffer.from('global_memoo_config'), new PublicKey(solanaConfig?.globalMemooConfigId).toBuffer()],
@@ -417,7 +417,27 @@ export const useAccount = () => {
         const memeUserData: MemeUserIdoData = (await program.account.memeUserIdoData.fetch(
           memeUserDataPda_idoBuy,
         )) as any;
+
         return memeUserData;
+      } catch (e) {
+        console.log('error: ', e);
+      }
+    },
+    [connection, publicKey, program],
+  );
+  const getMemeCreatorData = useCallback(
+    async (memeId: string) => {
+      console.log('getMemeUserData');
+      if (!memooConfig || !program || !publicKey) return;
+      try {
+        // debugger;
+        const memeConfigId = new PublicKey(memeId);
+        const memeConfigPda = PublicKey.findProgramAddressSync(
+          [Buffer.from('meme_config'), memeConfigId.toBuffer()],
+          programId,
+        )[0];
+        const memeCreatorData = await program.account.memeConfig.fetch(memeConfigPda);
+        return memeCreatorData;
       } catch (e) {
         console.log('error: ', e);
       }
@@ -517,6 +537,7 @@ export const useAccount = () => {
     creatorClaim,
     idoClaim,
     getMemeUserData,
+    getMemeCreatorData,
     airdropClaim,
   };
 };
