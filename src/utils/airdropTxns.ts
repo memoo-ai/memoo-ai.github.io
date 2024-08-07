@@ -1,7 +1,7 @@
 import { Ed25519Program, PublicKey, SYSVAR_INSTRUCTIONS_PUBKEY } from '@solana/web3.js';
-
+import { Schema, serialize, deserialize } from 'borsh';
 import { Memoo } from '@/contracts/idl/memoo';
-import { Program } from '@coral-xyz/anchor';
+import { Program, BN } from '@coral-xyz/anchor';
 
 export interface AirdropTxnsParams {
   memeId: PublicKey;
@@ -74,12 +74,7 @@ export class AirdropTxns {
 }
 
 export class AirdropMessage {
-  address: Uint8Array;
-  meme: Uint8Array;
-  count: BN;
-  expiry: BN;
-
-  static schema: Schema = new Map([
+  public static schema: Schema = new Map([
     [
       AirdropMessage,
       {
@@ -94,18 +89,23 @@ export class AirdropMessage {
     ],
   ]);
 
-  constructor(obj: { count: BN; expiry: BN; address: Uint8Array; meme: Uint8Array }) {
+  public address: Uint8Array;
+  public meme: Uint8Array;
+  public count: BN;
+  public expiry: BN;
+
+  public constructor(obj: { count: BN; expiry: BN; address: Uint8Array; meme: Uint8Array }) {
+    this.address = obj.address;
     this.meme = obj.meme;
     this.count = obj.count;
-    this.address = obj.address;
     this.expiry = obj.expiry;
   }
 
-  serialize(): Uint8Array {
+  public serialize(): Uint8Array {
     return serialize(AirdropMessage.schema, this);
   }
 
-  deserialize(data: Buffer): AirdropMessage {
+  public deserialize(data: Buffer): AirdropMessage {
     return deserialize(AirdropMessage.schema, AirdropMessage, data);
   }
 }

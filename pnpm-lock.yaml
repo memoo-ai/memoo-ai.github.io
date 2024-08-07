@@ -8,12 +8,6 @@ dependencies:
   '@coral-xyz/anchor':
     specifier: 0.29.0
     version: 0.29.0
-  '@metaplex-foundation/mpl-token-metadata':
-    specifier: '2'
-    version: 2.13.0(fastestsmallesttextencoderdecoder@1.0.22)
-  '@metaplex/js':
-    specifier: ^4.12.0
-    version: 4.12.0(@metaplex-foundation/mpl-auction@0.0.2)(@metaplex-foundation/mpl-core@0.0.2)(@metaplex-foundation/mpl-metaplex@0.0.5)(@metaplex-foundation/mpl-token-metadata@2.13.0)(@metaplex-foundation/mpl-token-vault@0.0.2)(@solana/spl-token@0.4.7)(@solana/web3.js@1.94.0)
   '@radix-ui/react-avatar':
     specifier: ^1.0.4
     version: registry.npmmirror.com/@radix-ui/react-avatar@1.0.4(@types/react-dom@18.2.6)(@types/react@18.2.14)(react-dom@18.2.0)(react@18.2.0)
@@ -48,7 +42,7 @@ dependencies:
     specifier: ^2.3.0
     version: 2.3.0
   '@solana/spl-token':
-    specifier: ^0.4.7
+    specifier: 0.4.7
     version: 0.4.7(@solana/web3.js@1.94.0)(fastestsmallesttextencoderdecoder@1.0.22)
   '@solana/spl-token-swap':
     specifier: ^0.4.3
@@ -86,6 +80,9 @@ dependencies:
   bignumber.js:
     specifier: ^9.1.2
     version: registry.npmmirror.com/bignumber.js@9.1.2
+  borsh:
+    specifier: 0.7.0
+    version: 0.7.0
   bs58:
     specifier: ^6.0.0
     version: 6.0.0
@@ -2473,147 +2470,6 @@ packages:
       - supports-color
     dev: false
 
-  /@metaplex-foundation/beet-solana@0.4.1:
-    resolution: {integrity: sha512-/6o32FNUtwK8tjhotrvU/vorP7umBuRFvBZrC6XCk51aKidBHe5LPVPA5AjGPbV3oftMfRuXPNd9yAGeEqeCDQ==, tarball: https://registry.npmmirror.com/@metaplex-foundation/beet-solana/-/beet-solana-0.4.1.tgz}
-    dependencies:
-      '@metaplex-foundation/beet': 0.7.2
-      '@solana/web3.js': 1.94.0
-      bs58: 5.0.0
-      debug: 4.3.5
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - supports-color
-      - utf-8-validate
-    dev: false
-
-  /@metaplex-foundation/beet@0.7.2:
-    resolution: {integrity: sha512-K+g3WhyFxKPc0xIvcIjNyV1eaTVJTiuaHZpig7Xx0MuYRMoJLLvhLTnUXhFdR5Tu2l2QSyKwfyXDgZlzhULqFg==, tarball: https://registry.npmmirror.com/@metaplex-foundation/beet/-/beet-0.7.2.tgz}
-    dependencies:
-      ansicolors: 0.3.2
-      assert: 2.1.0
-      bn.js: 5.2.1
-      debug: 4.3.5
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  /@metaplex-foundation/cusper@0.0.2:
-    resolution: {integrity: sha512-S9RulC2fFCFOQraz61bij+5YCHhSO9llJegK8c8Y6731fSi6snUSQJdCUqYS8AIgR0TKbQvdvgSyIIdbDFZbBA==, tarball: https://registry.npmmirror.com/@metaplex-foundation/cusper/-/cusper-0.0.2.tgz}
-    dev: false
-
-  /@metaplex-foundation/mpl-auction@0.0.2:
-    resolution: {integrity: sha512-4UDDi8OiQr+D6KrCNTRrqf/iDD6vi5kzRtMRtuNpywTyhX9hnbr1Zkc6Ncncbh9GZhbhcn+/h5wHgzh+xA6TnQ==, tarball: https://registry.npmmirror.com/@metaplex-foundation/mpl-auction/-/mpl-auction-0.0.2.tgz}
-    dependencies:
-      '@metaplex-foundation/mpl-core': 0.0.2
-      '@solana/spl-token': 0.1.8
-      '@solana/web3.js': 1.94.0
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - utf-8-validate
-    dev: false
-
-  /@metaplex-foundation/mpl-core@0.0.2:
-    resolution: {integrity: sha512-UUJ4BlYiWdDegAWmjsNQiNehwYU3QfSFWs3sv4VX0J6/ZrQ28zqosGhQ+I2ZCTEy216finJ82sZWNjuwSWCYyQ==, tarball: https://registry.npmmirror.com/@metaplex-foundation/mpl-core/-/mpl-core-0.0.2.tgz}
-    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
-    dependencies:
-      '@solana/web3.js': 1.94.0
-      bs58: 4.0.1
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - utf-8-validate
-    dev: false
-
-  /@metaplex-foundation/mpl-metaplex@0.0.5:
-    resolution: {integrity: sha512-VRt3fiO/7/jcHwN+gWvTtpp+7wYhIcEDzMG1lOeV3yYyhz9fAT0E3LqEl2moifNTAopGCE4zYa84JA/OW+1YvA==, tarball: https://registry.npmmirror.com/@metaplex-foundation/mpl-metaplex/-/mpl-metaplex-0.0.5.tgz}
-    dependencies:
-      '@metaplex-foundation/mpl-auction': 0.0.2
-      '@metaplex-foundation/mpl-core': 0.0.2
-      '@metaplex-foundation/mpl-token-metadata': 0.0.2
-      '@metaplex-foundation/mpl-token-vault': 0.0.2
-      '@solana/spl-token': 0.1.8
-      '@solana/web3.js': 1.94.0
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - utf-8-validate
-    dev: false
-
-  /@metaplex-foundation/mpl-token-metadata@0.0.2:
-    resolution: {integrity: sha512-yKJPhFlX8MkNbSCi1iwHn4xKmguLK/xFhYa+RuYdL2seuT4CKXHj2CnR2AkcdQj46Za4/nR3jZcRFKq7QlnvBw==, tarball: https://registry.npmmirror.com/@metaplex-foundation/mpl-token-metadata/-/mpl-token-metadata-0.0.2.tgz}
-    dependencies:
-      '@metaplex-foundation/mpl-core': 0.0.2
-      '@solana/spl-token': 0.1.8
-      '@solana/web3.js': 1.94.0
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - utf-8-validate
-    dev: false
-
-  /@metaplex-foundation/mpl-token-metadata@2.13.0(fastestsmallesttextencoderdecoder@1.0.22):
-    resolution: {integrity: sha512-Fl/8I0L9rv4bKTV/RAl5YIbJe9SnQPInKvLz+xR1fEc4/VQkuCn3RPgypfUMEKWmCznzaw4sApDxy6CFS4qmJw==, tarball: https://registry.npmmirror.com/@metaplex-foundation/mpl-token-metadata/-/mpl-token-metadata-2.13.0.tgz}
-    dependencies:
-      '@metaplex-foundation/beet': 0.7.2
-      '@metaplex-foundation/beet-solana': 0.4.1
-      '@metaplex-foundation/cusper': 0.0.2
-      '@solana/spl-token': 0.3.11(@solana/web3.js@1.94.0)(fastestsmallesttextencoderdecoder@1.0.22)
-      '@solana/web3.js': 1.94.0
-      bn.js: 5.2.1
-      debug: 4.3.5
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - fastestsmallesttextencoderdecoder
-      - supports-color
-      - utf-8-validate
-    dev: false
-
-  /@metaplex-foundation/mpl-token-vault@0.0.2:
-    resolution: {integrity: sha512-JiVcow8OzUGW0KTs/E1QrAdmYGqE9EGKE6cc2gxNNBYqDeVdjYlgEa64IiGvNF9rvbI2g2Z3jw0mYuA9LD9S/A==, tarball: https://registry.npmmirror.com/@metaplex-foundation/mpl-token-vault/-/mpl-token-vault-0.0.2.tgz}
-    dependencies:
-      '@metaplex-foundation/mpl-core': 0.0.2
-      '@solana/spl-token': 0.1.8
-      '@solana/web3.js': 1.94.0
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - utf-8-validate
-    dev: false
-
-  /@metaplex/js@4.12.0(@metaplex-foundation/mpl-auction@0.0.2)(@metaplex-foundation/mpl-core@0.0.2)(@metaplex-foundation/mpl-metaplex@0.0.5)(@metaplex-foundation/mpl-token-metadata@2.13.0)(@metaplex-foundation/mpl-token-vault@0.0.2)(@solana/spl-token@0.4.7)(@solana/web3.js@1.94.0):
-    resolution: {integrity: sha512-rIUTMXo5gIXFIZt08AEHyqH4oVoLL2dMYiNePQluw9pydesRym4jDayJ5POxEmKmyc6KGqVKw/YWUIivmUY5zg==, tarball: https://registry.npmmirror.com/@metaplex/js/-/js-4.12.0.tgz}
-    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
-    peerDependencies:
-      '@metaplex-foundation/mpl-auction': ^0.0.2
-      '@metaplex-foundation/mpl-core': ^0.0.2
-      '@metaplex-foundation/mpl-metaplex': ^0.0.5
-      '@metaplex-foundation/mpl-token-metadata': ^0.0.2
-      '@metaplex-foundation/mpl-token-vault': ^0.0.2
-      '@solana/spl-token': ^0.1.8
-      '@solana/web3.js': ^1.30.2
-    dependencies:
-      '@metaplex-foundation/mpl-auction': 0.0.2
-      '@metaplex-foundation/mpl-core': 0.0.2
-      '@metaplex-foundation/mpl-metaplex': 0.0.5
-      '@metaplex-foundation/mpl-token-metadata': 2.13.0(fastestsmallesttextencoderdecoder@1.0.22)
-      '@metaplex-foundation/mpl-token-vault': 0.0.2
-      '@solana/spl-token': 0.4.7(@solana/web3.js@1.94.0)(fastestsmallesttextencoderdecoder@1.0.22)
-      '@solana/web3.js': 1.94.0
-      '@types/bs58': 4.0.4
-      axios: 0.25.0
-      bn.js: 5.2.1
-      borsh: 0.4.0
-      bs58: 4.0.1
-      buffer: 6.0.3
-      crypto-hash: 1.3.0
-      form-data: 4.0.0
-    transitivePeerDependencies:
-      - debug
-    dev: false
-
   /@mobily/ts-belt@3.13.1:
     resolution: {integrity: sha512-K5KqIhPI/EoCTbA6CGbrenM9s41OouyK8A03fGJJcla/zKucsgLbz8HNbeseoLarRPgyWJsUyCYqFhI7t3Ra9Q==, tarball: https://registry.npmmirror.com/@mobily/ts-belt/-/ts-belt-3.13.1.tgz}
     engines: {node: '>= 10.*'}
@@ -3782,40 +3638,6 @@ packages:
     transitivePeerDependencies:
       - bufferutil
       - encoding
-      - utf-8-validate
-    dev: false
-
-  /@solana/spl-token@0.1.8:
-    resolution: {integrity: sha512-LZmYCKcPQDtJgecvWOgT/cnoIQPWjdH+QVyzPcFvyDUiT0DiRjZaam4aqNUyvchLFhzgunv3d9xOoyE34ofdoQ==, tarball: https://registry.npmmirror.com/@solana/spl-token/-/spl-token-0.1.8.tgz}
-    engines: {node: '>= 10'}
-    dependencies:
-      '@babel/runtime': 7.24.7
-      '@solana/web3.js': 1.94.0
-      bn.js: 5.2.1
-      buffer: 6.0.3
-      buffer-layout: 1.2.2
-      dotenv: 10.0.0
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - utf-8-validate
-    dev: false
-
-  /@solana/spl-token@0.3.11(@solana/web3.js@1.94.0)(fastestsmallesttextencoderdecoder@1.0.22):
-    resolution: {integrity: sha512-bvohO3rIMSVL24Pb+I4EYTJ6cL82eFpInEXD/I8K8upOGjpqHsKUoAempR/RnUlI1qSFNyFlWJfu6MNUgfbCQQ==, tarball: https://registry.npmmirror.com/@solana/spl-token/-/spl-token-0.3.11.tgz}
-    engines: {node: '>=16'}
-    peerDependencies:
-      '@solana/web3.js': ^1.88.0
-    dependencies:
-      '@solana/buffer-layout': 4.0.1
-      '@solana/buffer-layout-utils': 0.2.0
-      '@solana/spl-token-metadata': 0.1.4(@solana/web3.js@1.94.0)(fastestsmallesttextencoderdecoder@1.0.22)
-      '@solana/web3.js': 1.94.0
-      buffer: 6.0.3
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - fastestsmallesttextencoderdecoder
       - utf-8-validate
     dev: false
 
@@ -5181,19 +5003,6 @@ packages:
       wif: 4.0.0
     dev: false
 
-  /@types/bn.js@4.11.6:
-    resolution: {integrity: sha512-pqr857jrp2kPuO9uRjZ3PwnJTjoQy+fcdxvBTvHm6dkmEL9q+hDD/2j/0ELOBPtPnS8LjCX0gI9nbl8lVkadpg==, tarball: https://registry.npmmirror.com/@types/bn.js/-/bn.js-4.11.6.tgz}
-    dependencies:
-      '@types/node': 20.14.2
-    dev: false
-
-  /@types/bs58@4.0.4:
-    resolution: {integrity: sha512-0IEpMFXXQi2zXaXl9GJ3sRwQo0uEkD+yFOv+FnAU5lkPtcu6h61xb7jc2CFPEZ5BUOaiP13ThuGc9HD4R8lR5g==, tarball: https://registry.npmmirror.com/@types/bs58/-/bs58-4.0.4.tgz}
-    dependencies:
-      '@types/node': 20.14.2
-      base-x: 3.0.10
-    dev: false
-
   /@types/connect@3.4.38:
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==, tarball: https://registry.npmmirror.com/@types/connect/-/connect-3.4.38.tgz}
     dependencies:
@@ -6189,10 +5998,6 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  /ansicolors@0.3.2:
-    resolution: {integrity: sha512-QXu7BPrP29VllRxH8GwB7x5iX5qWKAAMLqKQGWTeLWVlNHNOpVMJ91dsxQAIWXpjuW5wqvxu3Jd/nRjrJ+0pqg==, tarball: https://registry.npmmirror.com/ansicolors/-/ansicolors-0.3.2.tgz}
-    dev: false
-
   /anymatch@3.1.3:
     resolution: {integrity: sha512-KMReFUr0B4t+D+OBkjR3KYqvocp2XaSzO55UcB6mgQMd3KbcE+mWTyvVV7D/zsdEbNnV6acZUutkiHQXvTr1Rw==, tarball: https://registry.npmmirror.com/anymatch/-/anymatch-3.1.3.tgz}
     engines: {node: '>= 8'}
@@ -6327,10 +6132,6 @@ packages:
       tslib: 2.6.3
     dev: false
 
-  /asynckit@0.4.0:
-    resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==, tarball: https://registry.npmmirror.com/asynckit/-/asynckit-0.4.0.tgz}
-    dev: false
-
   /atomic-sleep@1.0.0:
     resolution: {integrity: sha512-kNOjDqAh7px0XWNI+4QbzoiR/nTkHAWNud2uvnJquD1/x5a7EQZMJT0AczqK0Qn67oY/TTQ1LbUKajZpp3I9tQ==, tarball: https://registry.npmmirror.com/atomic-sleep/-/atomic-sleep-1.0.0.tgz}
     engines: {node: '>=8.0.0'}
@@ -6341,14 +6142,6 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       possible-typed-array-names: 1.0.0
-
-  /axios@0.25.0:
-    resolution: {integrity: sha512-cD8FOb0tRH3uuEe6+evtAbgJtfxr7ly3fQjYcMcuPlgkwVS9xboaVIpcDV+cYQe+yGykgwZCs1pzjntcGa6l5g==, tarball: https://registry.npmmirror.com/axios/-/axios-0.25.0.tgz}
-    dependencies:
-      follow-redirects: 1.15.6
-    transitivePeerDependencies:
-      - debug
-    dev: false
 
   /babel-core@7.0.0-bridge.0(@babel/core@7.24.7):
     resolution: {integrity: sha512-poPX9mZH/5CSanm50Q+1toVci6pv5KSRv/5TWCwtzQS5XEwn40BcCrgIeMFWP9CKKIniKXNxoIOnOq4VVlGXhg==, tarball: https://registry.npmmirror.com/babel-core/-/babel-core-7.0.0-bridge.0.tgz}
@@ -6513,15 +6306,6 @@ packages:
 
   /bn.js@5.2.1:
     resolution: {integrity: sha512-eXRvHzWyYPBuB4NBy0cmYQjGitUrtqwbvlzP3G6VFnNRbsZQIxQ10PbKKHt8gZ/HW/D/747aDl+QkDqg3KQLMQ==, tarball: https://registry.npmmirror.com/bn.js/-/bn.js-5.2.1.tgz}
-    dev: false
-
-  /borsh@0.4.0:
-    resolution: {integrity: sha512-aX6qtLya3K0AkT66CmYWCCDr77qsE9arV05OmdFpmat9qu8Pg9J5tBUPDztAW5fNh/d/MyVG/OYziP52Ndzx1g==, tarball: https://registry.npmmirror.com/borsh/-/borsh-0.4.0.tgz}
-    dependencies:
-      '@types/bn.js': 4.11.6
-      bn.js: 5.2.1
-      bs58: 4.0.1
-      text-encoding-utf-8: 1.0.2
     dev: false
 
   /borsh@0.7.0:
@@ -6921,13 +6705,6 @@ packages:
     resolution: {integrity: sha512-Y2oEozpomLn7Q3HFP7dpww7AtMJplbM9lGZP6RDfHqmbeRjiwRg4n6VM6j4KLmRke85uWEI7JqF17f3pqdRA0g==, tarball: https://registry.npmmirror.com/colorette/-/colorette-1.4.0.tgz}
     dev: false
 
-  /combined-stream@1.0.8:
-    resolution: {integrity: sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==, tarball: https://registry.npmmirror.com/combined-stream/-/combined-stream-1.0.8.tgz}
-    engines: {node: '>= 0.8'}
-    dependencies:
-      delayed-stream: 1.0.0
-    dev: false
-
   /command-exists@1.2.9:
     resolution: {integrity: sha512-LTQ/SGc+s0Xc0Fu5WaKnR0YiygZkm9eKFvyS+fRsU7/ZWFF8ykFM6Pc9aCVf1+xasOOZpO3BAVgVrKvsqKHV7w==, tarball: https://registry.npmmirror.com/command-exists/-/command-exists-1.2.9.tgz}
     dev: false
@@ -7242,11 +7019,6 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  /delayed-stream@1.0.0:
-    resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==, tarball: https://registry.npmmirror.com/delayed-stream/-/delayed-stream-1.0.0.tgz}
-    engines: {node: '>=0.4.0'}
-    dev: false
-
   /denodeify@1.2.1:
     resolution: {integrity: sha512-KNTihKNmQENUZeKu5fzfpzRqR5S2VMp4gl9RFHiWzj9DfvYQPMJ6XHKNaQxaGCXwPk6y9yme3aUoaiAe+KX+vg==, tarball: https://registry.npmmirror.com/denodeify/-/denodeify-1.2.1.tgz}
     dev: false
@@ -7310,11 +7082,6 @@ packages:
     dependencies:
       no-case: 3.0.4
       tslib: 2.6.3
-    dev: false
-
-  /dotenv@10.0.0:
-    resolution: {integrity: sha512-rlBi9d8jpv9Sf1klPjNfFAuWDjKLwTIJJ/VxtoTwIR6hnZxcEOQCZg2oIL3MWBYw5GpUDKOEnND7LXTbIpQ03Q==, tarball: https://registry.npmmirror.com/dotenv/-/dotenv-10.0.0.tgz}
-    engines: {node: '>=10'}
     dev: false
 
   /dotenv@16.4.5:
@@ -7887,29 +7654,10 @@ packages:
     engines: {node: '>=0.4.0'}
     dev: false
 
-  /follow-redirects@1.15.6:
-    resolution: {integrity: sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==, tarball: https://registry.npmmirror.com/follow-redirects/-/follow-redirects-1.15.6.tgz}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dev: false
-
   /for-each@0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==, tarball: https://registry.npmmirror.com/for-each/-/for-each-0.3.3.tgz}
     dependencies:
       is-callable: 1.2.7
-
-  /form-data@4.0.0:
-    resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==, tarball: https://registry.npmmirror.com/form-data/-/form-data-4.0.0.tgz}
-    engines: {node: '>= 6'}
-    dependencies:
-      asynckit: 0.4.0
-      combined-stream: 1.0.8
-      mime-types: 2.1.35
-    dev: false
 
   /framer-motion@11.2.13(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-AyIeegfkXlkX1lWEudRYsJlC+0A59cE8oFK9IsN9bUQzxLwcvN3AEaYaznkELiWlHC7a0eD7pxsYQo7BC05S5A==, tarball: https://registry.npmmirror.com/framer-motion/-/framer-motion-11.2.13.tgz}

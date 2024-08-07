@@ -50,6 +50,7 @@
     "antd": "^5.17.0",
     "axios": "^1.4.0",
     "bignumber.js": "^9.1.2",
+    "borsh": "0.7.0",
     "bs58": "^6.0.0",
     "class-variance-authority": "^0.7.0",
     "classnames": "^2.5.1",

@@ -14,7 +14,10 @@ import IDL from '@/contracts/idl/memoo.json';
 import { useBaseConfig } from '@/hooks/useBaseConfig';
 import { useAnchorProgram } from './useProgram';
 import { useSolana } from '@/hooks/useSolana';
-import { AirdropTxns } from '@/utils/airdropTxns';
+import { AirdropTxns, AirdropMessage } from '@/utils/airdropTxns';
+import nacl from 'tweetnacl';
+import bs58 from 'bs58';
+// import { base64ToUint8Array } from '@/utils';
 
 // import { memooConfig } from '@/types';
 export interface MemooConfig {
@@ -61,7 +64,7 @@ export interface MemeUserIdoData {
   user: PublicKey;
 }
 export const useAccount = () => {
-  const { publicKey, signTransaction, signAllTransactions } = useWallet();
+  const { publicKey, signTransaction, signAllTransactions, sendTransaction, wallet } = useWallet();
   // const RPC_URL = 'https://api.devnet.solana.com';
   const RPC_URL = import.meta.env.VITE_RPC_URL;
   const connection = new Connection(RPC_URL);
@@ -424,11 +427,11 @@ export const useAccount = () => {
     },
     [connection, publicKey, program],
   );
-
+  let tran: any;
   const airdropClaim = useCallback(
     // eslint-disable-next-line max-params
     async (memeId: string, mintaPublicKey: string, msg: any, signature: Uint8Array, signerPublicKey: PublicKey) => {
-      if (!memooConfig || !program || !publicKey || !signTransaction) return;
+      if (!memooConfig || !program || !publicKey || !signTransaction || !sendTransaction) return;
       try {
         const memeConfigId = new PublicKey(memeId);
         const mintAPublicKey = new PublicKey(mintaPublicKey);
@@ -448,11 +451,37 @@ export const useAccount = () => {
           programId,
         )[0];
         const poolAccountA = getAssociatedTokenAddressSync(mintAPublicKey, poolAuthority, true);
+        // const currentDate = new Date();
+        // const futureDate = new Date(currentDate);
+        // futureDate.setDate(futureDate.getDate() + 14);
+
+        const message = new AirdropMessage({
+          address: publicKey.toBuffer(),
+          meme: memeConfigId.toBuffer(),
+          count: new BN(100),
+          expiry: new BN(Math.floor(Date.now() / 1000) + 14 * 24 * 60 * 60), // 当前时间加14天
+        });
+        const encoded = message.serialize();
+        console.log('Serialized message:', encoded);
+        const decoded = message.deserialize(Buffer.from(encoded));
+        console.log('Deserialized message:', decoded);
+
+        const MSG = encoded;
+        // // const person = idoBuyer;
+        let platformSecretKey =
+          '5yXAv6E1fzrwzESNQY6zRVDQMiwvnNap5vWKgXQYzJFc4a9AzbsKpQrki88qpsLkztUDyr5LDniikRHQ122bNseL';
+        const scopedSlots = bs58.decode(platformSecretKey);
+        // console.log('platformSecretKey: ', base64ToUint8Array(platformSecretKey));
+        const keyPair = Keypair.fromSecretKey(scopedSlots);
+        // const secretKey = hexToUint8Array(platformSecretKey);
+        let signatureNacl = nacl.sign.detached(MSG, keyPair.secretKey);
+        const platformPublicKey = keyPair.publicKey;
+
         const transaction = new Transaction();
-        debugger;
+        // debugger;
         console.log('createTx-memeId:', memeConfigId.toBase58());
         console.log('createTx-serialized:', msg);
-        console.log('createTx-signature:', signature);
+        // console.log('createTx-signature:', signature);
         console.log('createTx-payer:', publicKey.toBase58());
         console.log('createTx-payerAccountA:', idoBuyerAccountA.toBase58());
         console.log('createTx-memeConfig:', memeConfigPda.toBase58());
@@ -460,11 +489,25 @@ export const useAccount = () => {
         console.log('createTx-mintAccountA:', mintAPublicKey.toBase58());
         console.log('createTx-poolAuthorityA:', poolAuthority.toBase58());
         console.log('createTx-poolAccountA:', poolAccountA.toBase58());
+        // const encodedMsg = message.deserialize(Buffer.from(msg));
+        // console.log('encodedMsg:', JSON.stringify(encodedMsg));
+        // console.log('encodedMsg:', encodedMsg);
+        // console.log('encodedMsg-address:', encodedMsg.address);
+        // console.log('encodedMsg-address-JSON:', JSON.stringify(encodedMsg.address));
+        // console.log('encodedMsg-meme:', encodedMsg.meme);
+        // console.log('encodedMsg-meme-JSON:', JSON.stringify(encodedMsg.meme));
+        // console.log('encodedMsg-count:', Number(encodedMsg.count));
+        // console.log('encodedMsg-expiry:', Number(encodedMsg.expiry));
+        // console.log('encodedMsg:', JSON.parse(encodedMsg));
+
         const tx = await new AirdropTxns(program).createTx({
           memeId: memeConfigId,
+          // serialized: MSG,
+          // signature: signatureNacl,
+          // signerPublicKey: platformPublicKey,
           serialized: msg,
           signature,
-          signerPublicKey,
+          signerPublicKey: signerPublicKey,
           payer: publicKey,
           payerAccountA: idoBuyerAccountA,
           memeConfig: memeConfigPda,
@@ -474,19 +517,48 @@ export const useAccount = () => {
           poolAccountA: poolAccountA,
           addixEd25519Program: true,
         });
+        // if (tx) {
+        //   try {
+        //     debugger;
+        //     const idoBuyS = '2i9Wbo6ZySbszqKSsc22wLKfGZHny8viNnqdwz1iynSARmwRzmug8n8jCEBKTpDoGsMPFTDqGTrtt12Uq5hXdC98';
+        //     const idoBuySec = bs58.decode(idoBuyS);
+        //     console.log('idoBuySec: ', idoBuySec);
+        //     const idoKeyPair = Keypair.fromSecretKey(idoBuySec);
+        //     debugger;
+        //     const rs = await sendAndConfirmTransaction(connection, new Transaction().add(tx), [[idoKeyPair]], {
+        //       skipPreflight: false,
+        //     });
+
+        //     console.log('sendAndConfirmTransaction:', rs);
+        //     // const rs = await sendAndConfirmTransactionWithWallet(connection, transaction.add(tx));
+        //     return rs;
+        //     // If all goes well, we're good!
+        //   } catch (error) {
+        //     // No idea how to catch this error otherwise
+        //     console.log('error: ', error);
+        //   }
+        // }
+        console.log('transaction-tx: ', tx);
         transaction.add(tx);
         const latestBlockhash = await connection.getLatestBlockhash('finalized');
         transaction.recentBlockhash = latestBlockhash.blockhash;
         transaction.feePayer = publicKey;
-
+        console.log('Transaction: ', transaction);
+        // const signedTransaction = await signTransaction(transaction);
         const signedTransaction = await signTransaction(transaction);
-        // const fee = await transaction.getEstimatedFee(connection);
-        // console.log('fee:', fee);
-        const sign = await connection.sendRawTransaction(signedTransaction.serialize());
-
-        console.log('Transaction sent. Signature:', sign);
+        console.log('signedTransaction: ', signedTransaction);
+        tran = signedTransaction;
+        const txSignature = await connection.sendRawTransaction(signedTransaction.serialize(), {
+          skipPreflight: true,
+        });
+        console.log(txSignature);
+        const txDetails = await connection.getParsedTransaction(txSignature, { commitment: 'confirmed' });
+        console.log('txDetails: ', txDetails);
+        // // const signature = await sendTransaction(signedTransaction, connection);
+        // // const signature = await sendAndConfirmTransaction(connection, signedTransaction, []);
+        // console.log('sendAndConfirmTransaction: ', signature);
         const confirmationStrategy = {
-          signature: sign,
+          signature: txSignature,
           blockhash: latestBlockhash.blockhash,
           lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
         };
@@ -497,11 +569,55 @@ export const useAccount = () => {
         if (confirmation.value.err) {
           throw new Error(`Transaction failed: ${confirmation.value.err.toString()}`);
         }
+
+        // return signature;
+        // const latestBlockhash = await connection.getLatestBlockhash('finalized');
+        // transaction.recentBlockhash = latestBlockhash.blockhash;
+        // transaction.feePayer = publicKey;
+
+        // const signedTransaction = await signTransaction(transaction);
+
+        // const signature = await sendTransaction(signedTransaction, connection);
+        // console.log('sendTransaction:', signature);
+        // const fee = await transaction.getEstimatedFee(connection);
+        // console.log('fee:', fee);
+        // const sign = await connection.sendRawTransaction(signedTransaction.serialize());
+
+        // console.log('Transaction sent. Signature:', sign);
+        // const confirmationStrategy = {
+        //   signature: sign,
+        //   blockhash: latestBlockhash.blockhash,
+        //   lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+        // };
+
+        // const confirmation = await connection.confirmTransaction(confirmationStrategy, 'confirmed');
+        // console.log('confirmation:', confirmation);
+
+        // if (confirmation.value.err) {
+        //   throw new Error(`Transaction failed: ${confirmation.value.err.toString()}`);
+        // }
+        // const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
+        // transaction.recentBlockhash = blockhash;
+        // transaction.feePayer = publicKey;
+
+        // const signedTransaction = await signTransaction(transaction);
+        // let signers: any = [];
+        // const signature = await (
+        //   connection,
+        //   signedTransaction,
+        //   signers.concat(publicKey), // 确保包含钱包公钥
+        //   {
+        //     skipPreflight: false,
+        //     preflightCommitment: 'confirmed',
+        //     commitment: 'confirmed',
+        //   },
+        // );
+        // return signature;
       } catch (e) {
         console.log('error: ', e);
       }
     },
-    [connection, publicKey, program, signTransaction],
+    [connection, publicKey, program, signTransaction, sendTransaction],
   );
 
   return {
