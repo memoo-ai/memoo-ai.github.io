@@ -1,4 +1,4 @@
-import { Ed25519Program, PublicKey, SYSVAR_INSTRUCTIONS_PUBKEY } from '@solana/web3.js';
+import { Ed25519Program, PublicKey, SYSVAR_INSTRUCTIONS_PUBKEY, ComputeBudgetProgram } from '@solana/web3.js';
 import { Schema, serialize, deserialize } from 'borsh';
 import { Memoo } from '@/contracts/idl/memoo';
 import { Program, BN } from '@coral-xyz/anchor';
@@ -46,30 +46,44 @@ export class AirdropTxns {
     }
     console.log(`memeId is ${memeId}`);
 
-    return this.programAPI.methods
-      .dealHunterClaim(memeId)
-      .accounts({
-        payer: payer,
-        instructionsSysvar: SYSVAR_INSTRUCTIONS_PUBKEY,
-        payerAccountA,
-        memeConfig,
-        memeUserData,
-        mintAccountA,
-      })
-      .remainingAccounts([
-        {
-          pubkey: poolAuthorityA,
-          isSigner: false,
-          isWritable: true,
-        },
-        {
-          pubkey: poolAccountA,
-          isSigner: false,
-          isWritable: true,
-        },
-      ])
-      .preInstructions([ixEd25519Program].filter(Boolean))
-      .transaction();
+    return (
+      this.programAPI.methods
+        .dealHunterClaim(memeId)
+        .accounts({
+          payer: payer,
+          instructionsSysvar: SYSVAR_INSTRUCTIONS_PUBKEY,
+          payerAccountA,
+          memeConfig,
+          memeUserData,
+          mintAccountA,
+        })
+        .remainingAccounts([
+          {
+            pubkey: poolAuthorityA,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            pubkey: poolAccountA,
+            isSigner: false,
+            isWritable: true,
+          },
+        ])
+        .preInstructions(
+          [
+            ixEd25519Program,
+            ComputeBudgetProgram.setComputeUnitLimit({
+              units: 400_000,
+            }),
+            ComputeBudgetProgram.setComputeUnitPrice({
+              microLamports: new BN(100000),
+            }),
+          ].filter(Boolean),
+        )
+
+        // .preInstructions([ixEd25519Program].filter(Boolean))
+        .transaction()
+    );
   }
 }
 

@@ -2,7 +2,14 @@
 import { useWallet, useConnection, useAnchorWallet } from '@solana/wallet-adapter-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Provider, BN, Idl } from '@coral-xyz/anchor';
-import { Keypair, PublicKey, Connection, Transaction, sendAndConfirmTransaction } from '@solana/web3.js';
+import {
+  Keypair,
+  PublicKey,
+  Connection,
+  Transaction,
+  sendAndConfirmTransaction,
+  TransactionInstruction,
+} from '@solana/web3.js';
 import {
   createAssociatedTokenAccountInstruction,
   NATIVE_MINT,
@@ -454,12 +461,13 @@ export const useAccount = () => {
         // const currentDate = new Date();
         // const futureDate = new Date(currentDate);
         // futureDate.setDate(futureDate.getDate() + 14);
-
+        console.log('Date:', Date.now());
+        const date = 1722998299247;
         const message = new AirdropMessage({
           address: publicKey.toBuffer(),
           meme: memeConfigId.toBuffer(),
           count: new BN(100),
-          expiry: new BN(Math.floor(Date.now() / 1000) + 14 * 24 * 60 * 60), // 当前时间加14天
+          expiry: new BN(Math.floor(date / 1000) + 14 * 24 * 60 * 60), // 当前时间加14天
         });
         const encoded = message.serialize();
         console.log('Serialized message:', encoded);
@@ -519,14 +527,14 @@ export const useAccount = () => {
         });
         // if (tx) {
         //   try {
-        //     debugger;
+        //     // debugger;
         //     const idoBuyS = '2i9Wbo6ZySbszqKSsc22wLKfGZHny8viNnqdwz1iynSARmwRzmug8n8jCEBKTpDoGsMPFTDqGTrtt12Uq5hXdC98';
         //     const idoBuySec = bs58.decode(idoBuyS);
         //     console.log('idoBuySec: ', idoBuySec);
         //     const idoKeyPair = Keypair.fromSecretKey(idoBuySec);
-        //     debugger;
-        //     const rs = await sendAndConfirmTransaction(connection, new Transaction().add(tx), [[idoKeyPair]], {
-        //       skipPreflight: false,
+        //     // debugger;
+        //     const rs = await sendAndConfirmTransaction(connection, new Transaction().add(tx), [idoKeyPair], {
+        //       skipPreflight: true,
         //     });
 
         //     console.log('sendAndConfirmTransaction:', rs);
@@ -538,7 +546,16 @@ export const useAccount = () => {
         //     console.log('error: ', error);
         //   }
         // }
-        console.log('transaction-tx: ', tx);
+        // const COMPUTE_BUDGET_PROGRAM_ID = new PublicKey('ComputeBudget111111111111111111111111111111');
+
+        // // 增加计算单位的指令
+        // const computeBudgetIx = new TransactionInstruction({
+        //   keys: [],
+        //   programId: COMPUTE_BUDGET_PROGRAM_ID,
+        //   data: Buffer.from(Uint8Array.of(0, 192, 0, 0, 0, 0)), // 表示增加200,000计算单位
+        // });
+        // console.log('transaction-tx: ', tx);
+        // transaction.add(computeBudgetIx);
         transaction.add(tx);
         const latestBlockhash = await connection.getLatestBlockhash('finalized');
         transaction.recentBlockhash = latestBlockhash.blockhash;
@@ -551,24 +568,24 @@ export const useAccount = () => {
         const txSignature = await connection.sendRawTransaction(signedTransaction.serialize(), {
           skipPreflight: true,
         });
-        console.log(txSignature);
+        console.log('txSignature: ', txSignature);
         const txDetails = await connection.getParsedTransaction(txSignature, { commitment: 'confirmed' });
         console.log('txDetails: ', txDetails);
-        // // const signature = await sendTransaction(signedTransaction, connection);
-        // // const signature = await sendAndConfirmTransaction(connection, signedTransaction, []);
-        // console.log('sendAndConfirmTransaction: ', signature);
-        const confirmationStrategy = {
-          signature: txSignature,
-          blockhash: latestBlockhash.blockhash,
-          lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
-        };
+        // // // const signature = await sendTransaction(signedTransaction, connection);
+        // // // const signature = await sendAndConfirmTransaction(connection, signedTransaction, []);
+        // // console.log('sendAndConfirmTransaction: ', signature);
+        // const confirmationStrategy = {
+        //   signature: txSignature,
+        //   blockhash: latestBlockhash.blockhash,
+        //   lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+        // };
 
-        const confirmation = await connection.confirmTransaction(confirmationStrategy, 'finalized');
-        console.log('confirmation:', confirmation);
+        // const confirmation = await connection.confirmTransaction(confirmationStrategy, 'finalized');
+        // console.log('confirmation:', confirmation);
 
-        if (confirmation.value.err) {
-          throw new Error(`Transaction failed: ${confirmation.value.err.toString()}`);
-        }
+        // if (confirmation.value.err) {
+        //   throw new Error(`Transaction failed: ${confirmation.value.err.toString()}`);
+        // }
 
         // return signature;
         // const latestBlockhash = await connection.getLatestBlockhash('finalized');
