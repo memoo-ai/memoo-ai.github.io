@@ -574,18 +574,18 @@ export const useAccount = () => {
         // // // const signature = await sendTransaction(signedTransaction, connection);
         // // // const signature = await sendAndConfirmTransaction(connection, signedTransaction, []);
         // // console.log('sendAndConfirmTransaction: ', signature);
-        // const confirmationStrategy = {
-        //   signature: txSignature,
-        //   blockhash: latestBlockhash.blockhash,
-        //   lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
-        // };
+        const confirmationStrategy = {
+          signature: txSignature,
+          blockhash: latestBlockhash.blockhash,
+          lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+        };
 
-        // const confirmation = await connection.confirmTransaction(confirmationStrategy, 'finalized');
-        // console.log('confirmation:', confirmation);
+        const confirmation = await connection.confirmTransaction(confirmationStrategy, 'finalized');
+        console.log('confirmation:', confirmation);
 
-        // if (confirmation.value.err) {
-        //   throw new Error(`Transaction failed: ${confirmation.value.err.toString()}`);
-        // }
+        if (confirmation.value.err) {
+          throw new Error(`Transaction failed: ${confirmation.value.err.toString()}`);
+        }
 
         // return signature;
         // const latestBlockhash = await connection.getLatestBlockhash('finalized');
