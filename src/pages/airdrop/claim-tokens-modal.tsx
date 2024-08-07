@@ -10,6 +10,7 @@ import {
   useCallback,
   useContext,
   useState,
+  useMemo,
 } from 'react';
 import './claim-tokens-modal.scss';
 import { AirdropContext } from '.';
@@ -23,8 +24,13 @@ const ClaimTokensModal: FC<{
   unlockTokens?: number;
 }> = ({ children, stage, lockinPeriod, tokens, unlockTokens, rate }) => {
   const [open, setOpen] = useState(false);
-  const { creatorClaim, idoQueueDetail, solanaMemeConfig } = useContext(AirdropContext);
+  const { creatorClaim, idoQueueDetail, solanaMemeConfig, memeUserData } = useContext(AirdropContext);
   const [confirming, setConfirming] = useState(false);
+
+  const unLockTokens = useMemo(() => {
+    if (!memeUserData) return 0;
+    return Number(memeUserData?.memeUserIdoClaimedCount);
+  }, [memeUserData]);
 
   const onConfirm = useCallback(async () => {
     // debugger;
@@ -77,7 +83,7 @@ const ClaimTokensModal: FC<{
                 <>
                   <div className="flex flex-col items-end">
                     <span className="font-404px text-white text-[24px] leading-[29px]">
-                      {Number(unlockTokens).toLocaleString()}
+                      {Number(unLockTokens).toLocaleString()}
                     </span>
                     <span className="font-OCR text-white text-base leading-[21px]">Claim Completed</span>
                   </div>

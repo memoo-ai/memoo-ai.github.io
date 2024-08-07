@@ -17,20 +17,21 @@ import { useSign } from '@/hooks/useEthers';
 import { myAirdropDetail } from '@/api/airdrop';
 import BigNumber from 'bignumber.js';
 import { CollectorContext } from './collector';
-import { getNumberOrDefault } from '@/utils';
+import { getNumberOrDefault, base64ToUint8Array } from '@/utils';
 import { useSolana } from '@/hooks/useSolana';
+import { PublicKey } from '@solana/web3.js';
+
 type ChildWithOnClick = ReactElement<{ onClick?: (e: React.MouseEvent) => void }>;
 
 const AirdropModal = ({ children }: any) => {
   const [open, setOpen] = useState(false);
-  const { airdropClaim } = useManageContract();
   const [confirming, setConfirming] = useState(false);
   // const { getSign } = useSign();
-  const { idoLaunchedDetail } = useContext(CollectorContext);
+  const { idoLaunchedDetail, solanaMemeConfig, airdropClaim } = useContext(CollectorContext);
   const { getSign } = useSolana();
 
   const onConfirm = useCallback(async () => {
-    if (!airdropClaim || !idoLaunchedDetail) return;
+    if (!airdropClaim || !idoLaunchedDetail || !solanaMemeConfig) return;
     try {
       setConfirming(true);
       const res = await getSign();
@@ -38,20 +39,15 @@ const AirdropModal = ({ children }: any) => {
         ticker: idoLaunchedDetail?.ticker ?? '',
         signature: res?.rawSignature ?? '',
         timestap: res?.msg ?? '',
+        chain: 'solana',
       });
-      console.log('contractAddress:', idoLaunchedDetail?.contractAddress);
-      console.log('airdropCount:', new BigNumber(data?.airdropCount));
-      console.log('jsonData:', data?.jsonData);
-      console.log('signature:', data?.signature);
+
       await airdropClaim(
-        idoLaunchedDetail?.contractAddress,
-        new BigNumber(data?.airdropCount),
-        // data?.hexMessage,
-        // data?.hexSignature,
-        `0x${data?.hexMessage}`,
-        `0x${data?.hexSignature}`,
-        // `0x${data?.jsonData}`,
-        // data?.signature,
+        solanaMemeConfig?.memeConfigId,
+        solanaMemeConfig?.mintaPublickey,
+        base64ToUint8Array(data?.hexMessage),
+        base64ToUint8Array(data?.hexSignature),
+        new PublicKey(data?.signPublickey),
       );
       // setOpen(false);
       // message.success('Claim Successful');

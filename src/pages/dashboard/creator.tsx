@@ -14,13 +14,13 @@ import { CreatorStatus } from './type';
 import { DashboardCreator } from '@/types';
 import { getMeMemo } from '@/api/common';
 import { useManageContract } from '@/hooks/useManageContract';
-import { formatDecimals } from '@/utils';
+import { formatDecimals, formatRestTime } from '@/utils';
 import BigNumber from 'bignumber.js';
 import { TransactionReceipt } from 'viem';
-import { getIDOQueueDetail, getIDOLaunchedDetail } from '@/api/airdrop';
-import { IDOQueueDetail, IDOLaunchedDetail, UnlockPeriod } from '@/types';
+import { getIDOQueueDetail, getUnlockTimestamp } from '@/api/airdrop';
+import { IDOQueueDetail, IDOLaunchedDetail, UnlockPeriod, SolanaMemeConfig } from '@/types';
 // import { useAccount } from 'wagmi';
-import { useAccount, MemooConfig } from '@/hooks/useWeb3';
+import { useAccount, MemooConfig, MemeUserIdoData } from '@/hooks/useWeb3';
 import { useProportion } from '@/hooks/useProportion';
 import { getMemeConfigId } from '@/api/base';
 import { BN } from '@coral-xyz/anchor';
@@ -37,7 +37,7 @@ interface CreatorContext {
     proportion: number,
   ) => Promise<TransactionReceipt | undefined>;
   // idoBuy?: (project: `0x${string}`, amount: BigNumber) => Promise<TransactionReceipt | undefined>;
-  unlockMeme?: (project: `0x${string}`, index: number) => Promise<TransactionReceipt | undefined>;
+  // unlockMeme?: (project: `0x${string}`, index: number) => Promise<TransactionReceipt | undefined>;
   airdropClaim?: (
     project: `0x${string}`,
     claimCount: BigNumber,
@@ -55,7 +55,12 @@ interface CreatorContext {
   stage?: '1st' | '2nd';
   totalPurchased?: string;
   rate?: number;
-  memeConfigId?: string;
+  memeUserData?: MemeUserIdoData;
+  creatorClaim?: (memeId: string, mintAPublicKey: string) => Promise<TransactionReceipt | undefined>;
+  idoClaim?: (memeId: string, mintAPublicKey: string) => Promise<TransactionReceipt | undefined>;
+  // mintAPublickey?: PublicKey;
+  solanaMemeConfig?: SolanaMemeConfig;
+  unlockTimestamp?: number;
 }
 export const CreatorContext = createContext<CreatorContext>({
   totalPurchased: '',
@@ -74,8 +79,10 @@ export const Creator = () => {
   const iconRefs = useRef<any>({});
   const [memeConfigId, setMemeConfigId] = useState();
   const [idoQueueDetail, setIDOQueueDetail] = useState<IDOQueueDetail>();
-
+  const [solanaMemeConfig, setSolanaMemeConfig] = useState<SolanaMemeConfig>();
+  const [memeUserData, setMemeUserData] = useState<MemeUserIdoData>();
   const [stage, setStage] = useState<'1st' | '2nd'>('1st');
+  const [unlockTimestamp, setUnlockTimestamp] = useState();
 
   const [_1stStage, set1stStage] = useState<{
     unlockCount: BigNumber;
@@ -85,12 +92,10 @@ export const Creator = () => {
     unlockCount: BigNumber;
     unlockInfo: UnlockPeriod;
   }>();
-  const { address, memooConfig, idoBuy } = useAccount();
+  const { address, memooConfig, idoBuy, getMemeUserData, airdropClaim, creatorClaim, idoClaim } = useAccount();
   const {
     // config: memooConfig,
     // idoBuy,
-    defaultConfig,
-    airdropClaim,
     unlockMeme,
     getCanUnlockCount,
     memeUnlockPeriods,
@@ -100,30 +105,23 @@ export const Creator = () => {
 
   // const firstProportion = useMemo(() => Number(memooConfig?.allocation.creator) / 10000, [memooConfig]);
   const purchased = useMemo(() => {
-    if (!memooConfig) return 0;
+    if (!memooConfig || !memeUserData) return 0;
 
-    const totalPurchasedBN = new BigNumber(Number(totalPurchased));
+    const creatorLockCountBN = new BigNumber(Number(memeUserData?.creatorLockCount));
+    console.log('creatorLockCountBN:', Number(creatorLockCountBN));
+    const memeUserIdoCountBN = new BigNumber(Number(memeUserData?.memeUserIdoCount));
+    console.log('memeUserIdoCountBN:', Number(memeUserIdoCountBN));
     const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 9);
-    console.log('purchased:', parseFloat(formatDecimals(totalPurchasedBN.multipliedBy(idoPriceBN))));
-    return parseFloat(formatDecimals(totalPurchasedBN.multipliedBy(idoPriceBN)));
-  }, [memooConfig, totalPurchased]);
-  // const maxProportion = useMemo(
-  //   () => (Number(memooConfig?.idoCreatorBuyLimit) + Number(memooConfig?.allocation.creator)) / 10000,
-  //   [memooConfig],
-  // );
-  // const firstIncrease = useMemo(() => {
-  //   if (!memooConfig || !defaultConfig) return 0;
-  //   const totalSupplyBN = new BigNumber(Number(defaultConfig?.totalSupply)).dividedBy(
-  //     10 ** defaultConfig?.defaultDecimals,
-  //   );
-  //   const idoPriceBN = new BigNumber(Number(defaultConfig?.idoPrice)).dividedBy(10 ** defaultConfig?.defaultDecimals);
-  //   const result = totalSupplyBN.multipliedBy(idoPriceBN).multipliedBy(firstProportion);
-  //   return parseFloat(formatDecimals(result));
-  // }, [memooConfig, firstProportion, defaultConfig]);
-  // const maxIncrease = useMemo(
-  //   () => parseFloat(formatDecimals(firstIncrease * (maxProportion / firstProportion))),
-  //   [firstProportion, maxProportion, firstIncrease],
-  // );
+    console.log('idoPriceBN:', Number(idoPriceBN));
+    const totalCountBN = creatorLockCountBN.plus(memeUserIdoCountBN);
+    console.log('totalCountBN:', Number(totalCountBN));
+    const totalPurchasedBN = totalCountBN.multipliedBy(idoPriceBN);
+    console.log('totalPurchasedBN:', Number(totalPurchasedBN));
+    const formattedResult = parseFloat(formatDecimals(totalPurchasedBN));
+    console.log('purchased:', formattedResult);
+
+    return formattedResult;
+  }, [memooConfig, memeUserData]);
 
   const context: CreatorContext = useMemo(
     () => ({
@@ -133,13 +131,27 @@ export const Creator = () => {
       airdropClaim,
       _1stStage,
       _2ndStage,
-      defaultConfig,
       totalPurchased,
       stage,
       unlockMeme,
-      memeConfigId,
+      solanaMemeConfig,
+      creatorClaim,
+      idoClaim,
+      unlockTimestamp,
     }),
-    [idoQueueDetail, idoBuy, airdropClaim, unlockMeme, memooConfig, defaultConfig, totalPurchased, stage, memeConfigId],
+    [
+      idoQueueDetail,
+      idoBuy,
+      airdropClaim,
+      unlockMeme,
+      memooConfig,
+      totalPurchased,
+      stage,
+      solanaMemeConfig,
+      creatorClaim,
+      idoClaim,
+      unlockTimestamp,
+    ],
   );
 
   const getIDOAndPurchased = async (ticker: string) => {
@@ -148,9 +160,14 @@ export const Creator = () => {
       const { data } = await getIDOQueueDetail(ticker, address ?? 'default');
       setIDOQueueDetail(data);
       const { data: config } = await getMemeConfigId(ticker);
-      setMemeConfigId(config.memeConfigId);
-      const { data: meme } = await getMeMemo(ticker);
-      setTotalPurchased(meme[0].balance ?? 0);
+      setSolanaMemeConfig(config);
+      const memeUser = await getMemeUserData(config?.memeConfigId);
+      console.log('memeUser:', memeUser);
+      setMemeUserData(memeUser!);
+      // const { data: meme } = await getMeMemo(ticker);
+      // setTotalPurchased(meme[0].balance ?? 0);
+      const { data: time } = await getUnlockTimestamp(ticker);
+      setUnlockTimestamp(time);
       setLoading(false);
       if (data.stageTwoClaim && address) {
         setStage('2nd');
@@ -158,19 +175,6 @@ export const Creator = () => {
         setStage('1st');
       }
       if (!address) return;
-      const [unlockCount, unlockInfo] = await Promise.all([
-        getCanUnlockCount(data.contractAddress, address, 1) as Promise<BigNumber>,
-        memeUnlockPeriods(1) as Promise<UnlockPeriod>,
-      ]);
-      console.log('2nd stage', unlockCount, unlockInfo);
-
-      set2ndStage({ unlockCount, unlockInfo });
-      const [unlockCount1, unlockInfo1] = await Promise.all([
-        getCanUnlockCount(data.contractAddress, address, 0) as Promise<BigNumber>,
-        memeUnlockPeriods(0) as Promise<UnlockPeriod>,
-      ]);
-      console.log('1st stage', unlockCount1, unlockInfo1);
-      set1stStage({ unlockCount, unlockInfo });
       // if()
     } catch (error) {
       console.error('Error fetching data:', error);

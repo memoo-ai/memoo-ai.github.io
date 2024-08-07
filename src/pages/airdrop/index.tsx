@@ -130,7 +130,7 @@ const Airdrop: FC = () => {
   const { config, unlockMeme, getCanUnlockCount, memeUnlockPeriods } = useManageContract();
   const navigate = useNavigate();
   const mine = useMemo(
-    () => compareAddrs(idoQueueDetail?.creatorAddress as Address, address!),
+    () => compareAddrs(idoQueueDetail?.creatorAddress as Address, address! as any),
     [idoQueueDetail, address],
   );
   console.log('idoQueueDetail: ', idoQueueDetail, address);
@@ -206,12 +206,15 @@ const Airdrop: FC = () => {
         // const memeUser = await getMemeUserData(config.memeConfigId);
         // console.log('memeUser:', memeUser);
         // setMemeUserData(memeUser!);
+        const { data: time } = await getUnlockTimestamp(ticker);
+        setUnlockTimestamp(time);
+        console.log('getUnlockTimestamp: ', time);
         if (data.stageTwoClaim) {
           setStage('2st-claim');
         } else if (data.stageOneClaim) {
           setStage('1st-claim');
         } else if (data.status === 'Launched') {
-          const [p1, p2, p3] = await Promise.all([
+          const [p1, p2] = await Promise.all([
             getIDOLaunchedDetail(ticker, address ?? 'default'),
             getIDOLaunchedDetailTop10({
               pageNumber: 1,
@@ -223,9 +226,6 @@ const Airdrop: FC = () => {
           ]);
           setIDOLaunchedDetail(p1.data);
           setIDOLaunchedDetailTop10(p2.data);
-          console.log('setUnlockTimestamp:', p3.data);
-          setUnlockTimestamp(p3.data);
-          setStage('launch');
         } else if (data.status === 'IDO') {
           const { data } = await getIDOActiveDetail(ticker, address ?? 'default');
           console.log('data.status:IDO');

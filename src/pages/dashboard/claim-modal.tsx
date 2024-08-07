@@ -16,13 +16,16 @@ import BigNumber from 'bignumber.js';
 import { useAccount } from 'wagmi';
 import { formatDecimals, formatRestTime, getNumberOrDefault } from '@/utils';
 import { CreatorContext } from './creator';
+import { BN } from '@coral-xyz/anchor';
+
 type ChildWithOnClick = ReactElement<{ onClick?: (e: React.MouseEvent) => void }>;
 
 const ClaimModal = ({ children }: any) => {
   const { address } = useAccount();
   const [open, setOpen] = useState(false);
   const [confirming, setConfirming] = useState(false);
-  const { unlockMeme, stage, idoQueueDetail, _1stStage, _2ndStage } = useContext(CreatorContext);
+  const { creatorClaim, stage, idoQueueDetail, _1stStage, _2ndStage, solanaMemeConfig, unlockTimestamp, memeUserData } =
+    useContext(CreatorContext);
 
   const rate = useMemo(() => {
     return getNumberOrDefault(
@@ -30,26 +33,22 @@ const ClaimModal = ({ children }: any) => {
     );
   }, [stage, _1stStage, _2ndStage]);
   const tokens = useMemo(() => {
-    const token =
-      stage === '1st'
-        ? parseFloat(formatDecimals(new BigNumber(_1stStage?.unlockCount ?? 0).dividedBy(10 ** 9)))
-        : parseFloat(formatDecimals(new BigNumber(_2ndStage?.unlockCount ?? 0).dividedBy(10 ** 9)));
+    if (!memeUserData) return 0;
+    const creatorLockCountPermission = new BN(memeUserData.creatorLockCountPermission);
+    const creatorLockCount = new BN(memeUserData.creatorLockCount);
+    const result = creatorLockCountPermission.sub(creatorLockCount);
+    return parseFloat(formatDecimals(result.toString()));
+  }, [memeUserData]);
 
-    return getNumberOrDefault(token);
-  }, [stage, _1stStage, _2ndStage]);
-
-  const lockinPeriod = useMemo(() => {
-    return formatRestTime(Number(_1stStage?.unlockInfo?.value) / 1000);
-  }, [stage, _1stStage, _2ndStage]);
   const unlockTokens = useMemo(() => {
     return getNumberOrDefault(parseFloat(formatDecimals(Number(_1stStage?.unlockInfo?.value))));
   }, [stage, _1stStage, _2ndStage]);
 
   const onConfirm = useCallback(async () => {
-    if (!unlockMeme || !idoQueueDetail || !address) return;
+    if (!creatorClaim || !idoQueueDetail || !address || !solanaMemeConfig) return;
     try {
       setConfirming(true);
-      await unlockMeme(idoQueueDetail.contractAddress, stage === '1st' ? 0 : 1);
+      await creatorClaim(solanaMemeConfig?.memeConfigId, solanaMemeConfig?.mintaPublickey);
       setOpen(false);
       message.success('Unlock Successful');
     } catch (error) {
@@ -58,7 +57,7 @@ const ClaimModal = ({ children }: any) => {
     } finally {
       setConfirming(false);
     }
-  }, [unlockMeme, idoQueueDetail]);
+  }, [creatorClaim, idoQueueDetail, solanaMemeConfig, address]);
 
   return (
     <div>
@@ -83,7 +82,9 @@ const ClaimModal = ({ children }: any) => {
               {stage === '1st' && (
                 <>
                   <div className="flex flex-col items-end">
-                    <span className="font-404px text-white text-[24px] leading-[29px]">{lockinPeriod}</span>
+                    <span className="font-404px text-white text-[24px] leading-[29px]">
+                      {formatRestTime(unlockTimestamp!) ?? '14 DAYS'}
+                    </span>
                     <span className="font-OCR text-white text-base leading-[21px]">Next Unlock</span>
                   </div>
                   <img className="w-[50px]" src="/create/icon-claim-unlock.png" />

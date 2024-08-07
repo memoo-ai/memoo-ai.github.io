@@ -15,14 +15,32 @@ import { useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect, createContext, useMemo } from 'react';
 import { getCollectorAirdrop, getCollectorParticipated } from '@/api/dashboard';
 import { CollectorType } from './type';
-import { IDOLaunchedDetail, DashboardCollectorParticipated, DashboardCollectorAirdrop } from '@/types';
+import {
+  IDOLaunchedDetail,
+  DashboardCollectorParticipated,
+  DashboardCollectorAirdrop,
+  SolanaMemeConfig,
+} from '@/types';
 import { getIDOQueueDetail, getIDOLaunchedDetail } from '@/api/airdrop';
-import { useAccount } from 'wagmi';
+// import { useAccount } from 'wagmi';
+import { useAccount } from '@/hooks/useWeb3';
 import ClaimImoTokensModal from './claim-imo-tokens-modal';
+import { TransactionReceipt } from 'viem';
+import { PublicKey } from '@solana/web3.js';
+import { getMemeConfigId } from '@/api/base';
 
 interface CollectorContext {
   idoLaunchedDetail?: IDOLaunchedDetail;
   ticker?: string;
+  solanaMemeConfig?: SolanaMemeConfig;
+  airdropClaim?: (
+    memeId: string,
+    mintAPublicKey: string,
+    msg: any,
+    signature: any,
+    signerPublicKey: PublicKey,
+  ) => Promise<TransactionReceipt | undefined>;
+  idoClaim?: (memeId: string, mintAPublicKey: string) => Promise<TransactionReceipt | undefined>;
 }
 export const CollectorContext = createContext<CollectorContext>({
   ticker: '',
@@ -39,13 +57,17 @@ export const Collector = () => {
   // const [list, setList] = useState<DashboardCollectorItem[]>([]);
   const [list, setList] = useState<DashboardCollectorParticipated[] | DashboardCollectorAirdrop[]>([]);
   const [idoLaunchedDetail, setIdoLaunchedDetail] = useState<IDOLaunchedDetail>();
-  const { address } = useAccount();
+  const { address, airdropClaim, idoClaim } = useAccount();
+  const [solanaMemeConfig, setSolanaMemeConfig] = useState<SolanaMemeConfig>();
 
   const context: CollectorContext = useMemo(
     () => ({
       idoLaunchedDetail,
+      solanaMemeConfig,
+      airdropClaim,
+      idoClaim,
     }),
-    [idoLaunchedDetail],
+    [idoLaunchedDetail, solanaMemeConfig, airdropClaim, idoClaim],
   );
 
   useEffect(() => {
@@ -73,6 +95,8 @@ export const Collector = () => {
       setLoading(true);
       const { data } = await getIDOLaunchedDetail(ticker, address ?? 'default');
       setIdoLaunchedDetail(data);
+      const { data: config } = await getMemeConfigId(ticker);
+      setSolanaMemeConfig(config);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching data:', error);

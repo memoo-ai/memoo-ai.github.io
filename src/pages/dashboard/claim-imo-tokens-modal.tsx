@@ -23,35 +23,27 @@ type ChildWithOnClick = ReactElement<{ onClick?: (e: React.MouseEvent) => void }
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const ClaimImoTokensModal = ({ children }: any) => {
   const [open, setOpen] = useState(false);
-  const { idoClaim } = useManageContract();
   const [confirming, setConfirming] = useState(false);
   const { getSign } = useSign();
-  const { idoLaunchedDetail } = useContext(CollectorContext);
+  const { idoLaunchedDetail, solanaMemeConfig, idoClaim } = useContext(CollectorContext);
 
   const onConfirm = useCallback(async () => {
-    if (!idoClaim || !idoLaunchedDetail) return;
+    if (!idoClaim || !idoLaunchedDetail || !solanaMemeConfig) return;
     try {
       setConfirming(true);
-      const res = await getSign();
-      const { data } = await myAirdropDetail({
-        ticker: idoLaunchedDetail?.ticker ?? '',
-        signature: res?.rawSignature ?? '',
-        timestap: res?.msg ?? '',
-      });
-      console.log('contractAddress:', idoLaunchedDetail?.contractAddress);
-      console.log('airdropCount:', new BigNumber(data?.airdropCount));
-      console.log('jsonData:', data?.jsonData);
-      console.log('signature:', data?.signature);
-      await idoClaim(idoLaunchedDetail?.contractAddress);
-      setOpen(false);
-      message.success('Claim Successful');
+      const tx = await idoClaim(solanaMemeConfig?.memeConfigId, solanaMemeConfig?.mintaPublickey);
+      console.log('idoClaim tx:', tx);
+      if (tx) {
+        setOpen(false);
+        message.success('Claim Successful');
+      }
     } catch (error) {
       console.error(error);
       message.error('Claim Failed');
     } finally {
       setConfirming(false);
     }
-  }, [idoClaim, idoLaunchedDetail]);
+  }, [idoClaim, idoLaunchedDetail, solanaMemeConfig]);
   return (
     <div>
       <Modal

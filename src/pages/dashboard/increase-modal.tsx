@@ -36,10 +36,10 @@ const IncreaseModal: FC<{
   const [proportion, setProportion] = useState(purchased);
   const [result, setResult] = useState(0);
   const defaultValue = purchased * 1000;
-  const { idoBuy, idoQueueDetail, memeConfigId } = useContext(CreatorContext);
-  useEffect(() => {
-    setProportion(firstProportion * 100);
-  }, [firstProportion]);
+  const { idoBuy, idoQueueDetail, solanaMemeConfig } = useContext(CreatorContext);
+  // useEffect(() => {
+  //   setProportion(firstProportion * 100);
+  // }, [firstProportion]);
 
   useEffect(() => {
     const increasePercent = proportion / 100;
@@ -58,14 +58,14 @@ const IncreaseModal: FC<{
     console.log('onConfirm');
     console.log('idoBuy:', idoBuy);
     console.log('idoQueueDetail:', idoQueueDetail);
-    console.log('memeConfigId:', memeConfigId);
+    console.log('memeConfigId:', solanaMemeConfig?.memeConfigId);
 
-    if (!idoBuy || !idoQueueDetail || !memeConfigId) return;
+    if (!idoBuy || !idoQueueDetail || !solanaMemeConfig) return;
     try {
       setConfirming(true);
       console.log(result);
       console.log('firstIncreaseD:', firstIncrease);
-      const tx = await idoBuy(memeConfigId!, new BN(result - purchased), true, proportion);
+      const tx = await idoBuy(solanaMemeConfig?.memeConfigId, new BN(result - purchased), true, proportion);
       if (tx) {
         setOpen(false);
         message.success('Buy Successful');
@@ -76,7 +76,7 @@ const IncreaseModal: FC<{
     } finally {
       setConfirming(false);
     }
-  }, [idoBuy, idoQueueDetail, result, firstIncrease]);
+  }, [idoBuy, idoQueueDetail, result, firstIncrease, solanaMemeConfig]);
 
   return (
     <>
