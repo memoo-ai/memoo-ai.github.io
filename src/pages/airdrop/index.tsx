@@ -30,7 +30,7 @@ import {
 } from '@/api/airdrop';
 import { useParams } from 'react-router-dom';
 // import { useAccount } from 'wagmi';
-import { useAccount, MemooConfig, MemeUserIdoData } from '@/hooks/useWeb3';
+import { useAccount, MemooConfig, MemeUserIdoData, MemeConfig } from '@/hooks/useWeb3';
 import { compareAddrs } from '@/utils';
 import { DefaultMemooConfig, useManageContract } from '@/hooks/useManageContract';
 import BigNumber from 'bignumber.js';
@@ -86,6 +86,8 @@ interface AirdropContext {
   // memeConfigId?: string;
   getMemeUserData?: (memeConfigId: string) => Promise<TransactionReceipt | undefined>;
   memeUserData?: MemeUserIdoData;
+  memeConfig?: MemeConfig;
+  memeCreatorUserData?: MemeUserIdoData;
   creatorClaim?: (memeId: string, mintAPublicKey: string) => Promise<TransactionReceipt | undefined>;
   // mintAPublickey?: PublicKey;
   solanaMemeConfig?: SolanaMemeConfig;
@@ -109,10 +111,13 @@ const Airdrop: FC = () => {
   // const [mintAPublickey, setMintAPublickey] = useState();
   const [solanaMemeConfig, setSolanaMemeConfig] = useState<SolanaMemeConfig>();
   const [memeUserData, setMemeUserData] = useState<MemeUserIdoData>();
+  const [memeConfig, setMemeConfig] = useState<MemeConfig>();
+  const [memeCreatorUserData, setMemeCreatorUserData] = useState<MemeUserIdoData>();
   const [unlockTimestamp, setUnlockTimestamp] = useState();
   const { ticker = import.meta.env.VITE_DEMO_TICKER } = useParams<{ ticker: string }>();
   const [refresh, setRefresh] = useState(0);
-  const { address, memooConfig, idoBuy, getMemeUserData, idoClaim, creatorClaim, airdropClaim } = useAccount();
+  const { address, memooConfig, idoBuy, getMemeUserData, getMemeCreatorData, idoClaim, creatorClaim, airdropClaim } =
+    useAccount();
   console.log('my-address:', address);
   const [loading, setLoading] = useState(false);
   const [searchParams] = useSearchParams();
@@ -162,6 +167,8 @@ const Airdrop: FC = () => {
       creatorClaim,
       solanaMemeConfig,
       unlockTimestamp,
+      memeConfig,
+      memeCreatorUserData,
     }),
     [
       stage,
@@ -186,6 +193,8 @@ const Airdrop: FC = () => {
       creatorClaim,
       solanaMemeConfig,
       unlockTimestamp,
+      memeConfig,
+      memeCreatorUserData,
     ],
   );
 
@@ -250,6 +259,10 @@ const Airdrop: FC = () => {
         const memeUser = await getMemeUserData(solanaMemeConfig?.memeConfigId);
         console.log('memeUser:', memeUser);
         setMemeUserData(memeUser!);
+        const memeCreator = await getMemeCreatorData(solanaMemeConfig?.memeConfigId);
+        console.log('memeConfig:', memeCreator);
+        setMemeConfig(memeCreator?.memeConfig);
+        setMemeCreatorUserData(memeCreator?.memeCreatorData);
       } catch (error) {
         console.error(error);
       } finally {
@@ -283,6 +296,16 @@ const Airdrop: FC = () => {
       }
     })();
   }, [idoQueueDetail, address, memeUnlockPeriods]);
+
+  const preAmount = useMemo(() => {
+    if (!memooConfig || !memeCreatorUserData) return 0;
+    const idoPriceBN = new BigNumber(memooConfig?.idoPrice).dividedBy(10 ** 9);
+    console.log('idoPriceBN: ', idoPriceBN);
+    const memeUserIdoCountBN = new BigNumber(memeCreatorUserData?.memeUserIdoCount);
+    console.log('memeUserIdoCountBN: ', Number(memeUserIdoCountBN));
+    console.log('preAmount: ', memeUserIdoCountBN.multipliedBy(idoPriceBN));
+    return memeUserIdoCountBN.multipliedBy(idoPriceBN).toNumber();
+  }, [memeCreatorUserData, memooConfig]);
 
   return (
     <div className="airdrop pb-16">
@@ -321,7 +344,7 @@ const Airdrop: FC = () => {
           <PublicSale />
           {/* {stage === 'imo' && <IMOParticipate />} */}
           <IMOParticipate />
-          {stage === 'in-queue' && mine && <PreMarketAcqusition amount={totalAmount ?? 0} />}
+          {stage === 'in-queue' && mine && <PreMarketAcqusition amount={preAmount} />}
           <AirdropClaim />
           <IDODetail />
         </AirdropContext.Provider>

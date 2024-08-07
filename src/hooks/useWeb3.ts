@@ -37,13 +37,22 @@ export interface MemooConfig {
   totalSupply: BN;
 }
 export interface MemeConfig {
+  admin: PublicKey;
   createTimestamp: BN;
   creator: PublicKey;
   creatorTotal: BN;
   id: PublicKey;
+  idoEnd: boolean;
+  isInitialized: boolean;
+  memeAirdropCount: BN;
+  memeAirdropTotal: BN;
   memeIdoCount: BN;
   memeIdoMoney: BN;
+  mintTokenAddress: PublicKey;
+  platform: PublicKey;
   platformTotal: BN;
+  poolA: PublicKey;
+  poolWsol: PublicKey;
   preLaunchSecond: BN;
   totalSupply: BN;
 }
@@ -60,6 +69,7 @@ export interface MemeUserIdoData {
   memeUserIdoMoney: BN;
   user: PublicKey;
 }
+
 export const useAccount = () => {
   const { publicKey, signTransaction, signAllTransactions } = useWallet();
   // const RPC_URL = 'https://api.devnet.solana.com';
@@ -436,8 +446,19 @@ export const useAccount = () => {
           [Buffer.from('meme_config'), memeConfigId.toBuffer()],
           programId,
         )[0];
-        const memeCreatorData = await program.account.memeConfig.fetch(memeConfigPda);
-        return memeCreatorData;
+        const memeConfig: MemeConfig = (await program.account.memeConfig.fetch(memeConfigPda)) as any;
+        const memeUserDataPda_idoBuy = PublicKey.findProgramAddressSync(
+          [Buffer.from('meme_user_data'), memeConfigId.toBuffer(), memeConfig.creator.toBuffer()],
+          programId,
+        )[0];
+        const memeCreatorData: MemeUserIdoData = (await program.account.memeUserIdoData.fetch(
+          memeUserDataPda_idoBuy,
+        )) as any;
+        console.log('memeCreatorData: ', memeCreatorData);
+        return {
+          memeConfig,
+          memeCreatorData,
+        };
       } catch (e) {
         console.log('error: ', e);
       }

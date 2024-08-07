@@ -1,6 +1,6 @@
 import './pre-market-acquisition.scss';
 interface PreMarketAcqusitionProps {
-  amount: string;
+  amount: number;
 }
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const PreMarketAcqusition = ({ amount }: PreMarketAcqusitionProps) => {
