@@ -15,7 +15,7 @@ import BigNumber from 'bignumber.js';
 import { useProportion } from '@/hooks/useProportion';
 import { BN } from '@coral-xyz/anchor';
 const Progress: FC = () => {
-  const { stage, idoQueueDetail, _2ndStage, _1stStage, memooConfig, mine, totalPurchased, memeUserData } =
+  const { stage, idoQueueDetail, memooConfig, mine, totalPurchased, memeUserData, unlockTimestamp } =
     useContext(AirdropContext);
   const { address } = useAccount();
   const { firstProportion, maxProportion, firstIncrease, maxIncrease, createMaxProportion } = useProportion();
@@ -46,8 +46,8 @@ const Progress: FC = () => {
   const tokens = useMemo(() => {
     if (!memeUserData) return 0;
 
-    const creatorLockCountPermission = new BN(memeUserData.creatorLockCountPermission);
-    const creatorLockCount = new BN(memeUserData.creatorLockCount);
+    const creatorLockCountPermission = new BN(memeUserData?.creatorLockCountPermission);
+    const creatorLockCount = new BN(memeUserData?.creatorLockCount);
 
     console.log('creatorLockCountPermission:', creatorLockCountPermission.toString());
     console.log('creatorLockCount:', creatorLockCount.toString());
@@ -131,10 +131,11 @@ const Progress: FC = () => {
         </div>
       ),
       title: '1st claim',
-      desc: `1st ${new BigNumber(Number(_1stStage?.unlockInfo?.unlockRate))
-        .dividedBy(1e4)
-        .multipliedBy(1e2)
-        .toNumber()}% unlock when\ntoken price hits 0.0005c`,
+      // desc: `1st ${new BigNumber(Number(_1stStage?.unlockInfo?.unlockRate))
+      //   .dividedBy(1e4)
+      //   .multipliedBy(1e2)
+      //   .toNumber()}% unlock when\ntoken price hits 0.0005c`,
+      desc: `1st ${50}% unlock when\ntoken price hits 0.0005c`,
       onClick: () => {},
       btnText: 'claim',
       btnIcon: `/create/icon-claim${stage === '1st-claim' ? '-active' : ''}.svg`,
@@ -147,8 +148,8 @@ const Progress: FC = () => {
           //     new BigNumber(_1stStage?.unlockCount ?? 0).dividedBy(10 ** 9),
           //   ),
           // )}
-          lockinPeriod={formatRestTime(Number(_1stStage?.unlockInfo?.value) / 1000)}
-          rate={new BigNumber(Number(_1stStage?.unlockInfo?.unlockRate)).dividedBy(1e4).multipliedBy(1e2).toNumber()}
+          lockinPeriod={formatRestTime(Number(unlockTimestamp) / 1000)}
+          rate={50}
           stage="1st"
         >
           {node}
@@ -156,13 +157,14 @@ const Progress: FC = () => {
       ),
       // enabled:
       //   idoQueueDetail?.stageOneClaim &&
-      //   Number(_1stStage?.unlockCount) > 0 &&
+      // tokens > 0 &&
       //   idoQueueDetail?.status === 'Launched' &&
       //   (address
       //     ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
       //         compareAddrs(addr, address),
       //       )
       //     : false),
+      //   Number(_1stStage?.unlockCount) > 0  &&
       enabled: true,
     },
     {
@@ -177,10 +179,11 @@ const Progress: FC = () => {
         </div>
       ),
       title: '2st claim',
-      desc: `Next ${new BigNumber(Number(_2ndStage?.unlockInfo?.unlockRate))
-        .dividedBy(1e4)
-        .multipliedBy(1e2)
-        .toNumber()}% unlocked\ntokens in ${formatRestTime(Number(_2ndStage?.unlockInfo?.value) * 1000)}`,
+      // desc: `Next ${new BigNumber(Number(_2ndStage?.unlockInfo?.unlockRate))
+      //   .dividedBy(1e4)
+      //   .multipliedBy(1e2)
+      //   .toNumber()}% unlocked\ntokens in ${formatRestTime(Number(_2ndStage?.unlockInfo?.value) * 1000)}`,
+      desc: `Next ${50}% unlocked\ntokens in ${formatRestTime(Number(unlockTimestamp) * 1000)}`,
       onClick: () => {},
       btnText: 'claim',
       btnIcon: `/create/icon-claim${stage === '2st-claim' ? '-active' : ''}.svg`,
@@ -193,7 +196,7 @@ const Progress: FC = () => {
           //   ),
           // )}
           tokens={tokens}
-          unlockTokens={parseFloat(formatDecimals(Number(_1stStage?.unlockInfo?.value ?? 0)))}
+          // unlockTokens={parseFloat(formatDecimals(Number(_1stStage?.unlockInfo?.value ?? 0)))}
           stage="2nd"
         >
           {node}

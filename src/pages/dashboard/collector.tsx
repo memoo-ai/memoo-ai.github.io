@@ -26,7 +26,7 @@ import { getIDOQueueDetail, getIDOLaunchedDetail } from '@/api/airdrop';
 import { useAccount } from '@/hooks/useWeb3';
 import ClaimImoTokensModal from './claim-imo-tokens-modal';
 import { TransactionReceipt } from 'viem';
-import { PublicKey } from '@solana/web3.js';
+import { PublicKey, RpcResponseAndContext, SignatureResult } from '@solana/web3.js';
 import { getMemeConfigId } from '@/api/base';
 
 interface CollectorContext {
@@ -39,8 +39,8 @@ interface CollectorContext {
     msg: any,
     signature: any,
     signerPublicKey: PublicKey,
-  ) => Promise<TransactionReceipt | undefined>;
-  idoClaim?: (memeId: string, mintAPublicKey: string) => Promise<TransactionReceipt | undefined>;
+  ) => Promise<RpcResponseAndContext<SignatureResult> | undefined>;
+  idoClaim?: (memeId: string, mintAPublicKey: string) => Promise<string | undefined>;
 }
 export const CollectorContext = createContext<CollectorContext>({
   ticker: '',

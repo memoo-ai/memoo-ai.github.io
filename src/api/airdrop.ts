@@ -9,7 +9,7 @@ import {
   AirdropDetail,
 } from '@/types';
 
-export const getIDOActiveDetail = (ticker: string, address?: string) => {
+export const getIDOActiveDetail = (ticker: string, address?: any) => {
   return http.get<IDOActiveDetail>(`${prefix}/web-unauthorized/ido-active-detail`, { params: { ticker, address } });
 };
 
@@ -17,7 +17,7 @@ export const getIDOActiveDetail = (ticker: string, address?: string) => {
 //   return http.get(`${prefix}/web-oriented/ido-completed`, { params });
 // };
 
-export const getIDOLaunchedDetail = (ticker: string, address?: string) => {
+export const getIDOLaunchedDetail = (ticker: string, address?: any) => {
   return http.get<IDOLaunchedDetail>(`${prefix}/web-unauthorized/ido-launched-detail`, {
     params: { ticker, address },
   });
@@ -27,7 +27,7 @@ export const getIDOLaunchedDetailTop10 = (params: {
   pageSize: number;
   pageNumber: number;
   ticker: string;
-  address?: string;
+  address?: any;
 }) => {
   return http.get<IDOLaunchedDetailTop10[]>(`${prefix}/web-unauthorized/ido-launched-detail-top10`, { params });
 };

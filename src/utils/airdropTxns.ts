@@ -75,7 +75,8 @@ export class AirdropTxns {
             units: 400_000,
           }),
           ComputeBudgetProgram.setComputeUnitPrice({
-            microLamports: new BN(100000),
+            // microLamports: new BN(100000),
+            microLamports: 100000,
           }),
         ].filter(Boolean),
       )

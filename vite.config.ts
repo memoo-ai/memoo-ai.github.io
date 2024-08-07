@@ -6,7 +6,7 @@ import tailwindcss from 'tailwindcss';
 import autoprefixer from 'autoprefixer';
 import { visualizer } from 'rollup-plugin-visualizer';
 import viteCompression from 'vite-plugin-compression';
-
+import { nodePolyfills } from 'vite-plugin-node-polyfills';
 const pathResolve = (path: string): string => resolve(process.cwd(), path);
 
 export default defineConfig({
@@ -53,6 +53,9 @@ export default defineConfig({
       ...viteCompression(),
       apply: 'build',
     },
+    nodePolyfills({
+      include: ['crypto'],
+    }),
   ],
   build: {
     target: ['esnext'],

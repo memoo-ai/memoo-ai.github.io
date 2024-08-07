@@ -51,6 +51,7 @@ import ITooltip from '@/components/ITooltip';
 import { getMemeConfigId } from '@/api/base';
 import { memooConfig } from '@/types';
 import { useProportion } from '@/hooks/useProportion';
+import { BN } from '@coral-xyz/anchor';
 
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
@@ -271,12 +272,16 @@ export default function Create() {
       // const value = parseEther(String(preValue)) + memeConfigId!.platformFeeCreateMeme;
       // const value = parseEther(String(preValue));
       const platformFeeCreateMeme = totalCapInitial * (0.05 / 0.3);
-      const value = new BigNumber(preValue + platformFeeCreateMeme).multipliedBy(new BigNumber(10).pow(9));
+      const preValueBN = new BN(preValue.toString());
+      const platformFeeCreateMemeBN = new BN(platformFeeCreateMeme);
+      const multiplier = new BN(10).pow(new BN(9));
+      const value = preValueBN.add(platformFeeCreateMemeBN).mul(multiplier);
+      // const value = new BigNumber(preValue + platformFeeCreateMeme).multipliedBy(new BigNumber(10).pow(9));
       console.log('value1:', value);
       // const value = parseEther(String(preValue)) + memooConfig!.platformFeeCreateMeme;
       // const res = await createMeme(data.tokenName, data.ticker, preLaunchSecond, value);
 
-      const res = await registerTokenMint(memeConfigId!, Number(value).toString());
+      const res = await registerTokenMint(memeConfigId!, value);
       console.log('res: ', res);
       return res;
     },

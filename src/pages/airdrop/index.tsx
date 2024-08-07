@@ -44,7 +44,7 @@ import PreMarketAcqusition from '@/pages/airdrop/pre-market-acquisition';
 import MeMooScoreBreakdown from './memoo-score-breakdown';
 import { BN } from '@coral-xyz/anchor';
 import { getMemeConfigId } from '@/api/base';
-import { PublicKey } from '@solana/web3.js';
+import { PublicKey, RpcResponseAndContext, SignatureResult } from '@solana/web3.js';
 
 interface AirdropContext {
   stage: TokenCreateStage;
@@ -57,15 +57,10 @@ interface AirdropContext {
   memooConfig?: MemooConfig;
   // defaultConfig?: DefaultMemooConfig;
   // idoBuy?: (project: `0x${string}`, amount: BigNumber) => Promise<TransactionReceipt | undefined>;
-  idoBuy?: (
-    memeId: string,
-    amount: BN,
-    isCreate: boolean,
-    proportion: number,
-  ) => Promise<TransactionReceipt | undefined>;
+  idoBuy?: (memeId: string, amount: BN, isCreate: boolean, proportion: number) => Promise<string | undefined>;
   unlockMeme?: (project: `0x${string}`, index: number) => Promise<TransactionReceipt | undefined>;
   // idoClaim?: (project: `0x${string}`) => Promise<TransactionReceipt | undefined>;
-  idoClaim?: (memeId: string, mintAPublicKey: string) => Promise<TransactionReceipt | undefined>;
+  idoClaim?: (memeId: string, mintAPublicKey: string) => Promise<string | undefined>;
   triggerRefresh?: Function;
   airdropClaim?: (
     memeId: string,
@@ -73,22 +68,22 @@ interface AirdropContext {
     msg: any,
     signature: any,
     signerPublicKey: PublicKey,
-  ) => Promise<TransactionReceipt | undefined>;
-  _1stStage?: {
-    unlockCount: BigNumber;
-    unlockInfo: UnlockPeriod;
-  };
-  _2ndStage?: {
-    unlockCount: BigNumber;
-    unlockInfo: UnlockPeriod;
-  };
+  ) => Promise<RpcResponseAndContext<SignatureResult> | undefined>;
+  // _1stStage?: {
+  //   unlockCount: BigNumber;
+  //   unlockInfo: UnlockPeriod;
+  // };
+  // _2ndStage?: {
+  //   unlockCount: BigNumber;
+  //   unlockInfo: UnlockPeriod;
+  // };
   totalPurchased?: string;
   // memeConfigId?: string;
-  getMemeUserData?: (memeConfigId: string) => Promise<TransactionReceipt | undefined>;
+  getMemeUserData?: (memeConfigId: string) => Promise<MemeUserIdoData | undefined>;
   memeUserData?: MemeUserIdoData;
   memeConfig?: MemeConfig;
   memeCreatorUserData?: MemeUserIdoData;
-  creatorClaim?: (memeId: string, mintAPublicKey: string) => Promise<TransactionReceipt | undefined>;
+  creatorClaim?: (memeId: string, mintAPublicKey: string) => Promise<string | undefined>;
   // mintAPublickey?: PublicKey;
   solanaMemeConfig?: SolanaMemeConfig;
   unlockTimestamp?: number;
@@ -122,14 +117,14 @@ const Airdrop: FC = () => {
   const [loading, setLoading] = useState(false);
   const [searchParams] = useSearchParams();
 
-  const [_1stStage, set1stStage] = useState<{
-    unlockCount: BigNumber;
-    unlockInfo: UnlockPeriod;
-  }>();
-  const [_2ndStage, set2ndStage] = useState<{
-    unlockCount: BigNumber;
-    unlockInfo: UnlockPeriod;
-  }>();
+  // const [_1stStage, set1stStage] = useState<{
+  //   unlockCount: BigNumber;
+  //   unlockInfo: UnlockPeriod;
+  // }>();
+  // const [_2ndStage, set2ndStage] = useState<{
+  //   unlockCount: BigNumber;
+  //   unlockInfo: UnlockPeriod;
+  // }>();
   const [totalPurchased, setTotalPurchased] = useState('0');
   const [totalAmount, setTotalAmount] = useState('0');
   const { config, unlockMeme, getCanUnlockCount, memeUnlockPeriods } = useManageContract();
@@ -157,8 +152,8 @@ const Airdrop: FC = () => {
       unlockMeme,
       airdropClaim,
       idoClaim,
-      _1stStage,
-      _2ndStage,
+      // _1stStage,
+      // _2ndStage,
       // defaultConfig,
       triggerRefresh,
       totalPurchased,
@@ -183,8 +178,8 @@ const Airdrop: FC = () => {
       unlockMeme,
       airdropClaim,
       idoClaim,
-      _1stStage,
-      _2ndStage,
+      // _1stStage,
+      // _2ndStage,
       // defaultConfig,
       triggerRefresh,
       totalPurchased,
@@ -271,40 +266,44 @@ const Airdrop: FC = () => {
     })();
   }, [ticker, solanaMemeConfig]);
 
-  useEffect(() => {
-    if (!idoQueueDetail || !address) return;
+  // useEffect(() => {
+  //   if (!idoQueueDetail || !address) return;
 
-    (async () => {
-      // 1st stage
-      {
-        const [unlockCount, unlockInfo] = await Promise.all([
-          getCanUnlockCount(idoQueueDetail.contractAddress, address, 0) as Promise<BigNumber>,
-          memeUnlockPeriods(0) as Promise<UnlockPeriod>,
-        ]);
-        console.log('1st stage', unlockCount, unlockInfo);
-        set1stStage({ unlockCount, unlockInfo });
-      }
+  //   (async () => {
+  //     // 1st stage
+  //     {
+  //       const [unlockCount, unlockInfo] = await Promise.all([
+  //         getCanUnlockCount(idoQueueDetail.contractAddress, address, 0) as Promise<BigNumber>,
+  //         memeUnlockPeriods(0) as Promise<UnlockPeriod>,
+  //       ]);
+  //       console.log('1st stage', unlockCount, unlockInfo);
+  //       set1stStage({ unlockCount, unlockInfo });
+  //     }
 
-      // 2nd stafe
-      {
-        const [unlockCount, unlockInfo] = await Promise.all([
-          getCanUnlockCount(idoQueueDetail.contractAddress, address, 1) as Promise<BigNumber>,
-          memeUnlockPeriods(1) as Promise<UnlockPeriod>,
-        ]);
-        console.log('2nd stage', unlockCount, unlockInfo);
-        set2ndStage({ unlockCount, unlockInfo });
-      }
-    })();
-  }, [idoQueueDetail, address, memeUnlockPeriods]);
+  //     // 2nd stafe
+  //     {
+  //       const [unlockCount, unlockInfo] = await Promise.all([
+  //         getCanUnlockCount(idoQueueDetail.contractAddress, address, 1) as Promise<BigNumber>,
+  //         memeUnlockPeriods(1) as Promise<UnlockPeriod>,
+  //       ]);
+  //       console.log('2nd stage', unlockCount, unlockInfo);
+  //       set2ndStage({ unlockCount, unlockInfo });
+  //     }
+  //   })();
+  // }, [idoQueueDetail, address, memeUnlockPeriods]);
 
   const preAmount = useMemo(() => {
-    if (!memooConfig || !memeCreatorUserData) return 0;
-    const idoPriceBN = new BigNumber(memooConfig?.idoPrice).dividedBy(10 ** 9);
-    console.log('idoPriceBN: ', idoPriceBN);
-    const memeUserIdoCountBN = new BigNumber(memeCreatorUserData?.memeUserIdoCount);
-    console.log('memeUserIdoCountBN: ', Number(memeUserIdoCountBN));
-    console.log('preAmount: ', memeUserIdoCountBN.multipliedBy(idoPriceBN));
-    return memeUserIdoCountBN.multipliedBy(idoPriceBN).toNumber();
+    if (!memooConfig || !memeCreatorUserData) return new BN(0);
+    const idoPriceBN = new BN(memooConfig?.idoPrice).div(new BN(10).pow(new BN(9)));
+    console.log('idoPriceBN: ', idoPriceBN.toString());
+
+    const memeUserIdoCountBN = new BN(memeCreatorUserData?.memeUserIdoCount);
+    console.log('memeUserIdoCountBN: ', memeUserIdoCountBN.toString());
+
+    const preAmountBN = memeUserIdoCountBN.mul(idoPriceBN);
+    console.log('preAmount: ', preAmountBN.toString());
+
+    return preAmountBN.toNumber();
   }, [memeCreatorUserData, memooConfig]);
 
   return (

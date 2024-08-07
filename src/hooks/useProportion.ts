@@ -29,10 +29,11 @@ export const useProportion = () => {
   }, [memooConfig]);
 
   const totalCapInitial = useMemo(() => {
+    if (!memooConfig) return 0;
     const rate = Number(memooConfig?.idoCreatorBuyLimit) / 10000;
     const total =
-      Number(new BigNumber(memooConfig?.idoPrice).dividedBy(10 ** 9)) *
-      Number(new BigNumber(memooConfig?.totalSupply).dividedBy(10 ** 9)) *
+      Number(new BigNumber(memooConfig?.idoPrice.toString()).dividedBy(10 ** 9)) *
+      Number(new BigNumber(memooConfig?.totalSupply.toString()).dividedBy(10 ** 9)) *
       rate;
     return Number(new BigNumber(total));
     // return Number(new BigNumber(total).dividedBy(new BigNumber(10).pow(9)));

@@ -1,6 +1,7 @@
 import './pre-market-acquisition.scss';
+import { BN } from '@coral-xyz/anchor';
 interface PreMarketAcqusitionProps {
-  amount: number;
+  amount: number | BN;
 }
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const PreMarketAcqusition = ({ amount }: PreMarketAcqusitionProps) => {
@@ -10,7 +11,7 @@ const PreMarketAcqusition = ({ amount }: PreMarketAcqusitionProps) => {
       <div className="pre-market-acquisition-content flex items-center justify-between mt-[19px] text-[#fff]">
         <div className="font-OCR text-[14px] ">Total Contributed</div>
         <div className='font-OCR text-[24px]"'>
-          {amount}
+          {Number(amount)}
           {tokenSymbol}
         </div>
       </div>

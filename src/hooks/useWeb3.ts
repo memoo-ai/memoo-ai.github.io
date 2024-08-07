@@ -103,7 +103,7 @@ export const useAccount = () => {
     (async () => {
       if (!memooConfigPda || !program) return;
       // const config = (await program.account.globalMemooConfig.fetch(memooConfigPda)) as any;
-      const config = (await program.account.globalMemooConfig.fetch(memooConfigPda)) as any;
+      const config: MemooConfig = (await program.account.globalMemooConfig.fetch(memooConfigPda)) as any;
       console.log('memooConfig:', config);
       setMemooConfig(config);
     })();
@@ -119,7 +119,7 @@ export const useAccount = () => {
   // }, [memooConfigPda, program, connection]);
 
   const registerTokenMint = useCallback(
-    async (memeId: string, totalPay: number | string | bigint) => {
+    async (memeId: string, totalPay: BN) => {
       if (!solanaConfig || !publicKey || !signTransaction || !program) return;
       // console.log('totalPay', Number(new BN(totalPay).add(memooConfig?.platformFeeCreateMemeSol)));
       try {
@@ -156,7 +156,7 @@ export const useAccount = () => {
         console.log('Program ID:', program.programId.toBase58());
         console.log('memeConfigId:', memeConfigId);
         console.log('memeConfigPda:', memeConfigPda.toBase58());
-        console.log('memooConfigPda:', memooConfigPda.toBase58());
+        // console.log('memooConfigPda:', memooConfigPda.toBase58());
         console.log('memeUserDataPda:', memeUserDataPda.toBase58());
         const transaction = new Transaction();
         let createAtaIx;
@@ -172,9 +172,10 @@ export const useAccount = () => {
 
         console.log('transaction:', transaction);
         console.log('amount- totalPay:', totalPay);
-        console.log('totalPay:', new BN(totalPay).add(memooConfig?.platformFeeCreateMemeSol));
+        const platformFeeBN = memooConfig?.platformFeeCreateMemeSol as BN;
+        console.log('totalPay:', new BN(totalPay).add(platformFeeBN));
         const registerTokenMintIx = await program.methods
-          .registerTokenMint(memeConfigId, new BN(totalPay).add(memooConfig?.platformFeeCreateMemeSol), new BN(0))
+          .registerTokenMint(memeConfigId, new BN(totalPay).add(platformFeeBN), new BN(0))
           // .registerTokenMint(memeConfigId, new BN(18000000).add(memooConfig?.platformFeeCreateMemeSol), new BN(0), 9)
           .accounts({
             memooConfig: memooConfigPda,
@@ -542,6 +543,7 @@ export const useAccount = () => {
         if (confirmation.value.err) {
           throw new Error(`Transaction failed: ${confirmation.value.err.toString()}`);
         }
+        return confirmation;
       } catch (e) {
         console.log('error: ', e);
       }

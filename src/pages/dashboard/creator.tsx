@@ -24,26 +24,23 @@ import { useAccount, MemooConfig, MemeUserIdoData } from '@/hooks/useWeb3';
 import { useProportion } from '@/hooks/useProportion';
 import { getMemeConfigId } from '@/api/base';
 import { BN } from '@coral-xyz/anchor';
+import { PublicKey, RpcResponseAndContext, SignatureResult } from '@solana/web3.js';
 
 interface CreatorContext {
   memooConfig?: MemooConfig;
   // defaultConfig?: DefaultMemooConfig;
   idoQueueDetail?: IDOQueueDetail;
   idoLaunchedDetail?: IDOLaunchedDetail;
-  idoBuy?: (
-    memeId: string,
-    amount: BN,
-    isCreate: boolean,
-    proportion: number,
-  ) => Promise<TransactionReceipt | undefined>;
+  idoBuy?: (memeId: string, amount: BN, isCreate: boolean, proportion: number) => Promise<string | undefined>;
   // idoBuy?: (project: `0x${string}`, amount: BigNumber) => Promise<TransactionReceipt | undefined>;
   // unlockMeme?: (project: `0x${string}`, index: number) => Promise<TransactionReceipt | undefined>;
   airdropClaim?: (
-    project: `0x${string}`,
-    claimCount: BigNumber,
-    proof: string,
-    signature: string,
-  ) => Promise<TransactionReceipt | undefined>;
+    memeId: string,
+    mintAPublicKey: string,
+    msg: any,
+    signature: any,
+    signerPublicKey: PublicKey,
+  ) => Promise<RpcResponseAndContext<SignatureResult> | undefined>;
   _1stStage?: {
     unlockCount: BigNumber;
     unlockInfo: UnlockPeriod;
@@ -56,8 +53,8 @@ interface CreatorContext {
   totalPurchased?: string;
   rate?: number;
   memeUserData?: MemeUserIdoData;
-  creatorClaim?: (memeId: string, mintAPublicKey: string) => Promise<TransactionReceipt | undefined>;
-  idoClaim?: (memeId: string, mintAPublicKey: string) => Promise<TransactionReceipt | undefined>;
+  creatorClaim?: (memeId: string, mintAPublicKey: string) => Promise<string | undefined>;
+  idoClaim?: (memeId: string, mintAPublicKey: string) => Promise<string | undefined>;
   // mintAPublickey?: PublicKey;
   solanaMemeConfig?: SolanaMemeConfig;
   unlockTimestamp?: number;

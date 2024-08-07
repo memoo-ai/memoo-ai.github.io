@@ -11,7 +11,6 @@ import { useAccountEffect } from 'wagmi';
 import { useLogin } from '@/hooks/useLogin';
 import { MEMOO_TOKEN_STORAGE, SOL_DEMO_SPL_USDC } from '@/constants';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { useSolanaWallet } from '@/hooks/useSolana';
 import useSPLToken from '@/utils/solanaWeb3/slpToken';
 import { PublicKey } from '@solana/web3.js';
 const BasicLayout: React.FC = () => {

@@ -62,6 +62,7 @@ const CreatorRankingShareModal = ({ children, ticker }: any) => {
         ticker: idoLaunchedDetail?.ticker ?? '',
         signature: res?.rawSignature ?? '',
         timestap: res?.msg ?? '',
+        chain: 'solana',
       });
       console.log('contractAddress:', idoLaunchedDetail?.contractAddress);
       console.log('airdropCount:', new BigNumber(data?.airdropCount));

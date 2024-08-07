@@ -27,11 +27,11 @@ const ClaimModal = ({ children }: any) => {
   const { creatorClaim, stage, idoQueueDetail, _1stStage, _2ndStage, solanaMemeConfig, unlockTimestamp, memeUserData } =
     useContext(CreatorContext);
 
-  const rate = useMemo(() => {
-    return getNumberOrDefault(
-      new BigNumber(Number(_1stStage?.unlockInfo?.unlockRate)).dividedBy(1e4).multipliedBy(1e2).toNumber(),
-    );
-  }, [stage, _1stStage, _2ndStage]);
+  // const rate = useMemo(() => {
+  //   return getNumberOrDefault(
+  //     new BigNumber(Number(_1stStage?.unlockInfo?.unlockRate)).dividedBy(1e4).multipliedBy(1e2).toNumber(),
+  //   );
+  // }, [stage, _1stStage, _2ndStage]);
   const tokens = useMemo(() => {
     if (!memeUserData) return 0;
     const creatorLockCountPermission = new BN(memeUserData.creatorLockCountPermission);
@@ -75,7 +75,7 @@ const ClaimModal = ({ children }: any) => {
         <div className="claim_tokens flex flex-col">
           <div className="flex justify-between">
             <div className="flex items-center gap-x-[15px]">
-              <p className="whitespace-pre font-OCR text-base leading-[18px] text-white">{`Redeem ${stage} ${rate}%\nunlocked tokens`}</p>
+              <p className="whitespace-pre font-OCR text-base leading-[18px] text-white">{`Redeem ${stage} ${50}%\nunlocked tokens`}</p>
               <img className="w-[111px] object-contain" src="/create/img-claim.png" />
             </div>
             <div className="flex items-center gap-x-[14px]">
