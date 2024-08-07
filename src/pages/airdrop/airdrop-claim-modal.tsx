@@ -42,10 +42,6 @@ const AirdropClaimModal: FC<{ children: ReactNode }> = ({ children }) => {
         chain: 'Solana',
       });
       console.log('myAirdropDetail:', data);
-      console.log('contractAddress:', idoQueueDetail?.contractAddress);
-      console.log('airdropCount:', new BigNumber(data?.airdropCount));
-      console.log('jsonData:', data?.jsonData);
-      console.log('signature:', data?.signature);
       console.log('hexSignature):', base64ToUint8Array(data?.hexSignature));
       console.log('hexMessage):', base64ToUint8Array(data?.hexMessage));
       const tx = await airdropClaim(

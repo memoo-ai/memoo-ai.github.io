@@ -449,7 +449,7 @@ export const useAccount = () => {
         )[0];
         const poolAccountA = getAssociatedTokenAddressSync(mintAPublicKey, poolAuthority, true);
         const transaction = new Transaction();
-        debugger;
+        // debugger;
         console.log('createTx-memeId:', memeConfigId.toBase58());
         console.log('createTx-serialized:', msg);
         console.log('createTx-signature:', signature);
@@ -478,15 +478,19 @@ export const useAccount = () => {
         const latestBlockhash = await connection.getLatestBlockhash('finalized');
         transaction.recentBlockhash = latestBlockhash.blockhash;
         transaction.feePayer = publicKey;
-
+        console.log('Transaction: ', transaction);
+        // const signedTransaction = await signTransaction(transaction);
         const signedTransaction = await signTransaction(transaction);
-        // const fee = await transaction.getEstimatedFee(connection);
-        // console.log('fee:', fee);
-        const sign = await connection.sendRawTransaction(signedTransaction.serialize());
+        console.log('signedTransaction: ', signedTransaction);
 
-        console.log('Transaction sent. Signature:', sign);
+        const txSignature = await connection.sendRawTransaction(signedTransaction.serialize(), {
+          skipPreflight: false,
+        });
+        console.log('txSignature: ', txSignature);
+        const txDetails = await connection.getParsedTransaction(txSignature, { commitment: 'confirmed' });
+        console.log('txDetails: ', txDetails);
         const confirmationStrategy = {
-          signature: sign,
+          signature: txSignature,
           blockhash: latestBlockhash.blockhash,
           lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
         };
