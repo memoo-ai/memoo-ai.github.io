@@ -204,13 +204,14 @@ const Progress: FC = () => {
       ),
       // enabled:
       //   idoQueueDetail?.stageTwoClaim &&
-      //   Number(_2ndStage?.unlockCount) > 0 &&
+      // tokens > 0 &&
       //   idoQueueDetail?.status === 'Launched' &&
       //   (address
       //     ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
       //         compareAddrs(addr, address!),
       //       )
       //     : false),
+      //   Number(_2ndStage?.unlockCount) > 0 &&
       enabled: true,
     },
   ];
