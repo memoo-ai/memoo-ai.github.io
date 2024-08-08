@@ -119,7 +119,7 @@ export const useAccount = () => {
   // }, [memooConfigPda, program, connection]);
 
   const registerTokenMint = useCallback(
-    async (memeId: string, totalPay: BN) => {
+    async (memeId: string, totalPay: string) => {
       if (!solanaConfig || !publicKey || !signTransaction || !program) return;
       // console.log('totalPay', Number(new BN(totalPay).add(memooConfig?.platformFeeCreateMemeSol)));
       try {
