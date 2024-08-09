@@ -270,9 +270,12 @@ export default function Create() {
       console.log('preValue: ', preValue);
       // const value = parseEther(String(preValue)) + memeConfigId!.platformFeeCreateMeme;
       // const value = parseEther(String(preValue));
-      const platformFeeCreateMeme = totalCapInitial * (0.05 / 0.3);
-      const value = new BigNumber(preValue + platformFeeCreateMeme).multipliedBy(new BigNumber(10).pow(9));
-      console.log('value1:', value);
+      const platformFeeCreateMeme = (totalCapInitial * 0.05) / 0.3;
+      console.log('platformFeeCreateMeme: ', platformFeeCreateMeme);
+      console.log(preValue + platformFeeCreateMeme);
+
+      const value = new BigNumber((preValue + platformFeeCreateMeme).toFixed(2)).multipliedBy(new BigNumber(10).pow(9));
+      console.log('value1:', Number(value).toString());
       // const value = parseEther(String(preValue)) + memooConfig!.platformFeeCreateMeme;
       // const res = await createMeme(data.tokenName, data.ticker, preLaunchSecond, value);
 

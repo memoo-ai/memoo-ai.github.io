@@ -29,6 +29,7 @@ const App = () => {
   // const network = import.meta.env.VITE_RPC_URL;
   // debugger; // eslint-disable-line no-debugger
   const network = import.meta.env.VITE_WALLET_ADAPTER_NETWORK; // Use WalletAdapterNetwork.Mainnet for mainnet
+  // const rpcUrl = import.meta.env.VITE_RPC_URL;
   const endpoint = clusterApiUrl(network);
 
   const wallets = useMemo(

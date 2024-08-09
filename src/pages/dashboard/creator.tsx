@@ -41,14 +41,6 @@ interface CreatorContext {
     signature: any,
     signerPublicKey: PublicKey,
   ) => Promise<RpcResponseAndContext<SignatureResult> | undefined>;
-  _1stStage?: {
-    unlockCount: BigNumber;
-    unlockInfo: UnlockPeriod;
-  };
-  _2ndStage?: {
-    unlockCount: BigNumber;
-    unlockInfo: UnlockPeriod;
-  };
   stage?: '1st' | '2nd';
   totalPurchased?: string;
   rate?: number;
@@ -81,14 +73,6 @@ export const Creator = () => {
   const [stage, setStage] = useState<'1st' | '2nd'>('1st');
   const [unlockTimestamp, setUnlockTimestamp] = useState();
 
-  const [_1stStage, set1stStage] = useState<{
-    unlockCount: BigNumber;
-    unlockInfo: UnlockPeriod;
-  }>();
-  const [_2ndStage, set2ndStage] = useState<{
-    unlockCount: BigNumber;
-    unlockInfo: UnlockPeriod;
-  }>();
   const { address, memooConfig, idoBuy, getMemeUserData, airdropClaim, creatorClaim, idoClaim } = useAccount();
   const {
     // config: memooConfig,
@@ -126,8 +110,6 @@ export const Creator = () => {
       idoBuy,
       memooConfig,
       airdropClaim,
-      _1stStage,
-      _2ndStage,
       totalPurchased,
       stage,
       unlockMeme,

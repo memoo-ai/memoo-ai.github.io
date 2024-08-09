@@ -24,14 +24,9 @@ const ClaimModal = ({ children }: any) => {
   const { address } = useAccount();
   const [open, setOpen] = useState(false);
   const [confirming, setConfirming] = useState(false);
-  const { creatorClaim, stage, idoQueueDetail, _1stStage, _2ndStage, solanaMemeConfig, unlockTimestamp, memeUserData } =
+  const { creatorClaim, stage, idoQueueDetail, solanaMemeConfig, unlockTimestamp, memeUserData } =
     useContext(CreatorContext);
 
-  // const rate = useMemo(() => {
-  //   return getNumberOrDefault(
-  //     new BigNumber(Number(_1stStage?.unlockInfo?.unlockRate)).dividedBy(1e4).multipliedBy(1e2).toNumber(),
-  //   );
-  // }, [stage, _1stStage, _2ndStage]);
   const tokens = useMemo(() => {
     if (!memeUserData) return 0;
     const creatorLockCountPermission = new BN(memeUserData.creatorLockCountPermission);
@@ -41,8 +36,9 @@ const ClaimModal = ({ children }: any) => {
   }, [memeUserData]);
 
   const unlockTokens = useMemo(() => {
-    return getNumberOrDefault(parseFloat(formatDecimals(Number(_1stStage?.unlockInfo?.value))));
-  }, [stage, _1stStage, _2ndStage]);
+    if (!memeUserData) return 0;
+    return Number(memeUserData?.memeUserIdoClaimedCount);
+  }, [memeUserData]);
 
   const onConfirm = useCallback(async () => {
     if (!creatorClaim || !idoQueueDetail || !address || !solanaMemeConfig) return;

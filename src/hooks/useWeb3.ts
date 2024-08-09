@@ -120,7 +120,7 @@ export const useAccount = () => {
 
   const registerTokenMint = useCallback(
     async (memeId: string, totalPay: string) => {
-      if (!solanaConfig || !publicKey || !signTransaction || !program) return;
+      if (!solanaConfig || !publicKey || !signTransaction || !program || !memooConfig) return;
       // console.log('totalPay', Number(new BN(totalPay).add(memooConfig?.platformFeeCreateMemeSol)));
       try {
         // console.log('memooConfigPda:', memooConfigPda);
@@ -172,8 +172,9 @@ export const useAccount = () => {
 
         console.log('transaction:', transaction);
         console.log('amount- totalPay:', totalPay);
-        const platformFeeBN = memooConfig?.platformFeeCreateMemeSol as BN;
-        console.log('totalPay:', new BN(totalPay).add(platformFeeBN));
+        const platformFeeBN = new BN(memooConfig?.platformFeeCreateMemeSol);
+        console.log('platformFeeCreateMemeSol: ', platformFeeBN);
+        console.log('totalPay:', Number(new BN(Number(totalPay)).add(platformFeeBN)));
         const registerTokenMintIx = await program.methods
           .registerTokenMint(memeConfigId, new BN(totalPay).add(platformFeeBN), new BN(0))
           // .registerTokenMint(memeConfigId, new BN(18000000).add(memooConfig?.platformFeeCreateMemeSol), new BN(0), 9)
@@ -197,9 +198,12 @@ export const useAccount = () => {
         transaction.recentBlockhash = latestBlockhash.blockhash;
         transaction.feePayer = publicKey;
         const signedTransaction = await signTransaction(transaction);
-        // const fee = await transaction.getEstimatedFee(connection);
-        // console.log('fee:', fee);
+        const fee = await transaction.getEstimatedFee(connection);
+        console.log('fee:', fee);
         const signature = await connection.sendRawTransaction(signedTransaction.serialize());
+        // const signature = await connection.sendRawTransaction(signedTransaction.serialize(), {
+        //   skipPreflight: true,
+        // });
 
         console.log('Transaction sent. Signature:', signature);
         const confirmationStrategy = {
@@ -220,7 +224,7 @@ export const useAccount = () => {
         throw error;
       }
     },
-    [connection, signTransaction, solanaConfig, publicKey, program],
+    [connection, signTransaction, solanaConfig, publicKey, program, memooConfig],
   );
 
   const idoBuy = useCallback(
