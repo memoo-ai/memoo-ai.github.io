@@ -33,6 +33,7 @@ const ClaimImoTokensModal: FC<{ children: ReactNode }> = ({ children }) => {
         ticker: idoQueueDetail?.ticker ?? '',
         signature: res?.rawSignature ?? '',
         timestap: res?.msg ?? '',
+        chain: 'Ethereum',
       });
       await idoClaim(idoQueueDetail?.contractAddress);
       setOpen(false);
