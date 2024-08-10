@@ -321,10 +321,10 @@ export default function Create() {
         data.accessToken = twitterAccessToken;
         if (isConfirm) {
           // twitter must have been connected
-          if (!twitter) {
-            message.warning('Please connect project twitter first.');
-            return;
-          }
+          // if (!twitter) {
+          //   message.warning('Please connect project twitter first.');
+          //   return;
+          // }
           setConfirmLoading(true);
           const res = await confirmTokenCreate(data);
 
