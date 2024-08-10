@@ -18,12 +18,16 @@ const Profile: FC = () => {
   }, [idoQueueDetail]);
   useEffect(() => {
     (async () => {
-      try {
-        const { data } = await getToolsUrls();
-        setTools(data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+      const dexScreenerUrl = `https://dexscreener.com/solana/${idoQueueDetail?.contractAddress}`;
+      const bubbleMapUrl = `https://app.bubblemaps.io/sol/token/${idoQueueDetail?.contractAddress}`;
+      const geckoTerminalUrl = `https://www.geckoterminal.com/solana/pools/${idoQueueDetail?.contractAddress}`;
+      setTools([dexScreenerUrl, bubbleMapUrl, geckoTerminalUrl]);
+      // try {
+      //   const { data } = await getToolsUrls();
+      //   setTools(data);
+      // } catch (error) {
+      //   console.error('Error fetching data:', error);
+      // }
     })();
   }, [idoQueueDetail]);
 
@@ -45,10 +49,10 @@ const Profile: FC = () => {
           // <ul className=" flex flex-wrap col-span-6 gap-y-1.5 gap-x-1">
           <ul className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1">
             {[
-              { name: 'De.Fi Scanner', icon: '/create/icon-tool-defi-scanner.png', url: tools[0]?.toolUrl },
-              { name: 'DEX Screener', icon: '/create/icon-tool-dex-screener.png', url: tools[1]?.toolUrl },
-              { name: 'Bubblemaps', icon: '/create/icon-tool-bubble-maps.png', url: tools[2]?.toolUrl },
-              { name: 'GeckoTerminal', icon: '/create/icon-tool-gecko-terminal.png', url: tools[4]?.toolUrl },
+              // { name: 'De.Fi Scanner', icon: '/create/icon-tool-defi-scanner.png', url: tools[0]?.toolUrl },
+              { name: 'DEX Screener', icon: '/create/icon-tool-dex-screener.png', url: tools[0] },
+              { name: 'Bubblemaps', icon: '/create/icon-tool-bubble-maps.png', url: tools[1] },
+              { name: 'GeckoTerminal', icon: '/create/icon-tool-gecko-terminal.png', url: tools[2] },
             ].map((token) => (
               <li key={token.name} className="flex items-center gap-x-1.5 h-8 token_list_hover">
                 <a href={token.url} target="_black" className="flex items-center gap-x-1.5 h-8">
@@ -60,7 +64,7 @@ const Profile: FC = () => {
         ),
       },
     ];
-  }, [idoQueueDetail]);
+  }, [idoQueueDetail, tools]);
 
   const socails = useMemo(() => {
     return [
