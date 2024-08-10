@@ -339,10 +339,10 @@ const Airdrop: FC = () => {
       <div className="airdrop_left flex flex-col gap-y-3.5">
         <AirdropContext.Provider value={context}>
           <Status />
-          {/* {idoQueueDetail?.status === 'Launched' && <PublicSale />} */}
-          <PublicSale />
-          {/* {stage === 'imo' && <IMOParticipate />} */}
-          <IMOParticipate />
+          {idoQueueDetail?.status === 'Launched' && <PublicSale />}
+          {/* <PublicSale /> */}
+          {stage === 'imo' && <IMOParticipate />}
+          {/* <IMOParticipate /> */}
           {stage === 'in-queue' && mine && <PreMarketAcqusition amount={preAmount} />}
           <AirdropClaim />
           <IDODetail />

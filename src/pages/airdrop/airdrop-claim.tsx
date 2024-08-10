@@ -252,7 +252,7 @@ export default function AirdropClaim() {
 
       <AirdropClaimModal>
         <Button
-          // disabled={!idoQueueDetail?.claimFlag}
+          disabled={!idoQueueDetail?.claimFlag}
           className={classNames('uppercase w-full claim_btn h-12 font–404px mt-5', {
             'mt-20': doingTask,
             'mt-5': airdropUnlocking || airdropUnlocked,

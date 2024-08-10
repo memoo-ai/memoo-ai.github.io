@@ -92,8 +92,8 @@ const Profile: FC = () => {
             {idoQueueDetail?.twitter && (
               <li
                 className="h-8 token_list_hover"
-                onMouseOver={() => iconRefs.current['IconTwitterProject'].setHovered(true)}
-                onMouseLeave={() => iconRefs.current['IconTwitterProject'].setHovered(false)}
+                onMouseOver={() => iconRefs.current['IconTwitterProject']?.setHovered(true)}
+                onMouseLeave={() => iconRefs.current['IconTwitterProject']?.setHovered(false)}
               >
                 <a
                   href={`https://x.com/${idoQueueDetail?.twitter}`}

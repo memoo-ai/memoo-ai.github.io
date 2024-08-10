@@ -104,8 +104,8 @@ const Progress: FC = () => {
           {node}
         </IncreaseAcquisitionModal>
       ),
-      // enabled: mine && (['QUEUE', 'IDO'] as IDOStatus[]).includes(idoQueueDetail?.status ?? 'Draft'),
-      enabled: true,
+      enabled: mine && (['QUEUE', 'IDO'] as IDOStatus[]).includes(idoQueueDetail?.status ?? 'Draft'),
+      // enabled: true,
     },
     {
       key: 'imo',
@@ -155,17 +155,17 @@ const Progress: FC = () => {
           {node}
         </ClaimTokensModal>
       ),
-      // enabled:
-      //   idoQueueDetail?.stageOneClaim &&
-      // tokens > 0 &&
-      //   idoQueueDetail?.status === 'Launched' &&
-      //   (address
-      //     ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
-      //         compareAddrs(addr, address),
-      //       )
-      //     : false),
+      enabled:
+        idoQueueDetail?.stageOneClaim &&
+        tokens > 0 &&
+        idoQueueDetail?.status === 'Launched' &&
+        (address
+          ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
+              compareAddrs(addr, address.toBase58()),
+            )
+          : false),
       //   Number(_1stStage?.unlockCount) > 0  &&
-      enabled: true,
+      // enabled: true,
     },
     {
       key: '2st-claim',
@@ -202,17 +202,17 @@ const Progress: FC = () => {
           {node}
         </ClaimTokensModal>
       ),
-      // enabled:
-      //   idoQueueDetail?.stageTwoClaim &&
-      // tokens > 0 &&
-      //   idoQueueDetail?.status === 'Launched' &&
-      //   (address
-      //     ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
-      //         compareAddrs(addr, address!),
-      //       )
-      //     : false),
+      enabled:
+        idoQueueDetail?.stageTwoClaim &&
+        tokens > 0 &&
+        idoQueueDetail?.status === 'Launched' &&
+        (address
+          ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
+              compareAddrs(addr, address.toBase58()),
+            )
+          : false),
       //   Number(_2ndStage?.unlockCount) > 0 &&
-      enabled: true,
+      // enabled: true,
     },
   ];
 

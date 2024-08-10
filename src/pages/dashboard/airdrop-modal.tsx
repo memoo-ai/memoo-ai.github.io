@@ -39,7 +39,7 @@ const AirdropModal = ({ children }: any) => {
         ticker: idoLaunchedDetail?.ticker ?? '',
         signature: res?.rawSignature ?? '',
         timestap: res?.msg ?? '',
-        chain: 'solana',
+        chain: 'Solana',
       });
 
       await airdropClaim(

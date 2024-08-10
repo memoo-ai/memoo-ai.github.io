@@ -1,3655 +1,3415 @@
-export type Memoo = {
-  "version": "0.1.0",
-  "name": "memoo",
-  "constants": [
+export interface Memoo {
+  version: '0.1.0';
+  name: 'memoo';
+  constants: [
     {
-      "name": "GLOBAL_MEMOO_CONFIG",
-      "type": "string",
-      "value": "\"global_memoo_config\""
+      name: 'GLOBAL_MEMOO_CONFIG';
+      type: 'string';
+      value: '"global_memoo_config"';
     },
     {
-      "name": "MEME_CONFIG",
-      "type": "string",
-      "value": "\"meme_config\""
+      name: 'MEME_CONFIG';
+      type: 'string';
+      value: '"meme_config"';
     },
     {
-      "name": "MEME_USER_DATA",
-      "type": "string",
-      "value": "\"meme_user_data\""
+      name: 'MEME_USER_DATA';
+      type: 'string';
+      value: '"meme_user_data"';
     },
     {
-      "name": "PERCENT_DENOMINATOR",
-      "type": "u64",
-      "value": "10000"
+      name: 'PERCENT_DENOMINATOR';
+      type: 'u64';
+      value: '10000';
     },
     {
-      "name": "AUTHORITY_SEED",
-      "type": "string",
-      "value": "\"authority\""
-    }
-  ],
-  "instructions": [
+      name: 'AUTHORITY_SEED';
+      type: 'string';
+      value: '"authority"';
+    },
+  ];
+  instructions: [
     {
-      "name": "createMemooConfig",
-      "accounts": [
+      name: 'closeMemooConfig';
+      accounts: [
         {
-          "name": "memooConfig",
-          "isMut": true,
-          "isSigner": false
+          name: 'memooConfig';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true,
-          "docs": [
-            "The account paying for all rents"
-          ]
+          name: 'admin';
+          isMut: true;
+          isSigner: true;
+          docs: ['The admin of the MemooConfig'];
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Solana ecosystem accounts"
-          ]
-        }
-      ],
-      "args": [
-        {
-          "name": "id",
-          "type": "publicKey"
+          name: 'systemProgram';
+          isMut: false;
+          isSigner: false;
+          docs: ['Solana ecosystem accounts'];
         },
-        {
-          "name": "platform",
-          "type": "publicKey"
-        },
-        {
-          "name": "platformFeeRecipient",
-          "type": "publicKey"
-        },
-        {
-          "name": "platformFeeRateIdo",
-          "type": "u16"
-        },
-        {
-          "name": "platformFeeRateDenominatorIdo",
-          "type": "u16"
-        },
-        {
-          "name": "idoCreatorBuyLimit",
-          "type": "u16"
-        },
-        {
-          "name": "tokenAllocationCreator",
-          "type": "u16"
-        },
-        {
-          "name": "tokenAllocationIdo",
-          "type": "u16"
-        },
-        {
-          "name": "tokenAllocationLp",
-          "type": "u16"
-        },
-        {
-          "name": "tokenAllocationAirdrop",
-          "type": "u16"
-        },
-        {
-          "name": "tokenAllocationPlatform",
-          "type": "u16"
-        },
-        {
-          "name": "idoUserBuyLimit",
-          "type": "u16"
-        },
-        {
-          "name": "idoPrice",
-          "type": "u64"
-        },
-        {
-          "name": "airdropPrice",
-          "type": "u64"
-        },
-        {
-          "name": "totalSupply",
-          "type": "u128"
-        },
-        {
-          "name": "platformFeeCreateMemeSol",
-          "type": "u64"
-        }
-      ]
+      ];
+      args: [];
     },
     {
-      "name": "updateMemooConfig",
-      "accounts": [
+      name: 'createMemooConfig';
+      accounts: [
         {
-          "name": "memooConfig",
-          "isMut": true,
-          "isSigner": false
+          name: 'memooConfig';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "admin",
-          "isMut": true,
-          "isSigner": true,
-          "docs": [
-            "The admin of the MemooConfig"
-          ]
+          name: 'payer';
+          isMut: true;
+          isSigner: true;
+          docs: ['The account paying for all rents'];
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Solana ecosystem accounts"
-          ]
-        }
-      ],
-      "args": [
+          name: 'systemProgram';
+          isMut: false;
+          isSigner: false;
+          docs: ['Solana ecosystem accounts'];
+        },
+      ];
+      args: [
         {
-          "name": "id",
-          "type": "publicKey"
+          name: 'id';
+          type: 'publicKey';
         },
         {
-          "name": "admin",
-          "type": "publicKey"
+          name: 'platform';
+          type: 'publicKey';
         },
         {
-          "name": "platform",
-          "type": "publicKey"
+          name: 'platformFeeRecipient';
+          type: 'publicKey';
         },
         {
-          "name": "platformFeeRecipient",
-          "type": "publicKey"
+          name: 'platformFeeRateIdo';
+          type: 'u16';
         },
         {
-          "name": "platformFeeRateIdo",
-          "type": "u16"
+          name: 'platformFeeRateDenominatorIdo';
+          type: 'u16';
         },
         {
-          "name": "platformFeeRateDenominatorIdo",
-          "type": "u16"
+          name: 'idoCreatorBuyLimit';
+          type: 'u16';
         },
         {
-          "name": "idoCreatorBuyLimit",
-          "type": "u16"
+          name: 'tokenAllocationCreator';
+          type: 'u16';
         },
         {
-          "name": "tokenAllocationCreator",
-          "type": "u16"
+          name: 'tokenAllocationIdo';
+          type: 'u16';
         },
         {
-          "name": "tokenAllocationIdo",
-          "type": "u16"
+          name: 'tokenAllocationLp';
+          type: 'u16';
         },
         {
-          "name": "tokenAllocationLp",
-          "type": "u16"
+          name: 'tokenAllocationAirdrop';
+          type: 'u16';
         },
         {
-          "name": "tokenAllocationAirdrop",
-          "type": "u16"
+          name: 'tokenAllocationPlatform';
+          type: 'u16';
         },
         {
-          "name": "tokenAllocationPlatform",
-          "type": "u16"
+          name: 'idoUserBuyLimit';
+          type: 'u16';
         },
         {
-          "name": "idoUserBuyLimit",
-          "type": "u16"
+          name: 'idoPrice';
+          type: 'u64';
         },
         {
-          "name": "idoPrice",
-          "type": "u64"
+          name: 'airdropPrice';
+          type: 'u64';
         },
         {
-          "name": "airdropPrice",
-          "type": "u64"
+          name: 'totalSupply';
+          type: 'u128';
         },
         {
-          "name": "totalSupply",
-          "type": "u128"
+          name: 'platformFeeCreateMemeSol';
+          type: 'u64';
         },
-        {
-          "name": "platformFeeCreateMemeSol",
-          "type": "u64"
-        }
-      ]
+      ];
     },
     {
-      "name": "registerTokenMint",
-      "accounts": [
+      name: 'updateMemooConfig';
+      accounts: [
         {
-          "name": "memooConfig",
-          "isMut": false,
-          "isSigner": false
+          name: 'memooConfig';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "platformFeeRecipient",
-          "isMut": true,
-          "isSigner": false
+          name: 'admin';
+          isMut: true;
+          isSigner: true;
+          docs: ['The admin of the MemooConfig'];
         },
         {
-          "name": "memeConfig",
-          "isMut": true,
-          "isSigner": false
+          name: 'systemProgram';
+          isMut: false;
+          isSigner: false;
+          docs: ['Solana ecosystem accounts'];
+        },
+      ];
+      args: [
+        {
+          name: 'id';
+          type: 'publicKey';
         },
         {
-          "name": "memeUserData",
-          "isMut": true,
-          "isSigner": false
+          name: 'admin';
+          type: 'publicKey';
         },
         {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true,
-          "docs": [
-            "The account paying for all rents"
-          ]
+          name: 'platform';
+          type: 'publicKey';
         },
         {
-          "name": "poolAuthorityWsol",
-          "isMut": true,
-          "isSigner": false
+          name: 'platformFeeRecipient';
+          type: 'publicKey';
         },
         {
-          "name": "poolAccountWsol",
-          "isMut": true,
-          "isSigner": false
+          name: 'platformFeeRateIdo';
+          type: 'u16';
         },
         {
-          "name": "mintAccountWsol",
-          "isMut": false,
-          "isSigner": false
+          name: 'platformFeeRateDenominatorIdo';
+          type: 'u16';
         },
         {
-          "name": "userSolAccount",
-          "isMut": true,
-          "isSigner": true
+          name: 'idoCreatorBuyLimit';
+          type: 'u16';
         },
         {
-          "name": "userWsolAccount",
-          "isMut": true,
-          "isSigner": false
+          name: 'tokenAllocationCreator';
+          type: 'u16';
         },
         {
-          "name": "wsolMint",
-          "isMut": false,
-          "isSigner": false
+          name: 'tokenAllocationIdo';
+          type: 'u16';
         },
         {
-          "name": "clock",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Solana ecosystem accounts"
-          ]
+          name: 'tokenAllocationLp';
+          type: 'u16';
         },
         {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'tokenAllocationAirdrop';
+          type: 'u16';
         },
         {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'tokenAllocationPlatform';
+          type: 'u16';
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'idoUserBuyLimit';
+          type: 'u16';
         },
         {
-          "name": "rent",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "memeId",
-          "type": "publicKey"
+          name: 'idoPrice';
+          type: 'u64';
         },
         {
-          "name": "inputAmount",
-          "type": "u64"
+          name: 'airdropPrice';
+          type: 'u64';
         },
         {
-          "name": "preLaunchSecond",
-          "type": "i64"
-        }
-      ]
+          name: 'totalSupply';
+          type: 'u128';
+        },
+        {
+          name: 'platformFeeCreateMemeSol';
+          type: 'u64';
+        },
+      ];
     },
     {
-      "name": "createTokenMint",
-      "accounts": [
+      name: 'registerTokenMint';
+      accounts: [
         {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
+          name: 'memooConfig';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "memeConfig",
-          "isMut": true,
-          "isSigner": false
+          name: 'platformFeeRecipient';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "metadataAccount",
-          "isMut": true,
-          "isSigner": false
+          name: 'memeConfig';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "mintAccountA",
-          "isMut": true,
-          "isSigner": true
+          name: 'memeUserData';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "poolAuthorityA",
-          "isMut": true,
-          "isSigner": false
+          name: 'payer';
+          isMut: true;
+          isSigner: true;
+          docs: ['The account paying for all rents'];
         },
         {
-          "name": "poolAccountA",
-          "isMut": true,
-          "isSigner": false
+          name: 'poolAuthorityWsol';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "tokenMetadataProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'poolAccountWsol';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'mintAccountWsol';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'userSolAccount';
+          isMut: true;
+          isSigner: true;
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'userWsolAccount';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "rent",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "memeId",
-          "type": "publicKey"
+          name: 'wsolMint';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "tokenName",
-          "type": "string"
+          name: 'clock';
+          isMut: false;
+          isSigner: false;
+          docs: ['Solana ecosystem accounts'];
         },
         {
-          "name": "tokenSymbol",
-          "type": "string"
+          name: 'tokenProgram';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "tokenUri",
-          "type": "string"
-        }
-      ]
+          name: 'associatedTokenProgram';
+          isMut: false;
+          isSigner: false;
+        },
+        {
+          name: 'systemProgram';
+          isMut: false;
+          isSigner: false;
+        },
+        {
+          name: 'rent';
+          isMut: false;
+          isSigner: false;
+        },
+      ];
+      args: [
+        {
+          name: 'memeId';
+          type: 'publicKey';
+        },
+        {
+          name: 'inputAmount';
+          type: 'u64';
+        },
+        {
+          name: 'preLaunchSecond';
+          type: 'i64';
+        },
+      ];
     },
     {
-      "name": "idoBuy",
-      "accounts": [
+      name: 'createTokenMint';
+      accounts: [
         {
-          "name": "memooConfig",
-          "isMut": false,
-          "isSigner": false
+          name: 'payer';
+          isMut: true;
+          isSigner: true;
         },
         {
-          "name": "memeConfig",
-          "isMut": true,
-          "isSigner": false
+          name: 'memeConfig';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "memeUserData",
-          "isMut": true,
-          "isSigner": false
+          name: 'metadataAccount';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true,
-          "docs": [
-            "The account paying for all rents"
-          ]
+          name: 'mintAccountA';
+          isMut: true;
+          isSigner: true;
         },
         {
-          "name": "poolAccountWsol",
-          "isMut": true,
-          "isSigner": false
+          name: 'poolAuthorityA';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "userWsolAccount",
-          "isMut": true,
-          "isSigner": false
+          name: 'poolAccountA';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "wsolMint",
-          "isMut": false,
-          "isSigner": false
+          name: 'tokenMetadataProgram';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "clock",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Solana ecosystem accounts"
-          ]
+          name: 'associatedTokenProgram';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'tokenProgram';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'systemProgram';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
+          name: 'rent';
+          isMut: false;
+          isSigner: false;
+        },
+      ];
+      args: [
         {
-          "name": "memeId",
-          "type": "publicKey"
+          name: 'memeId';
+          type: 'publicKey';
         },
         {
-          "name": "inputAmount",
-          "type": "u64"
-        }
-      ]
+          name: 'tokenName';
+          type: 'string';
+        },
+        {
+          name: 'tokenSymbol';
+          type: 'string';
+        },
+        {
+          name: 'tokenUri';
+          type: 'string';
+        },
+      ];
     },
     {
-      "name": "idoEnd",
-      "accounts": [
+      name: 'idoBuy';
+      accounts: [
         {
-          "name": "memooConfig",
-          "isMut": false,
-          "isSigner": false
+          name: 'memooConfig';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "admin",
-          "isMut": true,
-          "isSigner": true,
-          "docs": [
-            "The admin of the MemooConfig"
-          ]
+          name: 'memeConfig';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "memeConfig",
-          "isMut": true,
-          "isSigner": false
+          name: 'memeUserData';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "clock",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Solana ecosystem accounts"
-          ]
+          name: 'payer';
+          isMut: true;
+          isSigner: true;
+          docs: ['The account paying for all rents'];
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
+          name: 'poolAccountWsol';
+          isMut: true;
+          isSigner: false;
+        },
         {
-          "name": "memeId",
-          "type": "publicKey"
-        }
-      ]
+          name: 'userWsolAccount';
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: 'wsolMint';
+          isMut: false;
+          isSigner: false;
+        },
+        {
+          name: 'clock';
+          isMut: false;
+          isSigner: false;
+          docs: ['Solana ecosystem accounts'];
+        },
+        {
+          name: 'systemProgram';
+          isMut: false;
+          isSigner: false;
+        },
+        {
+          name: 'tokenProgram';
+          isMut: false;
+          isSigner: false;
+        },
+        {
+          name: 'associatedTokenProgram';
+          isMut: false;
+          isSigner: false;
+        },
+      ];
+      args: [
+        {
+          name: 'memeId';
+          type: 'publicKey';
+        },
+        {
+          name: 'inputAmount';
+          type: 'u64';
+        },
+      ];
     },
     {
-      "name": "wrapSol",
-      "accounts": [
+      name: 'idoEnd';
+      accounts: [
         {
-          "name": "userSolAccount",
-          "isMut": true,
-          "isSigner": true
+          name: 'memooConfig';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "userWsolAccount",
-          "isMut": true,
-          "isSigner": false
+          name: 'admin';
+          isMut: true;
+          isSigner: true;
+          docs: ['The admin of the MemooConfig'];
         },
         {
-          "name": "wsolMint",
-          "isMut": false,
-          "isSigner": false
+          name: 'memeConfig';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'clock';
+          isMut: false;
+          isSigner: false;
+          docs: ['Solana ecosystem accounts'];
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'systemProgram';
+          isMut: false;
+          isSigner: false;
         },
+      ];
+      args: [
         {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "amount",
-          "type": "u64"
-        }
-      ]
+          name: 'memeId';
+          type: 'publicKey';
+        },
+      ];
     },
     {
-      "name": "adminClaimWsol",
-      "accounts": [
+      name: 'wrapSol';
+      accounts: [
         {
-          "name": "admin",
-          "isMut": true,
-          "isSigner": true
+          name: 'userSolAccount';
+          isMut: true;
+          isSigner: true;
         },
         {
-          "name": "memooConfig",
-          "isMut": false,
-          "isSigner": false
+          name: 'userWsolAccount';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "memeConfig",
-          "isMut": false,
-          "isSigner": false
+          name: 'wsolMint';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "adminAccountWsol",
-          "isMut": true,
-          "isSigner": false
+          name: 'associatedTokenProgram';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "poolAuthorityWsol",
-          "isMut": true,
-          "isSigner": false
+          name: 'systemProgram';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "poolAccountWsol",
-          "isMut": true,
-          "isSigner": false
+          name: 'tokenProgram';
+          isMut: false;
+          isSigner: false;
         },
+      ];
+      args: [
         {
-          "name": "mintAccountWsol",
-          "isMut": false,
-          "isSigner": false
+          name: 'amount';
+          type: 'u64';
         },
-        {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "rent",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "memeId",
-          "type": "publicKey"
-        }
-      ]
+      ];
     },
     {
-      "name": "adminClaimToken",
-      "accounts": [
+      name: 'adminClaimWsol';
+      accounts: [
         {
-          "name": "admin",
-          "isMut": true,
-          "isSigner": true
+          name: 'admin';
+          isMut: true;
+          isSigner: true;
         },
         {
-          "name": "memooConfig",
-          "isMut": false,
-          "isSigner": false
+          name: 'memooConfig';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "memeConfig",
-          "isMut": false,
-          "isSigner": false
+          name: 'memeConfig';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "adminAccountA",
-          "isMut": true,
-          "isSigner": false
+          name: 'adminAccountWsol';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "mintAccountA",
-          "isMut": false,
-          "isSigner": false
+          name: 'poolAuthorityWsol';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "poolAuthorityA",
-          "isMut": true,
-          "isSigner": false
+          name: 'poolAccountWsol';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "poolAccountA",
-          "isMut": true,
-          "isSigner": false
+          name: 'mintAccountWsol';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'associatedTokenProgram';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'tokenProgram';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'systemProgram';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "rent",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
+          name: 'rent';
+          isMut: false;
+          isSigner: false;
+        },
+      ];
+      args: [
         {
-          "name": "memeId",
-          "type": "publicKey"
-        }
-      ]
+          name: 'memeId';
+          type: 'publicKey';
+        },
+      ];
     },
     {
-      "name": "adminClaimFeeWsol",
-      "accounts": [
+      name: 'adminClaimToken';
+      accounts: [
         {
-          "name": "admin",
-          "isMut": true,
-          "isSigner": true
+          name: 'admin';
+          isMut: true;
+          isSigner: true;
         },
         {
-          "name": "memooConfig",
-          "isMut": false,
-          "isSigner": false
+          name: 'memooConfig';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "memeConfig",
-          "isMut": false,
-          "isSigner": false
+          name: 'memeConfig';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "platformFeeRecipient",
-          "isMut": true,
-          "isSigner": false
+          name: 'adminAccountA';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "platformFeeRecipientWsol",
-          "isMut": true,
-          "isSigner": false
+          name: 'mintAccountA';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "poolAuthorityWsol",
-          "isMut": true,
-          "isSigner": false
+          name: 'poolAuthorityA';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "poolAccountWsol",
-          "isMut": true,
-          "isSigner": false
+          name: 'poolAccountA';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "mintAccountWsol",
-          "isMut": false,
-          "isSigner": false
+          name: 'associatedTokenProgram';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'tokenProgram';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'systemProgram';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'rent';
+          isMut: false;
+          isSigner: false;
         },
+      ];
+      args: [
         {
-          "name": "rent",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "memeId",
-          "type": "publicKey"
-        }
-      ]
+          name: 'memeId';
+          type: 'publicKey';
+        },
+      ];
     },
     {
-      "name": "creatorClaim",
-      "accounts": [
+      name: 'adminClaimFeeWsol';
+      accounts: [
         {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
+          name: 'admin';
+          isMut: true;
+          isSigner: true;
         },
         {
-          "name": "memooConfig",
-          "isMut": false,
-          "isSigner": false
+          name: 'memooConfig';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "memeUserData",
-          "isMut": true,
-          "isSigner": false
+          name: 'memeConfig';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "creatorAccountA",
-          "isMut": true,
-          "isSigner": false
+          name: 'platformFeeRecipient';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "mintAccountA",
-          "isMut": false,
-          "isSigner": false
+          name: 'platformFeeRecipientWsol';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "poolAuthorityA",
-          "isMut": true,
-          "isSigner": false
+          name: 'poolAuthorityWsol';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "poolAccountA",
-          "isMut": true,
-          "isSigner": false
+          name: 'poolAccountWsol';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'mintAccountWsol';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'associatedTokenProgram';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
+          name: 'tokenProgram';
+          isMut: false;
+          isSigner: false;
+        },
         {
-          "name": "memeId",
-          "type": "publicKey"
-        }
-      ]
+          name: 'systemProgram';
+          isMut: false;
+          isSigner: false;
+        },
+        {
+          name: 'rent';
+          isMut: false;
+          isSigner: false;
+        },
+      ];
+      args: [
+        {
+          name: 'memeId';
+          type: 'publicKey';
+        },
+      ];
     },
     {
-      "name": "creatorClaimPermission",
-      "accounts": [
+      name: 'creatorClaim';
+      accounts: [
         {
-          "name": "admin",
-          "isMut": true,
-          "isSigner": true
+          name: 'payer';
+          isMut: true;
+          isSigner: true;
         },
         {
-          "name": "creator",
-          "isMut": true,
-          "isSigner": false
+          name: 'memooConfig';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "memooConfig",
-          "isMut": false,
-          "isSigner": false
+          name: 'memeUserData';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "memeUserData",
-          "isMut": true,
-          "isSigner": false
+          name: 'creatorAccountA';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "memeId",
-          "type": "publicKey"
+          name: 'mintAccountA';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "count",
-          "type": "u64"
+          name: 'poolAuthorityA';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "period",
-          "type": "u64"
-        }
-      ]
+          name: 'poolAccountA';
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: 'associatedTokenProgram';
+          isMut: false;
+          isSigner: false;
+        },
+        {
+          name: 'tokenProgram';
+          isMut: false;
+          isSigner: false;
+        },
+        {
+          name: 'systemProgram';
+          isMut: false;
+          isSigner: false;
+        },
+      ];
+      args: [
+        {
+          name: 'memeId';
+          type: 'publicKey';
+        },
+      ];
     },
     {
-      "name": "dealHunterClaim",
-      "accounts": [
+      name: 'creatorClaimPermission';
+      accounts: [
         {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
+          name: 'admin';
+          isMut: true;
+          isSigner: true;
         },
         {
-          "name": "payerAccountA",
-          "isMut": true,
-          "isSigner": false
+          name: 'creator';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "memeConfig",
-          "isMut": false,
-          "isSigner": false
+          name: 'memooConfig';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "memeUserData",
-          "isMut": true,
-          "isSigner": false
+          name: 'memeUserData';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "mintAccountA",
-          "isMut": true,
-          "isSigner": false
+          name: 'systemProgram';
+          isMut: false;
+          isSigner: false;
+        },
+      ];
+      args: [
+        {
+          name: 'memeId';
+          type: 'publicKey';
         },
         {
-          "name": "instructionsSysvar",
-          "isMut": false,
-          "isSigner": false
+          name: 'count';
+          type: 'u64';
         },
         {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'period';
+          type: 'u64';
+        },
+      ];
+    },
+    {
+      name: 'dealHunterClaim';
+      accounts: [
+        {
+          name: 'payer';
+          isMut: true;
+          isSigner: true;
         },
         {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'payerAccountA';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "memeId",
-          "type": "publicKey"
-        }
-      ]
-    },
-    {
-      "name": "idoClaim",
-      "accounts": [
-        {
-          "name": "user",
-          "isMut": true,
-          "isSigner": true
+          name: 'memeConfig';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "memeUserData",
-          "isMut": false,
-          "isSigner": false
+          name: 'memeUserData';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "idoUserAccountA",
-          "isMut": true,
-          "isSigner": false
+          name: 'mintAccountA';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "mintAccountA",
-          "isMut": false,
-          "isSigner": false
+          name: 'instructionsSysvar';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "poolAuthorityA",
-          "isMut": true,
-          "isSigner": false
+          name: 'associatedTokenProgram';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "poolAccountA",
-          "isMut": true,
-          "isSigner": false
+          name: 'tokenProgram';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'systemProgram';
+          isMut: false;
+          isSigner: false;
+        },
+      ];
+      args: [
+        {
+          name: 'memeId';
+          type: 'publicKey';
+        },
+      ];
+    },
+    {
+      name: 'idoClaim';
+      accounts: [
+        {
+          name: 'user';
+          isMut: true;
+          isSigner: true;
         },
         {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'memeUserData';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'idoUserAccountA';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "rent",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "memeId",
-          "type": "publicKey"
-        }
-      ]
-    },
-    {
-      "name": "proxyInitialize",
-      "accounts": [
-        {
-          "name": "cpSwapProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'mintAccountA';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "creator",
-          "isMut": true,
-          "isSigner": true,
-          "docs": [
-            "Address paying to create the pool. Can be anyone"
-          ]
+          name: 'poolAuthorityA';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "ammConfig",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Which config the pool belongs to."
-          ]
+          name: 'poolAccountA';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "authority",
-          "isMut": false,
-          "isSigner": false
+          name: 'associatedTokenProgram';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "poolState",
-          "isMut": true,
-          "isSigner": false
+          name: 'tokenProgram';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "token0Mint",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Token_0 mint, the key must smaller then token_1 mint."
-          ]
+          name: 'systemProgram';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "token1Mint",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Token_1 mint, the key must grater then token_0 mint."
-          ]
+          name: 'rent';
+          isMut: false;
+          isSigner: false;
+        },
+      ];
+      args: [
+        {
+          name: 'memeId';
+          type: 'publicKey';
+        },
+      ];
+    },
+    {
+      name: 'proxyInitialize';
+      accounts: [
+        {
+          name: 'cpSwapProgram';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "lpMint",
-          "isMut": true,
-          "isSigner": false
+          name: 'creator';
+          isMut: true;
+          isSigner: true;
+          docs: ['Address paying to create the pool. Can be anyone'];
         },
         {
-          "name": "creatorToken0",
-          "isMut": true,
-          "isSigner": false,
-          "docs": [
-            "payer token0 account"
-          ]
+          name: 'ammConfig';
+          isMut: false;
+          isSigner: false;
+          docs: ['Which config the pool belongs to.'];
         },
         {
-          "name": "creatorToken1",
-          "isMut": true,
-          "isSigner": false,
-          "docs": [
-            "creator token1 account"
-          ]
+          name: 'authority';
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "creatorLpToken",
-          "isMut": true,
-          "isSigner": false
+          name: 'poolState';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "token0Vault",
-          "isMut": true,
-          "isSigner": false
+          name: 'token0Mint';
+          isMut: false;
+          isSigner: false;
+          docs: ['Token_0 mint, the key must smaller then token_1 mint.'];
         },
         {
-          "name": "token1Vault",
-          "isMut": true,
-          "isSigner": false
+          name: 'token1Mint';
+          isMut: false;
+          isSigner: false;
+          docs: ['Token_1 mint, the key must grater then token_0 mint.'];
         },
         {
-          "name": "createPoolFee",
-          "isMut": true,
-          "isSigner": false,
-          "docs": [
-            "create pool fee account"
-          ]
+          name: 'lpMint';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "observationState",
-          "isMut": true,
-          "isSigner": false
+          name: 'creatorToken0';
+          isMut: true;
+          isSigner: false;
+          docs: ['payer token0 account'];
         },
         {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Program to create mint account and mint tokens"
-          ]
+          name: 'creatorToken1';
+          isMut: true;
+          isSigner: false;
+          docs: ['creator token1 account'];
         },
         {
-          "name": "token0Program",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Spl token program or token program 2022"
-          ]
+          name: 'creatorLpToken';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "token1Program",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Spl token program or token program 2022"
-          ]
+          name: 'token0Vault';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Program to create an ATA for receiving position NFT"
-          ]
+          name: 'token1Vault';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "To create a new program account"
-          ]
+          name: 'createPoolFee';
+          isMut: true;
+          isSigner: false;
+          docs: ['create pool fee account'];
         },
         {
-          "name": "rent",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Sysvar for program account"
-          ]
-        }
-      ],
-      "args": [
-        {
-          "name": "initAmount0",
-          "type": "u64"
+          name: 'observationState';
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "initAmount1",
-          "type": "u64"
+          name: 'tokenProgram';
+          isMut: false;
+          isSigner: false;
+          docs: ['Program to create mint account and mint tokens'];
         },
         {
-          "name": "openTime",
-          "type": "u64"
-        }
-      ]
-    }
-  ],
-  "accounts": [
+          name: 'token0Program';
+          isMut: false;
+          isSigner: false;
+          docs: ['Spl token program or token program 2022'];
+        },
+        {
+          name: 'token1Program';
+          isMut: false;
+          isSigner: false;
+          docs: ['Spl token program or token program 2022'];
+        },
+        {
+          name: 'associatedTokenProgram';
+          isMut: false;
+          isSigner: false;
+          docs: ['Program to create an ATA for receiving position NFT'];
+        },
+        {
+          name: 'systemProgram';
+          isMut: false;
+          isSigner: false;
+          docs: ['To create a new program account'];
+        },
+        {
+          name: 'rent';
+          isMut: false;
+          isSigner: false;
+          docs: ['Sysvar for program account'];
+        },
+      ];
+      args: [
+        {
+          name: 'initAmount0';
+          type: 'u64';
+        },
+        {
+          name: 'initAmount1';
+          type: 'u64';
+        },
+        {
+          name: 'openTime';
+          type: 'u64';
+        },
+      ];
+    },
+  ];
+  accounts: [
     {
-      "name": "memooConfigParam",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: 'memooConfigParam';
+      type: {
+        kind: 'struct';
+        fields: [
           {
-            "name": "id",
-            "docs": [
-              "The primary key of the MemooConfig"
-            ],
-            "type": "publicKey"
+            name: 'id';
+            docs: ['The primary key of the MemooConfig'];
+            type: 'publicKey';
           },
           {
-            "name": "platformFeeRateIdo",
-            "docs": [
-              "1 of 1/7"
-            ],
-            "type": "u16"
+            name: 'platformFeeRateIdo';
+            docs: ['1 of 1/7'];
+            type: 'u16';
           },
           {
-            "name": "platformFeeRateDenominatorIdo",
-            "docs": [
-              "7 of 1/7"
-            ],
-            "type": "u16"
+            name: 'platformFeeRateDenominatorIdo';
+            docs: ['7 of 1/7'];
+            type: 'u16';
           },
           {
-            "name": "platformFeeCreateMeme",
-            "docs": [
-              "the fee of create meme"
-            ],
-            "type": "u16"
+            name: 'platformFeeCreateMeme';
+            docs: ['the fee of create meme'];
+            type: 'u16';
           },
           {
-            "name": "idoCreatorBuyLimit",
-            "docs": [
-              "3000"
-            ],
-            "type": "u16"
+            name: 'idoCreatorBuyLimit';
+            docs: ['3000'];
+            type: 'u16';
           },
           {
-            "name": "tokenAllocationCreator",
-            "docs": [
-              "500"
-            ],
-            "type": "u16"
+            name: 'tokenAllocationCreator';
+            docs: ['500'];
+            type: 'u16';
           },
           {
-            "name": "tokenAllocationIdo",
-            "docs": [
-              "3500"
-            ],
-            "type": "u16"
+            name: 'tokenAllocationIdo';
+            docs: ['3500'];
+            type: 'u16';
           },
           {
-            "name": "tokenAllocationLp",
-            "docs": [
-              "5500"
-            ],
-            "type": "u16"
+            name: 'tokenAllocationLp';
+            docs: ['5500'];
+            type: 'u16';
           },
           {
-            "name": "tokenAllocationAirdrop",
-            "docs": [
-              "200"
-            ],
-            "type": "u16"
+            name: 'tokenAllocationAirdrop';
+            docs: ['200'];
+            type: 'u16';
           },
           {
-            "name": "tokenAllocationPlatform",
-            "docs": [
-              "300"
-            ],
-            "type": "u16"
+            name: 'tokenAllocationPlatform';
+            docs: ['300'];
+            type: 'u16';
           },
           {
-            "name": "idoPrice",
-            "docs": [
-              "idoPrice"
-            ],
-            "type": "u64"
+            name: 'idoPrice';
+            docs: ['idoPrice'];
+            type: 'u64';
           },
           {
-            "name": "airdropPrice",
-            "docs": [
-              "idoPrice"
-            ],
-            "type": "u64"
+            name: 'airdropPrice';
+            docs: ['idoPrice'];
+            type: 'u64';
           },
           {
-            "name": "totalSupply",
-            "docs": [
-              "totalSupply"
-            ],
-            "type": "u64"
+            name: 'totalSupply';
+            docs: ['totalSupply'];
+            type: 'u64';
           },
           {
-            "name": "idoUserBuyLimit",
-            "docs": [
-              "idoUserBuyLimit"
-            ],
-            "type": "u64"
-          }
-        ]
-      }
+            name: 'idoUserBuyLimit';
+            docs: ['idoUserBuyLimit'];
+            type: 'u64';
+          },
+        ];
+      };
     },
     {
-      "name": "globalMemooConfig",
-      "docs": [
-        "use update method to update"
-      ],
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: 'globalMemooConfig';
+      docs: ['use update method to update'];
+      type: {
+        kind: 'struct';
+        fields: [
           {
-            "name": "id",
-            "docs": [
-              "The primary key of the MemooConfig"
-            ],
-            "type": "publicKey"
+            name: 'id';
+            docs: ['The primary key of the MemooConfig'];
+            type: 'publicKey';
           },
           {
-            "name": "admin",
-            "docs": [
-              "Account that has admin authority over the MemooConfig"
-            ],
-            "type": "publicKey"
+            name: 'admin';
+            docs: ['Account that has admin authority over the MemooConfig'];
+            type: 'publicKey';
           },
           {
-            "name": "platform",
-            "docs": [
-              "Account that has platform authority over the MemooConfig"
-            ],
-            "type": "publicKey"
+            name: 'platform';
+            docs: ['Account that has platform authority over the MemooConfig'];
+            type: 'publicKey';
           },
           {
-            "name": "platformFeeRecipient",
-            "docs": [
-              "createFee, idoFee"
-            ],
-            "type": "publicKey"
+            name: 'platformFeeRecipient';
+            docs: ['createFee, idoFee'];
+            type: 'publicKey';
           },
           {
-            "name": "platformFeeRateIdo",
-            "docs": [
-              "1 - 1 of 1/7"
-            ],
-            "type": "u16"
+            name: 'platformFeeRateIdo';
+            docs: ['1 - 1 of 1/7'];
+            type: 'u16';
           },
           {
-            "name": "platformFeeRateDenominatorIdo",
-            "docs": [
-              "2 - 7 of 1/7"
-            ],
-            "type": "u16"
+            name: 'platformFeeRateDenominatorIdo';
+            docs: ['2 - 7 of 1/7'];
+            type: 'u16';
           },
           {
-            "name": "idoCreatorBuyLimit",
-            "docs": [
-              "3 - 3000"
-            ],
-            "type": "u16"
+            name: 'idoCreatorBuyLimit';
+            docs: ['3 - 3000'];
+            type: 'u16';
           },
           {
-            "name": "tokenAllocationCreator",
-            "docs": [
-              "4 - 500"
-            ],
-            "type": "u16"
+            name: 'tokenAllocationCreator';
+            docs: ['4 - 500'];
+            type: 'u16';
           },
           {
-            "name": "tokenAllocationIdo",
-            "docs": [
-              "5 - 3500"
-            ],
-            "type": "u16"
+            name: 'tokenAllocationIdo';
+            docs: ['5 - 3500'];
+            type: 'u16';
           },
           {
-            "name": "tokenAllocationLp",
-            "docs": [
-              "6 - 5500"
-            ],
-            "type": "u16"
+            name: 'tokenAllocationLp';
+            docs: ['6 - 5500'];
+            type: 'u16';
           },
           {
-            "name": "tokenAllocationAirdrop",
-            "docs": [
-              "7 - 200"
-            ],
-            "type": "u16"
+            name: 'tokenAllocationAirdrop';
+            docs: ['7 - 200'];
+            type: 'u16';
           },
           {
-            "name": "tokenAllocationPlatform",
-            "docs": [
-              "8 - 300"
-            ],
-            "type": "u16"
+            name: 'tokenAllocationPlatform';
+            docs: ['8 - 300'];
+            type: 'u16';
           },
           {
-            "name": "idoUserBuyLimit",
-            "docs": [
-              "9 -idoUserBuyLimit"
-            ],
-            "type": "u16"
+            name: 'idoUserBuyLimit';
+            docs: ['9 -idoUserBuyLimit'];
+            type: 'u16';
           },
           {
-            "name": "idoPrice",
-            "docs": [
-              "idoPrice"
-            ],
-            "type": "u64"
+            name: 'idoPrice';
+            docs: ['idoPrice'];
+            type: 'u64';
           },
           {
-            "name": "airdropPrice",
-            "docs": [
-              "idoPrice"
-            ],
-            "type": "u64"
+            name: 'airdropPrice';
+            docs: ['idoPrice'];
+            type: 'u64';
           },
           {
-            "name": "platformFeeCreateMemeSol",
-            "docs": [
-              "10 - the fee of create meme"
-            ],
-            "type": "u64"
+            name: 'platformFeeCreateMemeSol';
+            docs: ['10 - the fee of create meme'];
+            type: 'u64';
           },
           {
-            "name": "openTime",
-            "type": "i64"
+            name: 'openTime';
+            type: 'i64';
           },
           {
-            "name": "totalSupply",
-            "docs": [
-              "totalSupply",
-              "340282366920938463463374607431768211455"
-            ],
-            "type": "u128"
-          }
-        ]
-      }
+            name: 'totalSupply';
+            docs: ['totalSupply', '340282366920938463463374607431768211455'];
+            type: 'u128';
+          },
+          {
+            name: 'padding';
+            docs: ['padding'];
+            type: {
+              array: ['u64', 16];
+            };
+          },
+        ];
+      };
     },
     {
-      "name": "memeConfig",
-      "docs": [
-        "update many times"
-      ],
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: 'memeConfig';
+      docs: ['update many times'];
+      type: {
+        kind: 'struct';
+        fields: [
           {
-            "name": "idoEnd",
-            "docs": [
-              "check ido_end"
-            ],
-            "type": "bool"
+            name: 'idoEnd';
+            docs: ['check ido_end'];
+            type: 'bool';
           },
           {
-            "name": "isInitialized",
-            "docs": [
-              "init or check id"
-            ],
-            "type": "bool"
+            name: 'isInitialized';
+            docs: ['init or check id'];
+            type: 'bool';
           },
           {
-            "name": "id",
-            "docs": [
-              "The primary key of the Meme,"
-            ],
-            "type": "publicKey"
+            name: 'id';
+            docs: ['The primary key of the Meme,'];
+            type: 'publicKey';
           },
           {
-            "name": "admin",
-            "docs": [
-              "Account that has admin authority"
-            ],
-            "type": "publicKey"
+            name: 'admin';
+            docs: ['Account that has admin authority'];
+            type: 'publicKey';
           },
           {
-            "name": "platform",
-            "docs": [
-              "Account that has platform authority over the MemooConfig"
-            ],
-            "type": "publicKey"
+            name: 'platform';
+            docs: ['Account that has platform authority over the MemooConfig'];
+            type: 'publicKey';
           },
           {
-            "name": "poolA",
-            "docs": [
-              "pool a"
-            ],
-            "type": "publicKey"
+            name: 'poolA';
+            docs: ['pool a'];
+            type: 'publicKey';
           },
           {
-            "name": "poolWsol",
-            "docs": [
-              "pool wsol"
-            ],
-            "type": "publicKey"
+            name: 'poolWsol';
+            docs: ['pool wsol'];
+            type: 'publicKey';
           },
           {
-            "name": "creator",
-            "docs": [
-              "Account of User"
-            ],
-            "type": "publicKey"
+            name: 'creator';
+            docs: ['Account of User'];
+            type: 'publicKey';
           },
           {
-            "name": "mintTokenAddress",
-            "docs": [
-              "mint token address"
-            ],
-            "type": "publicKey"
+            name: 'mintTokenAddress';
+            docs: ['mint token address'];
+            type: 'publicKey';
           },
           {
-            "name": "creatorTotal",
-            "docs": [
-              "Creator lock total"
-            ],
-            "type": "u64"
+            name: 'creatorTotal';
+            docs: ['Creator lock total'];
+            type: 'u64';
           },
           {
-            "name": "platformTotal",
-            "docs": [
-              "Platform lock total"
-            ],
-            "type": "u64"
+            name: 'platformTotal';
+            docs: ['Platform lock total'];
+            type: 'u64';
           },
           {
-            "name": "createTimestamp",
-            "docs": [
-              "Meme Create Timestamp"
-            ],
-            "type": "i64"
+            name: 'createTimestamp';
+            docs: ['Meme Create Timestamp'];
+            type: 'i64';
           },
           {
-            "name": "preLaunchSecond",
-            "docs": [
-              "preLaunch Second"
-            ],
-            "type": "i64"
+            name: 'preLaunchSecond';
+            docs: ['preLaunch Second'];
+            type: 'i64';
           },
           {
-            "name": "memeIdoCount",
-            "docs": [
-              "ido count"
-            ],
-            "type": "u64"
+            name: 'memeIdoCount';
+            docs: ['ido count'];
+            type: 'u64';
           },
           {
-            "name": "memeAirdropCount",
-            "docs": [
-              "airdrop count"
-            ],
-            "type": "u64"
+            name: 'memeAirdropCount';
+            docs: ['airdrop count'];
+            type: 'u64';
           },
           {
-            "name": "memeAirdropTotal",
-            "docs": [
-              "airdrop count"
-            ],
-            "type": "u64"
+            name: 'memeAirdropTotal';
+            docs: ['airdrop count'];
+            type: 'u64';
           },
           {
-            "name": "memeIdoMoney",
-            "docs": [
-              "ido money"
-            ],
-            "type": "u64"
+            name: 'memeIdoMoney';
+            docs: ['ido money'];
+            type: 'u64';
           },
           {
-            "name": "totalSupply",
-            "docs": [
-              "totalSupply, may be samller than GlobalMemooConfig.total_supply"
-            ],
-            "type": "u128"
-          }
-        ]
-      }
-    },
-    {
-      "name": "memeUserIdoData",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "isInitialized",
-            "docs": [
-              "init or check id"
-            ],
-            "type": "bool"
+            name: 'totalSupply';
+            docs: ['totalSupply, may be samller than GlobalMemooConfig.total_supply'];
+            type: 'u128';
           },
           {
-            "name": "memeId",
-            "docs": [
-              "The primary key of the Meme, this is key"
-            ],
-            "type": "publicKey"
+            name: 'padding';
+            docs: ['padding'];
+            type: {
+              array: ['u64', 16];
+            };
+          },
+        ];
+      };
+    },
+    {
+      name: 'memeUserIdoData';
+      type: {
+        kind: 'struct';
+        fields: [
+          {
+            name: 'isInitialized';
+            docs: ['init or check id'];
+            type: 'bool';
           },
           {
-            "name": "user",
-            "docs": [
-              "Account of User, this is key"
-            ],
-            "type": "publicKey"
+            name: 'memeId';
+            docs: ['The primary key of the Meme, this is key'];
+            type: 'publicKey';
           },
           {
-            "name": "memeUserIdoCount",
-            "docs": [
-              "ido buy count"
-            ],
-            "type": "u64"
+            name: 'user';
+            docs: ['Account of User, this is key'];
+            type: 'publicKey';
           },
           {
-            "name": "memeUserIdoClaimedCount",
-            "docs": [
-              "ido buy count"
-            ],
-            "type": "u64"
+            name: 'memeUserIdoCount';
+            docs: ['ido buy count'];
+            type: 'u64';
           },
           {
-            "name": "memeUserIdoMoney",
-            "docs": [
-              "Spend money"
-            ],
-            "type": "u64"
+            name: 'memeUserIdoClaimedCount';
+            docs: ['ido buy count'];
+            type: 'u64';
           },
           {
-            "name": "creatorLockCount",
-            "docs": [
-              "Creator lock total"
-            ],
-            "type": "u64"
+            name: 'memeUserIdoMoney';
+            docs: ['Spend money'];
+            type: 'u64';
           },
           {
-            "name": "creatorLockCountPermission",
-            "docs": [
-              "Creator lock count_permission"
-            ],
-            "type": "u64"
+            name: 'creatorLockCount';
+            docs: ['Creator lock total'];
+            type: 'u64';
           },
           {
-            "name": "creatorLockPeriod",
-            "docs": [
-              "Creator lock period"
-            ],
-            "type": "u64"
+            name: 'creatorLockCountPermission';
+            docs: ['Creator lock count_permission'];
+            type: 'u64';
           },
           {
-            "name": "memeUserAirdropClaimedCount",
-            "docs": [
-              "ido buy count"
-            ],
-            "type": "u64"
-          }
-        ]
-      }
-    }
-  ],
-  "types": [
-    {
-      "name": "AirdropMessage",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "address",
-            "type": "publicKey"
+            name: 'creatorLockPeriod';
+            docs: ['Creator lock period'];
+            type: 'u64';
           },
           {
-            "name": "meme",
-            "type": "publicKey"
+            name: 'memeUserAirdropClaimedCount';
+            docs: ['ido buy count'];
+            type: 'u64';
           },
           {
-            "name": "count",
-            "type": "u64"
+            name: 'padding';
+            docs: ['padding'];
+            type: {
+              array: ['u64', 16];
+            };
+          },
+        ];
+      };
+    },
+  ];
+  types: [
+    {
+      name: 'AirdropMessage';
+      type: {
+        kind: 'struct';
+        fields: [
+          {
+            name: 'address';
+            type: 'publicKey';
           },
           {
-            "name": "expiry",
-            "type": "i64"
-          }
-        ]
-      }
-    }
-  ],
-  "errors": [
+            name: 'meme';
+            type: 'publicKey';
+          },
+          {
+            name: 'count';
+            type: 'u64';
+          },
+          {
+            name: 'expiry';
+            type: 'i64';
+          },
+        ];
+      };
+    },
+  ];
+  errors: [
     {
-      "code": 6000,
-      "name": "BindToken",
-      "msg": "Bind Token"
+      code: 6000;
+      name: 'Token0Bigger';
+      msg: 'TOKEN 0 BIGGER';
     },
     {
-      "code": 6001,
-      "name": "DeserializeAirdropMessageError",
-      "msg": "Deserialize Airdrop Message Error"
+      code: 6001;
+      name: 'BindToken';
+      msg: 'Bind Token';
     },
     {
-      "code": 6002,
-      "name": "PoolAuthorityAtaMissing",
-      "msg": "Pool Authority Ata Missing"
+      code: 6002;
+      name: 'DeserializeAirdropMessageError';
+      msg: 'Deserialize Airdrop Message Error';
     },
     {
-      "code": 6003,
-      "name": "PoolTokenAtaMissing",
-      "msg": "Pool Token Ata Missing"
+      code: 6003;
+      name: 'PoolAuthorityAtaMissing';
+      msg: 'Pool Authority Ata Missing';
     },
     {
-      "code": 6004,
-      "name": "Expired",
-      "msg": "Expired"
+      code: 6004;
+      name: 'PoolTokenAtaMissing';
+      msg: 'Pool Token Ata Missing';
     },
     {
-      "code": 6005,
-      "name": "InvalidFee",
-      "msg": "Invalid fee value"
+      code: 6005;
+      name: 'Expired';
+      msg: 'Expired';
     },
     {
-      "code": 6006,
-      "name": "InvalidTooMany",
-      "msg": "Invalid buy too many tokens"
+      code: 6006;
+      name: 'InvalidFee';
+      msg: 'Invalid fee value';
     },
     {
-      "code": 6007,
-      "name": "BalanceTooSmall",
-      "msg": "Balance is below the input"
+      code: 6007;
+      name: 'InvalidTooMany';
+      msg: 'Invalid buy too many tokens';
     },
     {
-      "code": 6008,
-      "name": "InputTooSmallThanFee",
-      "msg": "Input too samll to pay fee"
+      code: 6008;
+      name: 'BalanceTooSmall';
+      msg: 'Balance is below the input';
     },
     {
-      "code": 6009,
-      "name": "InputTooSmallThanIdoPrice",
-      "msg": "Input too samll to buy one unit"
+      code: 6009;
+      name: 'InputTooSmallThanFee';
+      msg: 'Input too samll to pay fee';
     },
     {
-      "code": 6010,
-      "name": "IdoBuyExceedIdoTotal",
-      "msg": "Ido Buy Exceed Ido Total"
+      code: 6010;
+      name: 'InputTooSmallThanIdoPrice';
+      msg: 'Input too samll to buy one unit';
     },
     {
-      "code": 6011,
-      "name": "IdoBuyExceedIdoCreatorBuyLimit",
-      "msg": "Ido Buy Exceed Creator Buy Limit"
+      code: 6011;
+      name: 'IdoBuyExceedIdoTotal';
+      msg: 'Ido Buy Exceed Ido Total';
     },
     {
-      "code": 6012,
-      "name": "PoolAccountAError",
-      "msg": "Pool Account A Error"
+      code: 6012;
+      name: 'IdoBuyExceedIdoCreatorBuyLimit';
+      msg: 'Ido Buy Exceed Creator Buy Limit';
     },
     {
-      "code": 6013,
-      "name": "PoolAccountWsolError",
-      "msg": "Pool Account Wsol Error"
+      code: 6013;
+      name: 'PoolAccountAError';
+      msg: 'Pool Account A Error';
     },
     {
-      "code": 6014,
-      "name": "IdoBuyExceedIdoUserBuyLimit",
-      "msg": "Ido Buy Exceed User Buy Limit"
+      code: 6014;
+      name: 'PoolAccountWsolError';
+      msg: 'Pool Account Wsol Error';
     },
     {
-      "code": 6015,
-      "name": "PreLaunchSecondLt0",
-      "msg": "PreLaunchSecond < 0"
+      code: 6015;
+      name: 'IdoBuyExceedIdoUserBuyLimit';
+      msg: 'Ido Buy Exceed User Buy Limit';
     },
     {
-      "code": 6016,
-      "name": "AdminMismatch",
-      "msg": "AdminMismatch"
+      code: 6016;
+      name: 'PreLaunchSecondLt0';
+      msg: 'PreLaunchSecond < 0';
     },
     {
-      "code": 6017,
-      "name": "PlatformAccountMismatch",
-      "msg": "Platform Account Mismatch"
+      code: 6017;
+      name: 'AdminMismatch';
+      msg: 'AdminMismatch';
     },
     {
-      "code": 6018,
-      "name": "MemeConfigIsNotInitialized",
-      "msg": "Meme Config Is Not Initialized"
+      code: 6018;
+      name: 'PlatformAccountMismatch';
+      msg: 'Platform Account Mismatch';
     },
     {
-      "code": 6019,
-      "name": "UserDataIsNotInitialized",
-      "msg": "User Data Is Not Initialized"
+      code: 6019;
+      name: 'MemeConfigIsNotInitialized';
+      msg: 'Meme Config Is Not Initialized';
     },
     {
-      "code": 6020,
-      "name": "MemeIDMismatch",
-      "msg": "Meme ID Mismatch"
+      code: 6020;
+      name: 'UserDataIsNotInitialized';
+      msg: 'User Data Is Not Initialized';
     },
     {
-      "code": 6021,
-      "name": "UserMismatch",
-      "msg": "User Mismatch"
+      code: 6021;
+      name: 'MemeIDMismatch';
+      msg: 'Meme ID Mismatch';
     },
     {
-      "code": 6022,
-      "name": "AirdropAlreadyClaimed",
-      "msg": "Airdrop Already Claimed"
+      code: 6022;
+      name: 'UserMismatch';
+      msg: 'User Mismatch';
     },
     {
-      "code": 6023,
-      "name": "MemeConfigIsInitialized",
-      "msg": "Meme Config Is Initialized"
+      code: 6023;
+      name: 'AirdropAlreadyClaimed';
+      msg: 'Airdrop Already Claimed';
     },
     {
-      "code": 6024,
-      "name": "CreatorClaimExceed",
-      "msg": "Creator Claim Exceed"
+      code: 6024;
+      name: 'MemeConfigIsInitialized';
+      msg: 'Meme Config Is Initialized';
     },
     {
-      "code": 6025,
-      "name": "CreatorClaimPermissionExceed",
-      "msg": "Creator Claim Permission Exceed"
+      code: 6025;
+      name: 'CreatorClaimExceed';
+      msg: 'Creator Claim Exceed';
     },
     {
-      "code": 6026,
-      "name": "CreatorClaimPermissionSmalllerThanBefore",
-      "msg": "Creator Claim Permission Smalller Than Before"
+      code: 6026;
+      name: 'CreatorClaimPermissionExceed';
+      msg: 'Creator Claim Permission Exceed';
     },
     {
-      "code": 6027,
-      "name": "CreatorClaimPeriodSmalllerThanBefore",
-      "msg": "Creator Claim Period Smalller Than Before"
+      code: 6027;
+      name: 'CreatorClaimPermissionSmalllerThanBefore';
+      msg: 'Creator Claim Permission Smalller Than Before';
     },
     {
-      "code": 6028,
-      "name": "IdoUserClaimExceed",
-      "msg": "Creator Claim Exceed"
+      code: 6028;
+      name: 'CreatorClaimPeriodSmalllerThanBefore';
+      msg: 'Creator Claim Period Smalller Than Before';
     },
     {
-      "code": 6029,
-      "name": "DealHunterClaimExceed",
-      "msg": "Deal Hunter Claim Exceed"
+      code: 6029;
+      name: 'IdoUserClaimExceed';
+      msg: 'Creator Claim Exceed';
     },
     {
-      "code": 6030,
-      "name": "NotAdminSignature",
-      "msg": "Not Admin Signature"
+      code: 6030;
+      name: 'DealHunterClaimExceed';
+      msg: 'Deal Hunter Claim Exceed';
     },
     {
-      "code": 6031,
-      "name": "VerifySignatureFail",
-      "msg": "Verify Signature Fail"
+      code: 6031;
+      name: 'NotAdminSignature';
+      msg: 'Not Admin Signature';
     },
     {
-      "code": 6032,
-      "name": "MemeUserDataConfigIsInitialized",
-      "msg": "Meme User Data Config Is Initialized"
+      code: 6032;
+      name: 'VerifySignatureFail';
+      msg: 'Verify Signature Fail';
     },
     {
-      "code": 6033,
-      "name": "MemeUserDataConfigIsNotInitialized",
-      "msg": "Meme User Data Config Is Not Initialized"
+      code: 6033;
+      name: 'MemeUserDataConfigIsInitialized';
+      msg: 'Meme User Data Config Is Initialized';
     },
     {
-      "code": 6034,
-      "name": "MemeUserDataMemeIdOrUserMismatch",
-      "msg": "Meme User Data Meme Id Or User Is Mismatch"
+      code: 6034;
+      name: 'MemeUserDataConfigIsNotInitialized';
+      msg: 'Meme User Data Config Is Not Initialized';
     },
     {
-      "code": 6035,
-      "name": "IdoNotStarted",
-      "msg": "IDO not started"
+      code: 6035;
+      name: 'MemeUserDataMemeIdOrUserMismatch';
+      msg: 'Meme User Data Meme Id Or User Is Mismatch';
     },
     {
-      "code": 6036,
-      "name": "IdoNotEnd",
-      "msg": "IDO not end"
+      code: 6036;
+      name: 'IdoNotStarted';
+      msg: 'IDO not started';
     },
     {
-      "code": 6037,
-      "name": "MemeIdoCountLt0",
-      "msg": "IDO Ccount < 0"
-    }
-  ]
-};
+      code: 6037;
+      name: 'IdoNotEnd';
+      msg: 'IDO not end';
+    },
+    {
+      code: 6038;
+      name: 'MemeIdoCountLt0';
+      msg: 'IDO Ccount < 0';
+    },
+  ];
+}
 
 export const IDL: Memoo = {
-  "version": "0.1.0",
-  "name": "memoo",
-  "constants": [
+  version: '0.1.0',
+  name: 'memoo',
+  constants: [
     {
-      "name": "GLOBAL_MEMOO_CONFIG",
-      "type": "string",
-      "value": "\"global_memoo_config\""
+      name: 'GLOBAL_MEMOO_CONFIG',
+      type: 'string',
+      value: '"global_memoo_config"',
     },
     {
-      "name": "MEME_CONFIG",
-      "type": "string",
-      "value": "\"meme_config\""
+      name: 'MEME_CONFIG',
+      type: 'string',
+      value: '"meme_config"',
     },
     {
-      "name": "MEME_USER_DATA",
-      "type": "string",
-      "value": "\"meme_user_data\""
+      name: 'MEME_USER_DATA',
+      type: 'string',
+      value: '"meme_user_data"',
     },
     {
-      "name": "PERCENT_DENOMINATOR",
-      "type": "u64",
-      "value": "10000"
+      name: 'PERCENT_DENOMINATOR',
+      type: 'u64',
+      value: '10000',
     },
     {
-      "name": "AUTHORITY_SEED",
-      "type": "string",
-      "value": "\"authority\""
-    }
+      name: 'AUTHORITY_SEED',
+      type: 'string',
+      value: '"authority"',
+    },
   ],
-  "instructions": [
+  instructions: [
     {
-      "name": "createMemooConfig",
-      "accounts": [
+      name: 'closeMemooConfig',
+      accounts: [
         {
-          "name": "memooConfig",
-          "isMut": true,
-          "isSigner": false
+          name: 'memooConfig',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true,
-          "docs": [
-            "The account paying for all rents"
-          ]
+          name: 'admin',
+          isMut: true,
+          isSigner: true,
+          docs: ['The admin of the MemooConfig'],
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Solana ecosystem accounts"
-          ]
-        }
+          name: 'systemProgram',
+          isMut: false,
+          isSigner: false,
+          docs: ['Solana ecosystem accounts'],
+        },
       ],
-      "args": [
-        {
-          "name": "id",
-          "type": "publicKey"
-        },
-        {
-          "name": "platform",
-          "type": "publicKey"
-        },
-        {
-          "name": "platformFeeRecipient",
-          "type": "publicKey"
-        },
-        {
-          "name": "platformFeeRateIdo",
-          "type": "u16"
-        },
-        {
-          "name": "platformFeeRateDenominatorIdo",
-          "type": "u16"
-        },
-        {
-          "name": "idoCreatorBuyLimit",
-          "type": "u16"
-        },
-        {
-          "name": "tokenAllocationCreator",
-          "type": "u16"
-        },
-        {
-          "name": "tokenAllocationIdo",
-          "type": "u16"
-        },
-        {
-          "name": "tokenAllocationLp",
-          "type": "u16"
-        },
-        {
-          "name": "tokenAllocationAirdrop",
-          "type": "u16"
-        },
-        {
-          "name": "tokenAllocationPlatform",
-          "type": "u16"
-        },
-        {
-          "name": "idoUserBuyLimit",
-          "type": "u16"
-        },
-        {
-          "name": "idoPrice",
-          "type": "u64"
-        },
-        {
-          "name": "airdropPrice",
-          "type": "u64"
-        },
-        {
-          "name": "totalSupply",
-          "type": "u128"
-        },
-        {
-          "name": "platformFeeCreateMemeSol",
-          "type": "u64"
-        }
-      ]
+      args: [],
     },
     {
-      "name": "updateMemooConfig",
-      "accounts": [
+      name: 'createMemooConfig',
+      accounts: [
         {
-          "name": "memooConfig",
-          "isMut": true,
-          "isSigner": false
+          name: 'memooConfig',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "admin",
-          "isMut": true,
-          "isSigner": true,
-          "docs": [
-            "The admin of the MemooConfig"
-          ]
+          name: 'payer',
+          isMut: true,
+          isSigner: true,
+          docs: ['The account paying for all rents'],
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Solana ecosystem accounts"
-          ]
-        }
+          name: 'systemProgram',
+          isMut: false,
+          isSigner: false,
+          docs: ['Solana ecosystem accounts'],
+        },
       ],
-      "args": [
+      args: [
         {
-          "name": "id",
-          "type": "publicKey"
+          name: 'id',
+          type: 'publicKey',
         },
         {
-          "name": "admin",
-          "type": "publicKey"
+          name: 'platform',
+          type: 'publicKey',
         },
         {
-          "name": "platform",
-          "type": "publicKey"
+          name: 'platformFeeRecipient',
+          type: 'publicKey',
         },
         {
-          "name": "platformFeeRecipient",
-          "type": "publicKey"
+          name: 'platformFeeRateIdo',
+          type: 'u16',
         },
         {
-          "name": "platformFeeRateIdo",
-          "type": "u16"
+          name: 'platformFeeRateDenominatorIdo',
+          type: 'u16',
         },
         {
-          "name": "platformFeeRateDenominatorIdo",
-          "type": "u16"
+          name: 'idoCreatorBuyLimit',
+          type: 'u16',
         },
         {
-          "name": "idoCreatorBuyLimit",
-          "type": "u16"
+          name: 'tokenAllocationCreator',
+          type: 'u16',
         },
         {
-          "name": "tokenAllocationCreator",
-          "type": "u16"
+          name: 'tokenAllocationIdo',
+          type: 'u16',
         },
         {
-          "name": "tokenAllocationIdo",
-          "type": "u16"
+          name: 'tokenAllocationLp',
+          type: 'u16',
         },
         {
-          "name": "tokenAllocationLp",
-          "type": "u16"
+          name: 'tokenAllocationAirdrop',
+          type: 'u16',
         },
         {
-          "name": "tokenAllocationAirdrop",
-          "type": "u16"
+          name: 'tokenAllocationPlatform',
+          type: 'u16',
         },
         {
-          "name": "tokenAllocationPlatform",
-          "type": "u16"
+          name: 'idoUserBuyLimit',
+          type: 'u16',
         },
         {
-          "name": "idoUserBuyLimit",
-          "type": "u16"
+          name: 'idoPrice',
+          type: 'u64',
         },
         {
-          "name": "idoPrice",
-          "type": "u64"
+          name: 'airdropPrice',
+          type: 'u64',
         },
         {
-          "name": "airdropPrice",
-          "type": "u64"
+          name: 'totalSupply',
+          type: 'u128',
         },
         {
-          "name": "totalSupply",
-          "type": "u128"
+          name: 'platformFeeCreateMemeSol',
+          type: 'u64',
         },
-        {
-          "name": "platformFeeCreateMemeSol",
-          "type": "u64"
-        }
-      ]
+      ],
     },
     {
-      "name": "registerTokenMint",
-      "accounts": [
+      name: 'updateMemooConfig',
+      accounts: [
         {
-          "name": "memooConfig",
-          "isMut": false,
-          "isSigner": false
+          name: 'memooConfig',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "platformFeeRecipient",
-          "isMut": true,
-          "isSigner": false
+          name: 'admin',
+          isMut: true,
+          isSigner: true,
+          docs: ['The admin of the MemooConfig'],
         },
         {
-          "name": "memeConfig",
-          "isMut": true,
-          "isSigner": false
+          name: 'systemProgram',
+          isMut: false,
+          isSigner: false,
+          docs: ['Solana ecosystem accounts'],
         },
-        {
-          "name": "memeUserData",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true,
-          "docs": [
-            "The account paying for all rents"
-          ]
-        },
-        {
-          "name": "poolAuthorityWsol",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "poolAccountWsol",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "mintAccountWsol",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "userSolAccount",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "userWsolAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "wsolMint",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "clock",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Solana ecosystem accounts"
-          ]
-        },
-        {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "rent",
-          "isMut": false,
-          "isSigner": false
-        }
       ],
-      "args": [
+      args: [
         {
-          "name": "memeId",
-          "type": "publicKey"
+          name: 'id',
+          type: 'publicKey',
         },
         {
-          "name": "inputAmount",
-          "type": "u64"
+          name: 'admin',
+          type: 'publicKey',
         },
         {
-          "name": "preLaunchSecond",
-          "type": "i64"
-        }
-      ]
+          name: 'platform',
+          type: 'publicKey',
+        },
+        {
+          name: 'platformFeeRecipient',
+          type: 'publicKey',
+        },
+        {
+          name: 'platformFeeRateIdo',
+          type: 'u16',
+        },
+        {
+          name: 'platformFeeRateDenominatorIdo',
+          type: 'u16',
+        },
+        {
+          name: 'idoCreatorBuyLimit',
+          type: 'u16',
+        },
+        {
+          name: 'tokenAllocationCreator',
+          type: 'u16',
+        },
+        {
+          name: 'tokenAllocationIdo',
+          type: 'u16',
+        },
+        {
+          name: 'tokenAllocationLp',
+          type: 'u16',
+        },
+        {
+          name: 'tokenAllocationAirdrop',
+          type: 'u16',
+        },
+        {
+          name: 'tokenAllocationPlatform',
+          type: 'u16',
+        },
+        {
+          name: 'idoUserBuyLimit',
+          type: 'u16',
+        },
+        {
+          name: 'idoPrice',
+          type: 'u64',
+        },
+        {
+          name: 'airdropPrice',
+          type: 'u64',
+        },
+        {
+          name: 'totalSupply',
+          type: 'u128',
+        },
+        {
+          name: 'platformFeeCreateMemeSol',
+          type: 'u64',
+        },
+      ],
     },
     {
-      "name": "createTokenMint",
-      "accounts": [
+      name: 'registerTokenMint',
+      accounts: [
         {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
+          name: 'memooConfig',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "memeConfig",
-          "isMut": true,
-          "isSigner": false
+          name: 'platformFeeRecipient',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "metadataAccount",
-          "isMut": true,
-          "isSigner": false
+          name: 'memeConfig',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "mintAccountA",
-          "isMut": true,
-          "isSigner": true
+          name: 'memeUserData',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "poolAuthorityA",
-          "isMut": true,
-          "isSigner": false
+          name: 'payer',
+          isMut: true,
+          isSigner: true,
+          docs: ['The account paying for all rents'],
         },
         {
-          "name": "poolAccountA",
-          "isMut": true,
-          "isSigner": false
+          name: 'poolAuthorityWsol',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "tokenMetadataProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'poolAccountWsol',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'mintAccountWsol',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'userSolAccount',
+          isMut: true,
+          isSigner: true,
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'userWsolAccount',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "rent",
-          "isMut": false,
-          "isSigner": false
-        }
+          name: 'wsolMint',
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: 'clock',
+          isMut: false,
+          isSigner: false,
+          docs: ['Solana ecosystem accounts'],
+        },
+        {
+          name: 'tokenProgram',
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: 'associatedTokenProgram',
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: 'systemProgram',
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: 'rent',
+          isMut: false,
+          isSigner: false,
+        },
       ],
-      "args": [
+      args: [
         {
-          "name": "memeId",
-          "type": "publicKey"
+          name: 'memeId',
+          type: 'publicKey',
         },
         {
-          "name": "tokenName",
-          "type": "string"
+          name: 'inputAmount',
+          type: 'u64',
         },
         {
-          "name": "tokenSymbol",
-          "type": "string"
+          name: 'preLaunchSecond',
+          type: 'i64',
         },
-        {
-          "name": "tokenUri",
-          "type": "string"
-        }
-      ]
+      ],
     },
     {
-      "name": "idoBuy",
-      "accounts": [
+      name: 'createTokenMint',
+      accounts: [
         {
-          "name": "memooConfig",
-          "isMut": false,
-          "isSigner": false
+          name: 'payer',
+          isMut: true,
+          isSigner: true,
         },
         {
-          "name": "memeConfig",
-          "isMut": true,
-          "isSigner": false
+          name: 'memeConfig',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "memeUserData",
-          "isMut": true,
-          "isSigner": false
+          name: 'metadataAccount',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true,
-          "docs": [
-            "The account paying for all rents"
-          ]
+          name: 'mintAccountA',
+          isMut: true,
+          isSigner: true,
         },
         {
-          "name": "poolAccountWsol",
-          "isMut": true,
-          "isSigner": false
+          name: 'poolAuthorityA',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "userWsolAccount",
-          "isMut": true,
-          "isSigner": false
+          name: 'poolAccountA',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "wsolMint",
-          "isMut": false,
-          "isSigner": false
+          name: 'tokenMetadataProgram',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "clock",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Solana ecosystem accounts"
-          ]
+          name: 'associatedTokenProgram',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'tokenProgram',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'systemProgram',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
-        }
+          name: 'rent',
+          isMut: false,
+          isSigner: false,
+        },
       ],
-      "args": [
+      args: [
         {
-          "name": "memeId",
-          "type": "publicKey"
+          name: 'memeId',
+          type: 'publicKey',
         },
         {
-          "name": "inputAmount",
-          "type": "u64"
-        }
-      ]
+          name: 'tokenName',
+          type: 'string',
+        },
+        {
+          name: 'tokenSymbol',
+          type: 'string',
+        },
+        {
+          name: 'tokenUri',
+          type: 'string',
+        },
+      ],
     },
     {
-      "name": "idoEnd",
-      "accounts": [
+      name: 'idoBuy',
+      accounts: [
         {
-          "name": "memooConfig",
-          "isMut": false,
-          "isSigner": false
+          name: 'memooConfig',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "admin",
-          "isMut": true,
-          "isSigner": true,
-          "docs": [
-            "The admin of the MemooConfig"
-          ]
+          name: 'memeConfig',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "memeConfig",
-          "isMut": true,
-          "isSigner": false
+          name: 'memeUserData',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "clock",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Solana ecosystem accounts"
-          ]
+          name: 'payer',
+          isMut: true,
+          isSigner: true,
+          docs: ['The account paying for all rents'],
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
+          name: 'poolAccountWsol',
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: 'userWsolAccount',
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: 'wsolMint',
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: 'clock',
+          isMut: false,
+          isSigner: false,
+          docs: ['Solana ecosystem accounts'],
+        },
+        {
+          name: 'systemProgram',
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: 'tokenProgram',
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: 'associatedTokenProgram',
+          isMut: false,
+          isSigner: false,
+        },
       ],
-      "args": [
+      args: [
         {
-          "name": "memeId",
-          "type": "publicKey"
-        }
-      ]
+          name: 'memeId',
+          type: 'publicKey',
+        },
+        {
+          name: 'inputAmount',
+          type: 'u64',
+        },
+      ],
     },
     {
-      "name": "wrapSol",
-      "accounts": [
+      name: 'idoEnd',
+      accounts: [
         {
-          "name": "userSolAccount",
-          "isMut": true,
-          "isSigner": true
+          name: 'memooConfig',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "userWsolAccount",
-          "isMut": true,
-          "isSigner": false
+          name: 'admin',
+          isMut: true,
+          isSigner: true,
+          docs: ['The admin of the MemooConfig'],
         },
         {
-          "name": "wsolMint",
-          "isMut": false,
-          "isSigner": false
+          name: 'memeConfig',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'clock',
+          isMut: false,
+          isSigner: false,
+          docs: ['Solana ecosystem accounts'],
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'systemProgram',
+          isMut: false,
+          isSigner: false,
         },
-        {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
-        }
       ],
-      "args": [
+      args: [
         {
-          "name": "amount",
-          "type": "u64"
-        }
-      ]
+          name: 'memeId',
+          type: 'publicKey',
+        },
+      ],
     },
     {
-      "name": "adminClaimWsol",
-      "accounts": [
+      name: 'wrapSol',
+      accounts: [
         {
-          "name": "admin",
-          "isMut": true,
-          "isSigner": true
+          name: 'userSolAccount',
+          isMut: true,
+          isSigner: true,
         },
         {
-          "name": "memooConfig",
-          "isMut": false,
-          "isSigner": false
+          name: 'userWsolAccount',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "memeConfig",
-          "isMut": false,
-          "isSigner": false
+          name: 'wsolMint',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "adminAccountWsol",
-          "isMut": true,
-          "isSigner": false
+          name: 'associatedTokenProgram',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "poolAuthorityWsol",
-          "isMut": true,
-          "isSigner": false
+          name: 'systemProgram',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "poolAccountWsol",
-          "isMut": true,
-          "isSigner": false
+          name: 'tokenProgram',
+          isMut: false,
+          isSigner: false,
         },
-        {
-          "name": "mintAccountWsol",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "rent",
-          "isMut": false,
-          "isSigner": false
-        }
       ],
-      "args": [
+      args: [
         {
-          "name": "memeId",
-          "type": "publicKey"
-        }
-      ]
+          name: 'amount',
+          type: 'u64',
+        },
+      ],
     },
     {
-      "name": "adminClaimToken",
-      "accounts": [
+      name: 'adminClaimWsol',
+      accounts: [
         {
-          "name": "admin",
-          "isMut": true,
-          "isSigner": true
+          name: 'admin',
+          isMut: true,
+          isSigner: true,
         },
         {
-          "name": "memooConfig",
-          "isMut": false,
-          "isSigner": false
+          name: 'memooConfig',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "memeConfig",
-          "isMut": false,
-          "isSigner": false
+          name: 'memeConfig',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "adminAccountA",
-          "isMut": true,
-          "isSigner": false
+          name: 'adminAccountWsol',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "mintAccountA",
-          "isMut": false,
-          "isSigner": false
+          name: 'poolAuthorityWsol',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "poolAuthorityA",
-          "isMut": true,
-          "isSigner": false
+          name: 'poolAccountWsol',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "poolAccountA",
-          "isMut": true,
-          "isSigner": false
+          name: 'mintAccountWsol',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'associatedTokenProgram',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'tokenProgram',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'systemProgram',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "rent",
-          "isMut": false,
-          "isSigner": false
-        }
+          name: 'rent',
+          isMut: false,
+          isSigner: false,
+        },
       ],
-      "args": [
+      args: [
         {
-          "name": "memeId",
-          "type": "publicKey"
-        }
-      ]
+          name: 'memeId',
+          type: 'publicKey',
+        },
+      ],
     },
     {
-      "name": "adminClaimFeeWsol",
-      "accounts": [
+      name: 'adminClaimToken',
+      accounts: [
         {
-          "name": "admin",
-          "isMut": true,
-          "isSigner": true
+          name: 'admin',
+          isMut: true,
+          isSigner: true,
         },
         {
-          "name": "memooConfig",
-          "isMut": false,
-          "isSigner": false
+          name: 'memooConfig',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "memeConfig",
-          "isMut": false,
-          "isSigner": false
+          name: 'memeConfig',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "platformFeeRecipient",
-          "isMut": true,
-          "isSigner": false
+          name: 'adminAccountA',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "platformFeeRecipientWsol",
-          "isMut": true,
-          "isSigner": false
+          name: 'mintAccountA',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "poolAuthorityWsol",
-          "isMut": true,
-          "isSigner": false
+          name: 'poolAuthorityA',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "poolAccountWsol",
-          "isMut": true,
-          "isSigner": false
+          name: 'poolAccountA',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "mintAccountWsol",
-          "isMut": false,
-          "isSigner": false
+          name: 'associatedTokenProgram',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'tokenProgram',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'systemProgram',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'rent',
+          isMut: false,
+          isSigner: false,
         },
-        {
-          "name": "rent",
-          "isMut": false,
-          "isSigner": false
-        }
       ],
-      "args": [
+      args: [
         {
-          "name": "memeId",
-          "type": "publicKey"
-        }
-      ]
+          name: 'memeId',
+          type: 'publicKey',
+        },
+      ],
     },
     {
-      "name": "creatorClaim",
-      "accounts": [
+      name: 'adminClaimFeeWsol',
+      accounts: [
         {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
+          name: 'admin',
+          isMut: true,
+          isSigner: true,
         },
         {
-          "name": "memooConfig",
-          "isMut": false,
-          "isSigner": false
+          name: 'memooConfig',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "memeUserData",
-          "isMut": true,
-          "isSigner": false
+          name: 'memeConfig',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "creatorAccountA",
-          "isMut": true,
-          "isSigner": false
+          name: 'platformFeeRecipient',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "mintAccountA",
-          "isMut": false,
-          "isSigner": false
+          name: 'platformFeeRecipientWsol',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "poolAuthorityA",
-          "isMut": true,
-          "isSigner": false
+          name: 'poolAuthorityWsol',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "poolAccountA",
-          "isMut": true,
-          "isSigner": false
+          name: 'poolAccountWsol',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'mintAccountWsol',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'associatedTokenProgram',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
+          name: 'tokenProgram',
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: 'systemProgram',
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: 'rent',
+          isMut: false,
+          isSigner: false,
+        },
       ],
-      "args": [
+      args: [
         {
-          "name": "memeId",
-          "type": "publicKey"
-        }
-      ]
+          name: 'memeId',
+          type: 'publicKey',
+        },
+      ],
     },
     {
-      "name": "creatorClaimPermission",
-      "accounts": [
+      name: 'creatorClaim',
+      accounts: [
         {
-          "name": "admin",
-          "isMut": true,
-          "isSigner": true
+          name: 'payer',
+          isMut: true,
+          isSigner: true,
         },
         {
-          "name": "creator",
-          "isMut": true,
-          "isSigner": false
+          name: 'memooConfig',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "memooConfig",
-          "isMut": false,
-          "isSigner": false
+          name: 'memeUserData',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "memeUserData",
-          "isMut": true,
-          "isSigner": false
+          name: 'creatorAccountA',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
+          name: 'mintAccountA',
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: 'poolAuthorityA',
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: 'poolAccountA',
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: 'associatedTokenProgram',
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: 'tokenProgram',
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: 'systemProgram',
+          isMut: false,
+          isSigner: false,
+        },
       ],
-      "args": [
+      args: [
         {
-          "name": "memeId",
-          "type": "publicKey"
+          name: 'memeId',
+          type: 'publicKey',
         },
-        {
-          "name": "count",
-          "type": "u64"
-        },
-        {
-          "name": "period",
-          "type": "u64"
-        }
-      ]
+      ],
     },
     {
-      "name": "dealHunterClaim",
-      "accounts": [
+      name: 'creatorClaimPermission',
+      accounts: [
         {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
+          name: 'admin',
+          isMut: true,
+          isSigner: true,
         },
         {
-          "name": "payerAccountA",
-          "isMut": true,
-          "isSigner": false
+          name: 'creator',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "memeConfig",
-          "isMut": false,
-          "isSigner": false
+          name: 'memooConfig',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "memeUserData",
-          "isMut": true,
-          "isSigner": false
+          name: 'memeUserData',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "mintAccountA",
-          "isMut": true,
-          "isSigner": false
+          name: 'systemProgram',
+          isMut: false,
+          isSigner: false,
         },
-        {
-          "name": "instructionsSysvar",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
       ],
-      "args": [
+      args: [
         {
-          "name": "memeId",
-          "type": "publicKey"
-        }
-      ]
+          name: 'memeId',
+          type: 'publicKey',
+        },
+        {
+          name: 'count',
+          type: 'u64',
+        },
+        {
+          name: 'period',
+          type: 'u64',
+        },
+      ],
     },
     {
-      "name": "idoClaim",
-      "accounts": [
+      name: 'dealHunterClaim',
+      accounts: [
         {
-          "name": "user",
-          "isMut": true,
-          "isSigner": true
+          name: 'payer',
+          isMut: true,
+          isSigner: true,
         },
         {
-          "name": "memeUserData",
-          "isMut": false,
-          "isSigner": false
+          name: 'payerAccountA',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "idoUserAccountA",
-          "isMut": true,
-          "isSigner": false
+          name: 'memeConfig',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "mintAccountA",
-          "isMut": false,
-          "isSigner": false
+          name: 'memeUserData',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "poolAuthorityA",
-          "isMut": true,
-          "isSigner": false
+          name: 'mintAccountA',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "poolAccountA",
-          "isMut": true,
-          "isSigner": false
+          name: 'instructionsSysvar',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'associatedTokenProgram',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'tokenProgram',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'systemProgram',
+          isMut: false,
+          isSigner: false,
         },
-        {
-          "name": "rent",
-          "isMut": false,
-          "isSigner": false
-        }
       ],
-      "args": [
+      args: [
         {
-          "name": "memeId",
-          "type": "publicKey"
-        }
-      ]
+          name: 'memeId',
+          type: 'publicKey',
+        },
+      ],
     },
     {
-      "name": "proxyInitialize",
-      "accounts": [
+      name: 'idoClaim',
+      accounts: [
         {
-          "name": "cpSwapProgram",
-          "isMut": false,
-          "isSigner": false
+          name: 'user',
+          isMut: true,
+          isSigner: true,
         },
         {
-          "name": "creator",
-          "isMut": true,
-          "isSigner": true,
-          "docs": [
-            "Address paying to create the pool. Can be anyone"
-          ]
+          name: 'memeUserData',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "ammConfig",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Which config the pool belongs to."
-          ]
+          name: 'idoUserAccountA',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "authority",
-          "isMut": false,
-          "isSigner": false
+          name: 'mintAccountA',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "poolState",
-          "isMut": true,
-          "isSigner": false
+          name: 'poolAuthorityA',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "token0Mint",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Token_0 mint, the key must smaller then token_1 mint."
-          ]
+          name: 'poolAccountA',
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "token1Mint",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Token_1 mint, the key must grater then token_0 mint."
-          ]
+          name: 'associatedTokenProgram',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "lpMint",
-          "isMut": true,
-          "isSigner": false
+          name: 'tokenProgram',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "creatorToken0",
-          "isMut": true,
-          "isSigner": false,
-          "docs": [
-            "payer token0 account"
-          ]
+          name: 'systemProgram',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "creatorToken1",
-          "isMut": true,
-          "isSigner": false,
-          "docs": [
-            "creator token1 account"
-          ]
+          name: 'rent',
+          isMut: false,
+          isSigner: false,
         },
-        {
-          "name": "creatorLpToken",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "token0Vault",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "token1Vault",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "createPoolFee",
-          "isMut": true,
-          "isSigner": false,
-          "docs": [
-            "create pool fee account"
-          ]
-        },
-        {
-          "name": "observationState",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Program to create mint account and mint tokens"
-          ]
-        },
-        {
-          "name": "token0Program",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Spl token program or token program 2022"
-          ]
-        },
-        {
-          "name": "token1Program",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Spl token program or token program 2022"
-          ]
-        },
-        {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Program to create an ATA for receiving position NFT"
-          ]
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "To create a new program account"
-          ]
-        },
-        {
-          "name": "rent",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "Sysvar for program account"
-          ]
-        }
       ],
-      "args": [
+      args: [
         {
-          "name": "initAmount0",
-          "type": "u64"
+          name: 'memeId',
+          type: 'publicKey',
+        },
+      ],
+    },
+    {
+      name: 'proxyInitialize',
+      accounts: [
+        {
+          name: 'cpSwapProgram',
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "initAmount1",
-          "type": "u64"
+          name: 'creator',
+          isMut: true,
+          isSigner: true,
+          docs: ['Address paying to create the pool. Can be anyone'],
         },
         {
-          "name": "openTime",
-          "type": "u64"
-        }
-      ]
-    }
+          name: 'ammConfig',
+          isMut: false,
+          isSigner: false,
+          docs: ['Which config the pool belongs to.'],
+        },
+        {
+          name: 'authority',
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: 'poolState',
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: 'token0Mint',
+          isMut: false,
+          isSigner: false,
+          docs: ['Token_0 mint, the key must smaller then token_1 mint.'],
+        },
+        {
+          name: 'token1Mint',
+          isMut: false,
+          isSigner: false,
+          docs: ['Token_1 mint, the key must grater then token_0 mint.'],
+        },
+        {
+          name: 'lpMint',
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: 'creatorToken0',
+          isMut: true,
+          isSigner: false,
+          docs: ['payer token0 account'],
+        },
+        {
+          name: 'creatorToken1',
+          isMut: true,
+          isSigner: false,
+          docs: ['creator token1 account'],
+        },
+        {
+          name: 'creatorLpToken',
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: 'token0Vault',
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: 'token1Vault',
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: 'createPoolFee',
+          isMut: true,
+          isSigner: false,
+          docs: ['create pool fee account'],
+        },
+        {
+          name: 'observationState',
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: 'tokenProgram',
+          isMut: false,
+          isSigner: false,
+          docs: ['Program to create mint account and mint tokens'],
+        },
+        {
+          name: 'token0Program',
+          isMut: false,
+          isSigner: false,
+          docs: ['Spl token program or token program 2022'],
+        },
+        {
+          name: 'token1Program',
+          isMut: false,
+          isSigner: false,
+          docs: ['Spl token program or token program 2022'],
+        },
+        {
+          name: 'associatedTokenProgram',
+          isMut: false,
+          isSigner: false,
+          docs: ['Program to create an ATA for receiving position NFT'],
+        },
+        {
+          name: 'systemProgram',
+          isMut: false,
+          isSigner: false,
+          docs: ['To create a new program account'],
+        },
+        {
+          name: 'rent',
+          isMut: false,
+          isSigner: false,
+          docs: ['Sysvar for program account'],
+        },
+      ],
+      args: [
+        {
+          name: 'initAmount0',
+          type: 'u64',
+        },
+        {
+          name: 'initAmount1',
+          type: 'u64',
+        },
+        {
+          name: 'openTime',
+          type: 'u64',
+        },
+      ],
+    },
   ],
-  "accounts": [
+  accounts: [
     {
-      "name": "memooConfigParam",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: 'memooConfigParam',
+      type: {
+        kind: 'struct',
+        fields: [
           {
-            "name": "id",
-            "docs": [
-              "The primary key of the MemooConfig"
-            ],
-            "type": "publicKey"
+            name: 'id',
+            docs: ['The primary key of the MemooConfig'],
+            type: 'publicKey',
           },
           {
-            "name": "platformFeeRateIdo",
-            "docs": [
-              "1 of 1/7"
-            ],
-            "type": "u16"
+            name: 'platformFeeRateIdo',
+            docs: ['1 of 1/7'],
+            type: 'u16',
           },
           {
-            "name": "platformFeeRateDenominatorIdo",
-            "docs": [
-              "7 of 1/7"
-            ],
-            "type": "u16"
+            name: 'platformFeeRateDenominatorIdo',
+            docs: ['7 of 1/7'],
+            type: 'u16',
           },
           {
-            "name": "platformFeeCreateMeme",
-            "docs": [
-              "the fee of create meme"
-            ],
-            "type": "u16"
+            name: 'platformFeeCreateMeme',
+            docs: ['the fee of create meme'],
+            type: 'u16',
           },
           {
-            "name": "idoCreatorBuyLimit",
-            "docs": [
-              "3000"
-            ],
-            "type": "u16"
+            name: 'idoCreatorBuyLimit',
+            docs: ['3000'],
+            type: 'u16',
           },
           {
-            "name": "tokenAllocationCreator",
-            "docs": [
-              "500"
-            ],
-            "type": "u16"
+            name: 'tokenAllocationCreator',
+            docs: ['500'],
+            type: 'u16',
           },
           {
-            "name": "tokenAllocationIdo",
-            "docs": [
-              "3500"
-            ],
-            "type": "u16"
+            name: 'tokenAllocationIdo',
+            docs: ['3500'],
+            type: 'u16',
           },
           {
-            "name": "tokenAllocationLp",
-            "docs": [
-              "5500"
-            ],
-            "type": "u16"
+            name: 'tokenAllocationLp',
+            docs: ['5500'],
+            type: 'u16',
           },
           {
-            "name": "tokenAllocationAirdrop",
-            "docs": [
-              "200"
-            ],
-            "type": "u16"
+            name: 'tokenAllocationAirdrop',
+            docs: ['200'],
+            type: 'u16',
           },
           {
-            "name": "tokenAllocationPlatform",
-            "docs": [
-              "300"
-            ],
-            "type": "u16"
+            name: 'tokenAllocationPlatform',
+            docs: ['300'],
+            type: 'u16',
           },
           {
-            "name": "idoPrice",
-            "docs": [
-              "idoPrice"
-            ],
-            "type": "u64"
+            name: 'idoPrice',
+            docs: ['idoPrice'],
+            type: 'u64',
           },
           {
-            "name": "airdropPrice",
-            "docs": [
-              "idoPrice"
-            ],
-            "type": "u64"
+            name: 'airdropPrice',
+            docs: ['idoPrice'],
+            type: 'u64',
           },
           {
-            "name": "totalSupply",
-            "docs": [
-              "totalSupply"
-            ],
-            "type": "u64"
+            name: 'totalSupply',
+            docs: ['totalSupply'],
+            type: 'u64',
           },
           {
-            "name": "idoUserBuyLimit",
-            "docs": [
-              "idoUserBuyLimit"
-            ],
-            "type": "u64"
-          }
-        ]
-      }
+            name: 'idoUserBuyLimit',
+            docs: ['idoUserBuyLimit'],
+            type: 'u64',
+          },
+        ],
+      },
     },
     {
-      "name": "globalMemooConfig",
-      "docs": [
-        "use update method to update"
-      ],
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: 'globalMemooConfig',
+      docs: ['use update method to update'],
+      type: {
+        kind: 'struct',
+        fields: [
           {
-            "name": "id",
-            "docs": [
-              "The primary key of the MemooConfig"
-            ],
-            "type": "publicKey"
+            name: 'id',
+            docs: ['The primary key of the MemooConfig'],
+            type: 'publicKey',
           },
           {
-            "name": "admin",
-            "docs": [
-              "Account that has admin authority over the MemooConfig"
-            ],
-            "type": "publicKey"
+            name: 'admin',
+            docs: ['Account that has admin authority over the MemooConfig'],
+            type: 'publicKey',
           },
           {
-            "name": "platform",
-            "docs": [
-              "Account that has platform authority over the MemooConfig"
-            ],
-            "type": "publicKey"
+            name: 'platform',
+            docs: ['Account that has platform authority over the MemooConfig'],
+            type: 'publicKey',
           },
           {
-            "name": "platformFeeRecipient",
-            "docs": [
-              "createFee, idoFee"
-            ],
-            "type": "publicKey"
+            name: 'platformFeeRecipient',
+            docs: ['createFee, idoFee'],
+            type: 'publicKey',
           },
           {
-            "name": "platformFeeRateIdo",
-            "docs": [
-              "1 - 1 of 1/7"
-            ],
-            "type": "u16"
+            name: 'platformFeeRateIdo',
+            docs: ['1 - 1 of 1/7'],
+            type: 'u16',
           },
           {
-            "name": "platformFeeRateDenominatorIdo",
-            "docs": [
-              "2 - 7 of 1/7"
-            ],
-            "type": "u16"
+            name: 'platformFeeRateDenominatorIdo',
+            docs: ['2 - 7 of 1/7'],
+            type: 'u16',
           },
           {
-            "name": "idoCreatorBuyLimit",
-            "docs": [
-              "3 - 3000"
-            ],
-            "type": "u16"
+            name: 'idoCreatorBuyLimit',
+            docs: ['3 - 3000'],
+            type: 'u16',
           },
           {
-            "name": "tokenAllocationCreator",
-            "docs": [
-              "4 - 500"
-            ],
-            "type": "u16"
+            name: 'tokenAllocationCreator',
+            docs: ['4 - 500'],
+            type: 'u16',
           },
           {
-            "name": "tokenAllocationIdo",
-            "docs": [
-              "5 - 3500"
-            ],
-            "type": "u16"
+            name: 'tokenAllocationIdo',
+            docs: ['5 - 3500'],
+            type: 'u16',
           },
           {
-            "name": "tokenAllocationLp",
-            "docs": [
-              "6 - 5500"
-            ],
-            "type": "u16"
+            name: 'tokenAllocationLp',
+            docs: ['6 - 5500'],
+            type: 'u16',
           },
           {
-            "name": "tokenAllocationAirdrop",
-            "docs": [
-              "7 - 200"
-            ],
-            "type": "u16"
+            name: 'tokenAllocationAirdrop',
+            docs: ['7 - 200'],
+            type: 'u16',
           },
           {
-            "name": "tokenAllocationPlatform",
-            "docs": [
-              "8 - 300"
-            ],
-            "type": "u16"
+            name: 'tokenAllocationPlatform',
+            docs: ['8 - 300'],
+            type: 'u16',
           },
           {
-            "name": "idoUserBuyLimit",
-            "docs": [
-              "9 -idoUserBuyLimit"
-            ],
-            "type": "u16"
+            name: 'idoUserBuyLimit',
+            docs: ['9 -idoUserBuyLimit'],
+            type: 'u16',
           },
           {
-            "name": "idoPrice",
-            "docs": [
-              "idoPrice"
-            ],
-            "type": "u64"
+            name: 'idoPrice',
+            docs: ['idoPrice'],
+            type: 'u64',
           },
           {
-            "name": "airdropPrice",
-            "docs": [
-              "idoPrice"
-            ],
-            "type": "u64"
+            name: 'airdropPrice',
+            docs: ['idoPrice'],
+            type: 'u64',
           },
           {
-            "name": "platformFeeCreateMemeSol",
-            "docs": [
-              "10 - the fee of create meme"
-            ],
-            "type": "u64"
+            name: 'platformFeeCreateMemeSol',
+            docs: ['10 - the fee of create meme'],
+            type: 'u64',
           },
           {
-            "name": "openTime",
-            "type": "i64"
+            name: 'openTime',
+            type: 'i64',
           },
           {
-            "name": "totalSupply",
-            "docs": [
-              "totalSupply",
-              "340282366920938463463374607431768211455"
-            ],
-            "type": "u128"
-          }
-        ]
-      }
+            name: 'totalSupply',
+            docs: ['totalSupply', '340282366920938463463374607431768211455'],
+            type: 'u128',
+          },
+          {
+            name: 'padding',
+            docs: ['padding'],
+            type: {
+              array: ['u64', 16],
+            },
+          },
+        ],
+      },
     },
     {
-      "name": "memeConfig",
-      "docs": [
-        "update many times"
-      ],
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: 'memeConfig',
+      docs: ['update many times'],
+      type: {
+        kind: 'struct',
+        fields: [
           {
-            "name": "idoEnd",
-            "docs": [
-              "check ido_end"
-            ],
-            "type": "bool"
+            name: 'idoEnd',
+            docs: ['check ido_end'],
+            type: 'bool',
           },
           {
-            "name": "isInitialized",
-            "docs": [
-              "init or check id"
-            ],
-            "type": "bool"
+            name: 'isInitialized',
+            docs: ['init or check id'],
+            type: 'bool',
           },
           {
-            "name": "id",
-            "docs": [
-              "The primary key of the Meme,"
-            ],
-            "type": "publicKey"
+            name: 'id',
+            docs: ['The primary key of the Meme,'],
+            type: 'publicKey',
           },
           {
-            "name": "admin",
-            "docs": [
-              "Account that has admin authority"
-            ],
-            "type": "publicKey"
+            name: 'admin',
+            docs: ['Account that has admin authority'],
+            type: 'publicKey',
           },
           {
-            "name": "platform",
-            "docs": [
-              "Account that has platform authority over the MemooConfig"
-            ],
-            "type": "publicKey"
+            name: 'platform',
+            docs: ['Account that has platform authority over the MemooConfig'],
+            type: 'publicKey',
           },
           {
-            "name": "poolA",
-            "docs": [
-              "pool a"
-            ],
-            "type": "publicKey"
+            name: 'poolA',
+            docs: ['pool a'],
+            type: 'publicKey',
           },
           {
-            "name": "poolWsol",
-            "docs": [
-              "pool wsol"
-            ],
-            "type": "publicKey"
+            name: 'poolWsol',
+            docs: ['pool wsol'],
+            type: 'publicKey',
           },
           {
-            "name": "creator",
-            "docs": [
-              "Account of User"
-            ],
-            "type": "publicKey"
+            name: 'creator',
+            docs: ['Account of User'],
+            type: 'publicKey',
           },
           {
-            "name": "mintTokenAddress",
-            "docs": [
-              "mint token address"
-            ],
-            "type": "publicKey"
+            name: 'mintTokenAddress',
+            docs: ['mint token address'],
+            type: 'publicKey',
           },
           {
-            "name": "creatorTotal",
-            "docs": [
-              "Creator lock total"
-            ],
-            "type": "u64"
+            name: 'creatorTotal',
+            docs: ['Creator lock total'],
+            type: 'u64',
           },
           {
-            "name": "platformTotal",
-            "docs": [
-              "Platform lock total"
-            ],
-            "type": "u64"
+            name: 'platformTotal',
+            docs: ['Platform lock total'],
+            type: 'u64',
           },
           {
-            "name": "createTimestamp",
-            "docs": [
-              "Meme Create Timestamp"
-            ],
-            "type": "i64"
+            name: 'createTimestamp',
+            docs: ['Meme Create Timestamp'],
+            type: 'i64',
           },
           {
-            "name": "preLaunchSecond",
-            "docs": [
-              "preLaunch Second"
-            ],
-            "type": "i64"
+            name: 'preLaunchSecond',
+            docs: ['preLaunch Second'],
+            type: 'i64',
           },
           {
-            "name": "memeIdoCount",
-            "docs": [
-              "ido count"
-            ],
-            "type": "u64"
+            name: 'memeIdoCount',
+            docs: ['ido count'],
+            type: 'u64',
           },
           {
-            "name": "memeAirdropCount",
-            "docs": [
-              "airdrop count"
-            ],
-            "type": "u64"
+            name: 'memeAirdropCount',
+            docs: ['airdrop count'],
+            type: 'u64',
           },
           {
-            "name": "memeAirdropTotal",
-            "docs": [
-              "airdrop count"
-            ],
-            "type": "u64"
+            name: 'memeAirdropTotal',
+            docs: ['airdrop count'],
+            type: 'u64',
           },
           {
-            "name": "memeIdoMoney",
-            "docs": [
-              "ido money"
-            ],
-            "type": "u64"
+            name: 'memeIdoMoney',
+            docs: ['ido money'],
+            type: 'u64',
           },
           {
-            "name": "totalSupply",
-            "docs": [
-              "totalSupply, may be samller than GlobalMemooConfig.total_supply"
-            ],
-            "type": "u128"
-          }
-        ]
-      }
+            name: 'totalSupply',
+            docs: ['totalSupply, may be samller than GlobalMemooConfig.total_supply'],
+            type: 'u128',
+          },
+          {
+            name: 'padding',
+            docs: ['padding'],
+            type: {
+              array: ['u64', 16],
+            },
+          },
+        ],
+      },
     },
     {
-      "name": "memeUserIdoData",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: 'memeUserIdoData',
+      type: {
+        kind: 'struct',
+        fields: [
           {
-            "name": "isInitialized",
-            "docs": [
-              "init or check id"
-            ],
-            "type": "bool"
+            name: 'isInitialized',
+            docs: ['init or check id'],
+            type: 'bool',
           },
           {
-            "name": "memeId",
-            "docs": [
-              "The primary key of the Meme, this is key"
-            ],
-            "type": "publicKey"
+            name: 'memeId',
+            docs: ['The primary key of the Meme, this is key'],
+            type: 'publicKey',
           },
           {
-            "name": "user",
-            "docs": [
-              "Account of User, this is key"
-            ],
-            "type": "publicKey"
+            name: 'user',
+            docs: ['Account of User, this is key'],
+            type: 'publicKey',
           },
           {
-            "name": "memeUserIdoCount",
-            "docs": [
-              "ido buy count"
-            ],
-            "type": "u64"
+            name: 'memeUserIdoCount',
+            docs: ['ido buy count'],
+            type: 'u64',
           },
           {
-            "name": "memeUserIdoClaimedCount",
-            "docs": [
-              "ido buy count"
-            ],
-            "type": "u64"
+            name: 'memeUserIdoClaimedCount',
+            docs: ['ido buy count'],
+            type: 'u64',
           },
           {
-            "name": "memeUserIdoMoney",
-            "docs": [
-              "Spend money"
-            ],
-            "type": "u64"
+            name: 'memeUserIdoMoney',
+            docs: ['Spend money'],
+            type: 'u64',
           },
           {
-            "name": "creatorLockCount",
-            "docs": [
-              "Creator lock total"
-            ],
-            "type": "u64"
+            name: 'creatorLockCount',
+            docs: ['Creator lock total'],
+            type: 'u64',
           },
           {
-            "name": "creatorLockCountPermission",
-            "docs": [
-              "Creator lock count_permission"
-            ],
-            "type": "u64"
+            name: 'creatorLockCountPermission',
+            docs: ['Creator lock count_permission'],
+            type: 'u64',
           },
           {
-            "name": "creatorLockPeriod",
-            "docs": [
-              "Creator lock period"
-            ],
-            "type": "u64"
+            name: 'creatorLockPeriod',
+            docs: ['Creator lock period'],
+            type: 'u64',
           },
           {
-            "name": "memeUserAirdropClaimedCount",
-            "docs": [
-              "ido buy count"
-            ],
-            "type": "u64"
-          }
-        ]
-      }
-    }
+            name: 'memeUserAirdropClaimedCount',
+            docs: ['ido buy count'],
+            type: 'u64',
+          },
+          {
+            name: 'padding',
+            docs: ['padding'],
+            type: {
+              array: ['u64', 16],
+            },
+          },
+        ],
+      },
+    },
   ],
-  "types": [
+  types: [
     {
-      "name": "AirdropMessage",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: 'AirdropMessage',
+      type: {
+        kind: 'struct',
+        fields: [
           {
-            "name": "address",
-            "type": "publicKey"
+            name: 'address',
+            type: 'publicKey',
           },
           {
-            "name": "meme",
-            "type": "publicKey"
+            name: 'meme',
+            type: 'publicKey',
           },
           {
-            "name": "count",
-            "type": "u64"
+            name: 'count',
+            type: 'u64',
           },
           {
-            "name": "expiry",
-            "type": "i64"
-          }
-        ]
-      }
-    }
+            name: 'expiry',
+            type: 'i64',
+          },
+        ],
+      },
+    },
   ],
-  "errors": [
+  errors: [
     {
-      "code": 6000,
-      "name": "BindToken",
-      "msg": "Bind Token"
+      code: 6000,
+      name: 'Token0Bigger',
+      msg: 'TOKEN 0 BIGGER',
     },
     {
-      "code": 6001,
-      "name": "DeserializeAirdropMessageError",
-      "msg": "Deserialize Airdrop Message Error"
+      code: 6001,
+      name: 'BindToken',
+      msg: 'Bind Token',
     },
     {
-      "code": 6002,
-      "name": "PoolAuthorityAtaMissing",
-      "msg": "Pool Authority Ata Missing"
+      code: 6002,
+      name: 'DeserializeAirdropMessageError',
+      msg: 'Deserialize Airdrop Message Error',
     },
     {
-      "code": 6003,
-      "name": "PoolTokenAtaMissing",
-      "msg": "Pool Token Ata Missing"
+      code: 6003,
+      name: 'PoolAuthorityAtaMissing',
+      msg: 'Pool Authority Ata Missing',
     },
     {
-      "code": 6004,
-      "name": "Expired",
-      "msg": "Expired"
+      code: 6004,
+      name: 'PoolTokenAtaMissing',
+      msg: 'Pool Token Ata Missing',
     },
     {
-      "code": 6005,
-      "name": "InvalidFee",
-      "msg": "Invalid fee value"
+      code: 6005,
+      name: 'Expired',
+      msg: 'Expired',
     },
     {
-      "code": 6006,
-      "name": "InvalidTooMany",
-      "msg": "Invalid buy too many tokens"
+      code: 6006,
+      name: 'InvalidFee',
+      msg: 'Invalid fee value',
     },
     {
-      "code": 6007,
-      "name": "BalanceTooSmall",
-      "msg": "Balance is below the input"
+      code: 6007,
+      name: 'InvalidTooMany',
+      msg: 'Invalid buy too many tokens',
     },
     {
-      "code": 6008,
-      "name": "InputTooSmallThanFee",
-      "msg": "Input too samll to pay fee"
+      code: 6008,
+      name: 'BalanceTooSmall',
+      msg: 'Balance is below the input',
     },
     {
-      "code": 6009,
-      "name": "InputTooSmallThanIdoPrice",
-      "msg": "Input too samll to buy one unit"
+      code: 6009,
+      name: 'InputTooSmallThanFee',
+      msg: 'Input too samll to pay fee',
     },
     {
-      "code": 6010,
-      "name": "IdoBuyExceedIdoTotal",
-      "msg": "Ido Buy Exceed Ido Total"
+      code: 6010,
+      name: 'InputTooSmallThanIdoPrice',
+      msg: 'Input too samll to buy one unit',
     },
     {
-      "code": 6011,
-      "name": "IdoBuyExceedIdoCreatorBuyLimit",
-      "msg": "Ido Buy Exceed Creator Buy Limit"
+      code: 6011,
+      name: 'IdoBuyExceedIdoTotal',
+      msg: 'Ido Buy Exceed Ido Total',
     },
     {
-      "code": 6012,
-      "name": "PoolAccountAError",
-      "msg": "Pool Account A Error"
+      code: 6012,
+      name: 'IdoBuyExceedIdoCreatorBuyLimit',
+      msg: 'Ido Buy Exceed Creator Buy Limit',
     },
     {
-      "code": 6013,
-      "name": "PoolAccountWsolError",
-      "msg": "Pool Account Wsol Error"
+      code: 6013,
+      name: 'PoolAccountAError',
+      msg: 'Pool Account A Error',
     },
     {
-      "code": 6014,
-      "name": "IdoBuyExceedIdoUserBuyLimit",
-      "msg": "Ido Buy Exceed User Buy Limit"
+      code: 6014,
+      name: 'PoolAccountWsolError',
+      msg: 'Pool Account Wsol Error',
     },
     {
-      "code": 6015,
-      "name": "PreLaunchSecondLt0",
-      "msg": "PreLaunchSecond < 0"
+      code: 6015,
+      name: 'IdoBuyExceedIdoUserBuyLimit',
+      msg: 'Ido Buy Exceed User Buy Limit',
     },
     {
-      "code": 6016,
-      "name": "AdminMismatch",
-      "msg": "AdminMismatch"
+      code: 6016,
+      name: 'PreLaunchSecondLt0',
+      msg: 'PreLaunchSecond < 0',
     },
     {
-      "code": 6017,
-      "name": "PlatformAccountMismatch",
-      "msg": "Platform Account Mismatch"
+      code: 6017,
+      name: 'AdminMismatch',
+      msg: 'AdminMismatch',
     },
     {
-      "code": 6018,
-      "name": "MemeConfigIsNotInitialized",
-      "msg": "Meme Config Is Not Initialized"
+      code: 6018,
+      name: 'PlatformAccountMismatch',
+      msg: 'Platform Account Mismatch',
     },
     {
-      "code": 6019,
-      "name": "UserDataIsNotInitialized",
-      "msg": "User Data Is Not Initialized"
+      code: 6019,
+      name: 'MemeConfigIsNotInitialized',
+      msg: 'Meme Config Is Not Initialized',
     },
     {
-      "code": 6020,
-      "name": "MemeIDMismatch",
-      "msg": "Meme ID Mismatch"
+      code: 6020,
+      name: 'UserDataIsNotInitialized',
+      msg: 'User Data Is Not Initialized',
     },
     {
-      "code": 6021,
-      "name": "UserMismatch",
-      "msg": "User Mismatch"
+      code: 6021,
+      name: 'MemeIDMismatch',
+      msg: 'Meme ID Mismatch',
     },
     {
-      "code": 6022,
-      "name": "AirdropAlreadyClaimed",
-      "msg": "Airdrop Already Claimed"
+      code: 6022,
+      name: 'UserMismatch',
+      msg: 'User Mismatch',
     },
     {
-      "code": 6023,
-      "name": "MemeConfigIsInitialized",
-      "msg": "Meme Config Is Initialized"
+      code: 6023,
+      name: 'AirdropAlreadyClaimed',
+      msg: 'Airdrop Already Claimed',
     },
     {
-      "code": 6024,
-      "name": "CreatorClaimExceed",
-      "msg": "Creator Claim Exceed"
+      code: 6024,
+      name: 'MemeConfigIsInitialized',
+      msg: 'Meme Config Is Initialized',
     },
     {
-      "code": 6025,
-      "name": "CreatorClaimPermissionExceed",
-      "msg": "Creator Claim Permission Exceed"
+      code: 6025,
+      name: 'CreatorClaimExceed',
+      msg: 'Creator Claim Exceed',
     },
     {
-      "code": 6026,
-      "name": "CreatorClaimPermissionSmalllerThanBefore",
-      "msg": "Creator Claim Permission Smalller Than Before"
+      code: 6026,
+      name: 'CreatorClaimPermissionExceed',
+      msg: 'Creator Claim Permission Exceed',
     },
     {
-      "code": 6027,
-      "name": "CreatorClaimPeriodSmalllerThanBefore",
-      "msg": "Creator Claim Period Smalller Than Before"
+      code: 6027,
+      name: 'CreatorClaimPermissionSmalllerThanBefore',
+      msg: 'Creator Claim Permission Smalller Than Before',
     },
     {
-      "code": 6028,
-      "name": "IdoUserClaimExceed",
-      "msg": "Creator Claim Exceed"
+      code: 6028,
+      name: 'CreatorClaimPeriodSmalllerThanBefore',
+      msg: 'Creator Claim Period Smalller Than Before',
     },
     {
-      "code": 6029,
-      "name": "DealHunterClaimExceed",
-      "msg": "Deal Hunter Claim Exceed"
+      code: 6029,
+      name: 'IdoUserClaimExceed',
+      msg: 'Creator Claim Exceed',
     },
     {
-      "code": 6030,
-      "name": "NotAdminSignature",
-      "msg": "Not Admin Signature"
+      code: 6030,
+      name: 'DealHunterClaimExceed',
+      msg: 'Deal Hunter Claim Exceed',
     },
     {
-      "code": 6031,
-      "name": "VerifySignatureFail",
-      "msg": "Verify Signature Fail"
+      code: 6031,
+      name: 'NotAdminSignature',
+      msg: 'Not Admin Signature',
     },
     {
-      "code": 6032,
-      "name": "MemeUserDataConfigIsInitialized",
-      "msg": "Meme User Data Config Is Initialized"
+      code: 6032,
+      name: 'VerifySignatureFail',
+      msg: 'Verify Signature Fail',
     },
     {
-      "code": 6033,
-      "name": "MemeUserDataConfigIsNotInitialized",
-      "msg": "Meme User Data Config Is Not Initialized"
+      code: 6033,
+      name: 'MemeUserDataConfigIsInitialized',
+      msg: 'Meme User Data Config Is Initialized',
     },
     {
-      "code": 6034,
-      "name": "MemeUserDataMemeIdOrUserMismatch",
-      "msg": "Meme User Data Meme Id Or User Is Mismatch"
+      code: 6034,
+      name: 'MemeUserDataConfigIsNotInitialized',
+      msg: 'Meme User Data Config Is Not Initialized',
     },
     {
-      "code": 6035,
-      "name": "IdoNotStarted",
-      "msg": "IDO not started"
+      code: 6035,
+      name: 'MemeUserDataMemeIdOrUserMismatch',
+      msg: 'Meme User Data Meme Id Or User Is Mismatch',
     },
     {
-      "code": 6036,
-      "name": "IdoNotEnd",
-      "msg": "IDO not end"
+      code: 6036,
+      name: 'IdoNotStarted',
+      msg: 'IDO not started',
     },
     {
-      "code": 6037,
-      "name": "MemeIdoCountLt0",
-      "msg": "IDO Ccount < 0"
-    }
-  ]
+      code: 6037,
+      name: 'IdoNotEnd',
+      msg: 'IDO not end',
+    },
+    {
+      code: 6038,
+      name: 'MemeIdoCountLt0',
+      msg: 'IDO Ccount < 0',
+    },
+  ],
 };
