@@ -54,6 +54,7 @@ import { useProportion } from '@/hooks/useProportion';
 
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
+console.log('twitterRedirectUri: ', twitterRedirectUri);
 const FORM_STORAGE_KEY = 'create_token_storage';
 const TWITTER_CLIENT_ID_KEY = 'twitter_client_id';
 const PreLaunchDurationOptions = [
