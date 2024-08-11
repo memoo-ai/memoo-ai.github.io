@@ -317,8 +317,10 @@ export default function Create() {
         //   return;
         // }
 
-        data.twitter = twitter ?? 'twitter';
+        data.twitter = twitter;
         data.accessToken = twitterAccessToken;
+        // data.twitter = 'twitter';
+        // data.accessToken = 'twitterAccessToken';
         if (isConfirm) {
           // twitter must have been connected
           // if (!twitter) {
