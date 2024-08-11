@@ -162,7 +162,7 @@ export default function Create() {
 
     let clientId = res.data;
     localStorage.setItem(TWITTER_CLIENT_ID_KEY, clientId);
-
+    console.log('twitterRedirectUri: ', twitterRedirectUri);
     authorizeTwitter(clientId, twitterRedirectUri);
   }, [form, iconUrl, bannerUrl]);
 
