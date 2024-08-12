@@ -41,10 +41,10 @@ const ClaimImoTokensModal: FC<{ children: ReactNode }> = ({ children }) => {
 
     const memeUserIdoCount = new BigNumber(memeUserData.memeUserIdoCount.toString());
 
-    const result = memeUserIdoCount.times(idoPrice);
+    const result = memeUserIdoCount.times(idoPrice).toNumber();
     console.log('userImoPrice: ', result.toString());
 
-    return result.toNumber();
+    return result ?? 0;
   }, [memeUserData, memooConfig]);
 
   const onConfirm = useCallback(async () => {
