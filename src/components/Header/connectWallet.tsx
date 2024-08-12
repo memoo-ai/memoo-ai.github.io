@@ -143,8 +143,8 @@ const ConnectWallet = () => {
         </div>
       ) : (
         <div className="wallet_button_border" onClick={() => setUpdatePortal((count) => count + 1)}>
-          {/* <Wallet>Connect Wallet</Wallet> */}
-          <WalletMultiButton className="w-[192px]">
+          <Wallet>Connect Wallet</Wallet>
+          {/* <WalletMultiButton className="w-[192px]">
             Connect Wallet
             <SolanaPortalTop updatePortal={updatePortal}>
               <div className="flex items-center flex-column justify-center mt-[25px] ">
@@ -161,7 +161,7 @@ const ConnectWallet = () => {
                 </p>
               </div>
             </SolanaPortalBottom>
-          </WalletMultiButton>
+          </WalletMultiButton> */}
         </div>
       )}
     </div>
