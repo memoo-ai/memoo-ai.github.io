@@ -218,6 +218,7 @@ const Airdrop: FC = () => {
         } else if (data.stageOneClaim) {
           setStage('1st-claim');
         } else if (data.status === 'Launched') {
+          setStage('launch');
           const [p1, p2] = await Promise.all([
             getIDOLaunchedDetail(ticker, address ?? 'default'),
             getIDOLaunchedDetailTop10({
