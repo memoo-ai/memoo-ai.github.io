@@ -51,8 +51,8 @@ const Progress: FC = () => {
 
     console.log('creatorLockCountPermission:', creatorLockCountPermission.toString());
     console.log('creatorLockCount:', creatorLockCount.toString());
-
-    const result = creatorLockCountPermission.sub(creatorLockCount);
+    const des = new BN(10).mul(new BN(9));
+    const result = creatorLockCountPermission.sub(creatorLockCount).div(des);
     console.log('tokens', result.toString());
 
     return parseFloat(formatDecimals(result.toString()));
