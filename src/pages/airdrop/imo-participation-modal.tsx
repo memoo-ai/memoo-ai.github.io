@@ -133,7 +133,7 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
                   (Number(formatDecimals(capped)) / 7) * 6
                 } ${tokenSymbol} will be used to create liquidity pair while${Number(
                   Number(formatDecimals(capped)) / 7,
-                )}  ${tokenSymbol} is collected as IMO platform fee.`}
+                ).toFixed(2)}  ${tokenSymbol} is collected as IMO platform fee.`}
                 color="#fff"
                 bgColor="#396D93"
               />

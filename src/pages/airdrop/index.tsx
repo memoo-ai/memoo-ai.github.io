@@ -264,7 +264,7 @@ const Airdrop: FC = () => {
         setLoading(false);
       }
     })();
-  }, [ticker, solanaMemeConfig]);
+  }, [ticker, solanaMemeConfig, refresh]);
 
   // useEffect(() => {
   //   if (!idoQueueDetail || !address) return;
