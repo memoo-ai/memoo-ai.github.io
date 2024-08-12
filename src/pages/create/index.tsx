@@ -63,7 +63,7 @@ const PreLaunchDurationOptions = [
   { label: '3 days', value: PreLaunchDurationEnum['3DAYS'] },
 ];
 const CurrentProductDescriptions = [
-  'Tokenomics for Meme Tokens',
+  'Tokenomics for Meme Token',
   'Standardize Smart Contract Rails',
   'Simplified IMO & LP Management',
   'Fair Launch Policy',
