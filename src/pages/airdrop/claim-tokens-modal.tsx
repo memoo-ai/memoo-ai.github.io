@@ -14,6 +14,7 @@ import {
 } from 'react';
 import './claim-tokens-modal.scss';
 import { AirdropContext } from '.';
+import BigNumber from 'bignumber.js';
 
 const ClaimTokensModal: FC<{
   children: ReactNode;
@@ -29,7 +30,8 @@ const ClaimTokensModal: FC<{
 
   const unLockTokens = useMemo(() => {
     if (!memeUserData) return 0;
-    return Number(memeUserData?.memeUserIdoClaimedCount);
+    const result = new BigNumber(memeUserData?.memeUserIdoClaimedCount.toString()).dividedBy(10 ** 9);
+    return Number(result);
   }, [memeUserData]);
 
   const onConfirm = useCallback(async () => {

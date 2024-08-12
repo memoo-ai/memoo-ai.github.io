@@ -88,9 +88,9 @@ export const Creator = () => {
   const purchased = useMemo(() => {
     if (!memooConfig || !memeUserData) return 0;
 
-    const creatorLockCountBN = new BigNumber(Number(memeUserData?.creatorLockCount));
+    const creatorLockCountBN = new BigNumber(Number(memeUserData?.creatorLockCount)).dividedBy(10 ** 9);
     console.log('creatorLockCountBN:', Number(creatorLockCountBN));
-    const memeUserIdoCountBN = new BigNumber(Number(memeUserData?.memeUserIdoCount));
+    const memeUserIdoCountBN = new BigNumber(Number(memeUserData?.memeUserIdoCount)).dividedBy(10 ** 9);
     console.log('memeUserIdoCountBN:', Number(memeUserIdoCountBN));
     const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 9);
     console.log('idoPriceBN:', Number(idoPriceBN));

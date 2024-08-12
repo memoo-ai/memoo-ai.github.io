@@ -24,27 +24,23 @@ const ClaimImoTokensModal: FC<{ children: ReactNode }> = ({ children }) => {
   const userCanClaimCount = useMemo(() => {
     if (!memeUserData) return 0;
 
-    const memeUserIdoClaimedCount = new BN(memeUserData.memeUserIdoClaimedCount);
-    const memeUserIdoCount = new BN(memeUserData.memeUserIdoCount);
-
-    return memeUserIdoCount.sub(memeUserIdoClaimedCount).toNumber();
+    const memeUserIdoClaimedCount = new BigNumber(memeUserData?.memeUserIdoClaimedCount.toString()).dividedBy(10 ** 9);
+    const memeUserIdoCount = new BigNumber(Number(memeUserData.memeUserIdoCount.toString())).dividedBy(10 ** 9);
+    const result = memeUserIdoCount.minus(memeUserIdoClaimedCount);
+    console.log('userCanClaimCount: ', result.toString());
+    return result.toString();
   }, [memeUserData]);
 
   const userImoPrice = useMemo(() => {
     if (!memeUserData || !memooConfig) return new BigNumber(0);
+    const idoPrice = new BigNumber(Number(memooConfig.idoPrice.toString())).dividedBy(10 ** 9);
+    console.log('memeUserIdoCountidoPrice: ', idoPrice.toString());
 
-    const denominator = new BigNumber(10).pow(9);
-    console.log('denominator: ', denominator.toString());
-
-    const idoPrice = new BigNumber(memooConfig.idoPrice.toString()).div(denominator);
-    console.log('idoPrice: ', idoPrice.toString());
-
-    const memeUserIdoCount = new BigNumber(memeUserData.memeUserIdoCount.toString());
-
-    const result = memeUserIdoCount.times(idoPrice).toNumber();
+    const memeUserIdoCount = new BigNumber(Number(memeUserData.memeUserIdoCount.toString())).dividedBy(10 ** 9);
+    console.log('memeUserIdoCount: ', memeUserIdoCount.toString());
+    const result = memeUserIdoCount.times(idoPrice);
     console.log('userImoPrice: ', result.toString());
-
-    return result ?? 0;
+    return result.toString();
   }, [memeUserData, memooConfig]);
 
   const onConfirm = useCallback(async () => {

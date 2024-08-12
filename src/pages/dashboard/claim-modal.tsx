@@ -29,15 +29,18 @@ const ClaimModal = ({ children }: any) => {
 
   const tokens = useMemo(() => {
     if (!memeUserData) return 0;
-    const creatorLockCountPermission = new BN(memeUserData.creatorLockCountPermission);
-    const creatorLockCount = new BN(memeUserData.creatorLockCount);
-    const result = creatorLockCountPermission.sub(creatorLockCount);
+    const creatorLockCountPermission = new BigNumber(memeUserData.creatorLockCountPermission.toString()).dividedBy(
+      10 ** 9,
+    );
+    const creatorLockCount = new BigNumber(memeUserData.creatorLockCount.toString()).dividedBy(10 ** 9);
+    const result = creatorLockCountPermission.minus(creatorLockCount);
     return parseFloat(formatDecimals(result.toString()));
   }, [memeUserData]);
 
   const unlockTokens = useMemo(() => {
     if (!memeUserData) return 0;
-    return Number(memeUserData?.memeUserIdoClaimedCount);
+    const result = new BigNumber(memeUserData?.memeUserIdoClaimedCount.toString()).dividedBy(10 ** 9);
+    return Number(result);
   }, [memeUserData]);
 
   const onConfirm = useCallback(async () => {

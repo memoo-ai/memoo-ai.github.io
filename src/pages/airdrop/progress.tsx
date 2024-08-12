@@ -23,9 +23,9 @@ const Progress: FC = () => {
   const purchased = useMemo(() => {
     if (!memooConfig || !memeUserData) return 0;
 
-    const creatorLockCountBN = new BigNumber(Number(memeUserData?.creatorLockCount));
+    const creatorLockCountBN = new BigNumber(Number(memeUserData?.creatorLockCount)).dividedBy(10 ** 9);
     console.log('creatorLockCountBN:', Number(creatorLockCountBN));
-    const memeUserIdoCountBN = new BigNumber(Number(memeUserData?.memeUserIdoCount));
+    const memeUserIdoCountBN = new BigNumber(Number(memeUserData?.memeUserIdoCount)).dividedBy(10 ** 9);
     console.log('memeUserIdoCountBN:', Number(memeUserIdoCountBN));
     const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 9);
     console.log('idoPriceBN:', Number(idoPriceBN));
@@ -46,13 +46,15 @@ const Progress: FC = () => {
   const tokens = useMemo(() => {
     if (!memeUserData) return 0;
 
-    const creatorLockCountPermission = new BN(memeUserData?.creatorLockCountPermission);
-    const creatorLockCount = new BN(memeUserData?.creatorLockCount);
+    const creatorLockCountPermission = new BigNumber(memeUserData?.creatorLockCountPermission.toString()).dividedBy(
+      10 ** 9,
+    );
+    const creatorLockCount = new BigNumber(memeUserData?.creatorLockCount.toString()).dividedBy(10 ** 9);
 
     console.log('creatorLockCountPermission:', creatorLockCountPermission.toString());
     console.log('creatorLockCount:', creatorLockCount.toString());
-    const denominator = new BN(10).pow(new BN(9));
-    const result = creatorLockCountPermission.sub(creatorLockCount).div(denominator);
+
+    const result = creatorLockCountPermission.minus(creatorLockCount).dividedBy(10 ** 9);
     console.log('tokens', result.toString());
 
     return parseFloat(formatDecimals(result.toString()));

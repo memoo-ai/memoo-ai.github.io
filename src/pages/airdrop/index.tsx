@@ -301,7 +301,7 @@ const Airdrop: FC = () => {
     const idoPriceBN = new BN(memooConfig?.idoPrice).div(new BN(10).pow(new BN(9)));
     console.log('idoPriceBN: ', idoPriceBN.toString());
 
-    const memeUserIdoCountBN = new BN(memeCreatorUserData?.memeUserIdoCount);
+    const memeUserIdoCountBN = new BN(memeCreatorUserData?.memeUserIdoCount).div(new BN(10).pow(new BN(9)));
     console.log('memeUserIdoCountBN: ', memeUserIdoCountBN.toString());
 
     const preAmountBN = memeUserIdoCountBN.mul(idoPriceBN);
