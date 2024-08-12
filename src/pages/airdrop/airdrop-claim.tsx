@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import { useCallback, useContext, useMemo, useState, useEffect } from 'react';
 import Countdown from './countdown';
 import { TokenCreateStage } from '@/types';
@@ -204,8 +205,21 @@ export default function AirdropClaim() {
               Follow @{item.user}
               {'\n'}on twitter
             </p>
-            <Wallet>
-              {stage === 'in-queue' && (
+            {!address ? (
+              <Wallet>
+                {stage === 'in-queue' && (
+                  <img
+                    onClick={() => (item.followed ? null : handleFollow(item.user ? item.user : ''))}
+                    className={classNames('w-5', {
+                      'cursor-pointer': !item.followed,
+                      'opacity-30': item.followed && address,
+                    })}
+                    src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
+                  />
+                )}
+              </Wallet>
+            ) : (
+              stage === 'in-queue' && (
                 <img
                   onClick={() => (item.followed ? null : handleFollow(item.user ? item.user : ''))}
                   className={classNames('w-5', {
@@ -214,8 +228,8 @@ export default function AirdropClaim() {
                   })}
                   src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
                 />
-              )}
-            </Wallet>
+              )
+            )}
           </li>
         ))}
         {/* <li className="follow_list_item flex items-center w-full justify-between px-3 py-3.5" onClick={testAirdrop} /> */}
