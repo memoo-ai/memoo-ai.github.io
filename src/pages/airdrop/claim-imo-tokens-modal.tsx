@@ -9,14 +9,44 @@ import {
   useContext,
   useState,
   useCallback,
+  useMemo,
 } from 'react';
 import './airdrop-claim-modal.scss';
 import { AirdropContext } from '.';
+import { BN } from '@coral-xyz/anchor';
+import BigNumber from 'bignumber.js';
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const ClaimImoTokensModal: FC<{ children: ReactNode }> = ({ children }) => {
   const [open, setOpen] = useState(false);
   const [confirming, setConfirming] = useState(false);
-  const { idoQueueDetail, idoClaim, solanaMemeConfig } = useContext(AirdropContext);
+  const { idoQueueDetail, idoClaim, solanaMemeConfig, memeUserData, memooConfig } = useContext(AirdropContext);
+
+  const userCanClaimCount = useMemo(() => {
+    if (!memeUserData) return 0;
+
+    const memeUserIdoClaimedCount = new BN(memeUserData.memeUserIdoClaimedCount);
+    const memeUserIdoCount = new BN(memeUserData.memeUserIdoCount);
+
+    return memeUserIdoCount.sub(memeUserIdoClaimedCount).toNumber();
+  }, [memeUserData]);
+
+  const userImoPrice = useMemo(() => {
+    if (!memeUserData || !memooConfig) return new BigNumber(0);
+
+    const denominator = new BigNumber(10).pow(9);
+    console.log('denominator: ', denominator.toString());
+
+    const idoPrice = new BigNumber(memooConfig.idoPrice.toString()).div(denominator);
+    console.log('idoPrice: ', idoPrice.toString());
+
+    const memeUserIdoCount = new BigNumber(memeUserData.memeUserIdoCount.toString());
+
+    const result = memeUserIdoCount.times(idoPrice);
+    console.log('userImoPrice: ', result.toString());
+
+    return result.toNumber();
+  }, [memeUserData, memooConfig]);
+
   const onConfirm = useCallback(async () => {
     if (!idoClaim || !idoQueueDetail || !solanaMemeConfig) return;
     try {
@@ -51,8 +81,9 @@ const ClaimImoTokensModal: FC<{ children: ReactNode }> = ({ children }) => {
             <img className="w-[111px] object-contain" src="/create/img-claim.png" />
             <span className="font-404px text-[32px] text-green">{idoQueueDetail?.ticker} has arrived!</span>
             <p className="whitespace-pre font-OCR text-base leading-[18px] text-white text-center">
-              For your participation of {idoQueueDetail?.contributed} {tokenSymbol} in {idoQueueDetail?.tokenName} IMO,{' '}
-              <br /> you can now unlock you allocation below.
+              {/* For your participation of {idoQueueDetail?.contributed} {tokenSymbol} in {idoQueueDetail?.tokenName} IMO,{' '} */}
+              For your participation of {userImoPrice} {tokenSymbol} in {idoQueueDetail?.tokenName} IMO, <br /> you can
+              now unlock you allocation below.
             </p>
           </div>
           <div className="relative mt-[26px]">
@@ -62,7 +93,8 @@ const ClaimImoTokensModal: FC<{ children: ReactNode }> = ({ children }) => {
             />
             <div className="memoo_input h-[66px] font-404px text-white text-[24px] text-center flex items-center justify-center">
               <img className="w-[50px] h-[50px] rounded-[50%]" src={idoQueueDetail?.icon} alt="" />{' '}
-              <span>&nbsp;{(idoQueueDetail?.imoBalance ?? 0) - (idoQueueDetail?.claimImoBalance ?? 0)} &nbsp;</span>
+              {/* <span>&nbsp;{(idoQueueDetail?.imoBalance ?? 0) - (idoQueueDetail?.claimImoBalance ?? 0)} &nbsp;</span> */}
+              <span>&nbsp;{userCanClaimCount} &nbsp;</span>
               <span>{idoQueueDetail?.ticker}</span>
             </div>
           </div>

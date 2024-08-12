@@ -213,12 +213,15 @@ const Airdrop: FC = () => {
         const { data: time } = await getUnlockTimestamp(ticker);
         setUnlockTimestamp(time);
         console.log('getUnlockTimestamp: ', time);
-        if (data.stageTwoClaim) {
-          setStage('2st-claim');
-        } else if (data.stageOneClaim) {
-          setStage('1st-claim');
-        } else if (data.status === 'Launched') {
+
+        if (data.status === 'Launched') {
           setStage('launch');
+          if (data.stageTwoClaim) {
+            setStage('2st-claim');
+          } else if (data.stageOneClaim) {
+            setStage('1st-claim');
+          }
+          // debugger;
           const [p1, p2] = await Promise.all([
             getIDOLaunchedDetail(ticker, address ?? 'default'),
             getIDOLaunchedDetailTop10({
