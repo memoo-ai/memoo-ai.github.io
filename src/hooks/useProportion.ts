@@ -54,6 +54,16 @@ export const useProportion = () => {
     [firstProportion, maxProportion, firstIncrease],
   );
 
+  const platformCreateMeme = useMemo(() => {
+    if (!memooConfig) return 0;
+    const tokenAllocationCreator = memooConfig?.tokenAllocationCreator / 10000;
+    const totalSupply = new BigNumber(memooConfig?.totalSupply.toString()).dividedBy(10 ** 9);
+    const idoPrice = new BigNumber(memooConfig?.idoPrice.toString()).dividedBy(10 ** 9);
+    const result = new BigNumber(tokenAllocationCreator).multipliedBy(totalSupply).multipliedBy(idoPrice);
+    const parseResult = parseFloat(formatDecimals(result));
+    return parseResult;
+  }, [firstProportion, maxProportion, firstIncrease]);
+
   return {
     firstProportion,
     maxProportion,
@@ -63,5 +73,6 @@ export const useProportion = () => {
     firstIncrease,
     memooConfig,
     createMaxProportion,
+    platformCreateMeme,
   };
 };

@@ -15,6 +15,7 @@ import { useBaseConfig } from '@/hooks/useBaseConfig';
 import { useAnchorProgram } from './useProgram';
 import { useSolana } from '@/hooks/useSolana';
 import { AirdropTxns } from '@/utils/airdropTxns';
+import { BigNumber } from 'bignumber.js';
 
 // import { memooConfig } from '@/types';
 export interface MemooConfig {
@@ -173,10 +174,17 @@ export const useAccount = () => {
         console.log('transaction:', transaction);
         console.log('amount- totalPay:', totalPay);
         const platformFeeBN = new BN(memooConfig?.platformFeeCreateMemeSol);
-        console.log('platformFeeCreateMemeSol: ', platformFeeBN);
-        console.log('totalPay:', Number(new BN(Number(totalPay)).add(platformFeeBN)));
+        // const defaultFeeBN = new BigNumber(0.000000001).multipliedBy(10 ** 9);
+        // const totalResult = Number(totalPay) > 0 ? totalPay : defaultFeeBN;
+        // const totalPayWithFee = new BN(totalResult).add(platformFeeBN);
+        const totalResultBN = new BigNumber(totalPay);
+        const totalPayWithFee = totalResultBN.plus(platformFeeBN.toString());
+        console.log('totalPay:', Number(totalPay));
+        console.log('platformFeeCreateMemeSol: ', platformFeeBN.toString());
+        console.log('totalPayWithFee:', totalPayWithFee.toString());
+
         const registerTokenMintIx = await program.methods
-          .registerTokenMint(memeConfigId, new BN(totalPay).add(platformFeeBN), new BN(0))
+          .registerTokenMint(memeConfigId, new BN(totalPayWithFee.toString()), new BN(0))
           // .registerTokenMint(memeConfigId, new BN(18000000).add(memooConfig?.platformFeeCreateMemeSol), new BN(0), 9)
           .accounts({
             memooConfig: memooConfigPda,

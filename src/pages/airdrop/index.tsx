@@ -214,7 +214,9 @@ const Airdrop: FC = () => {
         setUnlockTimestamp(time);
         console.log('getUnlockTimestamp: ', time);
 
-        if (data.status === 'Launched') {
+        if (data.status === 'IDOEND') {
+          setStage('imo');
+        } else if (data.status === 'Launched') {
           setStage('launch');
           if (data.stageTwoClaim) {
             setStage('2st-claim');

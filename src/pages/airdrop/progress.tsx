@@ -18,10 +18,10 @@ const Progress: FC = () => {
   const { stage, idoQueueDetail, memooConfig, mine, totalPurchased, memeUserData, unlockTimestamp } =
     useContext(AirdropContext);
   const { address } = useAccount();
-  const { firstProportion, maxProportion, firstIncrease, maxIncrease, createMaxProportion } = useProportion();
+  const { firstProportion, platformCreateMeme, firstIncrease, maxIncrease, createMaxProportion } = useProportion();
 
   const purchased = useMemo(() => {
-    if (!memooConfig || !memeUserData) return 0;
+    if (!memooConfig || !memeUserData || !platformCreateMeme) return 0;
 
     const creatorLockCountBN = new BigNumber(Number(memeUserData?.creatorLockCount)).dividedBy(10 ** 9);
     console.log('creatorLockCountBN:', Number(creatorLockCountBN));
@@ -35,9 +35,10 @@ const Progress: FC = () => {
     console.log('totalPurchasedBN:', Number(totalPurchasedBN));
     const formattedResult = parseFloat(formatDecimals(totalPurchasedBN));
     console.log('purchased:', formattedResult);
-
-    return formattedResult;
-  }, [memooConfig, memeUserData]);
+    console.log('purchased-platformCreateMeme:', platformCreateMeme);
+    const result = platformCreateMeme + formattedResult;
+    return result;
+  }, [memooConfig, memeUserData, platformCreateMeme]);
   // console.log('firstProportion:', firstProportion);
   // console.log('maxProportion:', maxProportion);
   // console.log('firstIncrease:', firstIncrease);
@@ -49,6 +50,7 @@ const Progress: FC = () => {
     const creatorLockCountPermission = new BigNumber(memeUserData?.creatorLockCountPermission.toString()).dividedBy(
       10 ** 9,
     );
+
     const creatorLockCount = new BigNumber(memeUserData?.creatorLockCount.toString()).dividedBy(10 ** 9);
 
     console.log('creatorLockCountPermission:', creatorLockCountPermission.toString());
@@ -59,6 +61,7 @@ const Progress: FC = () => {
 
     return parseFloat(formatDecimals(result.toString()));
   }, [memeUserData]);
+
   console.log('tokens:', tokens);
   // const firstIncrease = useMemo(() => {
   //   if (!memooConfig || !defaultConfig) return 0;
