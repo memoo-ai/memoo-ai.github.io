@@ -229,7 +229,7 @@ export const useAccount = () => {
 
   const idoBuy = useCallback(
     // eslint-disable-next-line max-params
-    async (memeId: string, amount: BN, isCreate: boolean, proportion: number) => {
+    async (memeId: string, amount: BN, isCreate?: boolean, proportion?: number) => {
       if (!memooConfig || !program || !publicKey) return;
       try {
         console.log('memeId:', memeId);

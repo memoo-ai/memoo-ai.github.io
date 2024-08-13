@@ -131,7 +131,7 @@ const Dashboard = () => {
     [commonBottom, commonBanner],
   );
   return (
-    <div className="page">
+    <div className="dashboard-page">
       <div
         className="dashboard-header-banner-bg"
         style={{ background: `url(${HeaderBannerBg}) no-repeat`, backgroundSize: 'cover' }}

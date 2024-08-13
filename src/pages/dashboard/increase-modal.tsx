@@ -65,7 +65,12 @@ const IncreaseModal: FC<{
       setConfirming(true);
       console.log(result);
       console.log('firstIncreaseD:', firstIncrease);
-      const tx = await idoBuy(solanaMemeConfig?.memeConfigId, new BN(result - purchased), true, proportion);
+      const tx = await idoBuy(
+        solanaMemeConfig?.memeConfigId,
+        new BN(((result * 10000 - purchased * 10000) / 10000) * 1e9).mul(new BN(1)),
+        true,
+        proportion,
+      );
       if (tx) {
         setOpen(false);
         message.success('Buy Successful');
