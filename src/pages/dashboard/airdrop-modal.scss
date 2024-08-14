@@ -51,6 +51,17 @@
     text-align: center;
     color: #FFFFFF;
   }
+  .confirm_content_wif{
+    position: relative;
+    background: #14FCFB;
+    border-radius: 7px;
+    .airdrop_lock{
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      transform: translateY(-50%);
+    }
+  }
 
 }
 

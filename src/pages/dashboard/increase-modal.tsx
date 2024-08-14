@@ -35,7 +35,7 @@ const IncreaseModal: FC<{
   const [confirming, setConfirming] = useState(false);
   const [proportion, setProportion] = useState(purchased);
   const [result, setResult] = useState(0);
-  const defaultValue = purchased * 1000;
+  const defaultValue = purchased * 100;
   const { idoBuy, idoQueueDetail, solanaMemeConfig } = useContext(CreatorContext);
   // useEffect(() => {
   //   setProportion(firstProportion * 100);
@@ -51,6 +51,8 @@ const IncreaseModal: FC<{
 
   useEffect(() => {
     if (!purchased) return;
+    // debugger;
+    console.log('defaultValue: ', purchased);
     setProportion(defaultValue);
   }, [purchased]);
 
@@ -59,7 +61,6 @@ const IncreaseModal: FC<{
     console.log('idoBuy:', idoBuy);
     console.log('idoQueueDetail:', idoQueueDetail);
     console.log('memeConfigId:', solanaMemeConfig?.memeConfigId);
-
     if (!idoBuy || !idoQueueDetail || !solanaMemeConfig) return;
     try {
       setConfirming(true);
@@ -120,10 +121,10 @@ const IncreaseModal: FC<{
                 className="memoo_slider flex-auto"
                 tooltip={{ open: true, rootClassName: 'memoo_slider_tooltip', formatter: (value) => `${value}%` }}
                 onChange={(value) => {
-                  if (value > purchased * 1000) {
+                  if (value > purchased * 100) {
                     setProportion(value);
                   } else {
-                    setProportion(purchased * 1000);
+                    setProportion(purchased * 100);
                   }
                 }}
                 value={proportion}

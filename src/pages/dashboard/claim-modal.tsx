@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import React, {
   ReactElement,
   useState,
@@ -29,6 +30,7 @@ const ClaimModal = ({ children }: any) => {
 
   const tokens = useMemo(() => {
     if (!memeUserData) return 0;
+    // debugger;
     const creatorLockCountPermission = new BigNumber(memeUserData.creatorLockCountPermission.toString()).dividedBy(
       10 ** 9,
     );

@@ -74,35 +74,23 @@ export const Creator = () => {
   const [unlockTimestamp, setUnlockTimestamp] = useState();
 
   const { address, memooConfig, idoBuy, getMemeUserData, airdropClaim, creatorClaim, idoClaim } = useAccount();
-  const {
-    // config: memooConfig,
-    // idoBuy,
-    unlockMeme,
-    getCanUnlockCount,
-    memeUnlockPeriods,
-  } = useManageContract();
 
-  const { firstProportion, maxProportion, firstIncrease, maxIncrease } = useProportion();
+  const { firstProportion, maxProportion, firstIncrease, maxIncrease, platformCreateMeme } = useProportion();
 
   // const firstProportion = useMemo(() => Number(memooConfig?.allocation.creator) / 10000, [memooConfig]);
   const purchased = useMemo(() => {
-    if (!memooConfig || !memeUserData) return 0;
+    if (!memooConfig || !memeUserData || !platformCreateMeme) return 0;
 
     const creatorLockCountBN = new BigNumber(Number(memeUserData?.creatorLockCount)).dividedBy(10 ** 9);
-    console.log('creatorLockCountBN:', Number(creatorLockCountBN));
     const memeUserIdoCountBN = new BigNumber(Number(memeUserData?.memeUserIdoCount)).dividedBy(10 ** 9);
-    console.log('memeUserIdoCountBN:', Number(memeUserIdoCountBN));
     const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 9);
-    console.log('idoPriceBN:', Number(idoPriceBN));
     const totalCountBN = creatorLockCountBN.plus(memeUserIdoCountBN);
-    console.log('totalCountBN:', Number(totalCountBN));
     const totalPurchasedBN = totalCountBN.multipliedBy(idoPriceBN);
-    console.log('totalPurchasedBN:', Number(totalPurchasedBN));
     const formattedResult = parseFloat(formatDecimals(totalPurchasedBN));
-    console.log('purchased:', formattedResult);
-
-    return formattedResult;
-  }, [memooConfig, memeUserData]);
+    const result = platformCreateMeme + formattedResult;
+    console.log('purchased: ', parseFloat(formatDecimals(result)));
+    return parseFloat(formatDecimals(result));
+  }, [memooConfig, memeUserData, platformCreateMeme]);
 
   const context: CreatorContext = useMemo(
     () => ({
@@ -112,17 +100,16 @@ export const Creator = () => {
       airdropClaim,
       totalPurchased,
       stage,
-      unlockMeme,
       solanaMemeConfig,
       creatorClaim,
       idoClaim,
       unlockTimestamp,
+      memeUserData,
     }),
     [
       idoQueueDetail,
       idoBuy,
       airdropClaim,
-      unlockMeme,
       memooConfig,
       totalPurchased,
       stage,
@@ -130,6 +117,7 @@ export const Creator = () => {
       creatorClaim,
       idoClaim,
       unlockTimestamp,
+      memeUserData,
     ],
   );
 

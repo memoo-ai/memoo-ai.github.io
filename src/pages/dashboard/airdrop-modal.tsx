@@ -10,7 +10,7 @@ import React, {
 } from 'react';
 
 import './airdrop-modal.scss';
-import { Modal, Button, message } from 'antd';
+import { Modal, Button, message, Input } from 'antd';
 import { IconLock, IconClose, IconCompleted } from '@/components/icons';
 import { useManageContract } from '@/hooks/useManageContract';
 import { useSign } from '@/hooks/useEthers';
@@ -42,15 +42,17 @@ const AirdropModal = ({ children }: any) => {
         chain: 'Solana',
       });
 
-      await airdropClaim(
+      const tx = await airdropClaim(
         solanaMemeConfig?.memeConfigId,
         solanaMemeConfig?.mintaPublickey,
         base64ToUint8Array(data?.hexMessage),
         base64ToUint8Array(data?.hexSignature),
         new PublicKey(data?.signPublickey),
       );
-      // setOpen(false);
-      // message.success('Claim Successful');
+      if (tx) {
+        setOpen(false);
+        message.success('Claim Successful');
+      }
     } catch (error) {
       console.error(error);
       message.error('Claim Failed');
@@ -76,17 +78,25 @@ const AirdropModal = ({ children }: any) => {
         <div className="confirm_content">
           <img className="mt-[15px]" src="./dashboard/reward.svg" alt="" />
           <div className="confirm_content_title mt-[18px]">{idoLaunchedDetail?.tokenName} has arrived!</div>
-          <div className="confirm_content_describe mt-[18px]">Thanks for being part of the Dogwifhat community.</div>
-          <div className="confirm_content_wif">
-            <IconLock className="airdrop_lock" color="#07E993" bgColor="#2B526E" />{' '}
-            {getNumberOrDefault(Number(idoLaunchedDetail?.count).toLocaleString())}
-            {/* {idoLaunchedDetail?.count} */}
+          <div className="confirm_content_describe mt-[18px]">
+            Thanks for being part of the <br /> Dogwifhat community.
+          </div>
+          <div className="relative mt-[26px] w-[100%]">
+            <IconLock
+              className="absolute left-[25px] top-[50%] translate-y-[-50%] z-10"
+              color="#07E993"
+              bgColor="#2B526E"
+            />
+            <Input
+              className="memoo_input h-[66px] font-404px text-white text-[24px] text-center"
+              value={`${Number(idoLaunchedDetail?.count).toLocaleString()} ${idoLaunchedDetail?.tokenName}`}
+            />
           </div>
           <Button
             className="mt-[16px] memoo_button w-[100%] h-[50px]"
             onClick={onConfirm}
             loading={confirming}
-            disabled={getNumberOrDefault(Number(idoLaunchedDetail?.count).toLocaleString()) === 0}
+            // disabled={getNumberOrDefault(Number(idoLaunchedDetail?.count).toLocaleString()) === 0}
           >
             CLAIM ALL
           </Button>
