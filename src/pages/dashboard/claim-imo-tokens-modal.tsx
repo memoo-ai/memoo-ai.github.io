@@ -38,7 +38,7 @@ const ClaimImoTokensModal = ({ children }: any) => {
   }, [memeUserData]);
 
   const userImoPrice = useMemo(() => {
-    if (!memeUserData || !memooConfig) return new BigNumber(0);
+    if (!memeUserData || !memooConfig) return 0;
     const idoPrice = new BigNumber(Number(memooConfig.idoPrice.toString())).dividedBy(10 ** 9);
     console.log('memeUserIdoCountidoPrice: ', idoPrice.toString());
 
@@ -101,7 +101,7 @@ const ClaimImoTokensModal = ({ children }: any) => {
             className="mt-[16px] memoo_button w-[100%] h-[50px]"
             onClick={onConfirm}
             loading={confirming}
-            disabled={getNumberOrDefault(Number(idoLaunchedDetail?.count).toLocaleString()) === 0}
+            disabled={getNumberOrDefault(Number(userCanClaimCount)) === 0}
           >
             CLAIM ALL
           </Button>
