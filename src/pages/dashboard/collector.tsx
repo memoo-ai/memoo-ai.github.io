@@ -181,7 +181,7 @@ export const Collector = () => {
                   </ClaimImoTokensModal> */}
                   {tab === 'Participated' && (
                     <div>
-                      {item && 'isParticipateImo' in item && item?.isParticipateImo ? (
+                      {item && 'participatedFlag' in item && item?.participatedFlag ? (
                         <ClaimImoTokensModal ticker={item.ticker}>
                           {' '}
                           <Button

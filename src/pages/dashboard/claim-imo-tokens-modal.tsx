@@ -25,7 +25,6 @@ const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const ClaimImoTokensModal = ({ children }: any) => {
   const [open, setOpen] = useState(false);
   const [confirming, setConfirming] = useState(false);
-  const { getSign } = useSign();
   const { idoLaunchedDetail, solanaMemeConfig, idoClaim, memeUserData, memooConfig } = useContext(CollectorContext);
 
   const userCanClaimCount = useMemo(() => {
