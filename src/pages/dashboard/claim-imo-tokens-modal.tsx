@@ -7,6 +7,7 @@ import React, {
   useEffect,
   useCallback,
   useContext,
+  useMemo,
 } from 'react';
 
 import './airdrop-modal.scss';
@@ -25,7 +26,29 @@ const ClaimImoTokensModal = ({ children }: any) => {
   const [open, setOpen] = useState(false);
   const [confirming, setConfirming] = useState(false);
   const { getSign } = useSign();
-  const { idoLaunchedDetail, solanaMemeConfig, idoClaim } = useContext(CollectorContext);
+  const { idoLaunchedDetail, solanaMemeConfig, idoClaim, memeUserData, memooConfig } = useContext(CollectorContext);
+
+  const userCanClaimCount = useMemo(() => {
+    if (!memeUserData) return 0;
+
+    const memeUserIdoClaimedCount = new BigNumber(memeUserData?.memeUserIdoClaimedCount.toString()).dividedBy(10 ** 9);
+    const memeUserIdoCount = new BigNumber(Number(memeUserData.memeUserIdoCount.toString())).dividedBy(10 ** 9);
+    const result = memeUserIdoCount.minus(memeUserIdoClaimedCount);
+    console.log('userCanClaimCount: ', result.toString());
+    return result.toString();
+  }, [memeUserData]);
+
+  const userImoPrice = useMemo(() => {
+    if (!memeUserData || !memooConfig) return new BigNumber(0);
+    const idoPrice = new BigNumber(Number(memooConfig.idoPrice.toString())).dividedBy(10 ** 9);
+    console.log('memeUserIdoCountidoPrice: ', idoPrice.toString());
+
+    const memeUserIdoCount = new BigNumber(Number(memeUserData.memeUserIdoCount.toString())).dividedBy(10 ** 9);
+    console.log('memeUserIdoCount: ', memeUserIdoCount.toString());
+    const result = memeUserIdoCount.times(idoPrice);
+    console.log('userImoPrice: ', result.toString());
+    return result.toString();
+  }, [memeUserData, memooConfig]);
 
   const onConfirm = useCallback(async () => {
     if (!idoClaim || !idoLaunchedDetail || !solanaMemeConfig) return;
@@ -64,16 +87,14 @@ const ClaimImoTokensModal = ({ children }: any) => {
           <img className="mt-[15px]" src="./dashboard/reward.svg" alt="" />
           <div className="confirm_content_title mt-[18px]">{idoLaunchedDetail?.tokenName} has arrived!</div>
           <div className="confirm_content_describe mt-[18px]">
-            For your participation of {idoLaunchedDetail?.contributed} {tokenSymbol} in {idoLaunchedDetail?.tokenName}{' '}
-            IMO, <br /> you can now unlock you allocation below.
+            For your participation of {userImoPrice} {tokenSymbol} in {idoLaunchedDetail?.tokenName} IMO, <br /> you can
+            now unlock you allocation below.
           </div>
           <div className="relative mt-[26px] w-full">
             <IconLock className="absolute left-[25px] top-[50%] translate-y-[-50%] z-10" />
             <div className="memoo_input h-[66px] font-404px text-white text-[24px] text-center flex items-center justify-center">
               <img className="w-[50px] h-[50px] rounded-[50%]" src={idoLaunchedDetail?.icon} alt="" />{' '}
-              <span>
-                &nbsp;{(idoLaunchedDetail?.imoBalance ?? 0) - (idoLaunchedDetail?.claimImoBalance ?? 0)} &nbsp;
-              </span>
+              <span>&nbsp;{userCanClaimCount} &nbsp;</span>
               <span>{idoLaunchedDetail?.ticker}</span>
             </div>
           </div>

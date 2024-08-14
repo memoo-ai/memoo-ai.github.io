@@ -23,9 +23,8 @@ import {
 } from '@/types';
 import { getIDOQueueDetail, getIDOLaunchedDetail } from '@/api/airdrop';
 // import { useAccount } from 'wagmi';
-import { useAccount } from '@/hooks/useWeb3';
+import { useAccount, MemeUserIdoData, MemooConfig } from '@/hooks/useWeb3';
 import ClaimImoTokensModal from './claim-imo-tokens-modal';
-import { TransactionReceipt } from 'viem';
 import { PublicKey, RpcResponseAndContext, SignatureResult } from '@solana/web3.js';
 import { getMemeConfigId } from '@/api/base';
 
@@ -41,6 +40,8 @@ interface CollectorContext {
     signerPublicKey: PublicKey,
   ) => Promise<RpcResponseAndContext<SignatureResult> | undefined>;
   idoClaim?: (memeId: string, mintAPublicKey: string) => Promise<string | undefined>;
+  memeUserData?: MemeUserIdoData;
+  memooConfig?: MemooConfig;
 }
 export const CollectorContext = createContext<CollectorContext>({
   ticker: '',
@@ -57,7 +58,8 @@ export const Collector = () => {
   // const [list, setList] = useState<DashboardCollectorItem[]>([]);
   const [list, setList] = useState<DashboardCollectorParticipated[] | DashboardCollectorAirdrop[]>([]);
   const [idoLaunchedDetail, setIdoLaunchedDetail] = useState<IDOLaunchedDetail>();
-  const { address, airdropClaim, idoClaim } = useAccount();
+  const { address, airdropClaim, idoClaim, getMemeUserData, memooConfig } = useAccount();
+  const [memeUserData, setMemeUserData] = useState<MemeUserIdoData>();
   const [solanaMemeConfig, setSolanaMemeConfig] = useState<SolanaMemeConfig>();
 
   const context: CollectorContext = useMemo(
@@ -66,8 +68,10 @@ export const Collector = () => {
       solanaMemeConfig,
       airdropClaim,
       idoClaim,
+      memeUserData,
+      memooConfig,
     }),
-    [idoLaunchedDetail, solanaMemeConfig, airdropClaim, idoClaim],
+    [idoLaunchedDetail, solanaMemeConfig, airdropClaim, idoClaim, memeUserData, memooConfig],
   );
 
   useEffect(() => {
@@ -97,6 +101,9 @@ export const Collector = () => {
       setIdoLaunchedDetail(data);
       const { data: config } = await getMemeConfigId(ticker);
       setSolanaMemeConfig(config);
+      const memeUser = await getMemeUserData(config?.memeConfigId);
+      console.log('memeUser:', memeUser);
+      setMemeUserData(memeUser!);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching data:', error);
