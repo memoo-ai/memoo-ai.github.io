@@ -174,24 +174,26 @@ const Gecko = () => {
           }}
         />
       </div>
-      <Table
-        className="common-table mb-10"
-        columns={columns}
-        dataSource={data}
-        pagination={false}
-        loading={loading}
-        onChange={handleTableChange}
-        onRow={(record) => {
-          return {
-            onClick: (event) => {
-              navigate(`/airdrop/${record.ticker}`);
-            },
-          };
-        }}
-        locale={{
-          emptyText: <Empty showBorder={false} />,
-        }}
-      />
+      <div className={data.length === 0 ? 'table-no-data' : ''}>
+        <Table
+          className="common-table mb-10"
+          columns={columns}
+          dataSource={data}
+          pagination={false}
+          loading={loading}
+          onChange={handleTableChange}
+          onRow={(record) => {
+            return {
+              onClick: (event) => {
+                navigate(`/airdrop/${record.ticker}`);
+              },
+            };
+          }}
+          locale={{
+            emptyText: <Empty showBorder={false} />,
+          }}
+        />
+      </div>
       <IPagination
         currentPage={pagination.current ?? 0}
         total={pagination.total ?? 0}

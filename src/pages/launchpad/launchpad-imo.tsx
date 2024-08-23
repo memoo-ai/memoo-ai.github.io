@@ -67,16 +67,18 @@ const LaunchPadImo = () => {
           }}
         />
       </div>
-      <Table
-        columns={columns(navigate)}
-        dataSource={data as LaunchpadIMO[]}
-        pagination={false}
-        loading={loading}
-        className="mb-[58px]"
-        locale={{
-          emptyText: <Empty showBorder={false} />,
-        }}
-      />
+      <div className={data.length === 0 ? 'table-no-data' : ''}>
+        <Table
+          columns={columns(navigate)}
+          dataSource={data as LaunchpadIMO[]}
+          pagination={false}
+          loading={loading}
+          className="mb-[58px]"
+          locale={{
+            emptyText: <Empty showBorder={false} />,
+          }}
+        />
+      </div>
       <IPagination
         currentPage={pagination.current ?? 0}
         total={pagination.total ?? 0}

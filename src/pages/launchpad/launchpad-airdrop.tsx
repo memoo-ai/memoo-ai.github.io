@@ -65,16 +65,18 @@ const LaunchPadAirdrop = () => {
           }}
         />
       </div>
-      <Table
-        columns={columnsAirdrop(navigate)}
-        dataSource={data as LaunchpadAirdrop[]}
-        pagination={false}
-        loading={loading}
-        className="mb-[58px]"
-        locale={{
-          emptyText: <Empty showBorder={false} />,
-        }}
-      />
+      <div className={data.length === 0 ? 'table-no-data' : ''}>
+        <Table
+          columns={columnsAirdrop(navigate)}
+          dataSource={data as LaunchpadAirdrop[]}
+          pagination={false}
+          loading={loading}
+          className="mb-[58px]"
+          locale={{
+            emptyText: <Empty showBorder={false} />,
+          }}
+        />
+      </div>
       <IPagination
         currentPage={pagination.current ?? 0}
         total={pagination.total ?? 0}
