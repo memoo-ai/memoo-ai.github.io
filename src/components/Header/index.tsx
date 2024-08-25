@@ -70,7 +70,7 @@ const Header = () => {
           <IconMemoo className="" />
         </a>
       </div>
-      <div className="md:flex hidden items-center  ml-[54px] mr-auto">
+      <div className="md:flex hidden items-center  ml-[54px] mr-auto gap-6">
         {menus.map((item, index) => (
           <NavLink
             to={item.path}

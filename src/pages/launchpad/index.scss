@@ -14,6 +14,7 @@
     padding-bottom: 58px;
     align-items: center;
     height: 100%;
+
     .left-text {
       font-family: Kitty Kat;
       font-size: 48px;
@@ -25,6 +26,7 @@
       -webkit-text-fill-color: transparent;
       width: 835px;
     }
+
     .left-sub-text {
       font-family: OCR A Extended;
       font-size: 24px;
@@ -37,7 +39,8 @@
     }
   }
 }
-.ant-table-wrapper .ant-table-thead > tr > th{
+
+.ant-table-wrapper .ant-table-thead>tr>th {
   color: #7D83B5;
   font-family: OCR A Extended;
   font-size: 12px;
@@ -46,10 +49,17 @@
   text-align: left;
 
 }
-.banner-title{
+
+.banner-title {
   background: linear-gradient(90deg, #07E993 0%, #14FCFB 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   line-height: 31.32px;
+}
+
+.custom-tabs {
+  .ant-tabs-tab-btn {
+    font-size: 38px  !important;
+  }
 }

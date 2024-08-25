@@ -106,7 +106,7 @@ export default function LaunchPad() {
                   <img className="w-[159px] h-[159px]" src="/logo.svg" alt="" />
                   <h3 className="font-Kitty mt-[13px] banner-title text-[40px]">Welcome to Memoo.</h3>
                   <h3 className="font-Kitty mt-[13px] banner-title text-[40px]">Trade, Hunt, Create, Launch.</h3>
-                  <div className="flex items-center justify-center gap-[41px]">
+                  <div className="flex items-center justify-center gap-[41px] mt-[-8px]">
                     {banners.map((banner) => {
                       return (
                         <div className="flex flex-col font-404px items-center justify-center" key={banner.text}>
@@ -156,8 +156,8 @@ export default function LaunchPad() {
             </BannerRightBox>
           </div>
         </div>
-        <div className="flex items-center justify-between my-[70px]">
-          <Tabs activeKey={activeKey} onChange={onChange} items={items} />
+        <div className="flex items-center justify-between mt-[50px] mb-[30px]">
+          <Tabs activeKey={activeKey} onChange={onChange} items={items} className="custom-tabs" />
         </div>
         <ActiveIdoCard />
         <CommonBanner

@@ -390,9 +390,9 @@ export default function Create() {
   return (
     <div className="create_token mb-[70px]">
       <div className="create_token_top">
-        <div className="flex items-center justify-between">
-          <p className="create_token_top_title">Create Token</p>
-          <img className="w-[101px] h-[96px] ml-[31px]" src="./create/memoogecko-create.png" alt="" />
+        <div className="create_token_top_title">
+          <span>Create Token</span>
+          <img src="/create/img-create-icon.png" alt="" className="h-[96px]" />
         </div>
         <div className="create_token_top_back cursor-pointer">
           <BackButton />

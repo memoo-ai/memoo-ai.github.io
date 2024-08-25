@@ -28,7 +28,10 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data 
   //   description: 'description',
   // }));
   return (
-    <div className="w-[100%] pb-[81px]" style={{ background: `url(${KingsBg}) no-repeat`, backgroundSize: 'cover' }}>
+    <div
+      className="w-[100%] pb-[81px]"
+      style={{ background: `url(${KingsBg}) no-repeat`, backgroundSize: 'cover', height: '785px' }}
+    >
       <div className="flex items-center my-[42px]">
         <span className="font-404px text-green text-[24px] mr-[20px]">KINGS OF THE LAND</span>
         <img className="w-[121px] h-[106px]" src={KingsIcon} alt="" />
@@ -115,7 +118,7 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data 
           })
         ) : (
           <div className="w-[100%]">
-            <Empty />
+            <Empty className="h-[513px]" />
           </div>
         )}
       </div>
