@@ -48,14 +48,14 @@ const Profile: FC = () => {
         ),
         formatValue: (value: string) => (
           <ul
-            className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1 mt-10"
+            className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1"
             onClick={() => {
               handleCopy(idoQueueDetail?.contractAddress ? idoQueueDetail?.contractAddress.toUpperCase() : '');
             }}
           >
             {idoQueueDetail?.creatorAddress && (
               <li className="flex items-center gap-x-1.5 h-8">
-                <img className="w-[20px] h-[20px] mr-[5px]" src="./create/vector.png" alt="" />
+                <img className="w-[20px] h-[20px] mr-[5px]" src="/create/vector.png" alt="" />
                 {clipAddress(idoQueueDetail?.contractAddress?.toUpperCase() ?? '')}{' '}
                 <a className="cursor-pointer">
                   {/* <img className="w-2.5 object-contain" src="/create/icon-copy.png" /> */}
@@ -76,14 +76,14 @@ const Profile: FC = () => {
         ),
         formatValue: (value: string) => (
           <ul
-            className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1 mt-10"
+            className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1"
             onClick={() => {
               handleCopy(idoQueueDetail?.ticker ? idoQueueDetail?.ticker.toUpperCase() : '');
             }}
           >
             {idoQueueDetail?.creatorAddress && (
               <li className="flex items-center gap-x-1.5 h-8">
-                <img className="w-[20px] h-[20px] mr-[5px]" src="./create/vector.png" alt="" />
+                <img className="w-[20px] h-[20px] mr-[5px]" src="/create/vector.png" alt="" />
                 {clipAddress(idoQueueDetail?.ticker?.toUpperCase() ?? '')}{' '}
                 <a className="cursor-pointer">
                   {/* <img className="w-2.5 object-contain" src="/create/icon-copy.png" /> */}

@@ -10,6 +10,20 @@ const CreatedTokenCompleteConnectedModal = forwardRef(({ data, iconUrl }: any, r
   useImperativeHandle(ref, () => ({
     setOpen,
   }));
+
+  const renderText = (preLaunchDuration: string) => {
+    switch (preLaunchDuration) {
+      case 'IMMEDIATE':
+        return 'IMMEDIATE';
+      case '1DAY':
+        return '24H TO IMO';
+      case '3DAYS':
+        return '72H TO IMO';
+      default:
+        return 'IMMEDIATE';
+    }
+  };
+
   return (
     <div>
       <Modal
@@ -43,14 +57,14 @@ const CreatedTokenCompleteConnectedModal = forwardRef(({ data, iconUrl }: any, r
             </div>
             {/* <span className="absolute bottom-2 right-5 text-[#7D83B5] text-[10px] font-OCR">View Token Profile</span> */}
           </div>
-          <h5 className="text-center text-[#fff] font-OCR text-[12px] mt-[21px]">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi <br /> fringilla ipsum turpis, sit amet
-            tempus est malesuada sed. Integer <br /> fringilla magna vel orci ultricies fermentum. Suspendisse sem est.{' '}
-            <br />
+          <h5 className="text-center text-[#fff] font-OCR text-[11px] mt-[21px] whitespace-nowrap">
+            Don’t worry if you can’t find your Creator’s Allocation in your wallet at <br /> the moment. You will only
+            receive your 5% of token supply post TGE after <br /> certain criterias are met. Proceed to your meme token
+            page for more details.
           </h5>
           <div className="flex justify-between w-[100%] font-404px text-[18px] text-[#07E993] mt-[21px]">
             <div>{data.preLaunchDuration === 'IMMEDIATE' ? 'IMO' : 'IN QUEUE'}</div>
-            <div>{data.preLaunchDuration}</div>
+            <div>{renderText(data.preLaunchDuration)}</div>
           </div>
           <div className="view-btn">
             <Button className="w-full h-[50px] mt-[18px]" onClick={() => navigate(`/airdrop/${data.ticker}`)}>

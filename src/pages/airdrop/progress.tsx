@@ -14,6 +14,7 @@ import { compareAddrs, formatDecimals, formatNumberDecimal, formatRestTime } fro
 import BigNumber from 'bignumber.js';
 import { useProportion } from '@/hooks/useProportion';
 import { BN } from '@coral-xyz/anchor';
+// eslint-disable-next-line complexity
 const Progress: FC = () => {
   const { stage, idoQueueDetail, memooConfig, mine, totalPurchased, memeUserData, unlockTimestamp } =
     useContext(AirdropContext);
@@ -128,7 +129,8 @@ const Progress: FC = () => {
       key: '1st-claim',
       icon: (
         <div className="relative z-10">
-          <img src="/create/bg-1st-claim.png" />
+          {stage === '1st-claim' && <img src="/create/bg-1st-claim.png" />}
+
           <img
             className="absolute left-[53px] top-[37px]"
             src={`/create/process-claim${stage === '1st-claim' ? '-active' : ''}.svg`}
@@ -176,7 +178,8 @@ const Progress: FC = () => {
       key: '2st-claim',
       icon: (
         <div className="relative z-10">
-          <img src="/create/bg-2st-claim.png" />
+          {stage === '2st-claim' && <img src="/create/bg-2st-claim.png" />}
+
           <img
             className="absolute left-[53px] top-[37px]"
             src={`/create/process-claim${stage === '2st-claim' ? '-active' : ''}.svg`}
@@ -188,7 +191,7 @@ const Progress: FC = () => {
       //   .dividedBy(1e4)
       //   .multipliedBy(1e2)
       //   .toNumber()}% unlocked\ntokens in ${formatRestTime(Number(_2ndStage?.unlockInfo?.value) * 1000)}`,
-      desc: `Next ${50}% unlocked\ntokens in ${formatRestTime(Number(unlockTimestamp) * 1000)}`,
+      desc: `Next ${50}% & pre-market\n purchase unlock in${formatRestTime(Number(unlockTimestamp) * 1000)}`,
       onClick: () => {},
       btnText: 'claim',
       btnIcon: `/create/icon-claim${stage === '2st-claim' ? '-active' : ''}.svg`,

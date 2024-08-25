@@ -10,7 +10,7 @@ const SwipeX = ({ item }: SwipeXProps) => {
     <div
       className="w-[max-content]  mr-2 flex overflow items-center justify-between px-[10px] py-[5px]  cursor-pointer"
       key={item.ticker}
-      onClick={() => navigate(`/airdrop/${item.ticker}`)}
+      onClick={() => navigate(`/airdrop/${item.ticker !== '' ? item?.ticker : 'default'}`)}
     >
       <span className=" font-REV text-[12px]">
         {' '}

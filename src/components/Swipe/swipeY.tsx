@@ -11,7 +11,7 @@ const SwipeY = ({ item }: SwipeXProps) => {
     <div
       className="carousel-column-item w-[100%] bg-[#2B526E] rounded-sm mb-[2px] px-[9px] py-[6px] flex items-center  cursor-pointer"
       key={item.ticker}
-      onClick={() => navigate(`/airdrop/${item.ticker}`)}
+      onClick={() => navigate(`/airdrop/${item.ticker !== '' ? item?.ticker : 'default'}`)}
     >
       <img
         className="w-[30px] h-[30px] rounded-[50%]"

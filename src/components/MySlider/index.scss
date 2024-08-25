@@ -2,9 +2,24 @@
   color: $textColor;
   .progress_slider{
     flex: 1;
-    background: #1F3B4F;
+    background: transparent;
     border-radius: 7px;
-    height: 5px;
+    // height: 5px;
+    .ant-slider-step{
+      background: #1F3B4F;
+      border-radius: 7px;
+      height: 5px;
+    }
+    .ant-slider-rail{
+      border-radius: 7px;
+      height: 5px;
+    }
+    .ant-slider-track{
+      background: $mainColor !important;
+      border-radius: 7px;
+      height: 5px;
+      z-index: 99;
+    }
 
     .ant-slider-handle::after{
       top: 50%;

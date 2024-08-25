@@ -97,13 +97,25 @@ const ClaimTokensModal: FC<{
           <Input
             disabled
             className="memoo_input h-[66px]"
-            placeholder="Claimable LEASH"
+            placeholder={`Creator Allocation (${stage} 50%)`}
             suffix={
               <span className="text-[24px] text-white font-404px leading-[22px]">
                 {Number(tokens).toLocaleString()}
               </span>
             }
           />
+          {stage === '2nd' && (
+            <Input
+              disabled
+              className="memoo_input h-[66px]"
+              placeholder="Pre-Market Acquisition"
+              suffix={
+                <span className="text-[24px] text-white font-404px leading-[22px]">
+                  {Number(tokens).toLocaleString()}
+                </span>
+              }
+            />
+          )}
           <Button loading={confirming} className="memoo_button mt-[77px] h-[50px]" onClick={onConfirm}>
             CLAIM ALL
           </Button>
