@@ -390,7 +390,10 @@ export default function Create() {
   return (
     <div className="create_token mb-[70px]">
       <div className="create_token_top">
-        <div className="create_token_top_title">Create Token</div>
+        <div className="create_token_top_title">
+          <span>Create Token</span>
+          <img src="/create/img-create-icon.png" alt="" className="h-[96px]" />
+        </div>
         <div className="create_token_top_back cursor-pointer">
           <BackButton />
         </div>
@@ -431,7 +434,7 @@ export default function Create() {
               name="ticker"
               rules={[{ required: true, message: 'Please input ticker!' }]}
             >
-              <Input showCount maxLength={8} style={{ width: 140 }} />
+              <Input showCount maxLength={8} />
             </Form.Item>
 
             <Form.Item
@@ -498,7 +501,7 @@ export default function Create() {
             >
               <Input.TextArea
                 showCount
-                maxLength={100}
+                maxLength={250}
                 placeholder=""
                 style={{ height: 208, resize: 'none' }}
                 className="custom-create-textarea"

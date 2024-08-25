@@ -138,16 +138,19 @@
     color: #ffffff;
     background: #131522 !important;
 
-    &:hover{
+    &:hover {
       background: #131522;
     }
   }
-  .ant-table .ant-table-tbody > tr > td{
+
+  .ant-table .ant-table-tbody>tr>td {
     background: #131522 !important;
-    &:hover{
+
+    &:hover {
       background: #131522 !important;
     }
   }
+
   .ant-table-cell-row-hover {
     background: #131522 !important;
   }
@@ -176,10 +179,13 @@
 .ant-table-wrapper td.ant-table-column-sort {
   background: transparent;
 }
-.ant-table-wrapper .ant-table-thead th.ant-table-column-sort{
-  background: transparent ;
+
+.ant-table-wrapper .ant-table-thead th.ant-table-column-sort {
+  background: transparent;
 }
-.ant-table-wrapper .ant-table-thead >tr>th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before, :where(.css-dev-only-do-not-override-3bd7wn).ant-table-wrapper .ant-table-thead >tr>td:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before{
+
+.ant-table-wrapper .ant-table-thead>tr>th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before,
+:where(.css-dev-only-do-not-override-3bd7wn).ant-table-wrapper .ant-table-thead>tr>td:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before {
   background: transparent !important;
 }
 
@@ -264,10 +270,11 @@
   text-align: center;
 
 
-  &:hover{
+  &:hover {
     background: #07E993;
-    span{
-      color:#A005FE;
+
+    span {
+      color: #A005FE;
     }
   }
 }
@@ -307,6 +314,7 @@
   background: #1F3B4F;
   border-color: $mainColor;
   color: #fff;
+  border-radius: 7px;
 
   &:hover,
   &:focus-within {
@@ -337,13 +345,15 @@
   bottom: 4px;
   right: 9px;
 }
-.ant-input-outlined.ant-input-status-error:not(.ant-input-disabled){
-  background: #1F3B4F ;
 
-  &:hover{
+.ant-input-outlined.ant-input-status-error:not(.ant-input-disabled) {
+  background: #1F3B4F;
+
+  &:hover {
     background: #1F3B4F;
   }
 }
+
 // .ant-input{
 //   background: #1F3B4F !important;
 // }
@@ -444,66 +454,79 @@
 .border-color-icon {
   border-color: $mainBgColor;
 }
+
 div[data-rk] {
   #rk_connect_title {
     display: none !important;
   }
 
 
-  > div:nth-child(2) {
+  >div:nth-child(2) {
 
-    > div {
-      > div {
+    >div {
+      >div {
         background: #1F3B4F !important;
         border: 1px solid #07E993;
         width: 26.375rem;
 
-        div{
-          div{
-            div{
+        div {
+          div {
+            div {
+
               // max-height: 800px;
               // overflow: hidden;
               ::-webkit-scrollbar {
                 width: 0;
               }
-              &:nth-child(2){
+
+              &:nth-child(2) {
                 gap: 0;
-                div:first-child{
-                  button{
-                    border-radius: 10px 10px 0 0  !important;
+
+                div:first-child {
+                  button {
+                    border-radius: 10px 10px 0 0 !important;
                     border-bottom: 1px solid #1F3B4F;
                   }
                 }
-                div:last-child{
-                  button{
+
+                div:last-child {
+                  button {
                     border-radius: 0 0 10px 10px !important;
                     border-top: 1px solid #1F3B4F;
                   }
                 }
-                div:nth-child(2){
-                  button{
+
+                div:nth-child(2) {
+                  button {
                     border-radius: 0;
                     padding: 12px;
-                    div{
-                      div{
+
+                    div {
+                      div {
+
                         // background: #A005FE;
-                        div{
+                        div {
                           font-family: '404px';
-                          div:nth-child(2){
+
+                          div:nth-child(2) {
                             display: none;
                           }
                         }
                       }
                     }
+
                     background-color: #2B526E;
-                    &:hover{
+
+                    &:hover {
                       background: #07E993;
                       color: #2B526E;
-                      div{
-                        div{
+
+                      div {
+                        div {
                           // background: #A005FE;
                           color: #2B526E;
-                          div{
+
+                          div {
                             font-family: '404px';
                           }
                         }
@@ -514,42 +537,48 @@ div[data-rk] {
                 }
               }
 
-              &:nth-child(4){
+              &:nth-child(4) {
                 display: none;
               }
             }
           }
         }
-        >div{
-          >div{
-            > div:nth-child(1){
-              div{
-                > div:nth-child(1){
-                  > div:nth-child(1){
+
+        >div {
+          >div {
+            >div:nth-child(1) {
+              div {
+                >div:nth-child(1) {
+                  >div:nth-child(1) {
                     color: transparent;
                   }
                 }
               }
-              > div{
-                > div:nth-child(3){
+
+              >div {
+                >div:nth-child(3) {
                   background: transparent;
-                  div:last-child{
+
+                  div:last-child {
                     display: none;
                   }
-                  > div{
-                    > div:nth-child(3){
+
+                  >div {
+                    >div:nth-child(3) {
                       background: transparent;
 
-                      div:last-child{
+                      div:last-child {
                         display: none;
                       }
                     }
                   }
-                  > button{
+
+                  >button {
                     background: #1f3b4f;
                     color: #07E993;
                     border: none;
-                    &:hover{
+
+                    &:hover {
                       color: #B53BFF;
                     }
                   }
@@ -568,6 +597,7 @@ div[data-rk] {
   width: 0px;
   background: transparent;
 }
+
 ::-webkit-scrollbar-horizontal {
   height: 0px;
   background: transparent;
@@ -577,11 +607,13 @@ div[data-rk] {
 #okx-inject {
   display: none !important;
 }
-.table-no-data{
+
+.table-no-data {
   .ant-table-wrapper .ant-table-thead>tr>th {
     border: none;
   }
-  .ant-table .ant-table-tbody > tr > td{
+
+  .ant-table .ant-table-tbody>tr>td {
     border-radius: 20px !important;
     border: 1px solid #5D64A2 !important;
   }

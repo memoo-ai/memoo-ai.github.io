@@ -75,7 +75,7 @@ const ISelect = ({ options, onSelectChange }: ISelectProps) => {
   }, [options, activeKey, orderBy]);
 
   return (
-    <div className="flex items-center  mb-[62px]">
+    <div className="flex items-center  mb-[46px]">
       <div className="flex items-center bg-green rounded-[7px] p-[10px] border-box mr-[12px]">
         <IconSetting />
       </div>

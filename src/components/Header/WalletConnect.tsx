@@ -108,7 +108,7 @@ const WalletConnect = () => {
                       openConnectModal();
                       setIsModalOpen(true);
                     }}
-                    className=" wallet-border cursor-pointer hidden md:block text-center text-lg  md:h-[51px] px-6 md:bg-[#1F3B4F] md:text-[#07E993] font-bold font-404px rounded-[7px]"
+                    className=" wallet-border cursor-pointer hidden md:block text-center text-lg  md:h-[51px] px-6 md:bg-[#1F3B4F] md:text-[#07E993] font-[400] font-404px rounded-[7px]"
                   >
                     Connect Wallet
                     {isModalOpen && (
@@ -152,13 +152,13 @@ const WalletConnect = () => {
 
               return (
                 <div className="flex items-center">
-                  <div className=" wallet-border flex items-center justify-center w-[192px] h-[46px] bg-[#1F3B4F] rounded-lg mr-[12px] font-404px font-bold text-[#07E993] text-lg">
+                  <div className=" wallet-border flex items-center justify-center w-[192px] h-[46px] bg-[#1F3B4F] rounded-lg mr-[12px] font-404px font-[400] text-[#07E993] text-lg">
                     {account.address.slice(0, 6)}...{account.address.slice(-4)}
                   </div>
                   <DropdownMenu.Root>
                     <DropdownMenu.Trigger>
                       <div>
-                        <IconProfile className="w-[46px] h-[46px] cursor-pointer wallet-border rounded-[12px]" />
+                        <IconProfile className="w-[46px] h-[46px] cursor-pointer " />
                       </div>
                     </DropdownMenu.Trigger>
 

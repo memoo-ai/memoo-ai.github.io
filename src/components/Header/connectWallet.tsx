@@ -93,14 +93,14 @@ const ConnectWallet = () => {
       {connected ? (
         <div className="flex items-center">
           {connected && (
-            <div className=" wallet-border flex items-center justify-center w-[192px] h-[46px] bg-[#1F3B4F] rounded-lg mr-[12px] font-404px font-bold text-[#07E993] text-lg">
+            <div className=" wallet-border flex items-center justify-center w-[192px] h-[46px] bg-[#1F3B4F] rounded-lg mr-[12px] font-404px font-[400] text-[#07E993] text-lg">
               {address}
             </div>
           )}
           <DropdownMenu.Root>
             <DropdownMenu.Trigger>
               <div>
-                <IconProfile className="cursor-pointer wallet-border rounded-[12px]" />
+                <IconProfile className="cursor-pointer wallet-border rounded-[7px]" />
               </div>
             </DropdownMenu.Trigger>
 

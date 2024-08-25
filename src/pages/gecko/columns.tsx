@@ -65,8 +65,8 @@ export const columns = [
     render: (tokenName: string, record: TrendingTokens) => (
       <div className="flex items-center">
         <img src={record.icon} alt="" className="w-[84px] h-[84px] rounded-full mr-5" />
-        <span className="font-bold text-lg mr-2">{tokenName}</span>
-        <span className="font-normal text-sm text-[#07E993]">{record.ticker}</span>
+        <span className="font-normal text-lg mr-2">{tokenName}</span>
+        <span className="font-normal text-sm text-[#07E993] uppercase">{record.ticker}</span>
       </div>
     ),
   },
@@ -75,7 +75,7 @@ export const columns = [
     dataIndex: 'price',
     key: 'price',
     sorter: false,
-    render: (price: number) => <div className="font-semibold text-lg ">SOL {formatDecimals(price)}</div>,
+    render: (price: number) => <div className="font-normal text-lg ">SOL {formatDecimals(price)}</div>,
   },
   {
     title: '1h',
@@ -83,7 +83,7 @@ export const columns = [
     key: 'increase1H',
     sorter: false,
     render: (increase1H: number) => (
-      <span className={`font-semibold text-lg ${increase1H < 0 ? 'text-red' : 'text-green'}`}>
+      <span className={`font-normal text-lg ${increase1H < 0 ? 'text-red' : 'text-green'}`}>
         {increase1H}
         {/* {increase1H > 0 ? '+' : ''}
         {increase1H * 100}% */}
@@ -96,7 +96,7 @@ export const columns = [
     key: 'increase24H',
     sorter: false,
     render: (increase24H: number) => (
-      <span className={`font-semibold text-lg ${increase24H < 0 ? 'text-red' : 'text-green'}`}>
+      <span className={`font-normal text-lg ${increase24H < 0 ? 'text-red' : 'text-green'}`}>
         {increase24H}
         {/* {increase24H > 0 ? '+' : ''}
         {increase24H * 100}% */}
@@ -108,13 +108,13 @@ export const columns = [
     dataIndex: 'volume24H',
     key: 'volume24H',
     sorter: false,
-    render: (volume24H: number) => <div className="font-semibold text-lg ">${volume24H}</div>,
+    render: (volume24H: number) => <div className="font-normal text-lg ">${volume24H}</div>,
   },
   {
     title: 'Market Cap',
     dataIndex: 'marketCap',
     key: 'marketCap',
-    render: (marketCap: number) => <div className="font-semibold text-lg ">${formatDecimals(marketCap)}</div>,
+    render: (marketCap: number) => <div className="font-normal text-lg ">${formatDecimals(marketCap)}</div>,
   },
   {
     title: 'Memoo Score',
