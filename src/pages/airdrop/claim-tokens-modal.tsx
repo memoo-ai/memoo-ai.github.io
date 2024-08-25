@@ -105,7 +105,7 @@ const ClaimTokensModal: FC<{
             }
           />
           <Button loading={confirming} className="memoo_button mt-[77px] h-[50px]" onClick={onConfirm}>
-            Confirm
+            CLAIM ALL
           </Button>
         </div>
       </Modal>

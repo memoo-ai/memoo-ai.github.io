@@ -6,6 +6,7 @@ import { getImoCompleted } from '@/api/launchpad';
 import { useNavigate } from 'react-router-dom';
 import { LaunchpadIDOCompeted } from '@/types';
 import Empty from '@/components/Empty';
+import KingsBg from '@/assets/imgs/kings-bg.png';
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 export const ActiveIdoCard = () => {
   const [idos, setIdos] = useState<LaunchpadIDOCompeted[]>([]);
@@ -29,7 +30,11 @@ export const ActiveIdoCard = () => {
       {idos && idos.length < 0 ? (
         <div className="flex items-center overflow-hidden">
           {idos.map((ido) => (
-            <div key={ido.ticker} className="flex flex-col w-[390px] bg-[#131522]  px-11 py-6 mr-8 rounded-lg">
+            <div
+              key={ido.ticker}
+              className="flex flex-col w-[390px] bg-[#131522]  px-11 py-6 mr-8 rounded-lg"
+              style={{ background: `url(${KingsBg}) no-repeat`, backgroundSize: 'cover' }}
+            >
               <img src={ido.icon} alt="" className="w-20 h-20 mb-2 rounded-full" />
               <p className="font-OCR text-white text-lg mb-[64px]">{ido.tokenName}</p>
               <div className="ido-info-item">

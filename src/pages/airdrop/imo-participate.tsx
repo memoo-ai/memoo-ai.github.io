@@ -73,7 +73,7 @@ const IMOParticipate: FC = () => {
             }}
           />
           <p className="mt-3 text-white font-OCR leading-5 text-sm">Fair Distribution Policy</p>
-          <p className="text-deep-green text-center font-OCR leading-14 text-xs">
+          <p className="text-deep-green text-center font-OCR leading-14 text-xs whitespace-nowrap">
             Wallet capped at 1% token supply per address.
           </p>
         </div>

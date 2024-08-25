@@ -13,6 +13,8 @@ import DashboardBottomBgImg4 from './assets/dashboard_banner_bg4.png';
 import HeaderBannerBg from './assets/header-banner-bg.png';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { REQUEST_FOLLOWING_STORAGE, UPDATE_PROJECT_TWITTER_STORAGE } from '@/constants';
+import MemeRecords from './meme-records';
+
 const Dashboard = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -152,6 +154,7 @@ const Dashboard = () => {
       </div>
       {/* <div className="header_banner_bg" style={{ backgroundImage: `url(${dashboardBannerImg})` }}>
       </div> */}
+      {/* <MemeRecords /> */}
       <div className="dashboard">
         <div className="dashboard_content">
           <DashboardContent

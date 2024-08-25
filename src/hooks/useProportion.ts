@@ -64,6 +64,14 @@ export const useProportion = () => {
     return parseResult;
   }, [firstProportion, maxProportion, firstIncrease]);
 
+  const creatorAllocation = useMemo(() => {
+    if (!memooConfig) return 0;
+    const totalSupply = new BigNumber(memooConfig?.totalSupply.toString()).dividedBy(10 ** 9);
+    const tokenAllocationCreator = new BigNumber(Number(memooConfig?.tokenAllocationCreator) / 10000);
+    const result = totalSupply.multipliedBy(tokenAllocationCreator);
+    return result.toString() ?? 0;
+  }, [memooConfig, firstProportion]);
+
   return {
     firstProportion,
     maxProportion,
@@ -74,5 +82,6 @@ export const useProportion = () => {
     memooConfig,
     createMaxProportion,
     platformCreateMeme,
+    creatorAllocation,
   };
 };

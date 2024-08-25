@@ -33,7 +33,7 @@ const MySlider = ({
 
   return (
     <div className="flex-1 flex items-center progress">
-      <div className="mr-[14px]">
+      <div className="mr-[14px] font-OCR">
         {minPrice}&nbsp;
         {tokenSymbol}
       </div>{' '}
@@ -46,10 +46,9 @@ const MySlider = ({
         value={value * 100}
         defaultValue={defaultValue * 100}
         onChange={handleSliderChange}
-        tipFormatter={(value: any) => `${value}%`}
-        tooltip={{ open: true }}
+        tooltip={{ open: true, rootClassName: 'memoo_slider_tooltip', formatter: (value) => `${value}%` }}
       />
-      <div className="ml-[14px]">
+      <div className="ml-[14px] font-OCR">
         {maxPrice} {tokenSymbol}
       </div>
     </div>

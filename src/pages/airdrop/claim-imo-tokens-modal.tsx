@@ -78,7 +78,7 @@ const ClaimImoTokensModal: FC<{ children: ReactNode }> = ({ children }) => {
             <span className="font-404px text-[32px] text-green">{idoQueueDetail?.ticker} has arrived!</span>
             <p className="whitespace-pre font-OCR text-base leading-[18px] text-white text-center">
               {/* For your participation of {idoQueueDetail?.contributed} {tokenSymbol} in {idoQueueDetail?.tokenName} IMO,{' '} */}
-              For your participation of {userImoPrice} {tokenSymbol} in {idoQueueDetail?.tokenName} IMO, <br /> you can
+              For your participation of {userImoPrice} {tokenSymbol} in {idoQueueDetail?.tokenName} IMO, <br /> your can
               now unlock you allocation below.
             </p>
           </div>

@@ -53,8 +53,8 @@ const CreatedTokenCompleteConnectedModal = forwardRef(({ data, iconUrl }: any, r
             <div>{data.preLaunchDuration}</div>
           </div>
           <div className="view-btn">
-            <Button className="w-[227px] h-[50px] mt-[18px]" onClick={() => navigate(`/airdrop/${data.ticker}`)}>
-              VIEW CREATOR RANKING
+            <Button className="w-full h-[50px] mt-[18px]" onClick={() => navigate(`/airdrop/${data.ticker}`)}>
+              VIEW TOKEN PROFILE
             </Button>
           </div>
         </div>

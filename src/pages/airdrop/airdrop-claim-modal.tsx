@@ -78,7 +78,7 @@ const AirdropClaimModal: FC<{ children: ReactNode }> = ({ children }) => {
           <div className="flex flex-col items-center gap-y-[18px]">
             <img className="w-[111px] object-contain" src="/create/img-claim.png" />
             <span className="font-404px text-[32px] text-green">{idoLaunchedDetail?.tokenName} has arrived!</span>
-            <p className="whitespace-pre font-OCR text-base leading-[18px] text-white text-center">{`Thanks for being part of the\nDogwifhat community.`}</p>
+            <p className="whitespace-pre font-OCR text-base leading-[18px] text-white text-center">{`Thanks for being part of the\n${idoLaunchedDetail?.tokenName} community.`}</p>
           </div>
           <div className="relative mt-[26px]">
             <img

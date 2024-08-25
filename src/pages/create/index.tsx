@@ -77,7 +77,7 @@ const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 export default function Create() {
   // const { address, chainId } = useAccount();
   const { address, registerTokenMint } = useAccount();
-  const { firstProportion, maxProportion, totalCapInitial, totalCap } = useProportion();
+  const { firstProportion, maxProportion, totalCapInitial, totalCap, creatorAllocation } = useProportion();
   // const [memeConfigId, setmemeConfigId] = useState<memeConfigId>({});
   // const { switchChain } = useSwitchChain();
   const [searchParams] = useSearchParams();
@@ -390,7 +390,10 @@ export default function Create() {
   return (
     <div className="create_token mb-[70px]">
       <div className="create_token_top">
-        <div className="create_token_top_title">Create Token</div>
+        <div className="flex items-center justify-between">
+          <p className="create_token_top_title">Create Token</p>
+          <img className="w-[101px] h-[96px] ml-[31px]" src="./create/memoogecko-create.png" alt="" />
+        </div>
         <div className="create_token_top_back cursor-pointer">
           <BackButton />
         </div>
@@ -420,7 +423,7 @@ export default function Create() {
               name="tokenName"
               rules={[{ required: true, message: 'Please input token name!' }]}
             >
-              <Input showCount maxLength={20} />
+              <Input className="rounded-[7px]" showCount maxLength={20} />
             </Form.Item>
             <Form.Item
               label={
@@ -431,7 +434,7 @@ export default function Create() {
               name="ticker"
               rules={[{ required: true, message: 'Please input ticker!' }]}
             >
-              <Input showCount maxLength={8} style={{ width: 140 }} />
+              <Input className="rounded-[7px]" showCount maxLength={8} />
             </Form.Item>
 
             <Form.Item
@@ -465,7 +468,7 @@ export default function Create() {
                       showPreviewIcon: false,
                       showRemoveIcon: true,
                     }}
-                    style={{ width: 140, height: 140 }}
+                    style={{ height: 140 }}
                     className="custom-upload-icon"
                   >
                     <button
@@ -498,10 +501,10 @@ export default function Create() {
             >
               <Input.TextArea
                 showCount
-                maxLength={100}
+                maxLength={250}
                 placeholder=""
                 style={{ height: 208, resize: 'none' }}
-                className="custom-create-textarea"
+                className="custom-create-textarea rounded-[7px]"
               />
             </Form.Item>
 
@@ -549,6 +552,22 @@ export default function Create() {
             <Form.Item
               label={
                 <div className="flex items-end">
+                  <p>
+                    Creator’s Allocation <span>*</span> <br />{' '}
+                  </p>
+                </div>
+              }
+            >
+              <div className="bg-[#07E993] h-[50px] rounded-[7px] flex items-center justify-center text-[#A005FE] text-[24px] font-404px text-center">
+                {creatorAllocation} <span className="text-[18px]">&nbsp;TOKENS</span>
+              </div>
+            </Form.Item>
+            <p className="create_tip_for_acquisition">
+              Creator is entitled <br /> to {maxProportion * 100}% of token supply
+            </p>
+            <Form.Item
+              label={
+                <div className="flex items-end">
                   <p className="mr-[10px]">
                     Pre-Market Acquisition<span>*</span>
                   </p>
@@ -585,7 +604,7 @@ export default function Create() {
 
             <div className="create_optional_info">
               <div className="create_optional_info_title">
-                <p>Optional Info</p>
+                <p className="font-404px text-[18px]">Optional Info</p>
                 <img
                   src={optionalOpen ? './create/icon-minus.svg' : './create/icon-plus.svg'}
                   alt=""
@@ -667,7 +686,7 @@ export default function Create() {
               A platform Fee of {totalCap} {tokenSymbol} is applicable to facilitate your meme token creation. You will{' '}
               <br /> be entitled to {firstProportion * 100}% supply of your meme token. The token will be distributed
               post <br /> TGE after <span className="text-[#07E993]">‘fair conditions’</span> are met.{' '}
-              <span className="text-[#07E993]">Click here</span>
+              <span className="text-[#07E993]">Click here </span>
               for the tokenomics disclosures.
             </p>
           </div>

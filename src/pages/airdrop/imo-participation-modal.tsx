@@ -138,7 +138,7 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
                 bgColor="#396D93"
               />
             </div>
-            <p className="whitespace-pre font-OCR text-white text-base leading-[18px]">{`Total IDO raise is always\ncapped at ${formatDecimals(
+            <p className="whitespace-pre font-OCR text-white text-base leading-[18px]">{`Total IMO raise is always\ncapped at ${formatDecimals(
               capped,
             )} ${tokenSymbol}`}</p>
           </div>
