@@ -3,6 +3,7 @@ import { FC, useContext } from 'react';
 import IProgress from '@/components/IProgress';
 import { AirdropContext } from '.';
 import { memooScore } from '@/types';
+import { getFullNum } from '@/utils';
 const MeMooScoreBreakdown: FC = () => {
   const { idoQueueDetail } = useContext(AirdropContext);
   // const { memooScore } = useContext(AirdropContext);
@@ -19,7 +20,9 @@ const MeMooScoreBreakdown: FC = () => {
       return meme.scoreValue === 4 ? 'Just Enough' : 'Loaded';
     }
     if (meme.scoreField === 'Total Raised') {
-      return `${(meme.scoreValue / meme.totalScore).toString()}%`;
+      const scoreValue = getFullNum(meme.scoreValue ?? 0);
+      const totalScore = getFullNum(meme.totalScore ?? 0);
+      return `${Number(scoreValue) / Number(totalScore)}%`;
     }
     if (messages[meme.scoreValue]) {
       return messages[meme.scoreValue];
