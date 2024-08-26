@@ -1,4 +1,5 @@
 name: Deploy solana app (PROD)
+run-name: Deploy of ${{ github.ref_name }} to PROD
 
 on:
   push:
@@ -15,12 +16,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: solana-main
 
-      - name: Prevent wrong version releasing
-        if: ${{ github.ref != 'refs/heads/solana-main' }}
+      - name: Print the version releasing
         run: |
-          echo "Production deployment is possible only from the solana-main branch"
-          exit 1
+          echo "The current branch is ${{ github.ref_name }}"
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
