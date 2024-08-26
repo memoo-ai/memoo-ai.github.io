@@ -22,6 +22,7 @@ jobs:
       - name: Prevent wrong version releasing
         if: ${{ github.ref_name != 'solana-main' }}
         run: |
+          echo "The current branch is ${{ github.ref_name }}"
           echo "Production deployment is possible only from the solana-main branch"
           exit 1
 
