@@ -22,14 +22,6 @@ import memooGeckoIcon from '@/assets/imgs/memoogecko.png';
 import createRankIcon from '@/assets/imgs/creatorrankcup .png';
 import { IconHorn } from '@/components/icons';
 
-type ColumnsType<T> = TableProps<T>['columns'];
-type TablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;
-
-interface TableParams {
-  sortField?: string;
-  sortOrder?: string;
-}
-
 export type GeckoType = 'trending' | 'top';
 const Gecko = () => {
   const navigate = useNavigate();
