@@ -3,7 +3,7 @@ run-name: Deploy of ${{ github.ref_name }} to DEV
 
 on:
   push:
-    branches: ['solana1']
+    branches: [solana1]
 
 jobs:
   deploy:
