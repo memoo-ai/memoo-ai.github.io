@@ -44,7 +44,6 @@ const Gecko = () => {
     total: 30,
   });
 
-  const [sorters, setSorters] = useState<any>([]);
   const fetchData = async () => {
     let params = {
       pageNumber: pagination.current ?? 1,
@@ -69,7 +68,6 @@ const Gecko = () => {
 
   const handleTableChange: TableProps['onChange'] = (pagination, filters, sorter) => {
     setPagination(pagination);
-    setSorters(sorter);
   };
 
   return (
