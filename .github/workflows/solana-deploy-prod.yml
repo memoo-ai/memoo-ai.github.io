@@ -19,12 +19,9 @@ jobs:
         with:
           ref: solana-main
 
-      - name: Prevent wrong version releasing
-        if: ${{ github.ref_name != 'solana-main' }}
+      - name: Print the version releasing
         run: |
           echo "The current branch is ${{ github.ref_name }}"
-          echo "Production deployment is possible only from the solana-main branch"
-          exit 1
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
