@@ -1,12 +1,10 @@
-name: Deploy solana1
+name: Deploy solana app (DEV)
 
 on:
   push:
-    branches: [ "solana1" ]
-  workflow_dispatch:
+    branches: ['solana1']
 
 jobs:
-
   deploy:
     runs-on: ubuntu-latest
 
