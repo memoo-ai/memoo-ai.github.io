@@ -1,7 +1,7 @@
 import './index.scss';
 import CommonBanner from '@/components/Banner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { columns, tokenSelectOptions } from './columns';
 import IPagination from '@/components/IPagination';
 import { useNavigate } from 'react-router-dom';
@@ -57,7 +57,7 @@ const Gecko = () => {
     fetchData();
   }, [pagination.current, activeKey, tab, orderBy]);
 
-  const handleTableChange: TableProps['onChange'] = (pagination) => {
+  const handleTableChange = (pagination: SetStateAction<PaginationProps>) => {
     setPagination(pagination);
   };
 

@@ -22,7 +22,7 @@ const IMOParticipate: FC = () => {
       // { key: 'Price', value: `$${Number(idoActiveDetail?.price).toLocaleString() ?? 0}`, tip: null },
       {
         key: 'Total Raised',
-        value: `${idoActiveDetail?.totalRaised === '' ? 0 : idoActiveDetail?.totalRaised ?? 'NA/NA'} ${tokenSymbol}`,
+        value: `${idoActiveDetail?.totalRaised === '' ? 0 : (idoActiveDetail?.totalRaised ?? 'NA/NA')} ${tokenSymbol}`,
         tip: `Total IMO raise is always capped \n at 2.33 ${tokenSymbol}`,
       },
       {

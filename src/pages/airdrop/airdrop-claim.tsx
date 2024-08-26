@@ -47,14 +47,14 @@ export default function AirdropClaim() {
   const airdropUnlocking = useMemo(() => {
     let now = Date.now();
     let rewardEndsIn =
-      (stage === 'launch' ? idoLaunchedDetail?.rewardEndsIn ?? 0 : idoActiveDetail?.rewardEndsIn ?? 0) * 1000;
+      (stage === 'launch' ? (idoLaunchedDetail?.rewardEndsIn ?? 0) : (idoActiveDetail?.rewardEndsIn ?? 0)) * 1000;
     // &&(idoLaunchedDetail?.status === 'Launched' || idoLaunchedDetail?.status === 'IDO');
 
     console.log('now:', now);
 
     console.log(
       'rewardEndsIn:',
-      (stage === 'launch' ? idoLaunchedDetail?.rewardEndsIn ?? 0 : idoActiveDetail?.rewardEndsIn ?? 0) * 1000,
+      (stage === 'launch' ? (idoLaunchedDetail?.rewardEndsIn ?? 0) : (idoActiveDetail?.rewardEndsIn ?? 0)) * 1000,
     );
     let isUnlocking = now < rewardEndsIn;
     return isUnlocking;
@@ -242,7 +242,7 @@ export default function AirdropClaim() {
               <Countdown
                 onEnded={(ended) => ended && triggerRefresh?.()}
                 instant={
-                  (stage === 'launch' ? idoLaunchedDetail?.rewardEndsIn ?? 0 : idoActiveDetail?.rewardEndsIn ?? 0) *
+                  (stage === 'launch' ? (idoLaunchedDetail?.rewardEndsIn ?? 0) : (idoActiveDetail?.rewardEndsIn ?? 0)) *
                   1000
                 }
               />

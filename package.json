@@ -38,7 +38,6 @@
     "@radix-ui/react-tabs": "^1.0.4",
     "@radix-ui/themes": "^2.0.3",
     "@rainbow-me/rainbowkit": "^2.0.2",
-    "@solana-developers/helpers": "^2.3.0",
     "@solana/spl-token": "0.4.8",
     "@solana/spl-token-swap": "^0.4.3",
     "@solana/wallet-adapter-base": "^0.9.23",
