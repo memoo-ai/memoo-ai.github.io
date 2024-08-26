@@ -14,6 +14,7 @@ import { compareAddrs, formatDecimals, formatNumberDecimal, formatRestTime } fro
 import BigNumber from 'bignumber.js';
 import { useProportion } from '@/hooks/useProportion';
 import { BN } from '@coral-xyz/anchor';
+import { IconQueueBtn } from '@/components/icons';
 // eslint-disable-next-line complexity
 const Progress: FC = () => {
   const { stage, idoQueueDetail, memooConfig, mine, totalPurchased, memeUserData, unlockTimestamp } =
@@ -94,6 +95,7 @@ const Progress: FC = () => {
     onClick?: () => void;
     wrapper?: (node: ReactNode) => ReactNode;
     btnText?: string;
+    // btnIcon?: ReactNode;
     btnIcon?: string;
     enabled?: boolean;
   }[] = [
@@ -104,6 +106,7 @@ const Progress: FC = () => {
       desc: 'Complete tasks to be\neligible for airdrop',
       onClick: () => {},
       btnText: 'increase',
+      // btnIcon: <IconQueueBtn />,
       btnIcon: `/create/icon-increase${stage === 'in-queue' ? '-active' : ''}.svg`,
       wrapper: (node: ReactNode) => (
         <IncreaseAcquisitionModal
