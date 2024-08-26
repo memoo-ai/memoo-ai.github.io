@@ -22,7 +22,9 @@ const MeMooScoreBreakdown: FC = () => {
     if (meme.scoreField === 'Total Raised') {
       const scoreValue = getFullNum(meme.scoreValue ?? 0);
       const totalScore = getFullNum(meme.totalScore ?? 0);
-      return `${Number(scoreValue) / Number(totalScore)}%`;
+      const result = (Number(scoreValue) / Number(totalScore)).toFixed(0);
+      // return `${(Number(scoreValue) / Number(totalScore)) * 100}%`;
+      return `${result ?? 0 * 100}%`;
     }
     if (messages[meme.scoreValue]) {
       return messages[meme.scoreValue];
