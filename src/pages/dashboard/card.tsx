@@ -47,7 +47,7 @@ export const Card = ({ data, children, participated = false }: CardProps) => {
         {/* <div className="dashboard_item_tag_left">SAMPLE</div> */}
         <div className="dashboard_item_tag_right">
           <h3 className="mr-[11px]" style={{ color: data.status === 'Draft' ? '#7d83b5' : '#b53bff' }}>
-            {data.status}
+            {data.status === 'IDO' ? 'IMO' : data.status}
           </h3>
           <div>{renderIcon(data.status)}</div>
         </div>

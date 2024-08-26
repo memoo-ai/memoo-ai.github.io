@@ -63,7 +63,7 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
     console.log('idoUserBuyLimitBN:', idoUserBuyLimitBN);
     return grades.map((g, i) => ({
       label: (
-        <div key={i} className="imo_opt">
+        <div key={i} className="imo_opt p-[5px]">
           <span>
             {formatDecimals(capped.multipliedBy(g).multipliedBy(idoUserBuyLimitBN))} {tokenSymbol}
           </span>

@@ -34,6 +34,16 @@ const ClaimTokensModal: FC<{
     return Number(result);
   }, [memeUserData]);
 
+  const userCanClaimCount = useMemo(() => {
+    if (!memeUserData) return 0;
+
+    const memeUserIdoClaimedCount = new BigNumber(memeUserData?.memeUserIdoClaimedCount.toString()).dividedBy(10 ** 9);
+    const memeUserIdoCount = new BigNumber(Number(memeUserData.memeUserIdoCount.toString())).dividedBy(10 ** 9);
+    const result = memeUserIdoCount.minus(memeUserIdoClaimedCount);
+    console.log('userCanClaimCount: ', result.toString());
+    return result.toString();
+  }, [memeUserData]);
+
   const onConfirm = useCallback(async () => {
     // debugger;
     if (!creatorClaim || !idoQueueDetail || !solanaMemeConfig || !creatorClaimAll) return;
@@ -119,7 +129,7 @@ const ClaimTokensModal: FC<{
               placeholder="Pre-Market Acquisition"
               suffix={
                 <span className="text-[24px] text-white font-404px leading-[22px]">
-                  {Number(tokens).toLocaleString()}
+                  {Number(userCanClaimCount).toLocaleString()}
                 </span>
               }
             />
