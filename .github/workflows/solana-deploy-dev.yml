@@ -1,4 +1,5 @@
 name: Deploy solana app (DEV)
+run-name: Deploy of ${{ github.ref_name }} to DEV
 
 on:
   push:
