@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import { Table } from 'antd';
 import type { GetProp, TableProps } from 'antd';
 import type { PaginationProps } from 'antd';
-import { SorterResult } from 'antd/es/table/interface';
 import { getTrendingTokens, getTopTokens } from '@/api/gecko';
 import { TrendingTokens } from '@/types';
 import HeaderBannerBg from './assets/header-banner-bg.png';
@@ -58,7 +57,7 @@ const Gecko = () => {
     fetchData();
   }, [pagination.current, activeKey, tab, orderBy]);
 
-  const handleTableChange: TableProps['onChange'] = (pagination, filters, sorter) => {
+  const handleTableChange: TableProps['onChange'] = (pagination) => {
     setPagination(pagination);
   };
 
