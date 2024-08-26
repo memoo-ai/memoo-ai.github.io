@@ -329,6 +329,7 @@ export default function Create() {
             return;
           }
           setConfirmLoading(true);
+          data.ticker = data.ticker.toUpperCase();
           const res = await confirmTokenCreate(data);
 
           console.log('res: ', res);

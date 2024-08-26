@@ -2,13 +2,16 @@
   border-radius: 7px;
   border: 1px solid #07e993;
   background: #2b526e;
+  padding: 2px;
   .ant-radio-button-wrapper {
     padding: 22px 0;
+    box-sizing: border-box;
     height: auto;
     width: auto;
     background: unset;
     &-checked {
       background: #07e993;
+
       * {
         color: #a005fe !important;
       }

@@ -1,6 +1,6 @@
 /* eslint-disable no-debugger */
 /* eslint-disable react/no-unstable-nested-components */
-import { FC, ReactNode, useContext, useMemo } from 'react';
+import { FC, ReactNode, useContext, useMemo, useRef } from 'react';
 import { AirdropContext } from '../airdrop';
 import { IDOStatus, TokenCreateStage } from '@/types';
 import { Button } from 'antd';
@@ -14,13 +14,14 @@ import { compareAddrs, formatDecimals, formatNumberDecimal, formatRestTime } fro
 import BigNumber from 'bignumber.js';
 import { useProportion } from '@/hooks/useProportion';
 import { BN } from '@coral-xyz/anchor';
-import { IconQueueBtn } from '@/components/icons';
+import { IconQueueBtn, IconAirdropBtn } from '@/components/icons';
 // eslint-disable-next-line complexity
 const Progress: FC = () => {
   const { stage, idoQueueDetail, memooConfig, mine, totalPurchased, memeUserData, unlockTimestamp } =
     useContext(AirdropContext);
   const { address } = useAccount();
   const { firstProportion, platformCreateMeme, firstIncrease, maxIncrease, createMaxProportion } = useProportion();
+  const iconRefs = useRef<any>({});
 
   const purchased = useMemo(() => {
     if (!memooConfig || !memeUserData || !platformCreateMeme) return 0;
@@ -95,9 +96,10 @@ const Progress: FC = () => {
     onClick?: () => void;
     wrapper?: (node: ReactNode) => ReactNode;
     btnText?: string;
-    // btnIcon?: ReactNode;
-    btnIcon?: string;
+    btnIcon?: (disabled: boolean) => ReactNode;
+    // btnIcon?: string;
     enabled?: boolean;
+    ref?: string;
   }[] = [
     {
       key: 'in-queue',
@@ -106,8 +108,16 @@ const Progress: FC = () => {
       desc: 'Complete tasks to be\neligible for airdrop',
       onClick: () => {},
       btnText: 'increase',
-      // btnIcon: <IconQueueBtn />,
-      btnIcon: `/create/icon-increase${stage === 'in-queue' ? '-active' : ''}.svg`,
+      btnIcon: (disabled) => (
+        <IconQueueBtn
+          className="w-[15px] h-[15px]"
+          color={disabled ? '#7D83B5' : '#19FDA6'}
+          hoverColor={disabled ? '#7D83B5' : '#A005FE'}
+          ref={(ref) => (iconRefs.current[`increase`] = ref)}
+        />
+      ),
+      ref: 'increase',
+      // btnIcon: `/create/icon-increase${stage === 'in-queue' ? '-active' : ''}.svg`,
       wrapper: (node: ReactNode) => (
         <IncreaseAcquisitionModal
           maxIncrease={maxIncrease}
@@ -154,7 +164,16 @@ const Progress: FC = () => {
       desc: `1st ${50}% unlock when\ntoken price hits 0.0005c`,
       onClick: () => {},
       btnText: 'claim',
-      btnIcon: `/create/icon-claim${stage === '1st-claim' ? '-active' : ''}.svg`,
+      // btnIcon: `/create/icon-claim${stage === '1st-claim' ? '-active' : ''}.svg`,
+      btnIcon: (disabled) => (
+        <IconAirdropBtn
+          className="w-[15px] h-[15px]"
+          color={disabled ? '#7D83B5' : '#19FDA6'}
+          hoverColor={disabled ? '#7D83B5' : '#A005FE'}
+          ref={(ref) => (iconRefs.current[`1st-claim`] = ref)}
+        />
+      ),
+      ref: '1st-claim',
       wrapper: (node: ReactNode) => (
         <ClaimTokensModal
           tokens={tokens}
@@ -202,7 +221,16 @@ const Progress: FC = () => {
       desc: `Next ${50}% & pre-market\n purchase unlock in ${unlockTime}`,
       onClick: () => {},
       btnText: 'claim',
-      btnIcon: `/create/icon-claim${stage === '2st-claim' ? '-active' : ''}.svg`,
+      // btnIcon: `/create/icon-claim${stage === '2st-claim' ? '-active' : ''}.svg`,
+      btnIcon: (disabled) => (
+        <IconAirdropBtn
+          className="w-[15px] h-[15px]"
+          color={disabled ? '#7D83B5' : '#19FDA6'}
+          hoverColor={disabled ? '#7D83B5' : '#A005FE'}
+          ref={(ref) => (iconRefs.current[`2nd-claim`] = ref)}
+        />
+      ),
+      ref: '2nd-claim',
       wrapper: (node: ReactNode) => (
         <ClaimTokensModal
           // tokens={parseFloat(
@@ -264,9 +292,12 @@ const Progress: FC = () => {
                   className="memoo_button reverse mt-[19px] px-[19px] h-[38px]"
                   onClick={() => item.onClick?.()}
                   disabled={!item.enabled}
+                  onMouseOver={() => iconRefs.current[`${item.ref}`].setHovered(true)}
+                  onMouseLeave={() => iconRefs.current[`${item.ref}`].setHovered(false)}
                 >
                   <div className="flex items-center gap-x-1">
-                    {item.btnIcon && <img src={item.btnIcon} />}
+                    {/* {item.btnIcon && <img src={item.btnIcon} />} */}
+                    <div>{item.btnIcon && item.btnIcon(!item.enabled)}</div>
                     <span className={classNames('text-[10px] leading-5')}>{item.btnText}</span>
                   </div>
                 </Button>,
