@@ -45,6 +45,16 @@ const ClaimModal = ({ children }: any) => {
     return Number(result);
   }, [memeUserData]);
 
+  const userCanClaimCount = useMemo(() => {
+    if (!memeUserData) return 0;
+
+    const memeUserIdoClaimedCount = new BigNumber(memeUserData?.memeUserIdoClaimedCount.toString()).dividedBy(10 ** 9);
+    const memeUserIdoCount = new BigNumber(Number(memeUserData.memeUserIdoCount.toString())).dividedBy(10 ** 9);
+    const result = memeUserIdoCount.minus(memeUserIdoClaimedCount);
+    console.log('userCanClaimCount: ', result.toString());
+    return result.toString();
+  }, [memeUserData]);
+
   const onConfirm = useCallback(async () => {
     if (!creatorClaim || !idoQueueDetail || !address || !solanaMemeConfig) return;
     try {
@@ -76,7 +86,14 @@ const ClaimModal = ({ children }: any) => {
         <div className="claim_tokens flex flex-col">
           <div className="flex justify-between">
             <div className="flex items-center gap-x-[15px]">
-              <p className="whitespace-pre font-OCR text-base leading-[18px] text-white">{`Redeem ${stage} ${50}%\nunlocked tokens`}</p>
+              {/* <p className="whitespace-pre font-OCR text-base leading-[18px] text-white">{`Redeem ${stage} ${50}%\nunlocked tokens`}</p> */}
+              <div className="flex items-center gap-x-[12px]">
+                <img className="w-[50px] h-[50px] rounded-[50%]" src={idoQueueDetail?.icon} alt="" />
+                <div>
+                  <p className="font-OCR text-[16px] text-[#fff] leading-[18px]">Claimable</p>
+                  <p className="font-404px text-[24px] text-[#fff] leading-[29px]">{idoQueueDetail?.ticker}</p>
+                </div>
+              </div>
               <img className="w-[111px] object-contain" src="/create/img-claim.png" />
             </div>
             <div className="flex items-center gap-x-[14px]">
@@ -94,9 +111,7 @@ const ClaimModal = ({ children }: any) => {
               {stage === '2nd' && (
                 <>
                   <div className="flex flex-col items-end">
-                    <span className="font-404px text-white text-[24px] leading-[29px]">
-                      {Number(unlockTokens).toLocaleString()}
-                    </span>
+                    <span className="font-404px text-white text-[24px] leading-[29px]">DONE!</span>
                     <span className="font-OCR text-white text-base leading-[21px]">Claim Completed</span>
                   </div>
                   <img className="w-[50px]" src="/create/icon-claim-done.png" />
@@ -114,8 +129,22 @@ const ClaimModal = ({ children }: any) => {
               </span>
             }
           />
-          <Button loading={confirming} className="memoo_button w-[100%] mt-[77px] h-[50px]" onClick={onConfirm}>
-            Confirm
+          {stage === '2nd' ? (
+            <Input
+              disabled
+              className="memoo_input h-[66px] my-[5px]"
+              placeholder="Pre-Market Acquisition"
+              suffix={
+                <span className="text-[24px] text-white font-404px leading-[22px]">
+                  {Number(userCanClaimCount).toLocaleString()}
+                </span>
+              }
+            />
+          ) : (
+            <div className="h-[66px]" />
+          )}
+          <Button loading={confirming} className="memoo_button w-[100%] h-[50px]" onClick={onConfirm}>
+            CLAIM ALL
           </Button>
         </div>
       </Modal>

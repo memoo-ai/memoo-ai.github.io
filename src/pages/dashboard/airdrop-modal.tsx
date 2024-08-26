@@ -79,7 +79,7 @@ const AirdropModal = ({ children }: any) => {
           <img className="mt-[15px]" src="./dashboard/reward.svg" alt="" />
           <div className="confirm_content_title mt-[18px]">{idoLaunchedDetail?.tokenName} has arrived!</div>
           <div className="confirm_content_describe mt-[18px]">
-            Thanks for being part of the <br /> Dogwifhat community.
+            Thanks for being part of the <br /> {idoLaunchedDetail?.tokenName} community.
           </div>
           <div className="relative mt-[26px] w-[100%]">
             <IconLock

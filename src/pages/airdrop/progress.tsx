@@ -96,7 +96,7 @@ const Progress: FC = () => {
     onClick?: () => void;
     wrapper?: (node: ReactNode) => ReactNode;
     btnText?: string;
-    btnIcon?: ReactNode;
+    btnIcon?: (disabled: boolean) => ReactNode;
     // btnIcon?: string;
     enabled?: boolean;
     ref?: string;
@@ -108,11 +108,11 @@ const Progress: FC = () => {
       desc: 'Complete tasks to be\neligible for airdrop',
       onClick: () => {},
       btnText: 'increase',
-      btnIcon: (
+      btnIcon: (disabled) => (
         <IconQueueBtn
           className="w-[15px] h-[15px]"
-          color="#19FDA6"
-          hoverColor="#A005FE"
+          color={disabled ? '#7D83B5' : '#19FDA6'}
+          hoverColor={disabled ? '#7D83B5' : '#A005FE'}
           ref={(ref) => (iconRefs.current[`increase`] = ref)}
         />
       ),
@@ -165,11 +165,11 @@ const Progress: FC = () => {
       onClick: () => {},
       btnText: 'claim',
       // btnIcon: `/create/icon-claim${stage === '1st-claim' ? '-active' : ''}.svg`,
-      btnIcon: (
+      btnIcon: (disabled) => (
         <IconAirdropBtn
           className="w-[15px] h-[15px]"
-          color="#19FDA6"
-          hoverColor="#A005FE"
+          color={disabled ? '#7D83B5' : '#19FDA6'}
+          hoverColor={disabled ? '#7D83B5' : '#A005FE'}
           ref={(ref) => (iconRefs.current[`1st-claim`] = ref)}
         />
       ),
@@ -222,11 +222,11 @@ const Progress: FC = () => {
       onClick: () => {},
       btnText: 'claim',
       // btnIcon: `/create/icon-claim${stage === '2st-claim' ? '-active' : ''}.svg`,
-      btnIcon: (
+      btnIcon: (disabled) => (
         <IconAirdropBtn
           className="w-[15px] h-[15px]"
-          color="#19FDA6"
-          hoverColor="#A005FE"
+          color={disabled ? '#7D83B5' : '#19FDA6'}
+          hoverColor={disabled ? '#7D83B5' : '#A005FE'}
           ref={(ref) => (iconRefs.current[`2nd-claim`] = ref)}
         />
       ),
@@ -246,17 +246,17 @@ const Progress: FC = () => {
           {node}
         </ClaimTokensModal>
       ),
-      // enabled:
-      //   idoQueueDetail?.stageTwoClaim &&
-      //   tokens > 0 &&
-      //   idoQueueDetail?.status === 'Launched' &&
-      //   (address
-      //     ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
-      //         compareAddrs(addr, address.toBase58()),
-      //       )
-      //     : false),
+      enabled:
+        idoQueueDetail?.stageTwoClaim &&
+        tokens > 0 &&
+        idoQueueDetail?.status === 'Launched' &&
+        (address
+          ? [(idoQueueDetail.contractAddress, idoQueueDetail.creatorAddress)].some((addr) =>
+              compareAddrs(addr, address.toBase58()),
+            )
+          : false),
       //   Number(_2ndStage?.unlockCount) > 0 &&
-      enabled: true,
+      // enabled: true,
     },
   ];
 
@@ -292,14 +292,12 @@ const Progress: FC = () => {
                   className="memoo_button reverse mt-[19px] px-[19px] h-[38px]"
                   onClick={() => item.onClick?.()}
                   disabled={!item.enabled}
+                  onMouseOver={() => iconRefs.current[`${item.ref}`].setHovered(true)}
+                  onMouseLeave={() => iconRefs.current[`${item.ref}`].setHovered(false)}
                 >
-                  <div
-                    className="flex items-center gap-x-1"
-                    onMouseOver={() => iconRefs.current[`${item.ref}`].setHovered(true)}
-                    onMouseLeave={() => iconRefs.current[`${item.ref}`].setHovered(false)}
-                  >
+                  <div className="flex items-center gap-x-1">
                     {/* {item.btnIcon && <img src={item.btnIcon} />} */}
-                    <div>{item.btnIcon}</div>
+                    <div>{item.btnIcon && item.btnIcon(!item.enabled)}</div>
                     <span className={classNames('text-[10px] leading-5')}>{item.btnText}</span>
                   </div>
                 </Button>,
