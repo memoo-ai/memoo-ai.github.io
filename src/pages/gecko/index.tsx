@@ -1,14 +1,13 @@
 import './index.scss';
 import CommonBanner from '@/components/Banner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { columns, tokenSelectOptions } from './columns';
 import IPagination from '@/components/IPagination';
 import { useNavigate } from 'react-router-dom';
 import { Table } from 'antd';
 import type { GetProp, TableProps } from 'antd';
 import type { PaginationProps } from 'antd';
-import { SorterResult } from 'antd/es/table/interface';
 import { getTrendingTokens, getTopTokens } from '@/api/gecko';
 import { TrendingTokens } from '@/types';
 import HeaderBannerBg from './assets/header-banner-bg.png';
@@ -21,14 +20,6 @@ import LaunchpadAirdropBg from '@/assets/imgs/launchpad-airdrop-bg.png';
 import memooGeckoIcon from '@/assets/imgs/memoogecko.png';
 import createRankIcon from '@/assets/imgs/creatorrankcup .png';
 import { IconHorn } from '@/components/icons';
-
-type ColumnsType<T> = TableProps<T>['columns'];
-type TablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;
-
-interface TableParams {
-  sortField?: string;
-  sortOrder?: string;
-}
 
 export type GeckoType = 'trending' | 'top';
 const Gecko = () => {
@@ -44,7 +35,6 @@ const Gecko = () => {
     total: 30,
   });
 
-  const [sorters, setSorters] = useState<any>([]);
   const fetchData = async () => {
     let params = {
       pageNumber: pagination.current ?? 1,
@@ -67,9 +57,8 @@ const Gecko = () => {
     fetchData();
   }, [pagination.current, activeKey, tab, orderBy]);
 
-  const handleTableChange: TableProps['onChange'] = (pagination, filters, sorter) => {
+  const handleTableChange = (pagination: SetStateAction<PaginationProps>) => {
     setPagination(pagination);
-    setSorters(sorter);
   };
 
   return (

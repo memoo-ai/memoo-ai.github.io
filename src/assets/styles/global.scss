@@ -609,6 +609,12 @@ div[data-rk] {
 }
 
 .table-no-data {
+  .ant-table-tbody{
+    .ant-table-cell{
+
+      background: #131522 !important;
+    }
+  }
   .ant-table-wrapper .ant-table-thead>tr>th {
     border: none;
   }
