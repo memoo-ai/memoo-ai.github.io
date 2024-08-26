@@ -64,6 +64,12 @@ const Progress: FC = () => {
   }, [memeUserData]);
 
   console.log('tokens:', tokens);
+
+  const unlockTime = useMemo(() => {
+    if (!unlockTimestamp) return '14 days';
+    const result = Number(unlockTimestamp) < 0 ? '14 days' : formatRestTime(Number(unlockTimestamp) * 1000);
+    return result;
+  }, [idoQueueDetail]);
   // const firstIncrease = useMemo(() => {
   //   if (!memooConfig || !defaultConfig) return 0;
 
@@ -132,7 +138,7 @@ const Progress: FC = () => {
           {stage === '1st-claim' && <img src="/create/bg-1st-claim.png" />}
 
           <img
-            className="absolute left-[53px] top-[37px]"
+            className={`${stage === '1st-claim' ? 'absolute ' : 'w-[50px] h-[50px]'} left-[53px] top-[37px]`}
             src={`/create/process-claim${stage === '1st-claim' ? '-active' : ''}.svg`}
           />
         </div>
@@ -179,9 +185,8 @@ const Progress: FC = () => {
       icon: (
         <div className="relative z-10">
           {stage === '2st-claim' && <img src="/create/bg-2st-claim.png" />}
-
           <img
-            className="absolute left-[53px] top-[37px]"
+            className={`${stage === '2st-claim' ? 'absolute' : ' w-[50px] h-[50px]'} left-[53px] top-[37px]`}
             src={`/create/process-claim${stage === '2st-claim' ? '-active' : ''}.svg`}
           />
         </div>
@@ -191,7 +196,7 @@ const Progress: FC = () => {
       //   .dividedBy(1e4)
       //   .multipliedBy(1e2)
       //   .toNumber()}% unlocked\ntokens in ${formatRestTime(Number(_2ndStage?.unlockInfo?.value) * 1000)}`,
-      desc: `Next ${50}% & pre-market\n purchase unlock in${formatRestTime(Number(unlockTimestamp) * 1000)}`,
+      desc: `Next ${50}% & pre-market\n purchase unlock in ${unlockTime}`,
       onClick: () => {},
       btnText: 'claim',
       btnIcon: `/create/icon-claim${stage === '2st-claim' ? '-active' : ''}.svg`,
@@ -258,7 +263,7 @@ const Progress: FC = () => {
                   disabled={!item.enabled}
                 >
                   <div className="flex items-center gap-x-1">
-                    {/* {item.btnIcon && <img src={item.btnIcon} />} */}
+                    {item.btnIcon && <img src={item.btnIcon} />}
                     <span className={classNames('text-[10px] leading-5')}>{item.btnText}</span>
                   </div>
                 </Button>,
