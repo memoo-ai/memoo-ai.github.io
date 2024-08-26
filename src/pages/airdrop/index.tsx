@@ -61,6 +61,7 @@ interface AirdropContext {
   unlockMeme?: (project: `0x${string}`, index: number) => Promise<TransactionReceipt | undefined>;
   // idoClaim?: (project: `0x${string}`) => Promise<TransactionReceipt | undefined>;
   idoClaim?: (memeId: string, mintAPublicKey: string) => Promise<string | undefined>;
+  creatorClaimAll?: (memeId: string, mintAPublicKey: string) => any;
   triggerRefresh?: Function;
   airdropClaim?: (
     memeId: string,
@@ -111,8 +112,17 @@ const Airdrop: FC = () => {
   const [unlockTimestamp, setUnlockTimestamp] = useState();
   const { ticker = import.meta.env.VITE_DEMO_TICKER } = useParams<{ ticker: string }>();
   const [refresh, setRefresh] = useState(0);
-  const { address, memooConfig, idoBuy, getMemeUserData, getMemeCreatorData, idoClaim, creatorClaim, airdropClaim } =
-    useAccount();
+  const {
+    address,
+    memooConfig,
+    idoBuy,
+    getMemeUserData,
+    getMemeCreatorData,
+    idoClaim,
+    creatorClaimAll,
+    creatorClaim,
+    airdropClaim,
+  } = useAccount();
   console.log('my-address:', address);
   const [loading, setLoading] = useState(false);
   const [searchParams] = useSearchParams();
@@ -152,6 +162,7 @@ const Airdrop: FC = () => {
       unlockMeme,
       airdropClaim,
       idoClaim,
+      creatorClaimAll,
       // _1stStage,
       // _2ndStage,
       // defaultConfig,
@@ -178,6 +189,7 @@ const Airdrop: FC = () => {
       unlockMeme,
       airdropClaim,
       idoClaim,
+      creatorClaimAll,
       // _1stStage,
       // _2ndStage,
       // defaultConfig,

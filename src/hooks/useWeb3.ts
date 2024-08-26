@@ -426,6 +426,81 @@ export const useAccount = () => {
     },
     [connection, publicKey, program],
   );
+
+  const creatorClaimAll = useCallback(
+    async (memeId: string, mintaPublicKey: string) => {
+      if (!memooConfig || !program || !publicKey || !signTransaction) return;
+      try {
+        const memeConfigId = new PublicKey(memeId);
+        const mintAPublicKey = new PublicKey(mintaPublicKey);
+        const memeUserDataPda = PublicKey.findProgramAddressSync(
+          [Buffer.from('meme_user_data'), memeConfigId.toBuffer(), publicKey.toBuffer()],
+          programId,
+        )[0];
+        const adminAccountAPda = getAssociatedTokenAddressSync(mintAPublicKey, publicKey, true);
+        const poolAuthorityA = PublicKey.findProgramAddressSync(
+          [Buffer.from('authority'), memeConfigId.toBuffer(), mintAPublicKey.toBuffer()],
+          programId,
+        )[0];
+        const poolAccountA = getAssociatedTokenAddressSync(mintAPublicKey, poolAuthorityA, true);
+        const instruction1 = await program.methods
+          .creatorClaim(memeConfigId)
+          .accounts({
+            payer: publicKey,
+            memooConfig: memooConfigPda,
+            memeUserData: memeUserDataPda,
+            creatorAccountA: adminAccountAPda,
+            mintAccountA: mintAPublicKey,
+            poolAuthorityA,
+            poolAccountA: poolAccountA,
+          })
+          .instruction();
+        const instruction2 = await program.methods
+          .idoClaim(memeConfigId)
+          .accounts({
+            user: publicKey,
+            memeUserData: memeUserDataPda,
+            idoUserAccountA: adminAccountAPda,
+            mintAccountA: mintAPublicKey,
+            poolAuthorityA,
+            poolAccountA: poolAccountA,
+          })
+          .instruction();
+
+        const transaction = new Transaction().add(instruction1, instruction2);
+
+        const latestBlockhash = await connection.getLatestBlockhash('finalized');
+        transaction.recentBlockhash = latestBlockhash.blockhash;
+        transaction.feePayer = publicKey;
+        const signedTransaction = await signTransaction(transaction);
+        const fee = await transaction.getEstimatedFee(connection);
+        console.log('fee:', fee);
+        // const signature = await connection.sendRawTransaction(signedTransaction.serialize());
+        const signature = await connection.sendRawTransaction(signedTransaction.serialize(), {
+          skipPreflight: true,
+        });
+
+        console.log('Transaction sent. Signature:', signature);
+        const confirmationStrategy = {
+          signature: signature,
+          blockhash: latestBlockhash.blockhash,
+          lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+        };
+
+        const confirmation = await connection.confirmTransaction(confirmationStrategy, 'finalized');
+        console.log('confirmation:', confirmation);
+
+        if (confirmation.value.err) {
+          throw new Error(`Transaction failed: ${confirmation.value.err.toString()}`);
+        }
+        return confirmation;
+      } catch (e) {
+        console.log('error: ', e);
+      }
+    },
+    [connection, publicKey, program],
+  );
+
   const getMemeUserData = useCallback(
     async (memeId: string) => {
       console.log('getMemeUserData');
@@ -570,6 +645,7 @@ export const useAccount = () => {
     // getMemooConfig,
     idoBuy,
     creatorClaim,
+    creatorClaimAll,
     idoClaim,
     getMemeUserData,
     getMemeCreatorData,
