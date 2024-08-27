@@ -137,7 +137,7 @@ export default function LaunchPad() {
                   <span className="font-404px text-[16px] text-green">LIVE DEGEN ACTIVITY</span>
                 </div>
                 {/* <CarouselColumn /> */}
-                <Swipe />
+                <Swipe isScrolling={false} />
                 {/* {list.map((item) => {
                   return (
                     <div

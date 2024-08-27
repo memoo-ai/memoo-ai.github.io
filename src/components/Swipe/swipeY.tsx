@@ -4,8 +4,9 @@ import { CrowdSourcing } from '@/types';
 import DefaultAvatar from '@/assets/imgs/default-avatar.png';
 interface SwipeXProps {
   item: CrowdSourcing;
+  index?: number;
 }
-const SwipeY = ({ item }: SwipeXProps) => {
+const SwipeY = ({ item, index }: SwipeXProps) => {
   const navigate = useNavigate();
   return (
     <div
@@ -15,7 +16,8 @@ const SwipeY = ({ item }: SwipeXProps) => {
     >
       <img
         className="w-[30px] h-[30px] rounded-[50%]"
-        src={item?.icon && item?.icon !== '' ? item?.icon : DefaultAvatar}
+        // src={item?.icon && item?.icon !== '' ? item?.icon : DefaultAvatar}
+        src={item?.icon && item?.icon !== '' ? item?.icon : `/avatars/avatar${index ?? 0}.png`}
         alt=""
       />{' '}
       <span className="font-REV ml-[5px] text-[#fff] text-[12px]" style={{ color: getRandomColor() }}>
@@ -24,7 +26,7 @@ const SwipeY = ({ item }: SwipeXProps) => {
       <span className="font-REV ml-[5px] text-[#fff] text-[12px]" style={{ fontFamily: 'REV' }}>
         {item.tradeType === 'airdrop' ? 'participated' : 'contributed'}
       </span>
-      <span className="font-REV ml-[5px] text-[#fff] text-[12px]">
+      <span className="font-REV ml-[5px] text-[#fff] text-[12px] whitespace-nowrap">
         {/* {item.tradeType === 'airdrop' ? 'in' : 'of'} */}
         {item.amout} in
       </span>

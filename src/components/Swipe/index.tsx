@@ -8,13 +8,14 @@ interface SwipeProps {
   speed?: number;
   direction?: 'up' | 'down' | 'left' | 'right';
   children?: ReactNode;
+  isScrolling?: boolean;
 }
 
-const SwipeItem = React.memo(({ item, isVertical }: { item: any; isVertical: boolean }) => {
-  return isVertical ? <SwipeY item={item} /> : <SwipeX item={item} />;
+const SwipeItem = React.memo(({ item, isVertical, index }: { item: any; isVertical: boolean; index: number }) => {
+  return isVertical ? <SwipeY item={item} index={index} /> : <SwipeX item={item} />;
 });
 
-const Swipe: React.FC<SwipeProps> = React.memo(({ children, speed = 50, direction = 'up' }) => {
+const Swipe: React.FC<SwipeProps> = React.memo(({ children, speed = 50, direction = 'up', isScrolling = true }) => {
   const [position, setPosition] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [list, setList] = useState<any[]>([]);
@@ -45,7 +46,7 @@ const Swipe: React.FC<SwipeProps> = React.memo(({ children, speed = 50, directio
   }, [fetchData]);
 
   const updatePosition = useCallback(() => {
-    if (isPaused || !containerRef.current || !contentRef.current) return;
+    if (isPaused || !containerRef.current || !contentRef.current || !isScrolling) return;
 
     const contentSize = isVertical ? contentRef.current.offsetHeight : contentRef.current.offsetWidth;
 
@@ -55,10 +56,23 @@ const Swipe: React.FC<SwipeProps> = React.memo(({ children, speed = 50, directio
     });
   }, [isPaused, isVertical, isReverse, speed]);
 
-  useAnimationFrame(updatePosition);
+  useAnimationFrame(() => {
+    if (isScrolling) {
+      updatePosition();
+    }
+  });
 
-  const handleMouseEnter = useCallback(() => setIsPaused(true), []);
-  const handleMouseLeave = useCallback(() => setIsPaused(false), []);
+  const handleMouseEnter = useCallback(() => {
+    if (isScrolling) {
+      setIsPaused(true);
+    }
+  }, [isScrolling]);
+
+  const handleMouseLeave = useCallback(() => {
+    if (isScrolling) {
+      setIsPaused(false);
+    }
+  }, [isScrolling]);
 
   const containerStyle = useMemo(
     () => ({
@@ -97,7 +111,7 @@ const Swipe: React.FC<SwipeProps> = React.memo(({ children, speed = 50, directio
     <div ref={containerRef} style={containerStyle} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <motion.div ref={contentRef} style={contentStyle}>
         {repeatedList.map((item, index) => (
-          <SwipeItem key={`${item.ticker}-${index}`} item={item} isVertical={isVertical} />
+          <SwipeItem key={`${item.ticker}-${index}`} item={item} index={index} isVertical={isVertical} />
         ))}
       </motion.div>
       {children}
