@@ -287,6 +287,13 @@ export default function Create() {
     [registerTokenMint, form, totalCapInitial],
   );
 
+  const handleTickerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    form.setFieldsValue({
+      ticker: value.toUpperCase(),
+    });
+  };
+
   const handleSave = useCallback(
     // TODO check login
     async (isConfirm: boolean) => {
@@ -329,7 +336,7 @@ export default function Create() {
             return;
           }
           setConfirmLoading(true);
-          data.ticker = data.ticker.toUpperCase();
+          // data.ticker = data.ticker.toUpperCase();
           const res = await confirmTokenCreate(data);
 
           console.log('res: ', res);
@@ -435,7 +442,7 @@ export default function Create() {
               name="ticker"
               rules={[{ required: true, message: 'Please input ticker!' }]}
             >
-              <Input className="rounded-[7px]" showCount maxLength={8} />
+              <Input className="rounded-[7px]" showCount maxLength={8} onChange={handleTickerChange} />
             </Form.Item>
 
             <Form.Item
