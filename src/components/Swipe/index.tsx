@@ -49,10 +49,14 @@ const Swipe: React.FC<SwipeProps> = React.memo(({ children, speed = 50, directio
     if (isPaused || !containerRef.current || !contentRef.current || !isScrolling) return;
 
     const contentSize = isVertical ? contentRef.current.offsetHeight : contentRef.current.offsetWidth;
-
+    const containerWidth = containerRef.current.offsetWidth;
     setPosition((prevPos) => {
       const newPos = prevPos + (isReverse ? speed / 60 : -speed / 60);
-      return Math.abs(newPos) >= contentSize / 2 ? 0 : newPos;
+      if (isReverse) {
+        return newPos >= containerWidth ? -contentSize : newPos;
+      } else {
+        return newPos <= -contentSize ? containerWidth : newPos;
+      }
     });
   }, [isPaused, isVertical, isReverse, speed]);
 
@@ -105,7 +109,12 @@ const Swipe: React.FC<SwipeProps> = React.memo(({ children, speed = 50, directio
     [isVertical, position],
   );
 
-  const repeatedList = useMemo(() => [...list, ...list], [list]);
+  const repeatedList = useMemo(() => {
+    if (list.length > 5) {
+      return [...list, ...list];
+    }
+    return list;
+  }, [list]);
 
   return (
     <div ref={containerRef} style={containerStyle} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>

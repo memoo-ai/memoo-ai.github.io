@@ -36,7 +36,7 @@ const Profile: FC = () => {
       { key: 'Name', value: idoQueueDetail?.tokenName },
       {
         key: 'Ticker',
-        value: idoQueueDetail?.creatorAddress ?? '',
+        value: idoQueueDetail?.ticker?.toUpperCase() ?? '',
       },
       {
         key: 'Contract Address',
