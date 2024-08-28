@@ -230,7 +230,7 @@ declare interface IDOQueueDetail extends IDOClaimStage {
   memooScore: memooScore[];
 }
 
-declare type IDOStatus = 'Draft' | 'QUEUE' | 'IDO' | 'Launched' | 'IDOEND';
+declare type IDOStatus = 'Draft' | 'Waiting_for_pay' | 'QUEUE' | 'IDO' | 'Launched' | 'IDOEND';
 
 declare interface pageParams {
   pageNumber: number;

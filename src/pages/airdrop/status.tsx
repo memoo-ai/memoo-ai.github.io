@@ -5,6 +5,7 @@ import { IconTranspond } from '@/components/icons';
 import ScoreShareModal from './score-share-modal';
 import { AirdropContext } from '.';
 import ITooltip from '@/components/ITooltip';
+import { IconQueue, IconLaunched, IconIMO } from '@/components/icons';
 const MESSAGE_THRESHOLDS: [number, string][] = [
   [30, 'GTFO!'],
   [45, 'Take some luck to\nmake this work!'],
@@ -23,13 +24,61 @@ export default function Status() {
     [idoQueueDetail],
   );
 
+  const renderIcon = useMemo(() => {
+    switch (idoQueueDetail?.status) {
+      case 'QUEUE':
+        return (
+          <div className="flex items-center gap-x-1">
+            <span className="font-404px text-[#07E993] text-[18px]">IN QUEUE</span>
+            <IconQueue className="w-[20px] h-[20px]" color="#07E993" />
+          </div>
+        );
+      case 'Waiting_for_pay':
+        return (
+          <div className="flex items-center gap-x-1">
+            <span className="font-404px text-[#07E993] text-[18px]">IN QUEUE</span>
+            <IconQueue color="#07E993" />
+          </div>
+        );
+      case 'IDO':
+        return (
+          <div className="flex items-center gap-x-1">
+            <span className="font-404px text-[#07E993] text-[18px]">Active</span>
+            <IconIMO color="#07E993" />
+          </div>
+        );
+      case 'Launched':
+        return (
+          <div className="flex items-center gap-x-1">
+            <span className="font-404px text-[#07E993] text-[18px]">Launched</span>
+            <IconLaunched color="#07E993" />
+          </div>
+        );
+      case 'IDOEND':
+        return (
+          <div className="flex items-center gap-x-1">
+            <span className="font-Montserrat text-[#07E993] text-[18px]">Launched</span>
+            <IconLaunched color="#07E993" />
+          </div>
+        );
+      default:
+        return (
+          <div className="flex items-center gap-x-1">
+            <span className="font-Montserrat text-[#07E993] text-[18px]">IN QUEUE</span>
+            <IconQueue color="#07E993" />
+          </div>
+        );
+    }
+  }, [idoQueueDetail]);
+
   return (
     <div className="status w-full flex flex-col">
       <div className="status_head flex items-center justify-between">
         <span>Status</span>
-        <div className="status_process flex items-center">
+        <div className="status_process">
           {/* <span>{process?.split('-').join(' ').toUpperCase()}</span> */}
-          <img src="/create/icon-upcoming.png" />
+          {/* <img src="/create/icon-upcoming.png" /> */}
+          {renderIcon}
         </div>
       </div>
       <div className="status_memo_score">
