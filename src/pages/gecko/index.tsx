@@ -86,9 +86,7 @@ const Gecko = () => {
           </div>
         </div>
       </div> */}
-      <div className="swipe-top">
-        <Swipe direction="left" />
-      </div>
+      <Swipe direction="left" />
       <div className="flex justify-center mt-[21px] gap-x-5">
         <div className="w-[835px] h-[469px]">
           <BannerBox background={LaunchpadAirdropBg} title="MEMOOGECKO">
