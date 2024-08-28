@@ -168,7 +168,7 @@
   line-height: 20px;
   letter-spacing: -0.05em;
   text-align: left;
-  color: #AF8DC4;
+  color: #7D83B5;
   border-bottom: 1px solid #5D64A2;
 }
 
@@ -627,4 +627,12 @@ div[data-rk] {
     border-radius: 20px !important;
     border: 1px solid #5D64A2 !important;
   }
+}
+
+.swipe-top{
+  border-top: 1px solid #5D64A2;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  position: relative;
+  min-width: 100vw;
 }
