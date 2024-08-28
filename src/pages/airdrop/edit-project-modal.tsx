@@ -238,7 +238,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
               <div style={{ width: '15px' }} className="mr-[7px]">
                 <IconTwitter hoverColor="#07E993" className="" />
               </div>
-              {twitter && <img src="/create/icon-authed.svg" />}
+              {twitter && <img className="mr-[7px]" src="/create/icon-authed.svg" />}
               <ConnectButton variant="secondary" className="w-[136px] h-[32px]" onClick={connectTwitter}>
                 {!twitter ? 'CONNECT' : 'CHANGE'}
               </ConnectButton>

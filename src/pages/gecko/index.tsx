@@ -78,7 +78,7 @@ const Gecko = () => {
         </div>
       </div> */}
       <Swipe direction="left" />
-      <div className="flex justify-between mt-[21px]">
+      <div className="flex justify-center mt-[21px] gap-x-5">
         <div className="w-[835px] h-[469px]">
           <BannerBox background={LaunchpadAirdropBg} title="MEMOOGECKO">
             {/* {activeKey === 'imo' ? (
