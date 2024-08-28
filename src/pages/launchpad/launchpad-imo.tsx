@@ -57,8 +57,12 @@ const LaunchPadImo = () => {
   return (
     <div className="launchpad-imo">
       <KingsCards btnText="PARTICIPATE" btnType="reverse" data={cardData} />
-      <div className="flex justify-between">
-        <div />
+      <div className="flex justify-between items-end">
+        {/* <div /> */}
+        <div className="flex items-center my-[42px]">
+          <span className="font-404px text-green text-[24px] mr-[20px]">DISCOVER IMO</span>
+          <img className="w-[105px] h-[96px]" src="/public/launchPad/table-logo.png" alt="" />
+        </div>
         <ISelect
           options={imoSelectOptions}
           onSelectChange={(key, orderBy) => {

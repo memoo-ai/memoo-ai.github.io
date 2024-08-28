@@ -126,16 +126,16 @@ const Home = () => {
           </div>
         </div>
         {/* <div className="flex sections ">
-          <div className="sections-item flex flex-col">
-            <img className="sections-item-img" src="./launchPad/img-ranked.png" alt="" />
+          <div className="sections-item flex flex-col" onClick={() => navigate('/?type=airdrop')}>
+            <img src="./launchPad/img-ranked.png" alt="" />
             <p className="sections-item-text">View Creator Ranking</p>
           </div>
-          <div className="sections-item flex column">
-            <img className="sections-item-img" src="./launchPad/img-vector.png" alt="" />
+          <div className="sections-item flex column" onClick={() => navigate('/')}>
+            <img src="./launchPad/img-vector.png" alt="" />
             <p className="sections-item-text">Participate in IDO</p>
           </div>
-          <div className="sections-item flex column">
-            <img className="sections-item-img" src="./launchPad/img-star.png" alt="" />
+          <div className="sections-item flex column" onClick={() => navigate('/gecko')}>
+            <img src="./launchPad/img-star.png" alt="" />
             <p className="sections-item-text">Find Your Favourite</p>
           </div>
         </div> */}
