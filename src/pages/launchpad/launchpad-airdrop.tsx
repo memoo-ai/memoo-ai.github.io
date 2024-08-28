@@ -2,7 +2,7 @@ import './launchpad-airdrop.scss';
 import { useState, useEffect } from 'react';
 import type { PaginationProps } from 'antd';
 import Empty from '@/components/Empty';
-import { Table } from 'antd';
+import { Table, Spin } from 'antd';
 import KingsCards from '@/components/KingsCards';
 import IPagination from '@/components/IPagination';
 import { columnsAirdrop, airdropSelectOptions } from './columns';
@@ -24,20 +24,28 @@ const LaunchPadAirdrop = () => {
   const [loading, setLoading] = useState(false);
 
   const fetchData = async () => {
-    let params = {
-      pageNumber: pagination.current ?? 1,
-      pageSize: pagination.pageSize ?? 10,
-      sortField: activeKey,
-      sortDirection: orderBy,
-    };
-    const { data } = await getLaunchpadAirdrop(params);
-    // console.log(data);
-    if (data) {
-      setData(data.records ?? []);
-      setPagination({
-        ...pagination,
-        total: data.total_record ?? 0,
-      });
+    try {
+      setLoading(true);
+      let params = {
+        pageNumber: pagination.current ?? 1,
+        pageSize: pagination.pageSize ?? 10,
+        sortField: activeKey,
+        sortDirection: orderBy,
+      };
+      const { data } = await getLaunchpadAirdrop(params);
+      // console.log(data);
+      if (data) {
+        setData(data.records ?? []);
+        setPagination({
+          ...pagination,
+          total: data.total_record ?? 0,
+        });
+        setLoading(false);
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -54,6 +62,7 @@ const LaunchPadAirdrop = () => {
 
   return (
     <div className="w-[100%] launchpad-airdrop">
+      <Spin spinning={loading} fullscreen />
       <KingsCards btnText="AIRDROP" btnType="" data={cardData} />
       <div className="flex justify-between items-end">
         <div className="flex items-center my-[42px]">
@@ -73,7 +82,7 @@ const LaunchPadAirdrop = () => {
           columns={columnsAirdrop(navigate)}
           dataSource={data as LaunchpadAirdrop[]}
           pagination={false}
-          loading={loading}
+          // loading={loading}
           className="mb-[58px]"
           locale={{
             emptyText: <Empty showBorder={false} />,

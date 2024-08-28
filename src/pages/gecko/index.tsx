@@ -5,7 +5,7 @@ import { SetStateAction, useEffect, useState } from 'react';
 import { columns, tokenSelectOptions } from './columns';
 import IPagination from '@/components/IPagination';
 import { useNavigate } from 'react-router-dom';
-import { Table } from 'antd';
+import { Table, Spin } from 'antd';
 import type { GetProp, TableProps } from 'antd';
 import type { PaginationProps } from 'antd';
 import { getTrendingTokens, getTopTokens } from '@/api/gecko';
@@ -36,20 +36,28 @@ const Gecko = () => {
   });
 
   const fetchData = async () => {
-    let params = {
-      pageNumber: pagination.current ?? 1,
-      pageSize: pagination.pageSize ?? 10,
-      sortField: activeKey,
-      sortDirection: orderBy,
-    };
-    const { data } = tab === 'trending' ? await getTrendingTokens(params) : await getTopTokens(params);
-    // console.log(data);
-    if (data) {
-      setData(data.records ?? []);
-      setPagination({
-        ...pagination,
-        total: data.total_record ?? 0,
-      });
+    try {
+      setLoading(true);
+      let params = {
+        pageNumber: pagination.current ?? 1,
+        pageSize: pagination.pageSize ?? 10,
+        sortField: activeKey,
+        sortDirection: orderBy,
+      };
+      const { data } = tab === 'trending' ? await getTrendingTokens(params) : await getTopTokens(params);
+      // console.log(data);
+      if (data) {
+        setData(data.records ?? []);
+        setPagination({
+          ...pagination,
+          total: data.total_record ?? 0,
+        });
+        setLoading(false);
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -63,6 +71,7 @@ const Gecko = () => {
 
   return (
     <div className="page">
+      <Spin spinning={loading} fullscreen />
       {/* <div
         className="gecko-header-banner-bg"
         style={{ background: `url(${HeaderBannerBg}) no-repeat`, backgroundSize: 'cover' }}
@@ -169,7 +178,7 @@ const Gecko = () => {
           columns={columns}
           dataSource={data}
           pagination={false}
-          loading={loading}
+          // loading={loading}
           onChange={handleTableChange}
           onRow={(record) => {
             return {
