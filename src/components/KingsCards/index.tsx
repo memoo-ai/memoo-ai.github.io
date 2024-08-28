@@ -92,15 +92,21 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data 
                         />
                       </div>
                     </div>
-                    {/* <div className="flex justify-between items-center">
-                    <div className="font-OCR text-[14px] text-[#7D83B5] line-[13px]">Memoo Score</div>
-                    <IProgress className="w-[83px]" />
-                    <div className="font-OCR text-[18px] text-[#fff] line-[13px] w-[153px] text-right">70/100</div>
-                  </div> */}
                     <div className="flex justify-between items-center">
-                      <div className="font-OCR text-[14px] text-[#7D83B5] line-[13px]">Total Raised</div>
+                      <div className="font-OCR text-[14px] text-[#7D83B5] line-[13px] w-[110px] mr-[20px]">
+                        Memoo Score
+                      </div>
+                      <IProgress className="w-[83px]" percent={item.memooScore / 100} />
+                      <div className="font-OCR text-[18px] text-[#fff] line-[13px] w-[153px] text-right flex-1">
+                        {item?.memooScore ?? 0}/100
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <div className="font-OCR text-[14px] text-[#7D83B5] line-[13px] w-[110px] whitespace-nowrap mr-[20px]">
+                        Total Raised
+                      </div>
                       <IProgress className="w-[83px]" percent={(item.contributed / item.maxContributed) * 100} />
-                      <div className="font-OCR text-[18px] text-[#fff] line-[13px]  text-right">
+                      <div className="font-OCR text-[18px] text-[#fff] line-[13px]  text-right flex-1">
                         {item.contributed}/{item.maxContributed} {tokenSymbol}
                       </div>
                     </div>

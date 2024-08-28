@@ -49,6 +49,11 @@ export const ActiveIdoCard = () => {
                 <span>{ido.ticker}</span>
               </div>
               <div className="ido-info-item">
+                <img src="./dashboard/icon-ido-score.svg" alt="" className="w-5 h-5 mr-1" />
+                <span>Memoo Score</span>
+                <span>{ido.meMooScore}</span>
+              </div>
+              <div className="ido-info-item">
                 <img src="./dashboard/icon-raised-target.svg" alt="" className="w-5 h-5 mr-1" />
                 <span className="whitespace-nowrap">Total Raised</span>
                 <span className="overflow-hidden whitespace-nowrap text-ellipsis">
