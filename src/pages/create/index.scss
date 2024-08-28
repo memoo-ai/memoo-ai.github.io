@@ -134,6 +134,13 @@
       .custom-create-textarea {
         .ant-input:focus {
           background: #1F3B4F !important;
+          box-shadow: none !important;
+        }
+        .ant-input-affix-wrapper-focused{
+          border-radius: 7px;
+        }
+        .ant-input-affix-wrapper >input.ant-input, :where(.css-dev-only-do-not-override-11vhncj).ant-input-affix-wrapper >textarea.ant-input{
+          border-radius: 7px;
         }
       }
 
