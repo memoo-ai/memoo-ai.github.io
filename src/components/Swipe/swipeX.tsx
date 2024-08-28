@@ -16,9 +16,9 @@ const SwipeX = ({ item }: SwipeXProps) => {
         {' '}
         <span style={{ color: getRandomColor() }}>
           {item.address.slice(0, 6)}...{item.address.slice(-4)}
-        </span>{' '}
-        <span className="text-[#fff]"> &nbsp; created </span>
-        <span className="mx-[10px]" style={{ color: getRandomColor() }}>
+        </span>
+        <span className="text-[#fff]">&nbsp;created </span>
+        <span className="mr-[10px]" style={{ color: getRandomColor() }}>
           {item.ticker}
         </span>
       </span>

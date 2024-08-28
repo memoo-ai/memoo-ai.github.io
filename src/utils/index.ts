@@ -189,9 +189,9 @@ export function formatRestTime(timestamp: number) {
   } else if (hours > 0) {
     return hours + ' hours';
   } else if (minutes > 0) {
-    return minutes + ' minutes';
+    return minutes + ' mins';
   } else {
-    return seconds + ' seconds';
+    return seconds + ' secs';
   }
 }
 export function getNumberOrDefault(value: any): number {
