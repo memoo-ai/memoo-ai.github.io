@@ -442,8 +442,12 @@
 }
 
 .ant-tabs-nav .ant-tabs-nav-wrap {
-  background: #000000 !important;
+  // background: #090a10!important;
+  background: transparent !important;
   padding-left: 5px !important;
+}
+.ant-tabs-nav::before{
+  border: none !important;
 }
 
 .ant-tabs-ink-bar {

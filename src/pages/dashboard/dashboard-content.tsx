@@ -45,11 +45,11 @@ const DashboardContent: FC<{ onChangeType: (type: string) => void }> = ({ onChan
     // },
   ];
   if (import.meta.env.MODE === 'development') {
-    items.unshift({
-      key: 'Profile',
-      label: 'Profile',
-      children: <Profile />,
-    });
+    // items.unshift({
+    //   key: 'Profile',
+    //   label: 'Profile',
+    //   children: <Profile />,
+    // });
     items.push({
       key: 'WatchList',
       label: 'WatchList',
