@@ -37,7 +37,7 @@ export const columns = (navigate: (path: string) => void) => [
     key: 'meMooScore',
     sorter: false,
     render: (meMooScore: number) => (
-      <div className="flex flex-col justify-end items-end">
+      <div className="flex flex-col justify-end items-end pt-5">
         <span>{meMooScore ?? 0}</span>
         <IProgress percent={meMooScore} />
       </div>
@@ -101,7 +101,7 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
     key: 'memooScore',
     sorter: false,
     render: (meMooScore: number) => (
-      <div className="flex flex-col justify-end items-end">
+      <div className="flex flex-col justify-end items-end pt-5">
         <span>{meMooScore ?? 0}</span>
         <IProgress percent={meMooScore} />
       </div>

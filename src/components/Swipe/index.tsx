@@ -119,7 +119,7 @@ const Swipe: React.FC<SwipeProps> = React.memo(({ children, speed = 50, directio
   return (
     <div ref={containerRef} style={containerStyle} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <motion.div ref={contentRef} style={contentStyle}>
-        {repeatedList.map((item, index) => (
+        {repeatedList?.map((item, index) => (
           <SwipeItem key={`${item.ticker}-${index}`} item={item} index={index} isVertical={isVertical} />
         ))}
       </motion.div>
