@@ -24,7 +24,7 @@ const MeMooScoreBreakdown: FC = () => {
       const totalScore = getFullNum(meme.totalScore ?? 0);
       const result = (Number(scoreValue) / Number(totalScore)).toFixed(0);
       // return `${(Number(scoreValue) / Number(totalScore)) * 100}%`;
-      return `${result ?? 0 * 100}%`;
+      return result && Number(result) > 0 ? `${result ?? 0 * 100}%` : 'NA';
     }
     if (messages[meme.scoreValue]) {
       return messages[meme.scoreValue];
