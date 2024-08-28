@@ -51,6 +51,7 @@ import ITooltip from '@/components/ITooltip';
 import { getMemeConfigId } from '@/api/base';
 import { memooConfig } from '@/types';
 import { useProportion } from '@/hooks/useProportion';
+import { IconMinus, IconPlus } from '@/components/icons';
 
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
@@ -613,13 +614,19 @@ export default function Create() {
             <div className="create_optional_info">
               <div className="create_optional_info_title">
                 <p className="font-404px text-[18px]">Optional Info</p>
-                <img
-                  src={optionalOpen ? './create/icon-minus.svg' : './create/icon-plus.svg'}
-                  alt=""
-                  onClick={() => {
-                    setOptionalOpen(!optionalOpen);
-                  }}
-                />
+                {optionalOpen ? (
+                  <IconMinus
+                    onClick={() => {
+                      setOptionalOpen(!optionalOpen);
+                    }}
+                  />
+                ) : (
+                  <IconPlus
+                    onClick={() => {
+                      setOptionalOpen(!optionalOpen);
+                    }}
+                  />
+                )}
               </div>
               {optionalOpen && (
                 <div className="create_optional_form">
@@ -673,7 +680,7 @@ export default function Create() {
                     </div>
                   </Form.Item>
                   <Form.Item label={<p>Website</p>} name="website">
-                    <Input className="custom-input" />
+                    <Input className="custom-input rounded-[7px] reactive" />
                   </Form.Item>
                   {/* <Form.Item label="Creator's Twitter">
                     <Input maxLength={20} />

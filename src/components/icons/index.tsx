@@ -1303,3 +1303,47 @@ export const IconCoin = forwardRef(({ className, iconColor, color, ...rest }: Ic
     </svg>
   );
 });
+export const IconMinus = ({ className, color = '#07E993', hoverColor = '#B53BFF', ...rest }: IconProps) => {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <svg
+      width="16"
+      height="2"
+      viewBox="0 0 16 2"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      onMouseOver={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className={className}
+      {...rest}
+    >
+      <line
+        y1="-1"
+        x2="16"
+        y2="-1"
+        transform="matrix(1 -8.74228e-08 -8.74228e-08 -1 0 0)"
+        stroke={hovered ? hoverColor : color}
+        strokeWidth="2"
+      />
+    </svg>
+  );
+};
+export const IconPlus = ({ className, color = '#07E993', hoverColor = '#B53BFF', ...rest }: IconProps) => {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      onMouseOver={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className={className}
+      {...rest}
+    >
+      <line x1="8.74228e-08" y1="8" x2="16" y2="8" stroke={hovered ? hoverColor : color} strokeWidth="2" />
+      <line x1="8" y1="16" x2="8" stroke={hovered ? hoverColor : color} strokeWidth="2" />
+    </svg>
+  );
+};
