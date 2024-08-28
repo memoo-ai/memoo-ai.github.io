@@ -230,7 +230,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
           <Form.Item
             label={
               <p>
-                Project Twitter <span>*</span>
+                Project <br /> Twitter <span>*</span>
               </p>
             }
           >

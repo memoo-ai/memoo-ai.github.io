@@ -23,4 +23,13 @@
   .ant-modal-close .anticon svg path {
     fill: #07e993;
   }
+  .ant-modal-close{
+
+    &:hover{
+      background: transparent;
+      .anticon svg path {
+        fill: #B53BFF
+      }
+    }
+  }
 }
