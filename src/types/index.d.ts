@@ -259,7 +259,7 @@ declare interface LaunchpadAirdrop {
 declare interface LaunchpadIDOCompeted {
   athRoi: string;
   icon: string;
-  meMooScore: string;
+  memooScore: string;
   ticker: string;
   tokenName: string;
   totalRaised: string;

@@ -96,7 +96,7 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data 
                       <div className="font-OCR text-[14px] text-[#7D83B5] line-[13px] w-[110px] mr-[20px]">
                         Memoo Score
                       </div>
-                      <IProgress className="w-[83px]" percent={item.memooScore / 100} />
+                      <IProgress className="w-[83px]" percent={item.memooScore} />
                       <div className="font-OCR text-[18px] text-[#fff] line-[13px] w-[153px] text-right flex-1">
                         {item?.memooScore ?? 0}/100
                       </div>

@@ -483,9 +483,10 @@ export default function Create() {
                     <button
                       style={{
                         border: 0,
-                        background: 'none',
+                        background: '#1f3b4f',
                         width: '100%',
                         height: '100%',
+                        borderRadius: '7px',
                       }}
                       type="button"
                     >
