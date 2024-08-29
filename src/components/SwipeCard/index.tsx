@@ -60,7 +60,7 @@ export default function SwipeCard({ type = 'light', title, step, children }: IPr
       </div>
       <div className="swipe-content">
         <div
-          className="swipe-container"
+          className="swipe-container mt-[58px]"
           style={{
             transform: `translateX(${translateX}px)`,
             transition: 'transform 0.3s ease-in-out',
