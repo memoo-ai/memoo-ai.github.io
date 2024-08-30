@@ -14,7 +14,7 @@ export default () => {
         <IconTelegram className="cursor-pointer w-8" />
       </div>
       <img src="./img-logo-vertical.png" alt="" className="w-[150px] mb-5" />
-      <img src="./img-powered-base.png" className="w-[168px] ml-2" />
+      <img src="./img-powered-solana.png" className="w-[168px] ml-2" />
     </div>
   );
 };
