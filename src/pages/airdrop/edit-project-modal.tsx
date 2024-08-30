@@ -290,7 +290,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
           <Form.Item label={<p className="edit-form-label">Website</p>} name="website">
             <div className="reactive">
               <Input className="custom-input rounded-[7px] px-8" />
-              <img className="website-logo" src="/public/create/icon-website.png" alt="" />
+              <img className="website-logo" src="/create/icon-website.png" alt="" />
             </div>
           </Form.Item>
           {/* <Form.Item label={<p className="w-[113px] whitespace-normal edit-form-label">Creator’s Twitter</p>}>

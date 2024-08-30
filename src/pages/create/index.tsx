@@ -683,7 +683,7 @@ export default function Create() {
                   <Form.Item label={<p>Website</p>} name="website">
                     <div className="reactive">
                       <Input className="custom-input rounded-[7px] px-8" />
-                      <img className="website-logo" src="/public/create/icon-website.png" alt="" />
+                      <img className="website-logo" src="/create/icon-website.png" alt="" />
                     </div>
                   </Form.Item>
                   {/* <Form.Item label="Creator's Twitter">
