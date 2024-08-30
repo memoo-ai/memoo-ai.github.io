@@ -67,6 +67,9 @@ const Revolutions = [
   },
 ];
 export default () => {
+  const handleTwitter = () => {
+    window.open('https://x.com/MemooAI', '_blank');
+  };
   return (
     <div>
       <div className="w-[100vw] h-[100vh] bg-[#F5F5F5] flex flex-col items-center md:hidden ml-[-1.5rem] mobile-bg">
@@ -77,17 +80,17 @@ export default () => {
         <img src="./img-face.png" alt="" className="w-[150px]" />
         <p className="font-Montserrat text-[18px] text-[#ffffff] text-center leading-5 my-5">Follow Us</p>
         <div className="flex items-center gap-6 mb-4">
-          <IconTwitter className="cursor-pointer w-8" />
-          <IconTelegram className="cursor-pointer w-8" />
+          <IconTwitter className="cursor-pointer w-8" onClick={handleTwitter} />
+          {/* <IconTelegram className="cursor-pointer w-8" /> */}
         </div>
         <img src="./img-logo-vertical.png" alt="" className="w-[150px] mb-5" />
-        <img src="./img-powered-base.png" className="w-[168px] ml-2" />
+        <img src="./img-power-solana.png" className="w-[168px] ml-2" />
       </div>
       <div className="hidden md:block mx-[auto] max-w-[94.5rem]">
         <div className="content-banner-bg" />
         <div className="content-banner flex justify-between ">
           <div className="content-banner-left items pt-[6rem]">
-            <img src="./img-powered-base.png" className="w-[168px] ml-2" />
+            <img src="./img-power-solana.png" className="w-[168px] ml-2" />
             <p className="text-ultimate">The Ultimate Memecoin Infrastructure.</p>
             <p className="text-sub">
               Enabling the memecoin industry with a wide range of resources, tools & launchpad.
@@ -102,8 +105,8 @@ export default () => {
             </div>
             <div className="flex items-center gap-12 mt-[50px]">
               {/* <img src="./SVG/icon-twitter.svg" className="w-8 cursor-pointer" alt="" /> */}
-              <IconTwitter className="cursor-pointer w-8" />
-              <IconTelegram className="cursor-pointer w-8" />
+              <IconTwitter className="cursor-pointer w-8" onClick={handleTwitter} />
+              {/* <IconTelegram className="cursor-pointer w-8" /> */}
             </div>
           </div>
           <div className="content-banner-right items pt-[3rem]">

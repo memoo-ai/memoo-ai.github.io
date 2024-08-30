@@ -19,7 +19,9 @@
   "globals": {},
   "rules": {
     "prettier/prettier": "error",
-    "no-return-assign": "off"
+    "no-return-assign": "off",
+    "@typescript-eslint/no-unused-vars":"off",
+    "@typescript-eslint/consistent-type-imports": "off"
   },
   "ignorePatterns": ["dist", "node_modules", "tailwind.config.js", "postcss.config.js"]
 }

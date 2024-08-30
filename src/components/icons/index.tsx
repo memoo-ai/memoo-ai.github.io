@@ -1,5 +1,13 @@
 import { useState } from 'react';
-export const IconTwitter = ({ className, hoverColor = '#ff0000' }: { className: string; hoverColor?: string }) => {
+export const IconTwitter = ({
+  className,
+  hoverColor = '#ff0000',
+  ...rest
+}: {
+  className: string;
+  hoverColor?: string;
+  [key: string]: any;
+}) => {
   const [hovered, setHovered] = useState(false);
   return (
     <svg
@@ -10,6 +18,7 @@ export const IconTwitter = ({ className, hoverColor = '#ff0000' }: { className: 
       onMouseOver={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className={className}
+      {...rest}
     >
       <g id="Design">
         <path
