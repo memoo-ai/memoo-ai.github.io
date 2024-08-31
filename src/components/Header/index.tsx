@@ -18,7 +18,7 @@ export interface MenuItem {
 
 export const menus: MenuItem[] = [
   { name: 'LaunchPad', path: '/' },
-  { name: 'MemeGecko', path: '/gecko' },
+  { name: 'MemooGecko', path: '/gecko' },
   { name: 'Create', path: '/create_token' },
   // { name: 'Dashboard', path: '/dashboard' },
 ];
