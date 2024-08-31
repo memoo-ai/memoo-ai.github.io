@@ -1,5 +1,5 @@
-import { WalletDetailsParams } from '@rainbow-me/rainbowkit';
-import { CreateConnector } from 'node_modules/@rainbow-me/rainbowkit/dist/wallets/Wallet';
+import type { WalletDetailsParams } from '@rainbow-me/rainbowkit';
+import type { CreateConnector } from 'node_modules/@rainbow-me/rainbowkit/dist/wallets/Wallet';
 import { createConnector } from 'wagmi';
 import { injected } from 'wagmi/connectors';
 
@@ -13,8 +13,8 @@ function getExplicitInjectedProvider(flag: string) {
     ? // @ts-expect-error - some provider flags are not typed in `InjectedProviderFlags`
       providers.find((provider) => provider[flag])
     : window.ethereum[flag]
-    ? window.ethereum
-    : undefined;
+      ? window.ethereum
+      : undefined;
 }
 
 /*

@@ -1,0 +1,25 @@
+.memoo_slider {
+  .ant-slider-rail {
+    background: #2b526e;
+  }
+  .ant-slider-track{
+    background: #07E993;
+  }
+}
+
+.memoo_slider_tooltip {
+  .ant-tooltip-inner {
+    padding: unset;
+    min-height: unset;
+
+    color: #fff;
+    text-align: center;
+    font-family: 'OCR A Extended';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px; /* 133.333% */
+    letter-spacing: -0.6px;
+  }
+}
+

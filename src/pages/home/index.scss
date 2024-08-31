@@ -19,8 +19,8 @@
 }
 
 .content-banner-bg {
-  height: 714px;
-  background: url('/img-content-banner-bg.png') no-repeat center center;
+  height: 760px;
+  background: url('/img-content-banner-bg.png') no-repeat ;
   width: 100vw;
   position: absolute;
   left:0;
@@ -28,28 +28,30 @@
 }
 .content-banner {
   position: relative;
-  padding-bottom: 30px;
+  padding-bottom: 70px;
   .text-ultimate {
-    font-family: 'Montserrat Bold';
-    font-weight: 700;
+    font-family: '404px';
+    font-weight: 400;
     font-size: 80px;
-    color: #F2F2F2;
-    width: 642px;
-    margin-top: 20px;
+    color: #ffffff;
+    width: 812px;
+    margin-top: 45px;
     line-height: 85px;
   }
   .text-sub {
-    font-family: 'Open Sans';
-    font-size: 24px;
-    color: #F2F2F2;
-    width: 557px;
+    font-family: 'OCR A Extended';
+    font-size: 30px;
+    color: #ffffff;
     margin-top: 25px;
-    line-height: 32.68px;
-    font-weight: 600;
+    line-height: 31px;
+    font-weight: 400;
+    width: 728px;
+    letter-spacing: -0.05em;
+    text-align: left;
   }
 }
 .content-data {
-  background: #F0F0F0;
+  background: #090A10;
   width: 100vw;
   margin: 0 auto;
   // height: 500px;
@@ -58,20 +60,61 @@
   transform: translate(-50%, 0);
   color: #000000;
   .content-data-title {
-    font-family: Montserrat;
+    font-family: '404px';
     font-size: 24px;
-    font-weight: 700;
+    font-weight: 400;
     line-height: 25px;
     text-align: left;
+    color: #ffffff;
+
 
   }
   .content-data-security {
-    font-family: Montserrat;
+    font-family: '404px';
     font-size: 18px;
-    font-weight: 700;
+    font-weight: 400;
     line-height: 20px;
     text-align: center;
     width: 280px;
+    color: #ffffff;
+
+  }
+
+}
+
+.sections{
+  display: flex;
+  width: 100%;
+  height: 104px;
+  .sections-item{
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    &:nth-child(-n+2)::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 1px;
+      height: 74px;
+      background: #CCCCCC;
+    }
+    .sections-item-img{
+      width: 51.59px;
+      height: 41.29px;
+    }
+    .sections-item-text{
+      font-family: '404px';
+font-size: 14px;
+font-weight: 400;
+line-height: 20px;
+text-align: center;
+
+    }
   }
 
 }
@@ -85,9 +128,18 @@
   left: 50%;
   transform: translate(-50%, 0);
   color: #000000;
+  .content-issue-text {
+    font-family: '404px';
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 35px;
+    text-align: center;
+    color: #ffffff;
+
+  }
 }
 .content-revolution {
-  background: #F0F0F0;
+  background: #090A10;
   width: 100vw;
   margin: 0 auto;
   // height: 500px;
@@ -101,7 +153,8 @@
     width : 405px;
     height : 313px;
     border-radius: 25px;
-    padding-bottom: 20px;
+    padding-bottom: 35px;
+    background: #131522;
 
     img {
       height: 87px;
@@ -109,23 +162,27 @@
       min-width: 87px;
     }
     .p-title {
-      font-family: Montserrat;
-font-size: 24px;
-font-weight: 700;
+      font-family: '404px';
+font-size: 22px;
+font-weight: 400;
 line-height: 25px;
 text-align: center;
 margin-top: 30px;
+color: #CC7BFD;
 
 
     }
     .p-desc {
-      font-family: Open Sans;
-font-size: 16px;
-font-weight: 600;
-line-height: 20px;
+      font-family: OCR A Extended;
+font-size: 12px;
+font-weight: 400;
+line-height: 16px;
 text-align: center;
-
-      margin-top: 10px;
+letter-spacing: -0.05em;
+text-align: center;
+color: #ffffff;
+width: 338px;
+margin-top: 20px;
     }
   }
 }
@@ -133,10 +190,10 @@ text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #CC0000;
+  background: #252841;
   width: 100vw;
   margin: 0 auto;
-  height: 70px;
+  height: 71px;
   position: relative;
   left: 50%;
   transform: translate(-50%, 0);
@@ -145,16 +202,15 @@ text-align: center;
       font-weight: 900;
     }
     width: 450px;
-    font-family: Montserrat;
+    font-family: 'OCR A Extended';
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 400;
     line-height: 20px;
     text-align: center;
-    color:#F2F2F2;
+    color:#07E993;
+letter-spacing: -0.05em;
+
   }
 }
 
-.mobile-bg {
-  background: url('/home-mobile-bg.png') no-repeat;
-  background-size: cover;
-}
+

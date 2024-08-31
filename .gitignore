@@ -13,6 +13,9 @@ build
 dist-ssr
 *.local
 
+# Lock
+*-lock.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -24,5 +27,5 @@ dist-ssr
 *.sln
 *.sw?
 docs
-
+*.zip
 /stats.html

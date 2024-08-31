@@ -1,0 +1,20 @@
+@import url('@/assets/styles/modal.scss');
+.score-share-modal{
+  border-radius: 15px;
+  .ant-modal-content{
+    border-radius: 15px !important;
+    border: 1px solid #07E993;
+
+  }
+  .score-share-modal-content{
+    // width: 480px;
+    // height: 480px;
+    background: url('/create/score-share-bg.png') no-repeat;
+    background-size: cover;
+    // background-position: center center;
+    padding: 28px;
+    border-radius: 15px;
+    box-sizing: border-box;
+  }
+}
+

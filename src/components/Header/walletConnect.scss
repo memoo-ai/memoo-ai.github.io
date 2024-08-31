@@ -1,15 +1,31 @@
 .wallet-dropdown-menu {
-    box-shadow: 4px 4px 20px 0px #00000026;
-    background: #FFFFFF;
+    // box-shadow: 4px 4px 20px 0px #00000026;
+    border: 1px solid #07E993;
+    background: #1F3B4F;
     // padding:18px 20px;
     width: 250px;
-   
+
 }
 .divider-x {
     position: absolute;
     width: 100%;
-    background: #D2D0D0;
+    background: #07E993;
     height: 1px;
     left:0;
     bottom: 60px;
+}
+.wallet-border{
+  border: 1px solid #07D788;
+}
+.connect-to-memoo{
+  font-family: '404px';
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 29px;
+  text-align: center;
+  margin-top: 41px;
+  background: linear-gradient(270deg, #14FCFB 0%, #07E993 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

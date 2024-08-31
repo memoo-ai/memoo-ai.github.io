@@ -1,0 +1,123 @@
+//default
+.ant-pagination .ant-pagination-item {
+  background: #1F3B4F;
+  border-radius: .4375rem;
+  border-color: #07E993;
+
+  a{
+    font-family: OCR A Extended;
+    font-size: 12px;
+    font-weight: 400;
+    text-align: center;
+    color: #07E993;
+  }
+
+  &:hover{
+    background: #1F3B4F !important;
+    a{
+      color: #07E993;
+    }
+  }
+}
+//active
+.ant-pagination .ant-pagination-item-active{
+  background: #07E993;
+
+  border-color: #131522;
+
+  a{
+    font-family: OCR A Extended;
+    font-size: 12px;
+    font-weight: 400;
+    text-align: center;
+    color: #1F3B4F;
+  }
+  &:hover{
+    background: #07E993 !important;
+    border-color: transparent;
+    a{
+      color: #1F3B4F;
+    }
+  }
+}
+//left right button disable
+.ant-pagination .ant-pagination-disabled .ant-pagination-item-link{
+  background: #1F3B4F;
+  border-color: #07E993;
+  color: #07E993;
+  border-radius: .4375rem;
+  &:hover{
+    background: #07E993 !important;
+    border-color: transparent !important;
+    color: #1f3b4f !important;
+  }
+}
+//left right button
+.ant-pagination .ant-pagination-next .ant-pagination-item-link,
+.ant-pagination .ant-pagination-prev .ant-pagination-item-link {
+  background: #1F3B4F;
+  border-color: #07E993;
+  color: #07E993;
+  border-radius: .4375rem;
+
+  &:hover{
+    background: #07E993;
+    border-color: transparent;
+    color: #1f3b4f;
+  }
+}
+// omit
+.ant-pagination .ant-pagination-jump-prev .ant-pagination-item-container .ant-pagination-item-ellipsis,
+.ant-pagination .ant-pagination-jump-next .ant-pagination-item-container .ant-pagination-item-ellipsis{
+  color: #07E993;
+}
+// jumper
+.ant-pagination .ant-pagination-options-quick-jumper{
+  color: #07E993;
+}
+.i_pagination{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  .ant-pagination-options{
+    position: absolute;
+    right: 0;
+  }
+  .options{
+    position: absolute;
+    right: 0;
+    display: flex;
+    align-items: center;
+
+    span{
+      color: #07E993 !important;
+      font-family: OCR A Extended;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 20px;
+      letter-spacing: -0.05em;
+      text-align: left;
+      margin-right: 12px;
+    }
+    .options_ipt{
+      width: 72px;
+      height: 34px;
+      border-radius: 7px;
+      border: 1px solid #07E993;
+      font-size: 12px;
+      text-align: center;
+      background: #1F3B4F;
+      display: flex;
+      align-items: center;
+      .ant-input-number-input{
+        color: #07E993 !important;
+
+        &::placeholder {
+          color: #07E993;
+        }
+      }
+
+    }
+  }
+}

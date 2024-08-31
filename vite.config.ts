@@ -19,6 +19,19 @@ export default defineConfig({
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
+  server: {
+    proxy: {
+      '/backend/api/v1': {
+        // target: 'https://xapp.memoo.ai',
+        target: 'https://app-beta.memoo.ai',
+        changeOrigin: true,
+      },
+      '/api/v1/merkel-tree': {
+        target: 'http://8.130.122.217:3001',
+        changeOrigin: true,
+      },
+    },
+  },
   css: {
     preprocessorOptions: {
       scss: {

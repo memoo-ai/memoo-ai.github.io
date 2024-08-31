@@ -1,11 +1,25 @@
+/* eslint-disable no-debugger */
 import axios from 'axios';
-
+import { MEMOO_TOKEN_STORAGE } from '@/constants';
 const http = axios.create({
-  baseURL: '',
+  baseURL: import.meta.env.VITE_GO_NODE,
+});
+
+http.interceptors.request.use((config) => {
+  // config.headers['Authorization'] = `Bearer ${import.meta.env.VITE_DEMO_TOKEN}`;
+  config.headers['Authorization'] = `Bearer ${localStorage.getItem(MEMOO_TOKEN_STORAGE) ?? ''}`;
+  return config;
 });
 
 http.interceptors.response.use(
   (response) => {
+    if (response.data.code !== 200) {
+      return Promise.reject(response.data);
+    }
+    // else if(response.data.code === 401) {
+    //   // not authed
+
+    // }
     return response.data;
   },
   (reason) => {

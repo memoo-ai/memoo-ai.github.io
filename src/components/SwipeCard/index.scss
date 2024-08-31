@@ -1,0 +1,31 @@
+.swipe-card-light {}
+
+.swipe-card-dark {}
+
+.swipe-card {
+  margin-top: 80px;
+  width: 78.875rem;
+  .title {
+
+    font-family: 404px;
+    font-size: 38px;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: left;
+    color: #07E993;
+    margin-bottom: 68px;
+  }
+
+  position: relative;
+
+  .swipe-content {
+    height: 540px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .swipe-container {
+    position: absolute;
+
+  }
+}

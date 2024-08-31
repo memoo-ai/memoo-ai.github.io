@@ -1,0 +1,31 @@
+.i_select_btn{
+
+  width: 231px;
+  height: 46px;
+  background: #1F3B4F;
+  border: 1px solid #07E993;
+  border-radius: 7px;
+
+  span{
+    font-family: '404px';
+    font-size: 16px;
+    text-align: left;
+    color: #07E993;
+  }
+
+  &:hover{
+    background: #07E993 !important;
+    span{
+      color: #A005FE;
+    }
+  }
+}
+.i_dropdown{
+  background: #1F3B4F;
+
+}
+.ant-dropdown-menu{
+  background: #1F3B4F !important;
+  border: 1px solid #07D788;
+  border-radius: 15px !important;
+}

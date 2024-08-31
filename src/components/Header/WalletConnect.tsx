@@ -1,15 +1,71 @@
 import { Button, DropdownMenu } from '@radix-ui/themes';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { CaretDownIcon } from '@radix-ui/react-icons';
-import { useAccount, useDisconnect } from 'wagmi';
-import { handleCopy } from '@/utils';
-import { IconProfile } from '@/components/icons';
-import './walletConnect.scss';
-const explorerURL = import.meta.env.VITE_EXPLORER_URL;
+import { useAccount, useDisconnect, useAccountEffect } from 'wagmi';
 
-export default () => {
+// import { handleCopy } from '@/utils';
+import {
+  IconProfile,
+  IconWalletContentCreator,
+  IconWalletContentCollector,
+  IconWalletContentWatchList,
+  IconWalletContentLogout,
+  IconWalletContentProfile,
+} from '@/components/icons';
+import './walletConnect.scss';
+import { useRef, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import ConnectModalPortal from './connectModalPortal';
+import ConnectModalPortalTop from './connectModalPortalTop';
+import { MEMOO_TOKEN_STORAGE } from '@/constants';
+import WalletLogo from '@/assets/imgs/wallet-logo.png';
+// const explorerURL = import.meta.env.VITE_EXPLORER_URL;
+const opts = [
+  // {
+  //   name: 'Profile',
+  //   path: '/dashboard',
+  //   type: 'Profile',
+  //   icon: IconWalletContentProfile,
+  // },
+  {
+    name: 'Creator',
+    path: '/dashboard',
+    type: 'Creator',
+    icon: IconWalletContentCreator,
+  },
+  {
+    name: 'Collector',
+    path: '/dashboard',
+    type: 'Collector',
+    icon: IconWalletContentCollector,
+  },
+  // {
+  //   name: 'WatchList',
+  //   path: '/dashboard',
+  //   type: 'WatchList',
+  //   icon: IconWalletContentWatchList,
+  // },
+];
+if (import.meta.env.MODE === 'development') {
+  opts.unshift({
+    name: 'Profile',
+    path: '/dashboard',
+    type: 'Profile',
+    icon: IconWalletContentProfile,
+  });
+
+  opts.push({
+    name: 'WatchList',
+    path: '/dashboard',
+    type: 'WatchList',
+    icon: IconWalletContentWatchList,
+  });
+}
+const WalletConnect = () => {
   const { address, isConnected } = useAccount();
   const { connectors, disconnect } = useDisconnect();
+  const navigate = useNavigate();
+  const iconRefs = useRef<any>({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const onDisconnect = async () => {
     if (isConnected || address) {
       for (const connector of connectors) {
@@ -17,7 +73,9 @@ export default () => {
         await disconnect({ connector });
       }
       await disconnect();
+      // window.location.reload();
       console.log('=====================>disconnect');
+      localStorage.removeItem(MEMOO_TOKEN_STORAGE);
     }
   };
 
@@ -46,10 +104,40 @@ export default () => {
                 return (
                   <Button
                     variant="soft"
-                    onClick={openConnectModal}
-                    className="cursor-pointer hidden md:block text-center text-lg  md:h-[51px] px-6 md:bg-[#CC0000] md:text-[#FFFFFF] font-bold font-Montserrat"
+                    onClick={() => {
+                      openConnectModal();
+                      setIsModalOpen(true);
+                    }}
+                    className=" wallet-border cursor-pointer hidden md:block text-center text-lg  md:h-[51px] px-6 md:bg-[#1F3B4F] md:text-[#07E993] font-bold font-404px rounded-[7px]"
                   >
                     Connect Wallet
+                    {isModalOpen && (
+                      <ConnectModalPortalTop
+                        onClose={() => {
+                          setIsModalOpen(false);
+                        }}
+                      >
+                        <div className="flex items-center flex-column justify-center mt-[-30px]">
+                          <img className="w-[142.11px] " src={WalletLogo} alt="" />
+                        </div>
+                        <div className="connect-to-memoo text-center">Connect to MeMoo</div>
+                      </ConnectModalPortalTop>
+                    )}
+                    {isModalOpen && (
+                      <ConnectModalPortal
+                        onClose={() => {
+                          setIsModalOpen(false);
+                        }}
+                      >
+                        <div>
+                          <p className="w-[320px] font-OCR text-[#ffffff]">
+                            By connecting your wallet and using MeMoo, you agree to our{' '}
+                            <span className="text-[#07E993]">Terms of Service</span> and{' '}
+                            <span className="text-[#07E993]">Privacy Policy.</span>
+                          </p>
+                        </div>
+                      </ConnectModalPortal>
+                    )}
                   </Button>
                 );
               }
@@ -64,52 +152,48 @@ export default () => {
 
               return (
                 <div className="flex items-center">
-                  <div className="flex items-center justify-center w-[192px] h-[46px] bg-[#CC0000] rounded-lg mr-4 font-Montserrat font-bold text-[#fff] text-lg">
+                  <div className=" wallet-border flex items-center justify-center w-[192px] h-[46px] bg-[#1F3B4F] rounded-lg mr-[12px] font-404px font-bold text-[#07E993] text-lg">
                     {account.address.slice(0, 6)}...{account.address.slice(-4)}
                   </div>
                   <DropdownMenu.Root>
                     <DropdownMenu.Trigger>
                       <div>
-                        {/* <img src="./icon-profile.svg" alt="" /> */}
-                        <IconProfile className="cursor-pointer" />
+                        <IconProfile className="w-[46px] h-[46px] cursor-pointer wallet-border rounded-[12px]" />
                       </div>
                     </DropdownMenu.Trigger>
 
-                    <DropdownMenu.Content className="wallet-dropdown-menu bg-[#fff]" align="end" sideOffset={20}>
+                    <DropdownMenu.Content className="wallet-dropdown-menu bg-[#1F3B4F]" align="end" sideOffset={20}>
                       <div className="divider-x" />
-                      <DropdownMenu.Item className="mb-6 hover:bg-[#F2F2F2] py-2 h-10 cursor-pointer">
-                        <div className="flex items-center">
-                          <div className="flex justify-center items-center w-[40px]">
-                            <img src="./icon-profile-user.svg" alt="" className="w-[16.8px] h-[19px] mr-4" />
+
+                      {opts.map((opt) => (
+                        <DropdownMenu.Item
+                          key={opt.type}
+                          className="mb-6 hover:bg-[#07E993] text-[#FFFFFF] hover:text-[#1F3B4F] py-2 h-10 cursor-pointer"
+                          onMouseOver={() => iconRefs.current[opt.type].setHovered(true)}
+                          onMouseLeave={() => iconRefs.current[opt.type].setHovered(false)}
+                          onClick={() => {
+                            navigate(`${opt.path}?type=${opt.type}`);
+                          }}
+                        >
+                          <div className="flex items-center">
+                            <div className="flex justify-center items-center w-[40px]">
+                              <opt.icon ref={(ref) => (iconRefs.current[opt.type] = ref)} />
+                            </div>
+                            <span className="font-404px font-bold text-lg leading-5">{opt.name}</span>
                           </div>
-                          <span className="font-Montserrat font-bold text-lg leading-5 text-[#000]">Profile</span>
-                        </div>
-                      </DropdownMenu.Item>
-                      <DropdownMenu.Item className="hover:bg-[#F2F2F2] mb-6 py-2 h-10  cursor-pointer">
-                        <div className="flex items-center">
-                          <div className="flex justify-center items-center w-[40px]">
-                            <img src="./icon-profile-eye.svg" alt="" className="w-[26.3px] h-[17px] mr-4" />
-                          </div>
-                          <span className="font-Montserrat font-bold text-lg leading-5 text-[#000]">Watchlist</span>
-                        </div>
-                      </DropdownMenu.Item>
-                      <DropdownMenu.Item className="hover:bg-[#F2F2F2] mb-10 py-2 h-10  cursor-pointer">
-                        <div className="flex items-center">
-                          <div className="flex justify-center items-center w-[40px]">
-                            <img src="./icon-profile-setting.svg" alt="" className="w-[22px] h-[22.68px] mr-4" />
-                          </div>
-                          <span className="font-Montserrat font-bold text-lg leading-5 text-[#000]">Settings</span>
-                        </div>
-                      </DropdownMenu.Item>
+                        </DropdownMenu.Item>
+                      ))}
                       <DropdownMenu.Item
                         onClick={onDisconnect}
-                        className="hover:bg-[#F2F2F2] mt-3 py-2 h-10  cursor-pointer"
+                        className="hover:bg-[#07E993] text-[#FFFFFF] hover:text-[#1F3B4F] mt-3 py-2 h-10  cursor-pointer"
+                        onMouseOver={() => iconRefs.current['logout'].setHovered(true)}
+                        onMouseLeave={() => iconRefs.current['logout'].setHovered(false)}
                       >
                         <div className="flex items-center">
                           <div className="flex justify-center items-center w-[40px]">
-                            <img src="./icon-profile-logout.svg" alt="" className="w-[22.2px] h-[22.2px] mr-4" />
+                            <IconWalletContentLogout ref={(ref) => (iconRefs.current['logout'] = ref)} />
                           </div>
-                          <span className="font-Montserrat font-bold text-lg leading-5 text-[#000]">Log Out</span>
+                          <span className="font-404px font-bold text-lg leading-5">Log Out</span>
                         </div>
                       </DropdownMenu.Item>
                     </DropdownMenu.Content>
@@ -123,3 +207,5 @@ export default () => {
     </ConnectButton.Custom>
   );
 };
+
+export default WalletConnect;

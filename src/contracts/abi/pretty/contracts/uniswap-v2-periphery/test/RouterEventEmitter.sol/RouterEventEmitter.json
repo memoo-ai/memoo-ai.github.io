@@ -1,0 +1,9 @@
+[
+  "event Amounts(uint256[])",
+  "function swapETHForExactTokens(address,uint256,address[],address,uint256) payable",
+  "function swapExactETHForTokens(address,uint256,address[],address,uint256) payable",
+  "function swapExactTokensForETH(address,uint256,uint256,address[],address,uint256)",
+  "function swapExactTokensForTokens(address,uint256,uint256,address[],address,uint256)",
+  "function swapTokensForExactETH(address,uint256,uint256,address[],address,uint256)",
+  "function swapTokensForExactTokens(address,uint256,uint256,address[],address,uint256)"
+]

@@ -1,9 +1,14 @@
+/* eslint-disable no-debugger */
+import BigNumber from 'bignumber.js';
 import toast from 'react-hot-toast';
 import numeral from 'numeral';
 import Decimal from 'decimal.js';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-
+import { Address } from '@/types';
+import { getTwitterClientId } from '@/api/token';
+import qs from 'qs';
+import { REQUEST_FOLLOWING_STORAGE } from '@/constants';
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -109,4 +114,93 @@ export function sleep(ms: number): Promise<void> {
   return new Promise<void>((resolve) => {
     setTimeout(resolve, ms);
   });
+}
+
+export function clipAddress(address: string) {
+  return `${address.slice(0, 5)}...${address.slice(-4)}`;
+}
+
+export function formatTs(ts: number, unit: 's' | 'ms' = 's') {
+  const date = new Date((ts ?? 0) * (unit === 's' ? 1000 : 1));
+  const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' };
+  return ts === 0 ? '' : date.toLocaleDateString('en-US', options);
+}
+
+export function compareAddrs(addrA: Address, addrB: Address) {
+  if (!addrA || !addrB) return false;
+  return new RegExp(addrA, 'i').test(addrB ?? '');
+}
+
+export function extractDomainName(url: string) {
+  const pattern = /^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n]+)/im;
+  const matches = url.match(pattern);
+  if (matches?.[1]) {
+    const domain = matches[1];
+    const parts = domain.split('.');
+    if (parts.length > 1) {
+      return parts[parts.length - 2];
+    }
+  }
+  return null;
+}
+
+export const formatDecimals = (source: BigNumber.Value, decimals = 10, stripZeros = true): string => {
+  let result = new BigNumber(source).decimalPlaces(decimals, BigNumber.ROUND_HALF_EVEN).toFixed(decimals);
+  if (stripZeros) {
+    result = result.replace(/\.?0+$/, '');
+  }
+  return result;
+};
+
+export function calculateDaysDifference(a: number, b: number): number {
+  const millisecondsPerDay = 24 * 60 * 60 * 1000; // 一天的毫秒数
+  const dateA = new Date(a);
+  const dateB = new Date(b);
+  const timeDifference = Math.abs(dateB.getTime() - dateA.getTime());
+  const daysDifference = Math.floor(timeDifference / millisecondsPerDay);
+  return daysDifference;
+}
+
+export const authorizeTwitter = async (clientId: string, reidrectUri: string) => {
+  // const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
+  const params = {
+    response_type: 'code',
+    client_id: clientId,
+    redirect_uri: reidrectUri,
+    scope: 'tweet.read%20tweet.write%20like.write%20users.read%20follows.read%20follows.write',
+    state: 'twitter',
+    code_challenge: 'challenge',
+    code_challenge_method: 'plain',
+  };
+  const url = new URL(`https://twitter.com/i/oauth2/authorize`);
+  url.search = qs.stringify(params, { encode: false });
+
+  window.location.href = url.href;
+};
+
+export function formatRestTime(timestamp: number) {
+  const seconds = Math.floor(timestamp / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (days > 0) {
+    return days + ' days';
+  } else if (hours > 0) {
+    return hours + ' hours';
+  } else if (minutes > 0) {
+    return minutes + ' minutes';
+  } else {
+    return seconds + ' seconds';
+  }
+}
+export function getNumberOrDefault(value: any): number {
+  return !isNaN(Number(value)) ? Number(value) : 0;
+}
+export function getRandomColor() {
+  const minBrightness = 50;
+  const maxBrightness = 90;
+  const randomBrightness = minBrightness + Math.random() * (maxBrightness - minBrightness);
+  const randomColor = `hsl(${Math.random() * 360}, 100%, ${randomBrightness}%)`;
+  return randomColor;
 }

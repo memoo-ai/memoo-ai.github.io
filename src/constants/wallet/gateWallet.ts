@@ -1,4 +1,5 @@
-import { RainbowKitWalletConnectParameters, Wallet, getWalletConnectConnector } from '@rainbow-me/rainbowkit';
+import type { RainbowKitWalletConnectParameters, Wallet } from '@rainbow-me/rainbowkit';
+import { getWalletConnectConnector } from '@rainbow-me/rainbowkit';
 
 import { getInjectedConnector, hasInjectedProvider } from './injecetdProvider';
 

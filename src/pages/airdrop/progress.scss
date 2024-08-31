@@ -1,0 +1,50 @@
+.progress_list_item {
+  .icon {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    &::before {
+      content: '';
+      height: 1px;
+      background: #5d64a2;
+      position: absolute;
+      bottom: 25px;
+      left: -18px;
+      width: 33%;
+    }
+    &::after {
+      content: '';
+      height: 1px;
+      background: #5d64a2;
+      position: absolute;
+      bottom: 25px;
+      right: -18px;
+      width: 33%;
+    }
+    img {
+      z-index: 1;
+    }
+  }
+  &:first-child .icon::before {
+    display: none;
+  }
+  &:last-child .icon::after {
+    display: none;
+  }
+
+  .btn {
+    background: #242842 !important;
+    border: unset;
+  }
+
+  &.active {
+    .btn {
+      background: #b53bff !important;
+    }
+
+    .btn_text {
+      color: #19fda6;
+    }
+  }
+}

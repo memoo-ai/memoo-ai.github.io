@@ -1,0 +1,55 @@
+.common-banner-bg {
+  width: 100vw;
+  height: 470px;
+  background-size: cover;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  position: relative;
+}
+
+.common-banner-bg-1 {
+  background: url('@/assets/imgs/img-banner-bg-1.png') no-repeat center center;
+}
+
+.common-banner-bg-2 {
+  background: url('@/assets/imgs/img-banner-bg-2.png') no-repeat center center;
+}
+
+.common-banner {
+  width: 100%;
+  padding: 0 5.625rem;
+  height: 100%;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 166px;
+  min-height: 400px;
+  margin-top: 70px;
+
+  >img {
+    height: 134px;
+    margin-bottom: 48px;
+  }
+
+  .common-banner-title {
+    font-family: 'Kitty Kat';
+    font-size: 48px;
+    line-height: 50px;
+    text-align: center;
+    color: #07E993;
+    width: 758px;
+    margin-bottom: 19px;
+  }
+
+  .common-banner-desc {
+    font-family: 'OCR A Extended';
+    font-size: 24px;
+    line-height: 26px;
+    text-align: center;
+    height: 65px;
+
+    color: #fff;
+
+  }
+}

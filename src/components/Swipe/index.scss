@@ -1,0 +1,31 @@
+.swipe-column-container {
+  overflow: hidden;
+  height: 208px;
+  position: relative;
+}
+
+.swipe-column-track {
+  display: flex;
+  flex-direction: column;
+}
+
+.swipe-column-item {
+  width: 338px;
+  height: 40px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.swipe-container {
+  position: relative;
+  transform: translateX(-50%);
+  min-width: 100vw;
+  height: 40px;
+  background: #312145 !important;
+  margin-left: 50%;
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+.swipe-item{
+  flex: 0 0 auto;
+}

@@ -1,0 +1,30 @@
+.profile-content{
+  padding-left:  20px;
+}
+
+.token_list > li {
+  border-radius: 28px;
+  background: #252841;
+  padding: 6px 20px;
+
+  color: #fff;
+  font-family: 'OCR A Extended';
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px; /* 114.286% */
+  letter-spacing: -0.7px;
+
+
+}
+.token_list_hover{
+  &:hover{
+    border: 1px solid #07E993;
+    background: #1f3b4f;
+    color: #07E993;
+
+    a{
+      color: #07E993;
+    }
+  }
+}

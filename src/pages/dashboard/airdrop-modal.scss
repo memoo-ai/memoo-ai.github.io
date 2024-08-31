@@ -1,0 +1,58 @@
+@import url('@/assets/styles/modal.scss');
+@import url('@/assets/styles/slider.scss');
+@import url('@/assets/styles/input.scss');
+@import url('@/assets/styles/button.scss');
+
+// .ant-modal .ant-modal-title {
+//   font-family: '404px';
+//   font-size: 24px;
+//   font-weight: 800;
+//   line-height: 29px;
+//   text-align: left;
+//   background: #1F3B4F !important;
+//   border-radius: 15px;
+//   // border: 1px solid #07E993;
+// }
+.confirm_title{
+  width: 365px;
+  font-family: '404px';
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 29px;
+  text-align: left;
+  margin-top: 15px;
+  background: linear-gradient(270deg, #14FCFB 0%, #07E993 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.confirm_content{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  .confirm_content_title{
+    font-family: OCR A Extended;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.05em;
+    text-align: center;
+    color: $mainColor;
+  }
+  .confirm_content_describe{
+
+    font-family: OCR A Extended;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.05em;
+    text-align: center;
+    color: #FFFFFF;
+  }
+
+}
+
+
+

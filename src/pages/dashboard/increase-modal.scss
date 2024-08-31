@@ -1,0 +1,91 @@
+@import url('@/assets/styles/modal.scss');
+@import url('@/assets/styles/slider.scss');
+@import url('@/assets/styles/input.scss');
+@import url('@/assets/styles/input.scss');
+@import url('@/assets/styles/button.scss');
+.modal_title{
+  width: 269px;
+  font-family: '404px';
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 29px;
+  text-align: left;
+  background: linear-gradient(270deg, #14FCFB 0%, #07E993 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.modal_button {
+  border: unset;
+  border-radius: 7px;
+  background: #07e993;
+
+  color: #a005fe;
+  text-align: center;
+  font-family: '404px';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 125% */
+
+  >span{
+    color: #a005fe !important;
+  }
+
+  &:hover {
+    background: #b53bff !important;
+    color: #19fda6 !important;
+  }
+
+  &.reverse {
+    background: #a005fe !important;
+    color: #07e993 !important;
+    &:hover {
+      background: #19fda6 !important;
+      color: #b53bff !important;
+    }
+  }
+
+  &:disabled {
+    background: #242842 !important;
+    color: #7d83b5 !important;
+  }
+}
+.confirm_btn{
+  .ant-btn{
+    border: unset;
+  border-radius: 7px;
+  background: #07e993;
+
+  color: #a005fe;
+  text-align: center;
+  font-family: '404px';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 125% */
+
+  >span{
+    color: #a005fe !important;
+  }
+  &:hover {
+    background: #b53bff !important;
+    color: #19fda6 !important;
+  }
+
+  &.reverse {
+    background: #a005fe !important;
+    color: #07e993 !important;
+    &:hover {
+      background: #19fda6 !important;
+      color: #b53bff !important;
+    }
+  }
+
+  &:disabled {
+    background: #242842 !important;
+    color: #7d83b5 !important;
+  }
+
+  }
+}
