@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import WalletConnect from './WalletConnect';
 import styles from './index.module.scss';
 import NavMenu from '@/components/NavMenu';
@@ -21,10 +21,10 @@ export default () => {
   return (
     <header className={`${styles.header} flex justify-between items-center z-[999]`}>
       <div className="flex items-center  gap-[3rem]">
-        <a href="/home" className="flex items-center justify-center">
+        <Link to="/home" className="flex items-center justify-center">
           <img src="/logo.svg" alt="Logo" className="w-[60px] h-[60px] mr-[8px]" />
           <IconMemoo className="" />
-        </a>
+        </Link>
       </div>
       <div className="md:flex hidden items-center  ml-[54px] mr-auto">
         {menus.map((item, index) => (
