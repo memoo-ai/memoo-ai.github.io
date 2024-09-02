@@ -203,7 +203,7 @@ export const useAccount = () => {
 
         transaction.add(registerTokenMintIx);
         const latestBlockhash = await connection.getLatestBlockhash('finalized');
-        const blockhash = latestBlockhash.blockhash + 150;
+        const blockhash = latestBlockhash.blockhash;
         transaction.recentBlockhash = blockhash;
         transaction.feePayer = publicKey;
         const signedTransaction = await signTransaction(transaction);
