@@ -2,7 +2,7 @@
 import { useWallet, useConnection, useAnchorWallet } from '@solana/wallet-adapter-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Provider, BN, Idl } from '@coral-xyz/anchor';
-import { Keypair, PublicKey, Connection, Transaction, sendAndConfirmTransaction } from '@solana/web3.js';
+import { clusterApiUrl, PublicKey, Connection, Transaction, sendAndConfirmTransaction } from '@solana/web3.js';
 import {
   createAssociatedTokenAccountInstruction,
   NATIVE_MINT,
@@ -74,8 +74,10 @@ export interface MemeUserIdoData {
 export const useAccount = () => {
   const { publicKey, signTransaction, signAllTransactions } = useWallet();
   // const RPC_URL = 'https://api.devnet.solana.com';
-  const RPC_URL = import.meta.env.VITE_RPC_URL;
-  const connection = new Connection(RPC_URL);
+  // const RPC_URL = import.meta.env.VITE_RPC_URL;
+  // const connection = new Connection(RPC_URL);
+  const network = import.meta.env.VITE_WALLET_ADAPTER_NETWORK;
+  const connection = new Connection(clusterApiUrl(network));
   const programId = new PublicKey(import.meta.env.VITE_PROGRAM_ID);
   const { solanaConfig } = useBaseConfig();
   const program = useAnchorProgram(programId, IDL as Idl);

@@ -30,8 +30,8 @@ const App = () => {
   // debugger; // eslint-disable-line no-debugger
   const network = import.meta.env.VITE_WALLET_ADAPTER_NETWORK; // Use WalletAdapterNetwork.Mainnet for mainnet
   // const rpcUrl = import.meta.env.VITE_RPC_URL;
-  // const endpoint = clusterApiUrl(network);
-  const endpoint = import.meta.env.VITE_RPC_URL;
+  const endpoint = clusterApiUrl(network);
+  // const endpoint = import.meta.env.VITE_RPC_URL;
 
   const wallets = useMemo(
     () => [new PhantomWalletAdapter(), new SolflareWalletAdapter({ network }), new TorusWalletAdapter()],
