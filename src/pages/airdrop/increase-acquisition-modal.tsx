@@ -49,7 +49,8 @@ const IncreaseAcquisitionModal: FC<{
     console.log('firstIncrease-result:', firstIncrease); // 1.5
     console.log('firstProportion-result:', firstProportion); // 0.05
     console.log('purchased-result:', purchased);
-    const result = (firstIncrease / firstProportion) * increasePercent;
+    const resultSol = (firstIncrease / firstProportion) * increasePercent;
+    const result = resultSol - purchased;
     console.log('increasing proportion-result:', result);
     setResult(result);
     onCalculated?.(result);
@@ -66,7 +67,7 @@ const IncreaseAcquisitionModal: FC<{
   // }, [proportion, firstProportion, firstIncrease]);
 
   useEffect(() => {
-    if (!purchased) return;
+    if (!purchased || !memooConfig) return;
     const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 9);
     const totalSupply = new BigNumber(Number(memooConfig?.totalSupply)).dividedBy(10 ** 9);
     const totalPrice = new BigNumber(totalSupply).multipliedBy(idoPriceBN);

@@ -48,7 +48,8 @@ const IncreaseModal: FC<{
     console.log('firstIncrease-result:', firstIncrease); // 1.5
     console.log('firstProportion-result:', firstProportion); // 0.05
     console.log('purchased-result:', purchased);
-    const result = (firstIncrease / firstProportion) * increasePercent;
+    const resultSol = (firstIncrease / firstProportion) * increasePercent;
+    const result = resultSol - purchased;
     console.log('increasing proportion-result:', result);
     setResult(result);
     onCalculated?.(result);
