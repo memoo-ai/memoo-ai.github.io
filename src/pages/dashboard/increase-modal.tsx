@@ -35,7 +35,6 @@ const IncreaseModal: FC<{
   const [confirming, setConfirming] = useState(false);
   const [proportion, setProportion] = useState(purchased);
   const [result, setResult] = useState(0);
-  const defaultValue = purchased * 100;
   const { idoBuy, idoQueueDetail, solanaMemeConfig, memooConfig } = useContext(CreatorContext);
   // useEffect(() => {
   //   setProportion(firstProportion * 100);
@@ -79,7 +78,7 @@ const IncreaseModal: FC<{
       console.log('firstIncreaseD:', firstIncrease);
       const tx = await idoBuy(
         solanaMemeConfig?.memeConfigId,
-        new BN(((result * 10000 - purchased * 10000) / 10000) * 1e9).mul(new BN(1)),
+        new BigNumber(result).multipliedBy(10 ** 9),
         true,
         proportion,
       );
@@ -141,7 +140,7 @@ const IncreaseModal: FC<{
                 value={proportion}
                 max={maxProportion * 100}
                 min={firstProportion * 100}
-                defaultValue={defaultValue}
+                // defaultValue={defaultValue}
               />
               <span className="whitespace-nowrap text-base font-OCR text-white leading-[16px]">
                 {maxIncrease} {tokenSymbol}
@@ -157,7 +156,7 @@ const IncreaseModal: FC<{
             suffix={
               <span className="text-[24px] text-white font-404px leading-[22px]">{`${
                 // Number(formatDecimals(result - purchased)) > 0 ? formatDecimals(result - purchased) : 0
-                formatDecimals(result - purchased)
+                formatDecimals(result)
               } ${tokenSymbol}`}</span>
             }
           />

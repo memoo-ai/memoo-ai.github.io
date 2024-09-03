@@ -88,11 +88,11 @@ const IncreaseAcquisitionModal: FC<{
       console.log('result:', result);
       console.log('purchased:', purchased);
       console.log('proportion:', proportion);
-      console.log('amount:', new BN((result * 10000 - purchased * 10000) * 1e9).mul(new BN(1)));
+      console.log('amount-idoBuy:', Number(new BigNumber(result).multipliedBy(10 ** 9)));
 
       const tx = await idoBuy(
         solanaMemeConfig.memeConfigId,
-        new BN(((result * 10000 - purchased * 10000) / 10000) * 1e9).mul(new BN(1)),
+        new BigNumber(result).multipliedBy(10 ** 9),
         mine,
         proportion,
       );

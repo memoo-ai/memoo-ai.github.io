@@ -94,7 +94,7 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
       // await idoBuy(solanaMemeConfig?.memeConfigId, new BigNumber(selected), mine, selectedGrade);
       const tx = await idoBuy(
         solanaMemeConfig?.memeConfigId,
-        new BN(selected * 1e9).mul(new BN(1)),
+        new BigNumber(selected).multipliedBy(10 ** 9),
         mine,
         selectedGrade,
       );

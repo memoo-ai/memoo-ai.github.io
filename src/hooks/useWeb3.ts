@@ -242,7 +242,7 @@ export const useAccount = () => {
 
   const idoBuy = useCallback(
     // eslint-disable-next-line max-params
-    async (memeId: string, amount: BN, isCreate?: boolean, proportion?: number) => {
+    async (memeId: string, amount: BigNumber, isCreate?: boolean, proportion?: number) => {
       if (!memooConfig || !program || !publicKey) return;
       try {
         console.log('memeId:', memeId);
@@ -257,7 +257,7 @@ export const useAccount = () => {
         const memeConfig: MemeConfig = (await program.account.memeConfig.fetch(memeConfigPda)) as any;
 
         // debugger;
-        console.log('amount:', amount);
+        console.log('amount:', Number(amount));
         console.log('memeConfig?.totalSupply:', memeConfig?.totalSupply);
         console.log('memooConfig.idoUserBuyLimit:', memooConfig.idoUserBuyLimit);
         console.log('memooConfig.idoPrice:', memooConfig.idoPrice);
@@ -298,7 +298,7 @@ export const useAccount = () => {
         //   return;
         // }
 
-        const idoBuyCost = amount.mul(memooConfig.idoPrice);
+        const idoBuyCost = amount.multipliedBy(new BigNumber(memooConfig.idoPrice.toString()));
         console.log('idoBuyCost', idoBuyCost);
         const poolSolAuthority = PublicKey.findProgramAddressSync(
           [Buffer.from('authority'), memeConfigId.toBuffer(), NATIVE_MINT.toBuffer()],
@@ -322,7 +322,7 @@ export const useAccount = () => {
         // // debugger;
         const tx = await program.methods
           // .idoBuy(memeConfigId, idoBuyCost)
-          .idoBuy(memeConfigId, idoBuyCost)
+          .idoBuy(memeConfigId, new BN(Number(idoBuyCost)))
           .accounts({
             memooConfig: memooConfigPda,
             memeConfig: memeConfigPda,
