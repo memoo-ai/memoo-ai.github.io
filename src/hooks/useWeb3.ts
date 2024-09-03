@@ -74,10 +74,10 @@ export interface MemeUserIdoData {
 export const useAccount = () => {
   const { publicKey, signTransaction, signAllTransactions } = useWallet();
   // const RPC_URL = 'https://api.devnet.solana.com';
-  // const RPC_URL = import.meta.env.VITE_RPC_URL;
-  // const connection = new Connection(RPC_URL);
-  const network = import.meta.env.VITE_WALLET_ADAPTER_NETWORK;
-  const connection = new Connection(clusterApiUrl(network));
+  const RPC_URL = import.meta.env.VITE_RPC_URL;
+  const connection = new Connection(RPC_URL);
+  // const network = import.meta.env.VITE_WALLET_ADAPTER_NETWORK;
+  // const connection = new Connection(clusterApiUrl(network));
   const programId = new PublicKey(import.meta.env.VITE_PROGRAM_ID);
   const { solanaConfig } = useBaseConfig();
   const program = useAnchorProgram(programId, IDL as Idl);
