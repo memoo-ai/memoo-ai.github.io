@@ -118,7 +118,8 @@ const IncreaseAcquisitionModal: FC<{
             </div>
             <div className="flex flex-auto items-center gap-x-3">
               <span className="whitespace-nowrap text-base font-OCR text-white leading-[16px]">
-                {firstIncrease} {tokenSymbol}
+                {/* {firstIncrease} {tokenSymbol} */}
+                {0} {tokenSymbol}
               </span>
               <Slider
                 className="memoo_slider flex-auto"
