@@ -50,7 +50,7 @@ const IncreaseAcquisitionModal: FC<{
     console.log('firstProportion-result:', firstProportion); // 0.05
     console.log('purchased-result:', purchased);
     const resultSol = (firstIncrease / firstProportion) * increasePercent;
-    const result = resultSol - purchased;
+    const result = parseFloat(formatDecimals(resultSol - purchased));
     console.log('increasing proportion-result:', result);
     setResult(result);
     onCalculated?.(result);
@@ -88,7 +88,8 @@ const IncreaseAcquisitionModal: FC<{
       console.log('result:', result);
       console.log('purchased:', purchased);
       console.log('proportion:', proportion);
-      console.log('amount-idoBuy:', Number(new BigNumber(result).multipliedBy(10 ** 9)));
+      console.log('result-idoBuy:', parseFloat(result.toString()));
+      console.log('amount-idoBuy:', Number(new BigNumber(parseFloat(result.toString())).multipliedBy(10 ** 9)));
 
       const tx = await idoBuy(
         solanaMemeConfig.memeConfigId,
