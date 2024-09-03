@@ -210,10 +210,11 @@ export const useAccount = () => {
         const signedTransaction = await signTransaction(transaction);
         const fee = await transaction.getEstimatedFee(connection);
         console.log('fee:', fee);
-        const signature = await connection.sendRawTransaction(signedTransaction.serialize());
-        // const signature = await connection.sendRawTransaction(signedTransaction.serialize(), {
-        //   skipPreflight: true,
-        // });
+        console.log('latestBlockhash:', latestBlockhash);
+        // const signature = await connection.sendRawTransaction(signedTransaction.serialize());
+        const signature = await connection.sendRawTransaction(signedTransaction.serialize(), {
+          skipPreflight: true,
+        });
 
         console.log('Transaction sent. Signature:', signature);
         const confirmationStrategy = {
