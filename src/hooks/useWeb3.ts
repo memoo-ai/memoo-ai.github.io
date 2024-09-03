@@ -320,10 +320,11 @@ export const useAccount = () => {
         //   transaction.add(createAtaIx);
         // }
         // // debugger;
-        console.log('idoBuyCost:', Number(amount));
+        const idoBuyCost = amount.multipliedBy(10 ** 9);
+        console.log('idoBuyCost:', Number(idoBuyCost));
         const tx = await program.methods
           // .idoBuy(memeConfigId, idoBuyCost)
-          .idoBuy(memeConfigId, new BN(Number(amount)))
+          .idoBuy(memeConfigId, new BN(Number(idoBuyCost)))
           .accounts({
             memooConfig: memooConfigPda,
             memeConfig: memeConfigPda,
