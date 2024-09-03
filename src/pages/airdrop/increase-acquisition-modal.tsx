@@ -32,28 +32,49 @@ const IncreaseAcquisitionModal: FC<{
   const [open, setOpen] = useState(false);
   const [accepted, setAccepted] = useState(false);
   const [confirming, setConfirming] = useState(false);
-  const [proportion, setProportion] = useState(purchased);
+  const [proportion, setProportion] = useState(0.05);
   const [result, setResult] = useState(0);
   // const { idoBuy, idoQueueDetail } = useContext(AirdropContext);
-  const { idoQueueDetail, mine, idoBuy, solanaMemeConfig } = useContext(AirdropContext);
+  const { idoQueueDetail, mine, idoBuy, solanaMemeConfig, memooConfig } = useContext(AirdropContext);
   // const { idoBuy } = useAccount();
-  const defaultValue = purchased * 100;
+  // const defaultValue = purchased * 100;
   // useEffect(() => {
   //   setProportion(firstProportion * 100);
   // }, [firstProportion]);
 
   useEffect(() => {
     const increasePercent = proportion / 100;
-    const result = parseFloat(formatDecimals(firstIncrease * (increasePercent / firstProportion)));
-    console.log('increasing proportion:', result);
+    console.log('increasePercent-result:', increasePercent); // 0.05
+    console.log('proportion-result:', proportion); // 0.05
+    console.log('firstIncrease-result:', firstIncrease); // 1.5
+    console.log('firstProportion-result:', firstProportion); // 0.05
+    console.log('purchased-result:', purchased);
+    const result = (firstIncrease / firstProportion) * increasePercent;
+    console.log('increasing proportion-result:', result);
     setResult(result);
     onCalculated?.(result);
   }, [proportion, firstProportion, firstIncrease]);
+  // useEffect(() => {
+  //   const increasePercent = proportion / 100;
+  //   console.log('increasePercent:', increasePercent);
+  //   console.log('firstIncrease-result:', firstIncrease);
+  //   console.log('firstProportion-result:', firstProportion);
+  //   const result = parseFloat(formatDecimals(firstIncrease * (increasePercent / firstProportion)));
+  //   console.log('increasing proportion:', result);
+  //   setResult(result);
+  //   onCalculated?.(result);
+  // }, [proportion, firstProportion, firstIncrease]);
 
   useEffect(() => {
     if (!purchased) return;
-    console.log('increase-purchased', defaultValue);
-    setProportion(defaultValue);
+    const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 9);
+    const totalSupply = new BigNumber(Number(memooConfig?.totalSupply)).dividedBy(10 ** 9);
+    const totalPrice = new BigNumber(totalSupply).multipliedBy(idoPriceBN);
+    const defaultValue = new BigNumber(purchased).dividedBy(totalPrice);
+
+    console.log('defaultValue-purchased:', Number(purchased));
+    console.log('defaultValue:', Number(defaultValue));
+    setProportion(Number(defaultValue ?? 0.05) * 100);
   }, [purchased]);
 
   const onConfirm = useCallback(async () => {
@@ -125,16 +146,17 @@ const IncreaseAcquisitionModal: FC<{
                 className="memoo_slider flex-auto"
                 tooltip={{ open: true, rootClassName: 'memoo_slider_tooltip', formatter: (value) => `${value}%` }}
                 onChange={(value) => {
-                  if (value > purchased * 100) {
-                    setProportion(value);
-                  } else {
-                    setProportion(purchased * 100);
-                  }
+                  setProportion(value);
+                  // if (value > purchased * 100) {
+                  //   setProportion(value);
+                  // } else {
+                  //   setProportion(purchased * 100);
+                  // }
                 }}
                 value={proportion}
                 max={maxProportion * 100}
                 min={firstProportion * 100}
-                defaultValue={defaultValue}
+                // defaultValue={defaultValue}
               />
               <span className="whitespace-nowrap text-base font-OCR text-white leading-[16px]">
                 {maxIncrease} {tokenSymbol}
@@ -150,7 +172,8 @@ const IncreaseAcquisitionModal: FC<{
             suffix={
               <span className="text-[24px] text-white font-404px leading-[22px]">{`${
                 // Number(formatDecimals(result - purchased)) > 0 ? formatDecimals(result - purchased) : 0
-                formatDecimals(result - purchased)
+                // formatDecimals(result - purchased)
+                formatDecimals(result)
               } ${tokenSymbol}`}</span>
             }
           />

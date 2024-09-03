@@ -57,12 +57,21 @@ export const useProportion = () => {
   const platformCreateMeme = useMemo(() => {
     if (!memooConfig) return 0;
     const tokenAllocationCreator = memooConfig?.tokenAllocationCreator / 10000;
+    console.log('platformCreateMeme-tokenAllocationCreator:', tokenAllocationCreator);
     const totalSupply = new BigNumber(memooConfig?.totalSupply.toString()).dividedBy(10 ** 9);
+    console.log('platformCreateMeme-totalSupply:', Number(totalSupply));
     const idoPrice = new BigNumber(memooConfig?.idoPrice.toString()).dividedBy(10 ** 9);
+    console.log('platformCreateMeme-idoPrice:', Number(idoPrice));
     const result = new BigNumber(tokenAllocationCreator).multipliedBy(totalSupply).multipliedBy(idoPrice);
+    console.log('platformCreateMeme-result:', Number(result));
     const parseResult = parseFloat(formatDecimals(result));
     return parseResult;
   }, [firstProportion, maxProportion, firstIncrease]);
+  // const platformCreateMeme = useMemo(() => {
+  //   if (!memooConfig) return 0;
+  //   const result = memooConfig?.tokenAllocationCreator / 10000;
+  //   return result;
+  // }, [memooConfig, firstProportion, maxProportion, firstIncrease]);
 
   const creatorAllocation = useMemo(() => {
     if (!memooConfig) return 0;
