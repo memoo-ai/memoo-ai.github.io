@@ -20,7 +20,8 @@ export default function Status() {
   const { idoQueueDetail } = useContext(AirdropContext);
   const meMessage = useMemo(
     () =>
-      MESSAGE_THRESHOLDS.find(([threshold]) => Number(idoQueueDetail?.meMooScore ?? 0) <= threshold)?.[1] || 'GTFO!',
+      MESSAGE_THRESHOLDS.find(([threshold]) => Number(idoQueueDetail?.memooScoreTotal ?? 0) <= threshold)?.[1] ||
+      'GTFO!',
     [idoQueueDetail],
   );
 
@@ -98,13 +99,13 @@ export default function Status() {
             />
           </h3>
           <div className="flex items-end mt-3 mb-4">
-            <span className="numerator">{idoQueueDetail?.meMooScore ?? 0}</span>
+            <span className="numerator">{idoQueueDetail?.memooScoreTotal ?? 0}</span>
             <span className="denominator">/100</span>
           </div>
           <Progress
             className="status_memo_score_bar"
             showInfo={false}
-            percent={Number(idoQueueDetail?.meMooScore ?? 0)}
+            percent={Number(idoQueueDetail?.memooScoreTotal ?? 0)}
           />
         </div>
       </div>

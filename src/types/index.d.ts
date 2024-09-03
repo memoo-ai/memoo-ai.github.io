@@ -196,7 +196,7 @@ declare interface IDOQueueDetail extends IDOClaimStage {
   liquidity: string;
   lpContractAddress: Address;
   marketCap: string;
-  meMooScore: string;
+  memooScoreTotal: string;
   banners: string[];
   memeTwitterBind: boolean;
   pinnedTwitter: string;
@@ -250,7 +250,7 @@ declare interface LaunchpadIMO {
 declare interface LaunchpadAirdrop {
   icon: string;
   idoDate: string;
-  meMooScore: string;
+  memooScore: string;
   participants: number;
   status: string;
   ticker: string;
@@ -320,7 +320,7 @@ declare interface TrendingTokens {
   increase1H: number;
   increase24H: number;
   marketCap: number;
-  meMooScore: string;
+  memooScore: string;
   price: number;
   ticker: string;
   tokenName: string;

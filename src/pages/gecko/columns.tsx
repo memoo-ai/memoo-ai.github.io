@@ -118,13 +118,13 @@ export const columns = [
   },
   {
     title: 'Memoo Score',
-    dataIndex: 'meMooScore',
-    key: 'meMooScore',
+    dataIndex: 'memooScore',
+    key: 'memooScore',
     sorter: false,
-    render: (meMooScore: number) => (
+    render: (memooScore: number) => (
       <div className="flex flex-col justify-end items-end pt-5">
-        <span>{meMooScore ?? 0}</span>
-        <IProgress percent={meMooScore} />
+        <span>{memooScore ?? 0}</span>
+        <IProgress percent={memooScore} />
       </div>
     ),
   },
