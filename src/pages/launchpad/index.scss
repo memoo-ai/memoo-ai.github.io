@@ -63,3 +63,33 @@
     font-size: 38px  !important;
   }
 }
+
+.pefer-errn{
+  background: url('/launchPad/pefer-errn.png') no-repeat center center;
+  background-size: cover;
+  margin: 40px auto;
+  width: 62.5rem;
+  height: 6.25rem;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  .title{
+    background: linear-gradient(90deg, #07E993 0%, #14FCFB 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 23.49px;
+    font-weight: 400;
+
+
+  }
+  .content{
+    line-height: 10px;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+}

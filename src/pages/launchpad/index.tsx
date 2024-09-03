@@ -156,6 +156,12 @@ export default function LaunchPad() {
             </BannerRightBox>
           </div>
         </div>
+        <div className="pefer-errn">
+          <p className="title font-Kitty text-[30px]">Are You a Meme Influencer?</p>
+          <p className="font-OCR text-[14px] text-[#ffffff] content mt-[11px]">
+            Click Here to Take the Test & Join Our Referral Program.
+          </p>
+        </div>
         <div className="flex items-center justify-between mt-[50px] mb-[30px]">
           <Tabs activeKey={activeKey} onChange={onChange} items={items} className="custom-tabs" />
         </div>

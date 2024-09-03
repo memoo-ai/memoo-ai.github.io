@@ -362,7 +362,8 @@ const Airdrop: FC = () => {
           {stage === 'imo' && <IMOParticipate />}
           {/* <IMOParticipate /> */}
           <AirdropClaim />
-          {(stage === 'in-queue' || stage === 'imo') && mine && <PreMarketAcqusition amount={preAmount} />}
+          {/* {(stage === 'in-queue' || stage === 'imo') && mine && <PreMarketAcqusition amount={preAmount} />}  */}
+          {stage !== '2st-claim' && mine && <PreMarketAcqusition amount={preAmount} />}
           <IDODetail />
         </AirdropContext.Provider>
       </div>
