@@ -86,13 +86,15 @@ export const useAccount = () => {
   // const memooConfigPda = import.meta.env.VITE_MEMOO_CONFIG_PDA;
   const memooConfigPda = useMemo(() => {
     if (!solanaConfig) return;
-    // const globalMemeConfigId = 'E6zNTEZJXEdB5uH7gbCcGa5Vsq5zyxGyfKJyo34WwH5u';
+    // const globalMemeConfigId = '4b6bXbodnZH1K1kPipZzTAUn93SNYhRidyuz79Uoy4HW';
     const globalMemeConfigId = solanaConfig?.globalMemooConfigId;
-    return PublicKey.findProgramAddressSync(
+    const config = PublicKey.findProgramAddressSync(
       [Buffer.from('global_memoo_config'), new PublicKey(globalMemeConfigId).toBuffer()],
       // [Buffer.from('global_memoo_config'), new PublicKey(solanaConfig?.globalMemooConfigId).toBuffer()],
       programId,
     )[0];
+    console.log('memooConfigPda:', config);
+    return config;
     // return new PublicKey(import.meta.env.VITE_MEMOO_CONFIG_PDA);
   }, [solanaConfig]);
 
