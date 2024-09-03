@@ -298,7 +298,7 @@ export const useAccount = () => {
         //   return;
         // }
 
-        const idoBuyCost = amount.multipliedBy(new BigNumber(memooConfig.idoPrice.toString()));
+        const idoBuyCost = amount.dividedBy(new BigNumber(memooConfig.idoPrice.toString()));
         console.log('idoBuyCost', idoBuyCost);
         const poolSolAuthority = PublicKey.findProgramAddressSync(
           [Buffer.from('authority'), memeConfigId.toBuffer(), NATIVE_MINT.toBuffer()],
@@ -320,6 +320,7 @@ export const useAccount = () => {
         //   transaction.add(createAtaIx);
         // }
         // // debugger;
+        console.log('idoBuyCost:', Number(idoBuyCost));
         const tx = await program.methods
           // .idoBuy(memeConfigId, idoBuyCost)
           .idoBuy(memeConfigId, new BN(Number(idoBuyCost)))
