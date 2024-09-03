@@ -31,14 +31,14 @@ const Progress: FC = () => {
     const memeUserIdoCountBN = new BigNumber(Number(memeUserData?.memeUserIdoCount)).dividedBy(10 ** 9);
     console.log('memeUserIdoCountBN:', Number(memeUserIdoCountBN));
     const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 9);
-    console.log('idoPriceBN:', Number(idoPriceBN));
+    console.log('idoPriceBN:', Number(idoPriceBN), 'idoPriceBN-string:', idoPriceBN.toString());
     const totalCountBN = creatorLockCountBN.plus(memeUserIdoCountBN);
     console.log('totalCountBN:', Number(totalCountBN));
     const totalPurchasedBN = totalCountBN.multipliedBy(idoPriceBN);
     console.log('totalPurchasedBN:', Number(totalPurchasedBN));
     const formattedResult = parseFloat(formatDecimals(totalPurchasedBN));
-    console.log('purchased:', formattedResult);
-    console.log('purchased-platformCreateMeme:', platformCreateMeme);
+    console.log('purchased-formattedResult:', formattedResult);
+    console.log('purchased-platformCreate:', platformCreateMeme);
     const result = platformCreateMeme + formattedResult;
     return result;
   }, [memooConfig, memeUserData, platformCreateMeme]);

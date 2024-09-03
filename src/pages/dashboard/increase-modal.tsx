@@ -36,24 +36,34 @@ const IncreaseModal: FC<{
   const [proportion, setProportion] = useState(purchased);
   const [result, setResult] = useState(0);
   const defaultValue = purchased * 100;
-  const { idoBuy, idoQueueDetail, solanaMemeConfig } = useContext(CreatorContext);
+  const { idoBuy, idoQueueDetail, solanaMemeConfig, memooConfig } = useContext(CreatorContext);
   // useEffect(() => {
   //   setProportion(firstProportion * 100);
   // }, [firstProportion]);
 
   useEffect(() => {
     const increasePercent = proportion / 100;
-    const result = parseFloat(formatDecimals(firstIncrease * (increasePercent / firstProportion)));
-    console.log('increasing proportion:', result);
+    console.log('increasePercent-result:', increasePercent); // 0.05
+    console.log('proportion-result:', proportion); // 0.05
+    console.log('firstIncrease-result:', firstIncrease); // 1.5
+    console.log('firstProportion-result:', firstProportion); // 0.05
+    console.log('purchased-result:', purchased);
+    const result = (firstIncrease / firstProportion) * increasePercent;
+    console.log('increasing proportion-result:', result);
     setResult(result);
     onCalculated?.(result);
   }, [proportion, firstProportion, firstIncrease]);
 
   useEffect(() => {
-    if (!purchased) return;
-    // debugger;
-    console.log('defaultValue: ', purchased);
-    setProportion(defaultValue);
+    if (!purchased || !memooConfig) return;
+    const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 9);
+    const totalSupply = new BigNumber(Number(memooConfig?.totalSupply)).dividedBy(10 ** 9);
+    const totalPrice = new BigNumber(totalSupply).multipliedBy(idoPriceBN);
+    const defaultValue = new BigNumber(purchased).dividedBy(totalPrice);
+
+    console.log('defaultValue-purchased:', Number(purchased));
+    console.log('defaultValue:', Number(defaultValue));
+    setProportion(Number(defaultValue ?? 0.05) * 100);
   }, [purchased]);
 
   const onConfirm = useCallback(async () => {
