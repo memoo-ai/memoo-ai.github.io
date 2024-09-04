@@ -79,7 +79,7 @@ export const useAccount = () => {
   // const network = import.meta.env.VITE_WALLET_ADAPTER_NETWORK;
   // const connection = new Connection(clusterApiUrl(network));
   const programId = new PublicKey(import.meta.env.VITE_PROGRAM_ID);
-  // const globalMemeConfigId = import.meta.env.VITE_GLOBAL_MEMOO_CONFIG_ID;
+  const globalMemeConfigId = import.meta.env.VITE_GLOBAL_MEMOO_CONFIG_ID;
   const { solanaConfig } = useBaseConfig();
   const program = useAnchorProgram(programId, IDL as Idl);
   const [memooConfig, setMemooConfig] = useState<MemooConfig>();
@@ -88,7 +88,7 @@ export const useAccount = () => {
   const memooConfigPda = useMemo(() => {
     if (!solanaConfig) return;
     // const globalMemeConfigId = '4b6bXbodnZH1K1kPipZzTAUn93SNYhRidyuz79Uoy4HW';
-    const globalMemeConfigId = solanaConfig?.globalMemooConfigId;
+    // const globalMemeConfigId = solanaConfig?.globalMemooConfigId;
     const config = PublicKey.findProgramAddressSync(
       [Buffer.from('global_memoo_config'), new PublicKey(globalMemeConfigId).toBuffer()],
       // [Buffer.from('global_memoo_config'), new PublicKey(solanaConfig?.globalMemooConfigId).toBuffer()],
