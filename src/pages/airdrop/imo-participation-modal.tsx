@@ -92,12 +92,7 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
       // TODO
       console.log('selected: ', selected);
       // await idoBuy(solanaMemeConfig?.memeConfigId, new BigNumber(selected), mine, selectedGrade);
-      const tx = await idoBuy(
-        solanaMemeConfig?.memeConfigId,
-        new BigNumber(selected).multipliedBy(10 ** 9),
-        mine,
-        selectedGrade,
-      );
+      const tx = await idoBuy(solanaMemeConfig?.memeConfigId, new BigNumber(selected), mine, selectedGrade);
       if (tx) {
         console.log('idoBuy-tx:', tx);
         setOpen(false);
