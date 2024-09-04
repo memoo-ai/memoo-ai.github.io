@@ -1,8 +1,10 @@
 .create-token-complete-connected-modal{
   border-radius: 15px;
+  border: 1px solid #07E993;
+  background: #1F3B4F !important;
+  padding: 0;
   .ant-modal-content{
     border-radius: 15px !important;
-    background: #1F3B4F !important;
   }
   .create-token-complete-connected-modal-content{
     .create-token-complete-connected-modal-content-title{
@@ -24,16 +26,17 @@
   }
 
   .view-btn{
+    width: 100%;
     .ant-btn{
-      color: #19FDA6;
-      background: #B53BFF !important;
+      color:  #B53BFF;
+      background: #19FDA6 !important;
       border: none;
       display: flex;
       justify-content: center;
       border-radius: 7px !important;
 
       span{
-        color: #19FDA6 !important;
+        color: #B53BFF !important;
         font-family: '404px';
         font-size: 14px;
         font-weight: 800;
@@ -43,9 +46,9 @@
 
       &:hover{
         border-color: transparent!important;
-        background: #19FDA6 !important;
+        background: #B53BFF !important;
         span{
-          color: #B53BFF !important;
+          color: #19FDA6 !important;
         }
 
       }

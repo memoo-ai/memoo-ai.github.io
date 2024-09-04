@@ -1,6 +1,18 @@
 .memoo_slider {
-  .ant-slider-rail {
-    background: #2b526e;
+  .ant-slider-step{
+    background: #2B526E;
+    border-radius: 7px;
+    height: 5px;
+  }
+  .ant-slider-rail{
+    border-radius: 7px;
+    height: 5px;
+  }
+  .ant-slider-track{
+    background: $mainColor !important;
+    border-radius: 7px;
+    height: 5px;
+    z-index: 99;
   }
 }
 
@@ -19,3 +31,4 @@
     letter-spacing: -0.6px;
   }
 }
+

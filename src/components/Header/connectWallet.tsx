@@ -93,14 +93,14 @@ const ConnectWallet = () => {
       {connected ? (
         <div className="flex items-center">
           {connected && (
-            <div className=" wallet-border flex items-center justify-center w-[192px] h-[46px] bg-[#1F3B4F] rounded-lg mr-[12px] font-404px font-bold text-[#07E993] text-lg">
+            <div className=" wallet-border flex items-center justify-center w-[192px] h-[46px] bg-[#1F3B4F] rounded-lg mr-[12px] font-404px font-[400] text-[#07E993] text-lg">
               {address}
             </div>
           )}
           <DropdownMenu.Root>
             <DropdownMenu.Trigger>
               <div>
-                <IconProfile className="cursor-pointer wallet-border rounded-[12px]" />
+                <IconProfile className="cursor-pointer wallet-border rounded-[7px]" />
               </div>
             </DropdownMenu.Trigger>
 
@@ -143,8 +143,8 @@ const ConnectWallet = () => {
         </div>
       ) : (
         <div className="wallet_button_border" onClick={() => setUpdatePortal((count) => count + 1)}>
-          {/* <Wallet>Connect Wallet</Wallet> */}
-          <WalletMultiButton className="w-[192px]">
+          <Wallet>Connect Wallet</Wallet>
+          {/* <WalletMultiButton className="w-[192px]">
             Connect Wallet
             <SolanaPortalTop updatePortal={updatePortal}>
               <div className="flex items-center flex-column justify-center mt-[25px] ">
@@ -161,7 +161,7 @@ const ConnectWallet = () => {
                 </p>
               </div>
             </SolanaPortalBottom>
-          </WalletMultiButton>
+          </WalletMultiButton> */}
         </div>
       )}
     </div>

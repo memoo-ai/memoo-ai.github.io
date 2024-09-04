@@ -2,11 +2,7 @@ import './index.scss';
 import { Button } from '@/components/ui/button';
 import { IconTwitter, IconTelegram, IconVector } from '@/components/icons';
 import { useNavigate } from 'react-router-dom';
-import useSolana from '@/hooks/useSolanaContract';
-import Transfer from '@/hooks/useSolanaSend';
-import useTestSql from '@/hooks/useTestSql';
-import useTransfer from '@/hooks/useTransfer';
-
+import { IconCoin } from '@/components/icons';
 const Revolutions = [
   {
     title: (
@@ -15,7 +11,7 @@ const Revolutions = [
         <br /> <span>Smart Contract Rails</span>
       </>
     ),
-    desc: 'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    desc: 'Fair pricing and access is prioritized here.\n Memoo’s no code solution with standardized smart \n contract is also music to creator’s ear.',
     img: './SVG/img-revolution-1.svg',
     width: 280,
   },
@@ -26,7 +22,7 @@ const Revolutions = [
         <br /> <span>Capture Flywheel</span>
       </>
     ),
-    desc: 'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    desc: 'Establishing standards to encourage transparencies on critical metrics and applying the same score standard across thousands of memes.',
     img: './SVG/img-revolution-2.svg',
     width: 280,
   },
@@ -36,7 +32,7 @@ const Revolutions = [
         <span>Organic</span> <br /> <span>Growth Loop</span>
       </>
     ),
-    desc: 'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    desc: 'Variety of incentives for every stakeholders. \n Airdrops deliver instant exposure for new tokens and tools for creators to promote their memes.',
     img: './SVG/img-revolution-3.svg',
     width: 350,
   },
@@ -46,7 +42,7 @@ const Revolutions = [
         <span>Tools to Stay Updated with</span> <br /> <span>the Latest Memecoins</span>
       </>
     ),
-    desc: 'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    desc: 'Memoo’s revenue model offer multi-layer value creation that benefits $MOO token holders, creators \n and buyers on the platform.',
     img: './SVG/img-revolution-4.svg',
     width: 280,
   },
@@ -56,7 +52,7 @@ const Revolutions = [
         <span>Memecoin</span> <br /> <span>Metrics</span>
       </>
     ),
-    desc: 'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    desc: 'A wikipedia for meme will emerge to let you follow your portfolio of memes and track other emerging meme easily. ',
     img: './SVG/img-revolution-5.svg',
     width: 150,
   },
@@ -66,22 +62,13 @@ const Revolutions = [
         <span>AI Powered Infrastructure</span> <br /> <span>for Creators</span>
       </>
     ),
-    desc: 'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    desc: 'Creators will be able to leverage AI to bring ease and creativity to their meme empire building practice.',
     img: './SVG/img-revolution-6.svg',
     width: 280,
   },
 ];
 const Home = () => {
   const navigate = useNavigate();
-  const { mintTokenSql } = useSolana();
-  const { handleTransfer } = Transfer();
-  const { createMint1 } = useTestSql();
-  const { transfer } = useTransfer();
-  const send = async () => {
-    console.log('send');
-    await mintTokenSql();
-    // await createMint1();
-  };
 
   return (
     <div>
@@ -89,7 +76,10 @@ const Home = () => {
         <div className="content-banner-bg" />
         <div className="content-banner flex justify-between ">
           <div className="content-banner-left items pt-[6rem]">
-            <img src="/img-powered-base.png" className="w-[168px] ml-2" />
+            {/* <img src="/img-powered-base.png" className="w-[168px] ml-2" /> */}
+            <div className="flex items-center">
+              <span className="font-REV text-[#07E993] text-[12px] mr-[9px]">POWERED ON</span> <IconCoin />{' '}
+            </div>
             <p className="text-ultimate">The Ultimate Memecoin Infrastructure.</p>
             <p className="text-sub">
               Enabling the memecoin industry with a wide range of resources, tools & launchpad.
@@ -107,18 +97,17 @@ const Home = () => {
               <Button
                 variant="secondary"
                 className="font-404px text-lg  w-[298px] h-[53px] uppercase"
-                onClick={() => navigate('/launchpad?type=airdrop')}
+                onClick={() => navigate('/?type=airdrop')}
               >
                 Hunt for airdrops
               </Button>
-              <Button
+              {/* <Button
                 variant="secondary"
                 className="font-404px text-lg  w-[298px] h-[53px] uppercase"
                 onClick={() => send()}
-                // onClick={() => handleTransfer()}
               >
-                Send Tokens
-              </Button>
+                Test
+              </Button> */}
             </div>
             <div className="flex items-center gap-12 mt-[50px]">
               {/* <img src="./SVG/icon-twitter.svg" className="w-8 cursor-pointer" alt="" /> */}
@@ -137,16 +126,16 @@ const Home = () => {
           </div>
         </div>
         {/* <div className="flex sections ">
-          <div className="sections-item flex flex-col">
-            <img className="sections-item-img" src="./launchPad/img-ranked.png" alt="" />
+          <div className="sections-item flex flex-col" onClick={() => navigate('/?type=airdrop')}>
+            <img src="./launchPad/img-ranked.png" alt="" />
             <p className="sections-item-text">View Creator Ranking</p>
           </div>
-          <div className="sections-item flex column">
-            <img className="sections-item-img" src="./launchPad/img-vector.png" alt="" />
+          <div className="sections-item flex column" onClick={() => navigate('/')}>
+            <img src="./launchPad/img-vector.png" alt="" />
             <p className="sections-item-text">Participate in IDO</p>
           </div>
-          <div className="sections-item flex column">
-            <img className="sections-item-img" src="./launchPad/img-star.png" alt="" />
+          <div className="sections-item flex column" onClick={() => navigate('/gecko')}>
+            <img src="./launchPad/img-star.png" alt="" />
             <p className="sections-item-text">Find Your Favourite</p>
           </div>
         </div> */}

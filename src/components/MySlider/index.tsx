@@ -9,6 +9,7 @@ interface MySliderProps {
   step?: number;
   value?: number;
   defaultValue?: number;
+  isPercent?: boolean;
   onChange?: (value: number) => void;
 }
 
@@ -22,6 +23,7 @@ const MySlider = ({
   defaultValue = 0,
   onChange,
 }: MySliderProps) => {
+  const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
   const handleSliderChange = (newValue: number) => {
     const newProgress = newValue / 100;
     if (onChange) {
@@ -31,7 +33,10 @@ const MySlider = ({
 
   return (
     <div className="flex-1 flex items-center progress">
-      <div className="mr-[14px]">{minPrice}ETH</div>{' '}
+      <div className="mr-[14px] font-OCR">
+        {minPrice}&nbsp;
+        {tokenSymbol}
+      </div>{' '}
       <Slider
         className="flex-1 progress_slider"
         min={min * 100}
@@ -41,10 +46,11 @@ const MySlider = ({
         value={value * 100}
         defaultValue={defaultValue * 100}
         onChange={handleSliderChange}
-        tipFormatter={(value: any) => `${value}%`}
-        tooltip={{ open: true }}
+        tooltip={{ open: true, rootClassName: 'memoo_slider_tooltip', formatter: (value) => `${value}%` }}
       />
-      <div className="ml-[14px]">{maxPrice} ETH</div>
+      <div className="ml-[14px] font-OCR">
+        {maxPrice} {tokenSymbol}
+      </div>
     </div>
   );
 };

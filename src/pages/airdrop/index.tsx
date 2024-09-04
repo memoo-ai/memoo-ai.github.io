@@ -13,6 +13,7 @@ import {
   IDOQueueDetail,
   TokenCreateStage,
   UnlockPeriod,
+  SolanaMemeConfig,
 } from '@/types';
 import PublicSale from './public-sale';
 import IDODetail from './ido-detail';
@@ -20,12 +21,18 @@ import Banner from './banner';
 import Profile from './profile';
 import Progress from './progress';
 import { Button, Spin } from 'antd';
-import { getIDOActiveDetail, getIDOLaunchedDetail, getIDOLaunchedDetailTop10, getIDOQueueDetail } from '@/api/airdrop';
+import {
+  getIDOActiveDetail,
+  getIDOLaunchedDetail,
+  getIDOLaunchedDetailTop10,
+  getIDOQueueDetail,
+  getUnlockTimestamp,
+} from '@/api/airdrop';
 import { useParams } from 'react-router-dom';
 // import { useAccount } from 'wagmi';
-import { useAccount } from '@/hooks/useWeb3';
+import { useAccount, MemooConfig, MemeUserIdoData, MemeConfig } from '@/hooks/useWeb3';
 import { compareAddrs } from '@/utils';
-import { DefaultMemooConfig, MemooConfig, useManageContract } from '@/hooks/useManageContract';
+import { DefaultMemooConfig, useManageContract } from '@/hooks/useManageContract';
 import BigNumber from 'bignumber.js';
 import { TransactionReceipt } from 'viem';
 import EditProjectModal from './edit-project-modal';
@@ -33,6 +40,11 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { REQUEST_FOLLOWING_STORAGE, UPDATE_PROJECT_TWITTER_STORAGE } from '@/constants';
 import { IconEdit, IconBack } from '@/components/icons';
 import { getMeMemo } from '@/api/common';
+import PreMarketAcqusition from '@/pages/airdrop/pre-market-acquisition';
+import MeMooScoreBreakdown from './memoo-score-breakdown';
+import { BN } from '@coral-xyz/anchor';
+import { getMemeConfigId } from '@/api/base';
+import { PublicKey, RpcResponseAndContext, SignatureResult } from '@solana/web3.js';
 
 interface AirdropContext {
   stage: TokenCreateStage;
@@ -43,25 +55,39 @@ interface AirdropContext {
   mine: boolean;
   ticker: string;
   memooConfig?: MemooConfig;
-  defaultConfig?: DefaultMemooConfig;
-  idoBuy?: (project: `0x${string}` | string, amount: BigNumber) => Promise<TransactionReceipt | undefined>;
-  unlockMeme?: (project: `0x${string}` | string, index: number) => Promise<TransactionReceipt | undefined>;
+  // defaultConfig?: DefaultMemooConfig;
+  // idoBuy?: (project: `0x${string}`, amount: BigNumber) => Promise<TransactionReceipt | undefined>;
+  idoBuy?: (memeId: string, amount: BigNumber, isCreate: boolean, proportion: number) => Promise<string | undefined>;
+  unlockMeme?: (project: `0x${string}`, index: number) => Promise<TransactionReceipt | undefined>;
+  // idoClaim?: (project: `0x${string}`) => Promise<TransactionReceipt | undefined>;
+  idoClaim?: (memeId: string, mintAPublicKey: string) => Promise<string | undefined>;
+  creatorClaimAll?: (memeId: string, mintAPublicKey: string) => any;
   triggerRefresh?: Function;
   airdropClaim?: (
-    project: `0x${string}` | string,
-    claimCount: BigNumber,
-    proof: string,
-    signature: string,
-  ) => Promise<TransactionReceipt | undefined>;
-  _1stStage?: {
-    unlockCount: BigNumber;
-    unlockInfo: UnlockPeriod;
-  };
-  _2ndStage?: {
-    unlockCount: BigNumber;
-    unlockInfo: UnlockPeriod;
-  };
+    memeId: string,
+    mintAPublicKey: string,
+    msg: any,
+    signature: any,
+    signerPublicKey: PublicKey,
+  ) => Promise<RpcResponseAndContext<SignatureResult> | undefined>;
+  // _1stStage?: {
+  //   unlockCount: BigNumber;
+  //   unlockInfo: UnlockPeriod;
+  // };
+  // _2ndStage?: {
+  //   unlockCount: BigNumber;
+  //   unlockInfo: UnlockPeriod;
+  // };
   totalPurchased?: string;
+  // memeConfigId?: string;
+  getMemeUserData?: (memeConfigId: string) => Promise<MemeUserIdoData | undefined>;
+  memeUserData?: MemeUserIdoData;
+  memeConfig?: MemeConfig;
+  memeCreatorUserData?: MemeUserIdoData;
+  creatorClaim?: (memeId: string, mintAPublicKey: string) => Promise<string | undefined>;
+  // mintAPublickey?: PublicKey;
+  solanaMemeConfig?: SolanaMemeConfig;
+  unlockTimestamp?: number;
 }
 
 export const AirdropContext = createContext<AirdropContext>({
@@ -77,27 +103,44 @@ const Airdrop: FC = () => {
   const [idoLaunchedDetail, setIDOLaunchedDetail] = useState<IDOLaunchedDetail>();
   const [idoLaunchedDetailTop10, setIDOLaunchedDetailTop10] = useState<IDOLaunchedDetailTop10[]>([]);
   const [idoQueueDetail, setIDOQueueDetail] = useState<IDOQueueDetail>();
+  // const [memeConfigId, setMemeConfigId] = useState();
+  // const [mintAPublickey, setMintAPublickey] = useState();
+  const [solanaMemeConfig, setSolanaMemeConfig] = useState<SolanaMemeConfig>();
+  const [memeUserData, setMemeUserData] = useState<MemeUserIdoData>();
+  const [memeConfig, setMemeConfig] = useState<MemeConfig>();
+  const [memeCreatorUserData, setMemeCreatorUserData] = useState<MemeUserIdoData>();
+  const [unlockTimestamp, setUnlockTimestamp] = useState();
   const { ticker = import.meta.env.VITE_DEMO_TICKER } = useParams<{ ticker: string }>();
   const [refresh, setRefresh] = useState(0);
-  const { address } = useAccount();
+  const {
+    address,
+    memooConfig,
+    idoBuy,
+    getMemeUserData,
+    getMemeCreatorData,
+    idoClaim,
+    creatorClaimAll,
+    creatorClaim,
+    airdropClaim,
+  } = useAccount();
   console.log('my-address:', address);
   const [loading, setLoading] = useState(false);
   const [searchParams] = useSearchParams();
 
-  const [_1stStage, set1stStage] = useState<{
-    unlockCount: BigNumber;
-    unlockInfo: UnlockPeriod;
-  }>();
-  const [_2ndStage, set2ndStage] = useState<{
-    unlockCount: BigNumber;
-    unlockInfo: UnlockPeriod;
-  }>();
+  // const [_1stStage, set1stStage] = useState<{
+  //   unlockCount: BigNumber;
+  //   unlockInfo: UnlockPeriod;
+  // }>();
+  // const [_2ndStage, set2ndStage] = useState<{
+  //   unlockCount: BigNumber;
+  //   unlockInfo: UnlockPeriod;
+  // }>();
   const [totalPurchased, setTotalPurchased] = useState('0');
-  const { config, idoBuy, unlockMeme, defaultConfig, airdropClaim, getCanUnlockCount, memeUnlockPeriods } =
-    useManageContract();
+  const [totalAmount, setTotalAmount] = useState('0');
+  const { config, unlockMeme, getCanUnlockCount, memeUnlockPeriods } = useManageContract();
   const navigate = useNavigate();
   const mine = useMemo(
-    () => compareAddrs(idoQueueDetail?.creatorAddress as Address, address!),
+    () => compareAddrs(idoQueueDetail?.creatorAddress as Address, address! as any),
     [idoQueueDetail, address],
   );
   console.log('idoQueueDetail: ', idoQueueDetail, address);
@@ -114,15 +157,24 @@ const Airdrop: FC = () => {
       idoQueueDetail,
       mine,
       ticker,
-      memooConfig: config,
+      memooConfig,
       idoBuy,
       unlockMeme,
       airdropClaim,
-      _1stStage,
-      _2ndStage,
-      defaultConfig,
+      idoClaim,
+      creatorClaimAll,
+      // _1stStage,
+      // _2ndStage,
+      // defaultConfig,
       triggerRefresh,
       totalPurchased,
+      getMemeUserData,
+      memeUserData,
+      creatorClaim,
+      solanaMemeConfig,
+      unlockTimestamp,
+      memeConfig,
+      memeCreatorUserData,
     }),
     [
       stage,
@@ -136,11 +188,20 @@ const Airdrop: FC = () => {
       idoBuy,
       unlockMeme,
       airdropClaim,
-      _1stStage,
-      _2ndStage,
-      defaultConfig,
+      idoClaim,
+      creatorClaimAll,
+      // _1stStage,
+      // _2ndStage,
+      // defaultConfig,
       triggerRefresh,
       totalPurchased,
+      getMemeUserData,
+      memeUserData,
+      creatorClaim,
+      solanaMemeConfig,
+      unlockTimestamp,
+      memeConfig,
+      memeCreatorUserData,
     ],
   );
 
@@ -149,31 +210,48 @@ const Airdrop: FC = () => {
       try {
         setLoading(true);
         // For testin: BigEgg or NewCake
-        const { data } = await getIDOQueueDetail(ticker, address ? address : 'default');
+        const { data } = await getIDOQueueDetail(ticker, address ?? 'default');
         setIDOQueueDetail(data);
-
         const { data: meme } = await getMeMemo(ticker);
-        setTotalPurchased(meme[0].balance);
+        setTotalPurchased(meme[0]?.balance ?? 0);
+        setTotalAmount(meme[0]?.ethAmout ?? 0);
+        const { data: config } = await getMemeConfigId(ticker);
+        setSolanaMemeConfig(config);
+        // console.log('config.memeConfigId:', config.memeConfigId);
+        // debugger;
+        // const memeUser = await getMemeUserData(config.memeConfigId);
+        // console.log('memeUser:', memeUser);
+        // setMemeUserData(memeUser!);
+        const { data: time } = await getUnlockTimestamp(ticker);
+        setUnlockTimestamp(time);
+        console.log('getUnlockTimestamp: ', time);
 
-        if (data.stageTwoClaim) {
-          setStage('2st-claim');
-        } else if (data.stageOneClaim) {
-          setStage('1st-claim');
+        if (data.status === 'IDOEND') {
+          setStage('imo');
         } else if (data.status === 'Launched') {
+          setStage('launch');
+          if (data.stageTwoClaim) {
+            setStage('2st-claim');
+          } else if (data.stageOneClaim) {
+            setStage('1st-claim');
+          }
+          // debugger;
           const [p1, p2] = await Promise.all([
-            getIDOLaunchedDetail(ticker, address ? address : 'default'),
+            getIDOLaunchedDetail(ticker, address ?? 'default'),
             getIDOLaunchedDetailTop10({
               pageNumber: 1,
               pageSize: 10,
               ticker: ticker,
-              address: address ? address : 'default',
+              address: address ?? 'default',
             }),
+            getUnlockTimestamp(ticker),
           ]);
           setIDOLaunchedDetail(p1.data);
           setIDOLaunchedDetailTop10(p2.data);
-          setStage('launch');
         } else if (data.status === 'IDO') {
-          const { data } = await getIDOActiveDetail(ticker, address ? address : 'default');
+          const { data } = await getIDOActiveDetail(ticker, address ?? 'default');
+          console.log('data.status:IDO');
+          console.log('data.status:IDO');
           setIDOActiveDetail(data);
           setStage('imo');
         } else {
@@ -186,32 +264,65 @@ const Airdrop: FC = () => {
       }
     })();
   }, [refresh]);
-
   useEffect(() => {
-    if (!idoQueueDetail || !address) return;
-
     (async () => {
-      // 1st stage
-      {
-        const [unlockCount, unlockInfo] = await Promise.all([
-          getCanUnlockCount(idoQueueDetail.contractAddress, address, 0) as Promise<BigNumber>,
-          memeUnlockPeriods(0) as Promise<UnlockPeriod>,
-        ]);
-        console.log('1st stage', unlockCount, unlockInfo);
-        set1stStage({ unlockCount, unlockInfo });
-      }
+      try {
+        if (!solanaMemeConfig) return;
 
-      // 2nd stafe
-      {
-        const [unlockCount, unlockInfo] = await Promise.all([
-          getCanUnlockCount(idoQueueDetail.contractAddress, address, 1) as Promise<BigNumber>,
-          memeUnlockPeriods(1) as Promise<UnlockPeriod>,
-        ]);
-        console.log('2nd stage', unlockCount, unlockInfo);
-        set2ndStage({ unlockCount, unlockInfo });
+        const memeUser = await getMemeUserData(solanaMemeConfig?.memeConfigId);
+        console.log('memeUser:', memeUser);
+        setMemeUserData(memeUser!);
+        const memeCreator = await getMemeCreatorData(solanaMemeConfig?.memeConfigId);
+        console.log('memeConfig:', memeCreator);
+        setMemeConfig(memeCreator?.memeConfig);
+        setMemeCreatorUserData(memeCreator?.memeCreatorData);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
       }
     })();
-  }, [idoQueueDetail, address, memeUnlockPeriods]);
+  }, [ticker, solanaMemeConfig, refresh]);
+
+  // useEffect(() => {
+  //   if (!idoQueueDetail || !address) return;
+
+  //   (async () => {
+  //     // 1st stage
+  //     {
+  //       const [unlockCount, unlockInfo] = await Promise.all([
+  //         getCanUnlockCount(idoQueueDetail.contractAddress, address, 0) as Promise<BigNumber>,
+  //         memeUnlockPeriods(0) as Promise<UnlockPeriod>,
+  //       ]);
+  //       console.log('1st stage', unlockCount, unlockInfo);
+  //       set1stStage({ unlockCount, unlockInfo });
+  //     }
+
+  //     // 2nd stafe
+  //     {
+  //       const [unlockCount, unlockInfo] = await Promise.all([
+  //         getCanUnlockCount(idoQueueDetail.contractAddress, address, 1) as Promise<BigNumber>,
+  //         memeUnlockPeriods(1) as Promise<UnlockPeriod>,
+  //       ]);
+  //       console.log('2nd stage', unlockCount, unlockInfo);
+  //       set2ndStage({ unlockCount, unlockInfo });
+  //     }
+  //   })();
+  // }, [idoQueueDetail, address, memeUnlockPeriods]);
+
+  const preAmount = useMemo(() => {
+    if (!memooConfig || !memeCreatorUserData) return new BN(0);
+    const idoPriceBN = new BN(memooConfig?.idoPrice).div(new BN(10).pow(new BN(9)));
+    console.log('idoPriceBN: ', idoPriceBN.toString());
+
+    const memeUserIdoCountBN = new BN(memeCreatorUserData?.memeUserIdoCount).div(new BN(10).pow(new BN(9)));
+    console.log('memeUserIdoCountBN: ', memeUserIdoCountBN.toString());
+
+    const preAmountBN = memeUserIdoCountBN.mul(idoPriceBN);
+    console.log('preAmount: ', preAmountBN.toString());
+
+    return preAmountBN.toNumber();
+  }, [memeCreatorUserData, memooConfig]);
 
   return (
     <div className="airdrop pb-16">
@@ -245,10 +356,14 @@ const Airdrop: FC = () => {
       )}
       <div className="airdrop_left flex flex-col gap-y-3.5">
         <AirdropContext.Provider value={context}>
-          {/* <Status /> */}
+          <Status />
           {idoQueueDetail?.status === 'Launched' && <PublicSale />}
+          {/* <PublicSale /> */}
           {stage === 'imo' && <IMOParticipate />}
+          {/* <IMOParticipate /> */}
           <AirdropClaim />
+          {/* {(stage === 'in-queue' || stage === 'imo') && mine && <PreMarketAcqusition amount={preAmount} />}  */}
+          {stage !== '2st-claim' && mine && <PreMarketAcqusition amount={preAmount} />}
           <IDODetail />
         </AirdropContext.Provider>
       </div>
@@ -256,6 +371,7 @@ const Airdrop: FC = () => {
         <AirdropContext.Provider value={context}>
           <Banner />
           <Profile />
+          <MeMooScoreBreakdown />
         </AirdropContext.Provider>
       </div>
     </div>

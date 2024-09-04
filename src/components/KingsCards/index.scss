@@ -6,6 +6,8 @@
 
   .kings-cards-item{
     max-width: 33%;
+    height: max-content;
+    min-height: 100%;
     flex: 1;
     border: 1px solid #B53BFF;
     border-radius: 15px;
@@ -13,6 +15,32 @@
 
     .border_b{
       border-bottom: 1px solid #5D64A2;
+    }
+  }
+}
+.timefragments-kings {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  > div {
+    time {
+      color: #fff;
+      text-align: right;
+      font-family: OCR A Extended;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 16px; /* 80% */
+      // letter-spacing: 2px;
+    }
+    span {
+      // color: #07e993;
+      font-family: 404px;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 16px;
+      // letter-spacing: 1.2px;
     }
   }
 }

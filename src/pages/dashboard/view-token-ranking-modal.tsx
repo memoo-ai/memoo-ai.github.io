@@ -34,26 +34,7 @@ const ViewTokenRankingModal = ({ children, ticker }: any) => {
     if (!airdropClaim || !idoLaunchedDetail) return;
     try {
       setConfirming(true);
-      const res = await getSign();
-      const { data } = await myAirdropDetail({
-        ticker: idoLaunchedDetail?.ticker ?? '',
-        signature: res?.rawSignature ?? '',
-        timestap: res?.msg ?? '',
-      });
-      console.log('contractAddress:', idoLaunchedDetail?.contractAddress);
-      console.log('airdropCount:', new BigNumber(data?.airdropCount));
-      console.log('jsonData:', data?.jsonData);
-      console.log('signature:', data?.signature);
-      await airdropClaim(
-        idoLaunchedDetail?.contractAddress,
-        new BigNumber(data?.airdropCount),
-        // data?.hexMessage,
-        // data?.hexSignature,
-        `0x${data?.hexMessage}`,
-        `0x${data?.hexSignature}`,
-        // `0x${data?.jsonData}`,
-        // data?.signature,
-      );
+      // TODO
       // setOpen(false);
       // message.success('Claim Successful');
     } catch (error) {

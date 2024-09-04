@@ -1,5 +1,6 @@
 .dashboard_item{
   // max-width: 330px;
+  width: 18rem;
   padding: 18px 21px;
   box-shadow: 2px 2px 15px 0px rgba(0, 0, 0, 0.1);
   border-radius: 15px;
@@ -21,7 +22,7 @@
       background: $tagBgColor;
       font-family: '404px';
       font-size: 10px;
-      font-weight: 700;
+      font-weight: 400;
       line-height: 20px;
       text-align: center;
       color: $tagColor;

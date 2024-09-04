@@ -6,6 +6,7 @@ import { FC, useState, useEffect, Children, ReactNode, cloneElement, isValidElem
 import { MEMOO_TOKEN_STORAGE } from '@/constants';
 import ConnectModalPortal from '../Header/connectModalPortal';
 import ConnectModalPortalTop from '../Header/connectModalPortalTop';
+import WalletLogo from '@/assets/imgs/wallet-logo.png';
 
 const Wallet: FC<{ children: ReactNode }> = ({ children }) => {
   const { address, isConnected } = useAccount();
@@ -27,10 +28,17 @@ const Wallet: FC<{ children: ReactNode }> = ({ children }) => {
 
   return (
     <div>
-      {openConnectModal && (
+      {openConnectModal ? (
         <div>
-          <div onClick={openConnectModal}>{children}</div>
-          {isModalOpen && (
+          <div
+            onClick={() => {
+              openConnectModal();
+              setIsModalOpen(true);
+            }}
+          >
+            {children}
+          </div>
+          {/* {isModalOpen && (
             <ConnectModalPortal
               onClose={() => {
                 setIsModalOpen(false);
@@ -44,19 +52,19 @@ const Wallet: FC<{ children: ReactNode }> = ({ children }) => {
                 </p>
               </div>
             </ConnectModalPortal>
-          )}
-          {isModalOpen && (
+          )} */}
+          {/* {isModalOpen && (
             <ConnectModalPortalTop
               onClose={() => {
                 setIsModalOpen(false);
               }}
             >
               <div className="flex items-center flex-column justify-center mt-[-30px]">
-                <img className="w-[142.11px] " src="./walletContent/wallet-logo.png" alt="" />
+                <img className="w-[142.11px] " src={WalletLogo} alt="" />
               </div>
               <div className="connect-to-memoo text-center">Connect to MeMoo</div>
             </ConnectModalPortalTop>
-          )}
+          )} */}
           {/* {Children.map(children, (child) => {
             if (isValidElement<{ onClick: () => void }>(child)) {
               return cloneElement(child, { onClick: () => openConnectModal });
@@ -64,6 +72,8 @@ const Wallet: FC<{ children: ReactNode }> = ({ children }) => {
             return child;
           })} */}
         </div>
+      ) : (
+        <div> {children}</div>
       )}
     </div>
     // <ConnectButton.Custom>

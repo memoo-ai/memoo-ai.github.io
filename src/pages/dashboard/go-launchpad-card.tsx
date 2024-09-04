@@ -6,12 +6,12 @@ const goLaunchPadACard = () => {
 
   return (
     <div className="dashboard_item_create">
-      <div className="dashboard_item_create_item" onClick={() => navigate('/launchpad?type=airdrop')}>
+      <div className="dashboard_item_create_item" onClick={() => navigate('/?type=airdrop')}>
         <IconAdd className="dashboard_item_create_add" />
 
         <p>Hunt for Airdrops</p>
       </div>
-      <div className="dashboard_item_create_item" onClick={() => navigate('/launchpad?type=imo')}>
+      <div className="dashboard_item_create_item" onClick={() => navigate('/?type=imo')}>
         <IconAdd className="dashboard_item_create_add" />
 
         <p>Participate in IMOs</p>

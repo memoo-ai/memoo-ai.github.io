@@ -1,183 +1,203 @@
-import { useState, Children, cloneElement, isValidElement, useMemo, useCallback, useEffect } from 'react';
-
+/* eslint-disable no-debugger */
+import { Button, Checkbox, Input, Modal, Slider, message } from 'antd';
+import React, {
+  Children,
+  FC,
+  ReactNode,
+  cloneElement,
+  isValidElement,
+  ReactElement,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import './increase-modal.scss';
-import { Modal, Button, Checkbox, Tooltip, message } from 'antd';
-import { IconClose, IconETH, IconTip } from '@/components/icons';
-import MySlider from '@/components/MySlider';
-import { formatEther } from 'ethers';
-import { useManageContract } from '@/hooks/useManageContract';
+import { formatDecimals } from '@/utils';
 import BigNumber from 'bignumber.js';
-import { compareAddrs, formatDecimals, formatNumberDecimal } from '@/utils';
-import { getTokenDetail } from '@/api/token';
-import { getMeMemo } from '@/api/common';
-const IncreaseModal = ({ children, ticker }: any) => {
+import ITooltip from '@/components/ITooltip';
+import { CreatorContext } from './creator';
+import { BN } from '@coral-xyz/anchor';
+
+type ChildWithOnClick = ReactElement<{ onClick?: (e: React.MouseEvent) => void }>;
+const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
+const IncreaseModal: FC<{
+  children: ReactNode;
+  maxIncrease: number;
+  firstIncrease: number;
+  maxProportion: number;
+  firstProportion: number;
+  purchased: number;
+  onCalculated?: (result: number) => void;
+}> = ({ children, maxIncrease, maxProportion, firstProportion, firstIncrease, purchased, onCalculated }) => {
   const [open, setOpen] = useState(false);
-  const [isAccept, setIsAccept] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [balances, setBalances] = useState(0);
-  const [ethAmout, setEthAmout] = useState(0);
-  const [defaultValue, setDefaultValue] = useState(0);
-  const {
-    config: memooConfig,
-    idoBuy,
-    unlockMeme,
-    defaultConfig,
-    airdropClaim,
-    getCanUnlockCount,
-    memeUnlockPeriods,
-  } = useManageContract();
-
-  const [tokenDetail, setTokenDetail] = useState<any>();
-  const [proportion, setProportion] = useState(0);
+  const [accepted, setAccepted] = useState(false);
+  const [confirming, setConfirming] = useState(false);
+  const [proportion, setProportion] = useState(purchased);
   const [result, setResult] = useState(0);
+  const { idoBuy, idoQueueDetail, solanaMemeConfig, memooConfig } = useContext(CreatorContext);
+  // useEffect(() => {
+  //   setProportion(firstProportion * 100);
+  // }, [firstProportion]);
 
-  const firstProportion = useMemo(() => Number(memooConfig?.allocation.creator) / 10000, [memooConfig]);
-
-  const maxProportion = useMemo(() => Number(memooConfig?.idoCreatorBuyLimit) / 10000, [memooConfig]);
-
-  const firstIncrease = useMemo(() => {
-    if (!memooConfig || !defaultConfig) return 0;
-
-    const totalSupplyBN = new BigNumber(Number(defaultConfig?.totalSupply)).dividedBy(
-      10 ** defaultConfig?.defaultDecimals,
-    );
-    const idoPriceBN = new BigNumber(Number(defaultConfig?.idoPrice)).dividedBy(10 ** defaultConfig?.defaultDecimals);
-    const result = totalSupplyBN.multipliedBy(idoPriceBN).multipliedBy(firstProportion);
-    return parseFloat(formatDecimals(result));
-  }, [memooConfig, firstProportion, defaultConfig]);
-
-  const maxIncrease = useMemo(
-    () => parseFloat(formatDecimals(firstIncrease * (maxProportion / firstProportion))),
-    [firstProportion, maxProportion, firstIncrease],
-  );
-  useEffect(() => {
-    setProportion(firstProportion * 100);
-  }, [firstProportion]);
   useEffect(() => {
     const increasePercent = proportion / 100;
-
-    const result = parseFloat(formatDecimals(firstIncrease * (increasePercent / firstProportion)));
-    console.log('firstIncrease:', firstIncrease);
-    console.log('firstProportion:', firstProportion);
-    console.log('increasePercent:', increasePercent);
-    console.log('increasing proportion:', result);
+    console.log('increasePercent-result:', increasePercent); // 0.05
+    console.log('proportion-result:', proportion); // 0.05
+    console.log('firstIncrease-result:', firstIncrease); // 1.5
+    console.log('firstProportion-result:', firstProportion); // 0.05
+    console.log('purchased-result:', purchased);
+    const resultSol = (firstIncrease / firstProportion) * increasePercent;
+    const result = resultSol - purchased;
+    console.log('increasing proportion-result:', result);
     setResult(result);
-  }, [proportion, firstProportion, firstIncrease, progress]);
+    onCalculated?.(result);
+  }, [proportion, firstProportion, firstIncrease]);
 
   useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        // For testin: BigEgg or NewCake
-        // const { data } = await getTokenDetail(ticker);
-        const { data: meme } = await getMeMemo(ticker);
-        console.log('meme:', meme);
-        if (meme && meme.length > 0) {
-          // const balance = meme.reduce((acc, item) => acc + Number(item.balance), 0);
-          const ethAmout = meme.reduce((acc, item) => acc + Number(item.ethAmout), 0);
-          console.log('setDefaultValue:', ethAmout / maxIncrease);
-          setDefaultValue(ethAmout / maxIncrease);
-          setProgress(ethAmout / maxIncrease);
-        }
+    if (!purchased || !memooConfig) return;
+    const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 9);
+    const totalSupply = new BigNumber(Number(memooConfig?.totalSupply)).dividedBy(10 ** 9);
+    const totalPrice = new BigNumber(totalSupply).multipliedBy(idoPriceBN);
+    const defaultValue = new BigNumber(purchased).dividedBy(totalPrice);
 
-        // setTokenDetail(data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [ticker]);
-  const handleConfirm = useCallback(async () => {
-    if (!idoBuy) return;
+    console.log('defaultValue-purchased:', Number(purchased));
+    console.log('defaultValue:', Number(defaultValue));
+    setProportion(Number(defaultValue ?? 0.05) * 100);
+  }, [purchased]);
+
+  const onConfirm = useCallback(async () => {
+    console.log('onConfirm');
+    console.log('idoBuy:', idoBuy);
+    console.log('idoQueueDetail:', idoQueueDetail);
+    console.log('memeConfigId:', solanaMemeConfig?.memeConfigId);
+    if (!idoBuy || !idoQueueDetail || !solanaMemeConfig) return;
     try {
-      setLoading(true);
-      // await idoBuy(tokenDetail.contractAddress, new BigNumber(result - firstIncrease));
-      await idoBuy(tokenDetail.contractAddress, new BigNumber(result - defaultValue));
-      setOpen(false);
-      message.success('Buy Successful');
+      setConfirming(true);
+      console.log(result);
+      console.log('firstIncreaseD:', firstIncrease);
+      const tx = await idoBuy(
+        solanaMemeConfig?.memeConfigId,
+        new BigNumber(result).multipliedBy(10 ** 9),
+        true,
+        proportion,
+      );
+      if (tx) {
+        setOpen(false);
+        message.success('Buy Successful');
+      }
     } catch (error) {
       console.error(error);
       message.error('Buy Failed');
     } finally {
-      setLoading(false);
+      setConfirming(false);
     }
-  }, [idoBuy, tokenDetail, result, firstIncrease]);
+  }, [idoBuy, idoQueueDetail, result, firstIncrease, solanaMemeConfig]);
 
   return (
-    <div>
+    <>
       <Modal
+        wrapClassName="memoo_modal"
         title=""
         open={open}
-        onOk={() => {}}
-        onCancel={() => {
-          setOpen(false);
-        }}
-        width={604}
-        destroyOnClose
+        onCancel={() => setOpen(false)}
         footer={null}
-        closeIcon={<IconClose className="close" />}
+        destroyOnClose
       >
-        <div className="confirm_title">Increase Acquisition</div>
-        <div className="flex  mt-[39px] items-center">
-          <div className="increase_unlocked">
-            <h3>
-              Pre-Market Acquisition{' '}
-              <Tooltip title="hint message">
-                <IconTip className="IconTip" />
-              </Tooltip>{' '}
-            </h3>
-            <p>Creator can increase initial allocation from 5% to 35%.</p>
+        <div className="modal_title">Increase Acquisition</div>
+        <div className=" pt-[35px] flex flex-col">
+          <div className="flex gap-x-[37px]">
+            <div className="flex items-end">
+              <span className="whitespace-pre-wrap text-base font-OCR text-white leading-[18px]">{`Pre-Market\nAcquisition`}</span>
+              <div className="tip_ico_wrapper h-[18px] flex items-center ml-[12px]">
+                <ITooltip
+                  className="h-[12px] "
+                  placement="bottom"
+                  title="Lorem ipsum dolor sit amet consectetur adipiscing elit.
+                Morbi fringilla ipsum turpisı sit amet tempus est malesuadased.
+                Integer fringilla magnavel orci ultricies fermentum.
+                Suspendisse sem est."
+                  color="#fff"
+                  bgColor="#396D93"
+                />
+                {/* <img className="h-[12px] object-contain" src="/create/tip.png" /> */}
+              </div>
+            </div>
+            <div className="flex flex-auto items-center gap-x-3">
+              <span className="whitespace-nowrap text-base font-OCR text-white leading-[16px]">
+                {firstIncrease} {tokenSymbol}
+              </span>
+              <Slider
+                className="memoo_slider flex-auto"
+                tooltip={{ open: true, rootClassName: 'memoo_slider_tooltip', formatter: (value) => `${value}%` }}
+                onChange={(value) => {
+                  if (value > purchased * 100) {
+                    setProportion(value);
+                  } else {
+                    setProportion(purchased * 100);
+                  }
+                }}
+                value={proportion}
+                max={maxProportion * 100}
+                min={firstProportion * 100}
+                // defaultValue={defaultValue}
+              />
+              <span className="whitespace-nowrap text-base font-OCR text-white leading-[16px]">
+                {maxIncrease} {tokenSymbol}
+              </span>
+            </div>
           </div>
-          <div className="flex-1 flex items-center progress">
-            <MySlider
-              min={firstProportion}
-              max={maxProportion}
-              minPrice={firstIncrease}
-              maxPrice={maxIncrease}
-              value={progress}
-              defaultValue={defaultValue}
-              onChange={(value) => {
-                if (value >= defaultValue) {
-                  setProgress(value);
-                  // setIdoPrice(Number((value * totalCap).toLocaleString()));
-                  setProportion(value * 100);
-                }
-              }}
-            />
-          </div>
-        </div>
-
-        <div className="claimable">
-          <div className="claimable_left">Pre-Market Acquisition</div>
-          <div className="claimable_right">
-            <IconETH className="IconETH mr-[22px]" color="#FFFFFF" />
-            {`${formatDecimals(result - firstIncrease)} ETH`}
-          </div>
-        </div>
-        <div>
+          <p className="font-OCR text-[#4889B7] whitespace-pre-wrap mt-[7px] mb-[19px]">
+            {`Creator can increase initial\nallocation from ${firstProportion * 100}% to ${maxProportion * 100}%.`}
+          </p>
+          <Input
+            className="memoo_input h-[66px]"
+            value="Pre-Market Acquisition"
+            suffix={
+              <span className="text-[24px] text-white font-404px leading-[22px]">{`${
+                // Number(formatDecimals(result - purchased)) > 0 ? formatDecimals(result - purchased) : 0
+                formatDecimals(result)
+              } ${tokenSymbol}`}</span>
+            }
+          />
           <Checkbox
-            onChange={() => {
-              setIsAccept(!isAccept);
-            }}
-            className="my-[24px] text-[#4889b7] border-[red]"
+            className="font-OCR text-[12px] text-[#4889B7] my-[24px]"
+            onChange={(e) => setAccepted(e.target.checked)}
           >
-            I accept MeMoo’s <span className="text-[#07E993]">terms & conditions.</span>
+            I accept MeMoo’s <a className="contents text-green">Terms & Conditions.</a>
           </Checkbox>
+          <div>
+            <Button
+              disabled={!accepted && Number(formatDecimals(result)) - purchased <= 0}
+              className="memoo_button w-[100%] h-[50px]"
+              loading={confirming}
+              onClick={onConfirm}
+            >
+              Confirm
+            </Button>
+          </div>
         </div>
-        <Button className="custom_ant_btn" disabled={!isAccept} onClick={handleConfirm} loading={loading}>
-          CONFIRM
-        </Button>
       </Modal>
       {Children.map(children, (child) => {
-        if (isValidElement<{ onClick: () => void }>(child)) {
-          return cloneElement(child, { onClick: () => setOpen(true) });
+        if (isValidElement(child)) {
+          const existingOnClick = (child as ChildWithOnClick).props.onClick;
+          return cloneElement(child as ChildWithOnClick, {
+            onClick: async (e: any) => {
+              if (existingOnClick) {
+                await existingOnClick(e);
+                setTimeout(() => {
+                  setOpen(true);
+                }, 1000);
+              }
+            },
+          });
         }
         return child;
       })}
-    </div>
+    </>
   );
 };
+
+IncreaseModal.displayName = IncreaseModal.name;
 
 export default IncreaseModal;

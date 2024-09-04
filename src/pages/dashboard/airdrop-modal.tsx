@@ -1,28 +1,37 @@
-import { useState, Children, cloneElement, isValidElement, useEffect, useCallback } from 'react';
+import React, {
+  ReactElement,
+  useState,
+  Children,
+  cloneElement,
+  isValidElement,
+  useEffect,
+  useCallback,
+  useContext,
+} from 'react';
 
 import './airdrop-modal.scss';
-import { Modal, Button, message } from 'antd';
+import { Modal, Button, message, Input } from 'antd';
 import { IconLock, IconClose, IconCompleted } from '@/components/icons';
-import { getIDOLaunchedDetail } from '@/api/airdrop';
-import { getTokenDetail } from '@/api/token';
 import { useManageContract } from '@/hooks/useManageContract';
 import { useSign } from '@/hooks/useEthers';
 import { myAirdropDetail } from '@/api/airdrop';
 import BigNumber from 'bignumber.js';
+import { CollectorContext } from './collector';
+import { getNumberOrDefault, base64ToUint8Array } from '@/utils';
+import { useSolana } from '@/hooks/useSolana';
+import { PublicKey } from '@solana/web3.js';
 
-const AirdropModal = ({ children, ticker }: any) => {
+type ChildWithOnClick = ReactElement<{ onClick?: (e: React.MouseEvent) => void }>;
+
+const AirdropModal = ({ children }: any) => {
   const [open, setOpen] = useState(false);
-  const [idoLaunchedDetail, setIdoLaunchedDetail] = useState<any>(null);
-  const { airdropClaim } = useManageContract();
   const [confirming, setConfirming] = useState(false);
-  const { getSign } = useSign();
-  useEffect(() => {
-    const data = getIDOLaunchedDetail(ticker);
-    setIdoLaunchedDetail(data);
-  }, [ticker]);
+  // const { getSign } = useSign();
+  const { idoLaunchedDetail, solanaMemeConfig, airdropClaim } = useContext(CollectorContext);
+  const { getSign } = useSolana();
 
   const onConfirm = useCallback(async () => {
-    if (!airdropClaim || !idoLaunchedDetail) return;
+    if (!airdropClaim || !idoLaunchedDetail || !solanaMemeConfig) return;
     try {
       setConfirming(true);
       const res = await getSign();
@@ -30,23 +39,20 @@ const AirdropModal = ({ children, ticker }: any) => {
         ticker: idoLaunchedDetail?.ticker ?? '',
         signature: res?.rawSignature ?? '',
         timestap: res?.msg ?? '',
+        chain: 'Solana',
       });
-      console.log('contractAddress:', idoLaunchedDetail?.contractAddress);
-      console.log('airdropCount:', new BigNumber(data?.airdropCount));
-      console.log('jsonData:', data?.jsonData);
-      console.log('signature:', data?.signature);
-      await airdropClaim(
-        idoLaunchedDetail?.contractAddress,
-        new BigNumber(data?.airdropCount),
-        // data?.hexMessage,
-        // data?.hexSignature,
-        `0x${data?.hexMessage}`,
-        `0x${data?.hexSignature}`,
-        // `0x${data?.jsonData}`,
-        // data?.signature,
+
+      const tx = await airdropClaim(
+        solanaMemeConfig?.memeConfigId,
+        solanaMemeConfig?.mintaPublickey,
+        base64ToUint8Array(data?.hexMessage),
+        base64ToUint8Array(data?.hexSignature),
+        new PublicKey(data?.signPublickey),
       );
-      // setOpen(false);
-      // message.success('Claim Successful');
+      if (tx) {
+        setOpen(false);
+        message.success('Claim Successful');
+      }
     } catch (error) {
       console.error(error);
       message.error('Claim Failed');
@@ -71,23 +77,44 @@ const AirdropModal = ({ children, ticker }: any) => {
         <div className="confirm_title">Airdrop Unlocked</div>
         <div className="confirm_content">
           <img className="mt-[15px]" src="./dashboard/reward.svg" alt="" />
-          <div className="confirm_content_title mt-[18px]">WIF has arrived!</div>
-          <div className="confirm_content_describe mt-[18px]">Thanks for being part of the Dogwifhat community.</div>
-          <div className="confirm_content_wif">
-            <IconLock className="airdrop_lock" color="#07E993" bgColor="#2B526E" />{' '}
-            {Number(idoLaunchedDetail?.count).toLocaleString()}
-            {/* {idoLaunchedDetail?.count} */}
+          <div className="confirm_content_title mt-[18px]">{idoLaunchedDetail?.tokenName} has arrived!</div>
+          <div className="confirm_content_describe mt-[18px]">
+            Thanks for being part of the <br /> {idoLaunchedDetail?.tokenName} community.
           </div>
-          <div className="airdrop_confirm_btn">
-            <Button className="mt-[16px] custom_ant_btn" onClick={onConfirm} loading={confirming}>
-              CLAIM ALL
-            </Button>
+          <div className="relative mt-[26px] w-[100%]">
+            <IconLock
+              className="absolute left-[25px] top-[50%] translate-y-[-50%] z-10"
+              color="#07E993"
+              bgColor="#2B526E"
+            />
+            <Input
+              className="memoo_input h-[66px] font-404px text-white text-[24px] text-center"
+              value={`${Number(idoLaunchedDetail?.count).toLocaleString()} ${idoLaunchedDetail?.tokenName}`}
+            />
           </div>
+          <Button
+            className="mt-[16px] memoo_button w-[100%] h-[50px]"
+            onClick={onConfirm}
+            loading={confirming}
+            // disabled={getNumberOrDefault(Number(idoLaunchedDetail?.count).toLocaleString()) === 0}
+          >
+            CLAIM ALL
+          </Button>
         </div>
       </Modal>
       {Children.map(children, (child) => {
-        if (isValidElement<{ onClick: () => void }>(child)) {
-          return cloneElement(child, { onClick: () => setOpen(true) });
+        if (isValidElement(child)) {
+          const existingOnClick = (child as ChildWithOnClick).props.onClick;
+          return cloneElement(child as ChildWithOnClick, {
+            onClick: async (e: any) => {
+              if (existingOnClick) {
+                await existingOnClick(e);
+                setTimeout(() => {
+                  setOpen(true);
+                }, 1000);
+              }
+            },
+          });
         }
         return child;
       })}

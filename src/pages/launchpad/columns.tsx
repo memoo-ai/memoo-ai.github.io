@@ -1,13 +1,13 @@
 import { Button } from '@/components/ui/button';
 import { LaunchpadIMO, LaunchpadAirdrop } from '@/types';
 import { formatTs } from '@/utils';
-import Wallet from '@/components/Wallet';
+import IProgress from '@/components/IProgress';
 export enum IDOStatus {
   active = 'active',
   upcoming = 'upcoming',
   completed = 'completed',
 }
-
+const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 export const columns = (navigate: (path: string) => void) => [
   {
     title: 'Token',
@@ -26,17 +26,34 @@ export const columns = (navigate: (path: string) => void) => [
     title: 'Ends In',
     dataIndex: 'endsIn',
     key: 'endsIn',
-    sorter: true,
+    sorter: false,
     render: (endsIn: number) => (
       <div className="font-OCR font-normal text-lg ">{endsIn ? formatTs(endsIn ?? 0) : ''}</div>
     ),
   },
   {
-    title: 'Total Raissed',
+    title: 'Memoo Score',
+    dataIndex: 'memooScore',
+    key: 'memooScore',
+    sorter: false,
+    render: (memooScore: number) => (
+      <div className="flex flex-col justify-end items-end pt-5">
+        <span>{memooScore ?? 0}</span>
+        <IProgress percent={memooScore} />
+      </div>
+    ),
+  },
+  {
+    title: 'Total Raised',
     dataIndex: 'totalRaised',
     key: 'totalRaised',
-    sorter: true,
-    render: (totalRaised: number) => <span className="font-OCR font-norma text-lg">{totalRaised}E</span>,
+    sorter: false,
+    render: (totalRaised: number) => (
+      <span className="font-OCR font-norma text-lg">
+        {totalRaised}
+        {tokenSymbol}
+      </span>
+    ),
   },
   {
     title: 'Action',
@@ -73,17 +90,34 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
     title: 'IDO Date',
     dataIndex: 'idoDate',
     key: 'idoDate',
-    sorter: true,
+    sorter: false,
     render: (idoDate: number) => (
       <div className="font-OCR font-normal text-lg ">{idoDate ? formatTs(idoDate ?? 0) : ''}</div>
+    ),
+  },
+  {
+    title: 'Memoo Score',
+    dataIndex: 'memooScore',
+    key: 'memooScore',
+    sorter: false,
+    render: (memooScore: number) => (
+      <div className="flex flex-col justify-end items-end pt-5">
+        <span>{memooScore ?? 0}</span>
+        <IProgress percent={memooScore} />
+      </div>
     ),
   },
   {
     title: 'Participants',
     dataIndex: 'participants',
     key: 'participants',
-    sorter: true,
-    render: (participants: number) => <span className="font-OCR font-normal text-lg">{participants}E</span>,
+    sorter: false,
+    render: (participants: number) => (
+      <span className="font-OCR font-normal text-lg">
+        {participants}
+        {tokenSymbol}
+      </span>
+    ),
   },
   {
     title: 'Action',
@@ -98,5 +132,26 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
         airdrop
       </Button>
     ),
+  },
+];
+
+export const imoSelectOptions = [
+  {
+    key: 'EndsIn',
+    label: 'Ends in',
+  },
+  {
+    key: 'TotalRaised',
+    label: 'Total Raised',
+  },
+];
+export const airdropSelectOptions = [
+  {
+    key: 'IDODate',
+    label: 'IDO Date',
+  },
+  {
+    key: 'Participants',
+    label: 'Participants',
   },
 ];

@@ -1,4 +1,4 @@
-import { useState, Children, cloneElement, isValidElement, useEffect, useCallback } from 'react';
+import React, { useState, Children, cloneElement, isValidElement, useEffect, useCallback, useRef } from 'react';
 
 import './creator-ranking-share-modal.scss';
 import { Modal, Button, message } from 'antd';
@@ -18,6 +18,8 @@ import { useManageContract } from '@/hooks/useManageContract';
 import { useSign } from '@/hooks/useEthers';
 import { myAirdropDetail } from '@/api/airdrop';
 import BigNumber from 'bignumber.js';
+import * as htmlToImage from 'html-to-image';
+import { toPng } from 'html-to-image';
 
 const CreatorRankingShareModal = ({ children, ticker }: any) => {
   const [open, setOpen] = useState(false);
@@ -25,6 +27,27 @@ const CreatorRankingShareModal = ({ children, ticker }: any) => {
   const { airdropClaim } = useManageContract();
   const [confirming, setConfirming] = useState(false);
   const { getSign } = useSign();
+  const ref = useRef<HTMLDivElement>(null);
+
+  const downloadImg = useCallback(() => {
+    if (ref.current === null) {
+      return;
+    }
+
+    toPng(ref.current, {
+      cacheBust: false,
+      height: 600,
+    })
+      .then((dataUrl) => {
+        const link = document.createElement('a');
+        link.download = 'my-image-name.png';
+        link.href = dataUrl;
+        link.click();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [ref]);
   useEffect(() => {
     const data = getIDOLaunchedDetail(ticker);
     setIdoLaunchedDetail(data);
@@ -34,26 +57,7 @@ const CreatorRankingShareModal = ({ children, ticker }: any) => {
     if (!airdropClaim || !idoLaunchedDetail) return;
     try {
       setConfirming(true);
-      const res = await getSign();
-      const { data } = await myAirdropDetail({
-        ticker: idoLaunchedDetail?.ticker ?? '',
-        signature: res?.rawSignature ?? '',
-        timestap: res?.msg ?? '',
-      });
-      console.log('contractAddress:', idoLaunchedDetail?.contractAddress);
-      console.log('airdropCount:', new BigNumber(data?.airdropCount));
-      console.log('jsonData:', data?.jsonData);
-      console.log('signature:', data?.signature);
-      await airdropClaim(
-        idoLaunchedDetail?.contractAddress,
-        new BigNumber(data?.airdropCount),
-        // data?.hexMessage,
-        // data?.hexSignature,
-        `0x${data?.hexMessage}`,
-        `0x${data?.hexSignature}`,
-        // `0x${data?.jsonData}`,
-        // data?.signature,
-      );
+      // TODO
       // setOpen(false);
       // message.success('Claim Successful');
     } catch (error) {
@@ -78,7 +82,7 @@ const CreatorRankingShareModal = ({ children, ticker }: any) => {
         footer={null}
         closeIcon={<IconClose className="close" />}
       >
-        <div className="creator-ranking-share-modal-content mt-[42px]">
+        <div className="creator-ranking-share-modal-content mt-[42px]" ref={ref}>
           <div className=" flex items-center justify-between">
             <div className="flex items-center">
               <img src="/logo.svg" alt="" /> <IconMemoo className="ml-[5px]" />
@@ -111,7 +115,10 @@ const CreatorRankingShareModal = ({ children, ticker }: any) => {
           <div className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]">
             <IconFacebook />
           </div>
-          <div className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]">
+          <div
+            className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]"
+            onClick={downloadImg}
+          >
             <IconDownload />
           </div>
           <div className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]">

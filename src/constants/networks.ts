@@ -22,7 +22,7 @@ export const BsquaredTestnet = defineChain({
   },
   rpcUrls: {
     default: {
-      http: ['https://b2-testnet.alt.technology'],
+      http: [''],
     },
   },
   blockExplorers: {

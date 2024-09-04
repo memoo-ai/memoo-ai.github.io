@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import { useCallback, useContext, useMemo, useState, useEffect } from 'react';
 import Countdown from './countdown';
 import { TokenCreateStage } from '@/types';
@@ -15,8 +16,8 @@ import BigNumber from 'bignumber.js';
 import { IconWallet } from '@/components/icons';
 import Wallet from '@/components/SolanaWallet';
 import { useAccount } from '@/hooks/useWeb3';
-const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
 import ITooltip from '@/components/ITooltip';
+const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
 let isRequestFollowing = false;
 export default function AirdropClaim() {
   const { stage, idoQueueDetail, idoLaunchedDetail, idoActiveDetail, triggerRefresh, ticker, airdropClaim } =
@@ -46,14 +47,14 @@ export default function AirdropClaim() {
   const airdropUnlocking = useMemo(() => {
     let now = Date.now();
     let rewardEndsIn =
-      (stage === 'launch' ? idoLaunchedDetail?.rewardEndsIn ?? 0 : idoActiveDetail?.rewardEndsIn ?? 0) * 1000;
+      (stage === 'launch' ? (idoLaunchedDetail?.rewardEndsIn ?? 0) : (idoActiveDetail?.rewardEndsIn ?? 0)) * 1000;
     // &&(idoLaunchedDetail?.status === 'Launched' || idoLaunchedDetail?.status === 'IDO');
 
     console.log('now:', now);
 
     console.log(
       'rewardEndsIn:',
-      (stage === 'launch' ? idoLaunchedDetail?.rewardEndsIn ?? 0 : idoActiveDetail?.rewardEndsIn ?? 0) * 1000,
+      (stage === 'launch' ? (idoLaunchedDetail?.rewardEndsIn ?? 0) : (idoActiveDetail?.rewardEndsIn ?? 0)) * 1000,
     );
     let isUnlocking = now < rewardEndsIn;
     return isUnlocking;
@@ -164,14 +165,17 @@ export default function AirdropClaim() {
       <div className="head flex justify-between">
         <h3 className="flex items-center gap-x-2 font-404px text-green text text-lg">
           airdrop{' '}
-          <ITooltip
-            title="Lorem ipsum dolor sit amet consectetur adipiscing elit.
+          <Popover>
+            {/* <img src="/create/tip.png" /> */}
+            <ITooltip
+              title="Lorem ipsum dolor sit amet consectetur adipiscing elit.
                 Morbi fringilla ipsum turpisı sit amet tempus est malesuadased.
                 Integer fringilla magnavel orci ultricies fermentum.
                 Suspendisse sem est."
-            color="#fff"
-            bgColor="#396D93"
-          />
+              color="#fff"
+              bgColor="#396D93"
+            />
+          </Popover>
         </h3>
         {doingTask && <span className="endsin font-OCR text-white">Ends in</span>}
       </div>
@@ -194,23 +198,38 @@ export default function AirdropClaim() {
           <li key={index} className="follow_list_item flex items-center w-full justify-between px-3 py-3.5">
             <p
               className={classNames('leading-5 font-OCR whitespace-pre-wrap', {
-                'text-white': (!item.followed && stage !== 'imo') || !address,
-                'text-deep-green': item.followed || stage === 'imo',
+                'text-white': (!item.followed && stage === 'in-queue') || !address,
+                'text-deep-green': item.followed || stage !== 'in-queue',
               })}
             >
               Follow @{item.user}
               {'\n'}on twitter
             </p>
-            <Wallet>
-              <img
-                onClick={() => (item.followed || stage === 'imo' ? null : handleFollow(item.user ? item.user : ''))}
-                className={classNames('w-5', {
-                  'cursor-pointer': !item.followed,
-                  'opacity-30': (item.followed || stage === 'imo') && address,
-                })}
-                src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
-              />
-            </Wallet>
+            {!address ? (
+              <Wallet>
+                {stage === 'in-queue' && (
+                  <img
+                    onClick={() => (item.followed ? null : handleFollow(item.user ? item.user : ''))}
+                    className={classNames('w-5', {
+                      'cursor-pointer': !item.followed,
+                      'opacity-30': item.followed && address,
+                    })}
+                    src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
+                  />
+                )}
+              </Wallet>
+            ) : (
+              stage === 'in-queue' && (
+                <img
+                  onClick={() => (item.followed ? null : handleFollow(item.user ? item.user : ''))}
+                  className={classNames('w-5', {
+                    'cursor-pointer': !item.followed,
+                    'opacity-30': item.followed && address,
+                  })}
+                  src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
+                />
+              )
+            )}
           </li>
         ))}
         {/* <li className="follow_list_item flex items-center w-full justify-between px-3 py-3.5" onClick={testAirdrop} /> */}
@@ -223,7 +242,7 @@ export default function AirdropClaim() {
               <Countdown
                 onEnded={(ended) => ended && triggerRefresh?.()}
                 instant={
-                  (stage === 'launch' ? idoLaunchedDetail?.rewardEndsIn ?? 0 : idoActiveDetail?.rewardEndsIn ?? 0) *
+                  (stage === 'launch' ? (idoLaunchedDetail?.rewardEndsIn ?? 0) : (idoActiveDetail?.rewardEndsIn ?? 0)) *
                   1000
                 }
               />
@@ -248,7 +267,7 @@ export default function AirdropClaim() {
       <AirdropClaimModal>
         <Button
           disabled={!idoQueueDetail?.claimFlag}
-          className={classNames('uppercase w-full claim_btn h-12 font–404px', {
+          className={classNames('uppercase w-full claim_btn h-12 font–404px mt-5', {
             'mt-20': doingTask,
             'mt-5': airdropUnlocking || airdropUnlocked,
           })}

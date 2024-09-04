@@ -1,12 +1,15 @@
 import { useCallback } from 'react';
-import { useAccount } from 'wagmi';
+// import { useAccount } from 'wagmi';
+import { useAccount } from '@/hooks/useWeb3';
 import { login } from '@/api/login';
 import { useSign } from '@/hooks/useEthers';
-import { usePhantom } from '@/hooks/useSolana';
+import { useSolana } from '@/hooks/useSolana';
 import { MEMOO_TOKEN_STORAGE } from '@/constants';
 import { useWallet } from '@solana/wallet-adapter-react';
 export const useLogin = () => {
-  const { getSign, pubKey: address } = usePhantom();
+  const { getSign } = useSolana();
+  const { address } = useAccount();
+
   const loginMeme = useCallback(async () => {
     console.log('loginMeme');
     const data = await getSign();
@@ -15,7 +18,9 @@ export const useLogin = () => {
       const result = await login({
         address: address,
         message: data.msg,
-        signature: data.rawSignature.signature.toString('base64'),
+        // signature: data.rawSignature.signature.toString('base64'),
+        signature: data.rawSignature,
+        // signature: data.rawSignature.toString(),
         chain: 'Solana',
       });
       console.log(result);

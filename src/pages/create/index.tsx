@@ -1,3 +1,5 @@
+/* eslint-disable no-debugger */
+/* eslint-disable react/jsx-curly-brace-presence */
 import './index.scss';
 import BackButton from '@/components/BackButton';
 import { Button } from '@/components/ui/button';
@@ -46,9 +48,14 @@ import BigNumber from 'bignumber.js';
 import { CHAIN_ID } from '@/constants';
 import CreatedTokenCompleteConnectedModal from './create-token-complete-connected-modal';
 import ITooltip from '@/components/ITooltip';
+import { getMemeConfigId } from '@/api/base';
+import { memooConfig } from '@/types';
+import { useProportion } from '@/hooks/useProportion';
+import { IconMinus, IconPlus } from '@/components/icons';
 
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
+console.log('twitterRedirectUri: ', twitterRedirectUri);
 const FORM_STORAGE_KEY = 'create_token_storage';
 const TWITTER_CLIENT_ID_KEY = 'twitter_client_id';
 const PreLaunchDurationOptions = [
@@ -67,9 +74,12 @@ const CurrentProductDescriptions = [
 interface CreatedTokenCompleteConnectedModalRef {
   setOpen: (open: boolean) => void;
 }
+const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 export default function Create() {
   // const { address, chainId } = useAccount();
-  const { address } = useAccount();
+  const { address, registerTokenMint } = useAccount();
+  const { firstProportion, maxProportion, totalCapInitial, totalCap, creatorAllocation } = useProportion();
+  // const [memeConfigId, setmemeConfigId] = useState<memeConfigId>({});
   // const { switchChain } = useSwitchChain();
   const [searchParams] = useSearchParams();
   const [isAccept, setIsAccept] = useState(false);
@@ -79,47 +89,30 @@ export default function Create() {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [iconUrl, setIconUrl] = useState('');
   const [bannerUrl, setBannerUrl] = useState('');
-  const { config: memooConfig, defaultConfig, createMeme, createMemeLoading } = useManageContract();
   const [connectTwitterLoading, setConnectTwitterLoading] = useState(false);
   const [twitter, setTwitter] = useState('');
   const [twitterAccessToken, setTwitterAccessToken] = useState('');
   const [clientId, setClientId] = useState('');
   const [preMarketAcquisition, setPreMarketAcquisition] = useState(0);
-  console.log('memooConfig: ', memooConfig);
   const { getMemeAddressWithSymbol } = useMemeFactoryContract();
   const navigate = useNavigate();
   const createdTokenRef = useRef<CreatedTokenCompleteConnectedModalRef>(null);
+  // const [memooConfig, setMemooConfig] = useState<memooConfig>();
+  // useEffect(() => {
+  //   (async () => {
+  //     const config = await getMemooConfig();
+  //     // setMemooConfig(config);
+  //     console.log('config:', config);
+  //     console.log('firstProportion:', Number(config?.tokenAllocationCreator) / 10000);
+  //     console.log('maxProportion:', Number(config?.idoCreatorBuyLimit) / 10000);
+  //     // console.log('totalCap:', new BigNumber(Number(config?.platformFeeCreateMemeSol)).dividedBy(10 ** 18));
+  //     console.log('totalCap:', config?.platformFeeCreateMemeSol.toNumber());
+  //     const rate = Number(config?.idoCreatorBuyLimit) / 10000;
+  //     console.log('totalCapInitial:', Number(config?.idoPrice) * Number(config?.totalSupply) * rate);
+  //   })();
+  // }, [address]);
 
-  const firstProportion = useMemo(() => Number(memooConfig?.allocation.creator) / 10000, [memooConfig]);
-  const maxProportion = useMemo(() => Number(memooConfig?.idoCreatorBuyLimit) / 10000, [memooConfig]);
-  const firstIncrease = useMemo(() => {
-    if (!memooConfig || !defaultConfig) return 0;
-
-    const totalSupplyBN = new BigNumber(Number(defaultConfig?.totalSupply)).dividedBy(
-      10 ** defaultConfig?.defaultDecimals,
-    );
-    const idoPriceBN = new BigNumber(Number(defaultConfig?.idoPrice)).dividedBy(10 ** defaultConfig?.defaultDecimals);
-    const result = totalSupplyBN.multipliedBy(idoPriceBN).multipliedBy(firstProportion);
-    return parseFloat(formatDecimals(result));
-  }, [memooConfig, firstProportion, defaultConfig]);
-  // console.log('memooConfig.platformFeeCreateMeme:', formatDecimals(memooConfig.platformFeeCreateMeme));
-  const totalCap = useMemo(() => {
-    if (!memooConfig || !defaultConfig) return 0;
-    // // eslint-disable-next-line no-debugger
-    // debugger;
-    const platformFeeCreateMeme = new BigNumber(Number(memooConfig?.platformFeeCreateMeme)).dividedBy(
-      10 ** defaultConfig?.defaultDecimals,
-    );
-    return parseFloat(platformFeeCreateMeme.toString());
-  }, [memooConfig, defaultConfig]);
-
-  const totalCapInitial = useMemo(() => {
-    if (!memooConfig || !defaultConfig) return 0;
-    const rate = Number(memooConfig.idoCreatorBuyLimit) / 10000;
-    return Number(formatEther(defaultConfig?.idoPrice)) * Number(formatEther(defaultConfig?.totalSupply)) * rate;
-  }, [memooConfig, defaultConfig]);
-  console.log('memooConfig: ', memooConfig);
-  console.log('totalCapInitial: ', totalCapInitial);
+  // console.log('totalCapInitial: ', totalCapInitial);
   const normFile = (e: any) => {
     if (Array.isArray(e)) {
       return e;
@@ -170,7 +163,7 @@ export default function Create() {
 
     let clientId = res.data;
     localStorage.setItem(TWITTER_CLIENT_ID_KEY, clientId);
-
+    console.log('twitterRedirectUri: ', twitterRedirectUri);
     authorizeTwitter(clientId, twitterRedirectUri);
   }, [form, iconUrl, bannerUrl]);
 
@@ -261,25 +254,46 @@ export default function Create() {
     }
   }, [form, searchParams]);
 
-  const payFee = useCallback(async () => {
-    const data = form.getFieldsValue();
+  const payFee = useCallback(
+    async (memeConfigId: string) => {
+      const data = form.getFieldsValue();
 
-    let preLaunchSecond = 0;
-    if (data.preLaunchDuration === PreLaunchDurationEnum.IMMEDIATE) {
-      preLaunchSecond = 0;
-    } else if (data.preLaunchDuration === PreLaunchDurationEnum['1DAY']) {
-      preLaunchSecond = 24 * 3600;
-    } else {
-      preLaunchSecond = 3 * 24 * 3600;
-    }
+      let preLaunchSecond = 0;
+      if (data.preLaunchDuration === PreLaunchDurationEnum.IMMEDIATE) {
+        preLaunchSecond = 0;
+      } else if (data.preLaunchDuration === PreLaunchDurationEnum['1DAY']) {
+        preLaunchSecond = 24 * 3600;
+      } else {
+        preLaunchSecond = 3 * 24 * 3600;
+      }
 
-    const preValue = totalCapInitial * data.preMarketAcquisition;
-    console.log('preValue: ', preValue);
-    const value = parseEther(String(preValue)) + memooConfig!.platformFeeCreateMeme;
-    const res = await createMeme(data.tokenName, data.ticker, preLaunchSecond, value);
-    console.log('res: ', res);
-    return res;
-  }, [createMeme, form, memooConfig, totalCapInitial]);
+      const preValue = totalCapInitial * (data.preMarketAcquisition / 0.3);
+      console.log('totalCapInitial:', totalCapInitial);
+      console.log('preValue: ', preValue);
+      // const value = parseEther(String(preValue)) + memeConfigId!.platformFeeCreateMeme;
+      // const value = parseEther(String(preValue));
+      // const platformFeeCreateMeme = (totalCapInitial * 0.05) / 0.3;
+      // console.log('platformFeeCreateMeme: ', platformFeeCreateMeme);
+      // console.log(preValue + platformFeeCreateMeme);
+
+      const value = new BigNumber(preValue.toFixed(2)).multipliedBy(new BigNumber(10).pow(9));
+      console.log('value1:', Number(value).toString());
+      // const value = parseEther(String(preValue)) + memooConfig!.platformFeeCreateMeme;
+      // const res = await createMeme(data.tokenName, data.ticker, preLaunchSecond, value);
+
+      const res = await registerTokenMint(memeConfigId!, Number(value).toString());
+      console.log('res: ', res);
+      return res;
+    },
+    [registerTokenMint, form, totalCapInitial],
+  );
+
+  const handleTickerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    form.setFieldsValue({
+      ticker: value.toUpperCase(),
+    });
+  };
 
   const handleSave = useCallback(
     // TODO check login
@@ -307,13 +321,15 @@ export default function Create() {
         }
         await form.validateFields();
         // twitter must have been connected
-        if (!twitter) {
-          message.warning('Please connect project twitter first.');
-          return;
-        }
+        // if (!twitter) {
+        //   message.warning('Please connect project twitter first.');
+        //   return;
+        // }
 
         data.twitter = twitter;
         data.accessToken = twitterAccessToken;
+        // data.twitter = 'twitter';
+        // data.accessToken = 'twitterAccessToken';
         if (isConfirm) {
           // twitter must have been connected
           if (!twitter) {
@@ -321,9 +337,14 @@ export default function Create() {
             return;
           }
           setConfirmLoading(true);
+          // data.ticker = data.ticker.toUpperCase();
           const res = await confirmTokenCreate(data);
+
           console.log('res: ', res);
-          const feeRes = await payFee();
+          const { data: config } = await getMemeConfigId(res.data.Ticker);
+          console.log('sonalaConfigMemeId:', config);
+
+          const feeRes = await payFee(config.memeConfigId);
           if (!feeRes) {
             message.error('Create failed.');
             return;
@@ -378,7 +399,10 @@ export default function Create() {
   return (
     <div className="create_token mb-[70px]">
       <div className="create_token_top">
-        <div className="create_token_top_title">Create Token</div>
+        <div className="create_token_top_title">
+          <span>Create Token</span>
+          <img src="/create/img-create-icon.png" alt="" className="h-[96px]" />
+        </div>
         <div className="create_token_top_back cursor-pointer">
           <BackButton />
         </div>
@@ -408,7 +432,7 @@ export default function Create() {
               name="tokenName"
               rules={[{ required: true, message: 'Please input token name!' }]}
             >
-              <Input showCount maxLength={20} />
+              <Input className="rounded-[7px]" showCount maxLength={20} />
             </Form.Item>
             <Form.Item
               label={
@@ -419,7 +443,7 @@ export default function Create() {
               name="ticker"
               rules={[{ required: true, message: 'Please input ticker!' }]}
             >
-              <Input showCount maxLength={8} style={{ width: 140 }} />
+              <Input className="rounded-[7px]" showCount maxLength={8} onChange={handleTickerChange} />
             </Form.Item>
 
             <Form.Item
@@ -449,11 +473,23 @@ export default function Create() {
                     accept="image/*"
                     maxCount={1}
                     beforeUpload={(file) => handleUpload(file, 'icon')}
-                    showUploadList={{ showPreviewIcon: false, showRemoveIcon: true }}
-                    style={{ width: 140, height: 140 }}
+                    showUploadList={{
+                      showPreviewIcon: false,
+                      showRemoveIcon: true,
+                    }}
+                    style={{ height: 140 }}
                     className="custom-upload-icon"
                   >
-                    <button style={{ border: 0, background: 'none', width: '100%', height: '100%' }} type="button">
+                    <button
+                      style={{
+                        border: 0,
+                        background: '#1f3b4f',
+                        width: '100%',
+                        height: '100%',
+                        borderRadius: '7px',
+                      }}
+                      type="button"
+                    >
                       <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
                         <img src="./token/icon-upload.svg" alt="upload" className="w-[30px] h-[30px]" />
                         <p className="font-OCR text-[10px] text-green leading-4">Upload Image</p>
@@ -475,10 +511,10 @@ export default function Create() {
             >
               <Input.TextArea
                 showCount
-                maxLength={100}
+                maxLength={250}
                 placeholder=""
                 style={{ height: 208, resize: 'none' }}
-                className="custom-create-textarea"
+                className="custom-create-textarea rounded-[7px]"
               />
             </Form.Item>
 
@@ -525,38 +561,73 @@ export default function Create() {
             </Form.Item>
             <Form.Item
               label={
-                <p>
-                  Pre-Market Acquisition <span>*</span>
-                </p>
+                <div className="flex items-end">
+                  <p>
+                    Creator’s Allocation <span>*</span> <br />{' '}
+                  </p>
+                </div>
+              }
+            >
+              <div className="bg-[#07E993] h-[50px] rounded-[7px] flex items-center justify-center text-[#A005FE] text-[24px] font-404px text-center">
+                {creatorAllocation} <span className="text-[18px]">&nbsp;TOKENS</span>
+              </div>
+            </Form.Item>
+            <p className="create_tip_for_acquisition">
+              Creator is entitled <br /> to {maxProportion * 100}% of token supply
+            </p>
+            <Form.Item
+              label={
+                <div className="flex items-end">
+                  <p className="mr-[10px]">
+                    Pre-Market Acquisition<span>*</span>
+                  </p>
+                  <p>
+                    <ITooltip
+                      placement="bottom"
+                      title="Lorem ipsum dolor sit amet consectetur adipiscing elit.
+                     Morbi fringilla ipsum turpisı sit amet tempus est malesuadased.
+                     Integer fringilla magnavel orci ultricies fermentum.
+                     Suspendisse sem est."
+                      color="#fff"
+                      bgColor="#4A5082"
+                    />
+                  </p>
+                </div>
               }
               name="preMarketAcquisition"
               style={{ marginTop: '40px' }}
             >
-              {/* <MySlider
+              <MySlider
                 defaultValue={preMarketAcquisition}
+                min={0}
+                max={maxProportion}
                 // min={firstProportion}
-                // max={maxProportion}
-                min={firstProportion}
-                max={100}
+                // max={100}
                 minPrice={0}
                 maxPrice={totalCapInitial}
-              /> */}
-              <MySlider min={0} max={1} minPrice={0} maxPrice={totalCapInitial} />
+              />
+              {/* <MySlider min={0} max={1} minPrice={0} maxPrice={100} /> */}
             </Form.Item>
             <p className="create_tip_for_acquisition">
-              The creator can enhance the initial allocation by purchasing an additional 30%
+              The creator can enhance the initial allocation by purchasing an additional {maxProportion * 100}%
             </p>
 
             <div className="create_optional_info">
               <div className="create_optional_info_title">
-                <p>Optional Info</p>
-                <img
-                  src={optionalOpen ? './create/icon-minus.svg' : './create/icon-plus.svg'}
-                  alt=""
-                  onClick={() => {
-                    setOptionalOpen(!optionalOpen);
-                  }}
-                />
+                <p className="font-404px text-[18px]">Optional Info</p>
+                {optionalOpen ? (
+                  <IconMinus
+                    onClick={() => {
+                      setOptionalOpen(!optionalOpen);
+                    }}
+                  />
+                ) : (
+                  <IconPlus
+                    onClick={() => {
+                      setOptionalOpen(!optionalOpen);
+                    }}
+                  />
+                )}
               </div>
               {optionalOpen && (
                 <div className="create_optional_form">
@@ -582,7 +653,10 @@ export default function Create() {
                           accept="image/*"
                           maxCount={1}
                           beforeUpload={(file) => handleUpload(file, 'banners')}
-                          showUploadList={{ showPreviewIcon: false, showRemoveIcon: true }}
+                          showUploadList={{
+                            showPreviewIcon: false,
+                            showRemoveIcon: true,
+                          }}
                           className="custom-upload-banner"
                           previewFile={(file) => {
                             return new Promise((resolve) => {
@@ -607,7 +681,10 @@ export default function Create() {
                     </div>
                   </Form.Item>
                   <Form.Item label={<p>Website</p>} name="website">
-                    <Input maxLength={20} className="custom-input" />
+                    <div className="reactive">
+                      <Input className="custom-input rounded-[7px] px-8" />
+                      <img className="website-logo" src="/create/icon-website.png" alt="" />
+                    </div>
                   </Form.Item>
                   {/* <Form.Item label="Creator's Twitter">
                     <Input maxLength={20} />
@@ -625,10 +702,10 @@ export default function Create() {
 
           <div>
             <p className="create_fee_desc">
-              A platform Fee of {totalCap} ETH is applicable to facilitate your meme token creation. You will <br /> be
-              entitled to {firstProportion * 100}% supply of your meme token. The token will be distributed post <br />{' '}
-              TGE after <span className="text-[#07E993]">‘fair conditions’</span> are met.{' '}
-              <span className="text-[#07E993]">Click here</span>
+              A platform Fee of {totalCap} {tokenSymbol} is applicable to facilitate your meme token creation. You will{' '}
+              <br /> be entitled to {firstProportion * 100}% supply of your meme token. The token will be distributed
+              post <br /> TGE after <span className="text-[#07E993]">‘fair conditions’</span> are met.{' '}
+              <span className="text-[#07E993]">Click here </span>
               for the tokenomics disclosures.
             </p>
           </div>

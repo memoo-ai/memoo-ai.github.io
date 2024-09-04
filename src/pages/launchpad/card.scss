@@ -1,8 +1,11 @@
 .ido-info-item {
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #5D64A2;
 
+
+  &:last-child {
+    border: none;
+  }
 
   >span {
     font-family: OCR A Extended;
@@ -25,4 +28,8 @@
     margin-left: auto;
     ;
   }
+}
+
+.ido-info-item-border {
+  border-bottom: 1px solid #5D64A2;
 }

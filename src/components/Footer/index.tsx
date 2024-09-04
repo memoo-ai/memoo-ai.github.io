@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import React from 'react';
 import './index.scss';
-import { IconTwitter, IconTelegram, IconVector, IconMemoo } from '@/components/icons';
+import { IconTwitter, IconTelegram, IconVector, IconMemoo, IconCoin } from '@/components/icons';
 
 interface FooterProps {
   children?: ReactNode;
@@ -29,7 +29,11 @@ const Footer: React.FC<FooterProps> = ({ children }) => {
         </div>
       </div>
       <div className="footerCopyright">
-        <img src="/img-powered-base.png" alt="" className="w-[167px] h-[18px]" />
+        <img src="/img-powered-solana.png" alt="" className="w-[167px] h-[18px]" />
+        {/* <div className="flex items-center">
+          <span className="font-REV text-[#AF8DC4] text-[12px] mr-[9px]">POWERED ON</span>{' '}
+          <IconCoin color="#AF8DC4" iconColor="#AF8DC4" />{' '}
+        </div> */}
         <p className="font-OCR">Copyright © 2024 MeMoo. All rights reserved.</p>
       </div>
     </footer>

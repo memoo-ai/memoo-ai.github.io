@@ -31,7 +31,7 @@ const useSPLToken = (pk: ProgramId | Mint) => {
       // console.log(`mint: ${new PublicKey(accountInfo.mint)}`);
       // console.log(`amount: ${accountInfo.amount}`);
 
-      setBalance(new BigNumber(accountInfo.amount).dividedBy(10 ** decimals));
+      setBalance(new BigNumber(accountInfo.amount.toString()).dividedBy(10 ** decimals));
     })();
   }, [publicKey, connection, decimals]);
 

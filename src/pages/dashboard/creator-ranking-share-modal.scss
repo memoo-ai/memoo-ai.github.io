@@ -4,8 +4,11 @@
     border-radius: 15px !important;
   }
   .creator-ranking-share-modal-content{
+    // width: 480px;
+    // height: 480px;
     background: url('./assets/creator-ranking-bg.png') no-repeat;
-    background-size: cover ;
+    background-size: cover;
+    background-position: center center;
     padding: 28px;
     border-radius: 15px;
   }

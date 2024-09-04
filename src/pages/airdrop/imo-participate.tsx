@@ -1,13 +1,13 @@
 import { FC, useContext, useMemo, useState } from 'react';
 import './imo-participate.scss';
 import Countdown from './countdown';
-import { Button, Popover } from 'antd';
+import { Button } from 'antd';
 import classNames from 'classnames';
 import { AirdropContext } from '.';
 import ImoParticipationModal from './imo-participation-modal';
 import { formatDecimals } from '@/utils';
 import ITooltip from '@/components/ITooltip';
-
+const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const IMOParticipate: FC = () => {
   const { idoActiveDetail, idoQueueDetail } = useContext(AirdropContext);
   const [ended, setEnded] = useState(false);
@@ -22,13 +22,13 @@ const IMOParticipate: FC = () => {
       // { key: 'Price', value: `$${Number(idoActiveDetail?.price).toLocaleString() ?? 0}`, tip: null },
       {
         key: 'Total Raised',
-        value: `${idoActiveDetail?.totalRaised ?? 'NA/NA'} ETH`,
-        tip: 'Total IMO raise is always capped \n at 2.33 ETH',
+        value: `${idoActiveDetail?.totalRaised === '' ? 0 : (idoActiveDetail?.totalRaised ?? 'NA/NA')} ${tokenSymbol}`,
+        tip: `Total IMO raise is always capped \n at 2.33 ${tokenSymbol}`,
       },
       {
         key: 'Contributed',
-        value: `${idoQueueDetail?.contributed ?? 'NA'}/${idoQueueDetail?.maxContributed ?? 'NA'} ETH`,
-        tip: 'Contributed per wallet \n is capped at 0.066 ETH',
+        value: `${idoQueueDetail?.contributed ?? 'NA'}/${idoQueueDetail?.maxContributed ?? 'NA'} ${tokenSymbol}`,
+        tip: `Contributed per wallet \n is capped at 0.066 ${tokenSymbol}`,
       },
     ],
     [idoActiveDetail, idoQueueDetail],
@@ -60,7 +60,7 @@ const IMOParticipate: FC = () => {
               </div>,
               <div key="minutes">
                 <time>{minutes}</time>
-                <span>H</span>
+                <span>M</span>
               </div>,
               <div key="seconds">
                 <time>{seconds}</time>
@@ -73,7 +73,7 @@ const IMOParticipate: FC = () => {
             }}
           />
           <p className="mt-3 text-white font-OCR leading-5 text-sm">Fair Distribution Policy</p>
-          <p className="text-deep-green text-center font-OCR leading-14 text-xs">
+          <p className="text-deep-green text-center font-OCR leading-14 text-xs whitespace-nowrap">
             Wallet capped at 1% token supply per address.
           </p>
         </div>

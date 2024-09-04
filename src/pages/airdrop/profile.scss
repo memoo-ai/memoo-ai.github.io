@@ -1,4 +1,10 @@
-.token_list > li {
+.profile {
+  border: 1px solid #5D64A2;
+  border-top: none;
+  border-radius: 0px 0px 15px 15px;
+}
+
+.token_list>li {
   border-radius: 28px;
   background: #252841;
   padding: 6px 20px;
@@ -8,17 +14,40 @@
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
-  line-height: 16px; /* 114.286% */
+  line-height: 16px;
+  /* 114.286% */
   letter-spacing: -0.7px;
 }
-.token_list_hover{
-  &:hover{
+
+.token_list_hover {
+  border: 1px solid transparent;
+  cursor: pointer;
+  &:hover {
     border: 1px solid #07E993;
     background: #1f3b4f;
     color: #07E993;
 
-    a{
+    a {
       color: #07E993;
+    }
+  }
+}
+
+.profile-share {
+  position: relative;
+
+  .profile-share-content {
+    width: 168px;
+    position: absolute;
+    top: 99%;
+    left: 50%;
+    transform: translateX(-50%);
+
+    .content {
+      background: #2E5875;
+      border: 1px solid #07E993;
+      border-radius: 7px;
+      padding: 9px 13px;
     }
   }
 }

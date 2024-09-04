@@ -11,17 +11,17 @@ import { useAccountEffect } from 'wagmi';
 import { useLogin } from '@/hooks/useLogin';
 import { MEMOO_TOKEN_STORAGE, SOL_DEMO_SPL_USDC } from '@/constants';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { usePhantom } from '@/hooks/useSolana';
 import useSPLToken from '@/utils/solanaWeb3/slpToken';
 import { PublicKey } from '@solana/web3.js';
+import useStore from '@/store';
 const BasicLayout: React.FC = () => {
   const signer = useEthersSigner({ chainId: Number(import.meta.env.VITE_NODE_CHAIN_ID) });
   // const [connected, setConnected] = useState(false);
   const { loginMeme } = useLogin();
   const { connected, publicKey } = useWallet();
-  const { pubKey } = usePhantom();
   const location = useLocation();
   const navigate = useNavigate();
+  const { pubKey, setPubKey } = useStore();
   // useAccountEffect({
   //   onConnect(data) {
   //     setConnected(true);
@@ -35,7 +35,13 @@ const BasicLayout: React.FC = () => {
   console.log('USDC balance on testnet', balance?.toNumber());
 
   useEffect(() => {
-    if (connected && !localStorage.getItem(MEMOO_TOKEN_STORAGE)) {
+    const isChangePublickey = publicKey?.toBase58() === pubKey;
+    console.log('publicKey?.toBase58(): ', publicKey?.toBase58());
+    console.log('publicKey: ', pubKey);
+    console.log(isChangePublickey);
+    const token = localStorage.getItem(MEMOO_TOKEN_STORAGE);
+    // if ((connected && !isChangePublickey) || !token) {
+    if (connected && !token) {
       (async () => {
         // if (!signer) return;
         // const msg = String(Date.now());
@@ -43,11 +49,15 @@ const BasicLayout: React.FC = () => {
         // console.log('rawSignature', rawSignature);
         console.log('loginMeme');
         // // TODO
+        console.log('useEffect,loginMeme');
         await loginMeme();
-        window.location.reload();
+        if (publicKey) {
+          setPubKey(publicKey?.toBase58());
+        }
+        // window.location.reload();
       })();
     }
-  }, [connected]);
+  }, [connected, publicKey]);
   // const whitelist = ['/', '/launchpad', '/gecko'];
   // useEffect(() => {
   //   (async () => {

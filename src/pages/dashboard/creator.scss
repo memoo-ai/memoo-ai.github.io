@@ -31,6 +31,7 @@
     grid-gap: 21px;
     margin-top: 31px;
     .dashboard_item_create{
+      width: 18rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -98,7 +99,7 @@
 }
 .ant-tabs-nav{
   border-bottom: none !important;
-  background: #F7F7F7;
+  background: transparent !important;
   padding: 0;
 }
 .ant-tabs-nav-wrap{

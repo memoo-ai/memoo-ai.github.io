@@ -151,6 +151,11 @@ declare interface IDOLaunchedDetail extends IDOClaimStage {
   rewardEndsIn: number;
   count: number;
   website: string;
+  claimImoFlag: boolean;
+  isParticipateImo: boolean;
+  imoBalance: number;
+  claimImoBalance: number;
+  contributed: number;
 }
 
 declare interface PageWrapper<T> {
@@ -169,7 +174,11 @@ declare interface IDOLaunchedDetailTop10 {
   address: string;
   proportion: string;
 }
-
+declare interface memooScore {
+  scoreField: string;
+  scoreValue: number;
+  totalScore: number;
+}
 declare interface IDOQueueDetail extends IDOClaimStage {
   commitment: string;
   communityActivit: string;
@@ -187,7 +196,7 @@ declare interface IDOQueueDetail extends IDOClaimStage {
   liquidity: string;
   lpContractAddress: Address;
   marketCap: string;
-  meMooScore: string;
+  memooScoreTotal: string;
   banners: string[];
   memeTwitterBind: boolean;
   pinnedTwitter: string;
@@ -214,9 +223,14 @@ declare interface IDOQueueDetail extends IDOClaimStage {
   maxContributed: number;
   rewardEndsIn: number;
   count: number;
+  claimImoFlag: boolean;
+  isParticipateImo: boolean;
+  imoBalance: number;
+  claimImoBalance: number;
+  memooScore: memooScore[];
 }
 
-declare type IDOStatus = 'Draft' | 'QUEUE' | 'IDO' | 'Launched';
+declare type IDOStatus = 'Draft' | 'Waiting_for_pay' | 'QUEUE' | 'IDO' | 'Launched' | 'IDOEND';
 
 declare interface pageParams {
   pageNumber: number;
@@ -236,7 +250,7 @@ declare interface LaunchpadIMO {
 declare interface LaunchpadAirdrop {
   icon: string;
   idoDate: string;
-  meMooScore: string;
+  memooScore: string;
   participants: number;
   status: string;
   ticker: string;
@@ -245,7 +259,7 @@ declare interface LaunchpadAirdrop {
 declare interface LaunchpadIDOCompeted {
   athRoi: string;
   icon: string;
-  meMooScore: string;
+  memooScore: string;
   ticker: string;
   tokenName: string;
   totalRaised: string;
@@ -306,7 +320,7 @@ declare interface TrendingTokens {
   increase1H: number;
   increase24H: number;
   marketCap: number;
-  meMooScore: string;
+  memooScore: string;
   price: number;
   ticker: string;
   tokenName: string;
@@ -387,7 +401,7 @@ declare interface TokenDetail {
   website: string;
 }
 declare interface LoginParams {
-  address: `0x${string}`;
+  address: any;
   message: string;
   signature: string;
   chain: 'Ethereum' | 'Solana';
@@ -402,4 +416,65 @@ declare interface AirdropDetail {
   jsonData: string;
   signature: string;
   airdropCount: number;
+  signPublickey: string;
+}
+declare interface ImoPvCard {
+  banners: [];
+  contributed: number;
+  description: string;
+  endsIn: number;
+  icon: string;
+  idoPrice: number;
+  maxContributed: number;
+  projectId: number;
+  ticker: string;
+  tokenName: string;
+}
+declare interface AirdropCard {
+  address: string;
+  icon: string;
+  ticker: string;
+  tokenName: string;
+}
+declare interface CrossDirection {
+  address: string;
+  icon: string;
+  ticker: string;
+  tokenName: string;
+}
+
+declare interface CrowdSourcing {
+  address: string;
+  amout: string;
+  icon: string;
+  ticker: string;
+  tokenName: string;
+  tradeType: string;
+}
+declare interface SolanaConfig {
+  globalMemooConfigId: string;
+  memeConfigId: string;
+  platformFeeRecipientPublicKey: string;
+}
+declare interface SolanaMemeConfig {
+  memeConfigId: string;
+  mintaPublickey: string;
+}
+declare interface memooConfig {
+  admin: string;
+  airdropPrice: string;
+  id: string;
+  idoPrice: string;
+  idoCreatorBuyLimit: number;
+  idoUserBuyLimit: number;
+  openTime: string;
+  platformFeeCreateMemeSol: string;
+  platformFeeRateDenominatorIdo: number;
+  platformFeeRateIdo: number;
+  tokenAllocationAirdrop: number;
+  tokenAllocationCreator: number;
+  tokenAllocationIdo: number;
+  tokenAllocationLp: number;
+  tokenAllocationPlatform: number;
+  totalSupply: string;
 }

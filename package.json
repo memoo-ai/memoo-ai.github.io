@@ -25,7 +25,8 @@
     }
   },
   "dependencies": {
-    "@metaplex-foundation/mpl-token-metadata": "2",
+    "@coral-xyz/anchor": "0.29.0",
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@metaplex/js": "^4.12.0",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-dialog": "^1.0.5",
@@ -37,14 +38,13 @@
     "@radix-ui/react-tabs": "^1.0.4",
     "@radix-ui/themes": "^2.0.3",
     "@rainbow-me/rainbowkit": "^2.0.2",
-    "@solana-developers/helpers": "^2.3.0",
-    "@solana/spl-token": "^0.4.7",
+    "@solana/spl-token": "0.4.8",
     "@solana/spl-token-swap": "^0.4.3",
     "@solana/wallet-adapter-base": "^0.9.23",
     "@solana/wallet-adapter-react": "^0.15.35",
     "@solana/wallet-adapter-react-ui": "^0.9.35",
     "@solana/wallet-adapter-wallets": "^0.19.32",
-    "@solana/web3.js": "^1.93.2",
+    "@solana/web3.js": "^1.94.0",
     "@tanstack/react-query": "^5.28.6",
     "@tanstack/react-table": "^8.16.0",
     "@wagmi/core": "^2.6.9",
@@ -58,6 +58,9 @@
     "dayjs": "^1.11.10",
     "decimal.js": "^10.4.3",
     "ethers": "^6.11.1",
+    "framer-motion": "^11.2.13",
+    "html-to-image": "^1.11.11",
+    "install": "^0.13.0",
     "is-mobile": "^4.0.0",
     "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.368.0",
@@ -77,6 +80,7 @@
     "zustand": "^4.3.9"
   },
   "devDependencies": {
+    "@types/lodash.debounce": "^4.0.9",
     "@types/node": "^20.4.5",
     "@types/numeral": "^2.0.5",
     "@types/qs": "^6.9.15",
@@ -106,6 +110,7 @@
     "typescript": "^5.1.6",
     "vite": "^5.1.4",
     "vite-plugin-compression": "^0.5.1",
-    "vite-plugin-eslint": "^1.8.1"
+    "vite-plugin-eslint": "^1.8.1",
+    "vite-plugin-node-polyfills": "^0.22.0"
   }
 }

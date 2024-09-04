@@ -189,8 +189,40 @@ export function formatRestTime(timestamp: number) {
   } else if (hours > 0) {
     return hours + ' hours';
   } else if (minutes > 0) {
-    return minutes + ' minutes';
+    return minutes + ' mins';
   } else {
-    return seconds + ' seconds';
+    return seconds + ' secs';
   }
+}
+export function getNumberOrDefault(value: any): number {
+  return !isNaN(Number(value)) ? Number(value) : 0;
+}
+export function getRandomColor() {
+  const minBrightness = 50;
+  const maxBrightness = 90;
+  const randomBrightness = minBrightness + Math.random() * (maxBrightness - minBrightness);
+  const randomColor = `hsl(${Math.random() * 360}, 100%, ${randomBrightness}%)`;
+  return randomColor;
+}
+export function uint8ArrayToBase64(uint8Array: Uint8Array) {
+  let binaryString = '';
+  const bytes = new Uint8Array(uint8Array);
+  const len = bytes.byteLength;
+  for (let i = 0; i < len; i++) {
+    binaryString += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binaryString);
+}
+export function base64ToUint8Array(hexString: string) {
+  if (hexString.length % 2 !== 0) {
+    throw new Error('Hex string must have an even number of characters');
+  }
+
+  let arrayBuffer = new Uint8Array(hexString.length / 2);
+
+  for (let i = 0; i < hexString.length; i += 2) {
+    arrayBuffer[i / 2] = parseInt(hexString.substr(i, 2), 16);
+  }
+
+  return arrayBuffer;
 }

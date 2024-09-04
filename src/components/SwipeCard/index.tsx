@@ -45,7 +45,7 @@ export default function SwipeCard({ type = 'light', title, step, children }: IPr
 
   return (
     <div className={classnames('swipe-card', type === 'light' ? 'swipe-card-light' : 'swipe-card-dark')}>
-      <div className="swipe-header w-full flex items-center justify-between">
+      <div className="swipe-header w-full flex items-center justify-between mb-[58px]">
         <p className="title font-404px">{title}</p>
         <div className="swipe-icons flex items-center">
           <IconSwipe
@@ -60,7 +60,7 @@ export default function SwipeCard({ type = 'light', title, step, children }: IPr
       </div>
       <div className="swipe-content">
         <div
-          className="swipe-container"
+          className="swipe-container "
           style={{
             transform: `translateX(${translateX}px)`,
             transition: 'transform 0.3s ease-in-out',

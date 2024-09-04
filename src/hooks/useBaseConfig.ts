@@ -1,18 +1,25 @@
 import { useEffect, useState } from 'react';
-import { BaseConfigData, getBaseConfig } from '@/api/base';
+import { BaseConfigData, getBaseConfig, getSolanaConfig } from '@/api/base';
 // import { useAccount } from 'wagmi';
-import { useAccount } from '@/hooks/useWeb3';
+// import { useAccount } from '@/hooks/useWeb3';
+import { SolanaConfig } from '@/types';
+import { useWallet } from '@solana/wallet-adapter-react';
 export const useBaseConfig = () => {
   const [baseConfig, setBaseConfig] = useState<BaseConfigData>();
-  const { address } = useAccount();
-
+  const [solanaConfig, setSolanaConfig] = useState<SolanaConfig>();
+  // const { address } = useAccount();
+  const { publicKey } = useWallet();
   useEffect(() => {
     getBaseConfig().then((res) => {
       setBaseConfig(res.data);
     });
-  }, [address]);
+    getSolanaConfig().then((res) => {
+      setSolanaConfig(res.data);
+    });
+  }, [publicKey]);
 
   return {
     baseConfig,
+    solanaConfig,
   };
 };
