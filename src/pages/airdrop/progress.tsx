@@ -30,7 +30,7 @@ const Progress: FC = () => {
     console.log('creatorLockCountBN:', Number(creatorLockCountBN));
     const memeUserIdoCountBN = new BigNumber(Number(memeUserData?.memeUserIdoCount)).dividedBy(10 ** 9);
     console.log('memeUserIdoCountBN:', Number(memeUserIdoCountBN));
-    const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 9);
+    const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 10);
     console.log('idoPriceBN:', Number(idoPriceBN), 'idoPriceBN-string:', idoPriceBN.toString());
     const totalCountBN = creatorLockCountBN.plus(memeUserIdoCountBN);
     console.log('totalCountBN:', Number(totalCountBN));

@@ -309,16 +309,18 @@ const Airdrop: FC = () => {
   //     }
   //   })();
   // }, [idoQueueDetail, address, memeUnlockPeriods]);
-
   const preAmount = useMemo(() => {
-    if (!memooConfig || !memeCreatorUserData) return new BN(0);
-    const idoPriceBN = new BN(memooConfig?.idoPrice).div(new BN(10).pow(new BN(9)));
+    if (!memooConfig || !memeCreatorUserData) return new BigNumber(0);
+
+    const idoPriceBN = new BigNumber(memooConfig?.idoPrice.toString()).dividedBy(new BigNumber(10).pow(10));
     console.log('idoPriceBN: ', idoPriceBN.toString());
 
-    const memeUserIdoCountBN = new BN(memeCreatorUserData?.memeUserIdoCount).div(new BN(10).pow(new BN(9)));
+    const memeUserIdoCountBN = new BigNumber(memeCreatorUserData?.memeUserIdoCount.toString()).dividedBy(
+      new BigNumber(10).pow(9),
+    );
     console.log('memeUserIdoCountBN: ', memeUserIdoCountBN.toString());
 
-    const preAmountBN = memeUserIdoCountBN.mul(idoPriceBN);
+    const preAmountBN = memeUserIdoCountBN.multipliedBy(idoPriceBN);
     console.log('preAmount: ', preAmountBN.toString());
 
     return preAmountBN.toNumber();
@@ -363,7 +365,7 @@ const Airdrop: FC = () => {
           {/* <IMOParticipate /> */}
           <AirdropClaim />
           {/* {(stage === 'in-queue' || stage === 'imo') && mine && <PreMarketAcqusition amount={preAmount} />}  */}
-          {stage !== '2st-claim' && mine && <PreMarketAcqusition amount={preAmount} />}
+          {stage !== '2st-claim' && mine && <PreMarketAcqusition amount={Number(preAmount ?? 0)} />}
           <IDODetail />
         </AirdropContext.Provider>
       </div>

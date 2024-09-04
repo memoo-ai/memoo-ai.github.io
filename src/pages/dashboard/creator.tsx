@@ -83,7 +83,7 @@ export const Creator = () => {
 
     const creatorLockCountBN = new BigNumber(Number(memeUserData?.creatorLockCount)).dividedBy(10 ** 9);
     const memeUserIdoCountBN = new BigNumber(Number(memeUserData?.memeUserIdoCount)).dividedBy(10 ** 9);
-    const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 9);
+    const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 10);
     const totalCountBN = creatorLockCountBN.plus(memeUserIdoCountBN);
     const totalPurchasedBN = totalCountBN.multipliedBy(idoPriceBN);
     const formattedResult = parseFloat(formatDecimals(totalPurchasedBN));

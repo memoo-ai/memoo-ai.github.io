@@ -68,7 +68,7 @@ const IncreaseAcquisitionModal: FC<{
 
   useEffect(() => {
     if (!purchased || !memooConfig) return;
-    const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 9);
+    const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 10);
     const totalSupply = new BigNumber(Number(memooConfig?.totalSupply)).dividedBy(10 ** 9);
     const totalPrice = new BigNumber(totalSupply).multipliedBy(idoPriceBN);
     const defaultValue = new BigNumber(purchased).dividedBy(totalPrice);

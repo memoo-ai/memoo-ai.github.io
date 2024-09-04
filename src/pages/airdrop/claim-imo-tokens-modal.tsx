@@ -15,11 +15,12 @@ import './airdrop-claim-modal.scss';
 import { AirdropContext } from '.';
 import { BN } from '@coral-xyz/anchor';
 import BigNumber from 'bignumber.js';
+import { getNumberOrDefault } from '@/utils';
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const ClaimImoTokensModal: FC<{ children: ReactNode }> = ({ children }) => {
   const [open, setOpen] = useState(false);
   const [confirming, setConfirming] = useState(false);
-  const { idoQueueDetail, idoClaim, solanaMemeConfig, memeUserData, memooConfig } = useContext(AirdropContext);
+  const { idoQueueDetail, idoClaim, solanaMemeConfig, memeUserData, memooConfig, mine } = useContext(AirdropContext);
 
   const userCanClaimCount = useMemo(() => {
     if (!memeUserData) return 0;
@@ -98,7 +99,7 @@ const ClaimImoTokensModal: FC<{ children: ReactNode }> = ({ children }) => {
             className="memoo_button mt-4 h-[50px]"
             onClick={onConfirm}
             loading={confirming}
-            // disabled={getNumberOrDefault(Number(idoQueueDetail?.count).toLocaleString()) === 0}
+            disabled={getNumberOrDefault(Number(idoQueueDetail?.count).toLocaleString()) <= 0 || mine}
           >
             Confirm
           </Button>
