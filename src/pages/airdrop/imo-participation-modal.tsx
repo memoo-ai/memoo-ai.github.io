@@ -42,7 +42,9 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
     const idoQuotaBN = new BigNumber(Number(memooConfig.tokenAllocationIdo)).dividedBy(10000);
     // const idoPriceBN = new BigNumber(defaultConfig.idoPrice).dividedBy(10 ** defaultConfig.defaultDecimals);
     const idoPriceBN = new BigNumber(Number(memooConfig.idoPrice)).dividedBy(10 ** 10);
-    return totalSupplyBN.multipliedBy(idoQuotaBN).multipliedBy(idoPriceBN);
+    // const result = totalSupplyBN.multipliedBy(idoQuotaBN).multipliedBy(idoPriceBN);
+    const result = totalSupplyBN.multipliedBy(idoPriceBN);
+    return result;
   }, [memooConfig, totalSupplyBN]);
 
   const idoUserBuyLimitBN = useMemo(() => {
@@ -127,7 +129,7 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
                 placement="bottom"
                 title={`${
                   (Number(formatDecimals(capped)) / 7) * 6
-                } ${tokenSymbol} will be used to create liquidity pair while${Number(
+                } ${tokenSymbol} will be used to create liquidity pair while ${Number(
                   Number(formatDecimals(capped)) / 7,
                 ).toFixed(2)}  ${tokenSymbol} is collected as IMO platform fee.`}
                 color="#fff"

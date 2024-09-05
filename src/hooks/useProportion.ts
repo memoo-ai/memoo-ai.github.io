@@ -81,6 +81,27 @@ export const useProportion = () => {
     return result.toString() ?? 0;
   }, [memooConfig, firstProportion]);
 
+  const idoUserBuyLimit = useMemo(() => {
+    if (!memooConfig) return 0;
+    const idoUserLimit = memooConfig?.idoUserBuyLimit / 10000;
+    return idoUserLimit;
+  }, [memooConfig]);
+
+  const totalSupplyPrice = useMemo(() => {
+    if (!memooConfig) return 0;
+    const totalSupply = new BigNumber(memooConfig?.totalSupply.toString()).dividedBy(10 ** 9);
+    const idoPrice = new BigNumber(memooConfig?.idoPrice.toString()).dividedBy(10 ** 10);
+    const result = totalSupply.multipliedBy(idoPrice);
+    console.log('totalSupplyPrice:', parseFloat(formatDecimals(result)));
+    return parseFloat(formatDecimals(result)) ?? 0;
+  }, [memooConfig]);
+
+  const tokenAllocationIdo = useMemo(() => {
+    if (!memooConfig) return 0;
+    const result = memooConfig?.tokenAllocationIdo / 10000;
+    return result;
+  }, [memooConfig]);
+
   return {
     firstProportion,
     maxProportion,
@@ -92,5 +113,8 @@ export const useProportion = () => {
     createMaxProportion,
     platformCreateMeme,
     creatorAllocation,
+    idoUserBuyLimit,
+    totalSupplyPrice,
+    tokenAllocationIdo,
   };
 };
