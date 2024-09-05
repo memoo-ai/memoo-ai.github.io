@@ -268,7 +268,7 @@ declare interface LaunchpadIDOCompeted {
 declare interface DashboardCreator {
   icon: string;
   launchDate: number;
-  meMooScore: string;
+  memooScore: string;
   stageOneClaim: boolean;
   stageTwoClaim: boolean;
   status: string;
@@ -281,7 +281,7 @@ declare interface DashboardCollectorAirdrop {
   endsIn: number;
   icon: string;
   launchDate: number;
-  meMooScore: string;
+  memooScore: string;
   status: string;
   ticker: string;
   tokenName: string;
@@ -293,7 +293,7 @@ declare interface DashboardCollectorParticipated {
   endsIn: number;
   icon: string;
   launchDate: number;
-  meMooScore: string;
+  memooScore: string;
   participatedFlag: boolean;
   status: string;
   ticker: string;

@@ -108,7 +108,7 @@ export const Card = ({ data, children, participated = false }: CardProps) => {
       </div>
       <div className="dashboard_item_content">
         <div className="dashboard_item_content_left">MeMoo Score</div>
-        <div className="dashboard_item_content_right">{data.meMooScore}</div>
+        <div className="dashboard_item_content_right">{data.memooScore}/100</div>
       </div>
       {participated && (
         <div className="dashboard_item_content">
