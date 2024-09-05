@@ -34,6 +34,7 @@ const IncreaseModal: FC<{
   const [accepted, setAccepted] = useState(false);
   const [confirming, setConfirming] = useState(false);
   const [proportion, setProportion] = useState(purchased);
+  const [defaultProportion, setDefaultProportion] = useState(0);
   const [result, setResult] = useState(0);
   const { idoBuy, idoQueueDetail, solanaMemeConfig, memooConfig } = useContext(CreatorContext);
   // useEffect(() => {
@@ -48,7 +49,7 @@ const IncreaseModal: FC<{
     console.log('firstProportion-result:', firstProportion); // 0.05
     console.log('purchased-result:', purchased);
     const resultSol = (firstIncrease / firstProportion) * increasePercent;
-    const result = resultSol - purchased;
+    const result = parseFloat(formatDecimals(resultSol - purchased));
     console.log('increasing proportion-result:', result);
     setResult(result);
     onCalculated?.(result);
@@ -64,6 +65,7 @@ const IncreaseModal: FC<{
     console.log('defaultValue-purchased:', Number(purchased));
     console.log('defaultValue:', Number(defaultValue));
     setProportion(Number(defaultValue ?? 0.05) * 100);
+    setDefaultProportion(Number(defaultValue ?? 0.05) * 100);
   }, [purchased]);
 
   const onConfirm = useCallback(async () => {
@@ -131,10 +133,10 @@ const IncreaseModal: FC<{
                 className="memoo_slider flex-auto"
                 tooltip={{ open: true, rootClassName: 'memoo_slider_tooltip', formatter: (value) => `${value}%` }}
                 onChange={(value) => {
-                  if (value > purchased * 100) {
+                  if (value > defaultProportion) {
                     setProportion(value);
                   } else {
-                    setProportion(purchased * 100);
+                    setProportion(defaultProportion);
                   }
                 }}
                 value={proportion}

@@ -20,7 +20,8 @@ const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const ClaimImoTokensModal: FC<{ children: ReactNode }> = ({ children }) => {
   const [open, setOpen] = useState(false);
   const [confirming, setConfirming] = useState(false);
-  const { idoQueueDetail, idoClaim, solanaMemeConfig, memeUserData, memooConfig, mine } = useContext(AirdropContext);
+  const { idoQueueDetail, idoClaim, solanaMemeConfig, memeUserData, memooConfig, mine, triggerRefresh } =
+    useContext(AirdropContext);
 
   const userCanClaimCount = useMemo(() => {
     if (!memeUserData) return 0;
@@ -45,7 +46,7 @@ const ClaimImoTokensModal: FC<{ children: ReactNode }> = ({ children }) => {
   }, [memeUserData, memooConfig]);
 
   const onConfirm = useCallback(async () => {
-    if (!idoClaim || !idoQueueDetail || !solanaMemeConfig) return;
+    if (!idoClaim || !idoQueueDetail || !solanaMemeConfig || !triggerRefresh) return;
     try {
       setConfirming(true);
       const tx = await idoClaim(solanaMemeConfig?.memeConfigId, solanaMemeConfig?.mintaPublickey);
@@ -53,6 +54,7 @@ const ClaimImoTokensModal: FC<{ children: ReactNode }> = ({ children }) => {
       if (tx) {
         setOpen(false);
         message.success('Claim Successful');
+        triggerRefresh();
       }
     } catch (error) {
       console.error(error);

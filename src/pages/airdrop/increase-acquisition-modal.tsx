@@ -34,6 +34,7 @@ const IncreaseAcquisitionModal: FC<{
   const [confirming, setConfirming] = useState(false);
   const [proportion, setProportion] = useState(0.05);
   const [result, setResult] = useState(0);
+  const [defaultProportion, setDefaultProportion] = useState(0);
   // const { idoBuy, idoQueueDetail } = useContext(AirdropContext);
   const { idoQueueDetail, mine, idoBuy, solanaMemeConfig, memooConfig, triggerRefresh } = useContext(AirdropContext);
   // const { idoBuy } = useAccount();
@@ -76,6 +77,7 @@ const IncreaseAcquisitionModal: FC<{
     console.log('defaultValue-purchased:', Number(purchased));
     console.log('defaultValue:', Number(defaultValue));
     setProportion(Number(defaultValue ?? 0.05) * 100);
+    setDefaultProportion(Number(defaultValue ?? 0.05) * 100);
   }, [purchased]);
 
   const onConfirm = useCallback(async () => {
@@ -144,12 +146,11 @@ const IncreaseAcquisitionModal: FC<{
                 className="memoo_slider flex-auto"
                 tooltip={{ open: true, rootClassName: 'memoo_slider_tooltip', formatter: (value) => `${value}%` }}
                 onChange={(value) => {
-                  setProportion(value);
-                  // if (value > purchased * 100) {
-                  //   setProportion(value);
-                  // } else {
-                  //   setProportion(purchased * 100);
-                  // }
+                  if (value > defaultProportion) {
+                    setProportion(value);
+                  } else {
+                    setProportion(defaultProportion);
+                  }
                 }}
                 value={proportion}
                 max={maxProportion * 100}

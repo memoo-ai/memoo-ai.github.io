@@ -24,14 +24,15 @@ import { base64ToUint8Array } from '@/utils';
 const AirdropClaimModal: FC<{ children: ReactNode }> = ({ children }) => {
   const [open, setOpen] = useState(false);
   const [confirming, setConfirming] = useState(false);
-  const { idoLaunchedDetail, airdropClaim, solanaMemeConfig, idoQueueDetail } = useContext(AirdropContext);
+  const { idoLaunchedDetail, airdropClaim, solanaMemeConfig, idoQueueDetail, triggerRefresh } =
+    useContext(AirdropContext);
   const { getSign } = useSolana();
 
   const onConfirm = useCallback(async () => {
     console.log('airdropConfirm');
     // debugger;
     // if (!airdropClaim || !idoLaunchedDetail || !solanaMemeConfig) return;
-    if (!airdropClaim || !idoQueueDetail || !solanaMemeConfig) return;
+    if (!airdropClaim || !idoQueueDetail || !solanaMemeConfig || !triggerRefresh) return;
     try {
       setConfirming(true);
       const res = await getSign();
@@ -54,6 +55,7 @@ const AirdropClaimModal: FC<{ children: ReactNode }> = ({ children }) => {
       if (tx) {
         setOpen(false);
         message.success('Claim Successful');
+        triggerRefresh();
       }
     } catch (error) {
       console.error(error);

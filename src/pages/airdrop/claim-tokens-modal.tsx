@@ -25,7 +25,8 @@ const ClaimTokensModal: FC<{
   unlockTokens?: number;
 }> = ({ children, stage, lockinPeriod, tokens, unlockTokens, rate }) => {
   const [open, setOpen] = useState(false);
-  const { creatorClaim, creatorClaimAll, idoQueueDetail, solanaMemeConfig, memeUserData } = useContext(AirdropContext);
+  const { creatorClaim, creatorClaimAll, idoQueueDetail, solanaMemeConfig, memeUserData, triggerRefresh } =
+    useContext(AirdropContext);
   const [confirming, setConfirming] = useState(false);
 
   const unLockTokens = useMemo(() => {
@@ -46,7 +47,7 @@ const ClaimTokensModal: FC<{
 
   const onConfirm = useCallback(async () => {
     // debugger;
-    if (!creatorClaim || !idoQueueDetail || !solanaMemeConfig || !creatorClaimAll) return;
+    if (!creatorClaim || !idoQueueDetail || !solanaMemeConfig || !creatorClaimAll || !triggerRefresh) return;
     try {
       setConfirming(true);
       const tx =
@@ -56,6 +57,7 @@ const ClaimTokensModal: FC<{
       if (tx) {
         setOpen(false);
         message.success('Unlock Successful');
+        triggerRefresh();
       }
     } catch (error) {
       console.error(error);
