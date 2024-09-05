@@ -137,11 +137,16 @@
           background: #1F3B4F !important;
           box-shadow: none !important;
         }
-        .ant-input-affix-wrapper-focused{
-          border-radius: 7px;
+        .ant-input-affix-wrapper{
+          border-radius: 7px !important;
         }
-        .ant-input-affix-wrapper >input.ant-input, :where(.css-dev-only-do-not-override-11vhncj).ant-input-affix-wrapper >textarea.ant-input{
-          border-radius: 7px;
+        .ant-input-affix-wrapper-focused{
+          >textarea.ant-input{
+            border-radius: 7px !important;
+          }
+        }
+        .ant-input-affix-wrapper >input.ant-input,.ant-input-affix-wrapper >textarea.ant-input{
+          border-radius: 7px !important;
         }
       }
 
@@ -240,6 +245,7 @@
   .token-icon-form-item {
     display: flex;
     align-items: center;
+    background: transparent;
   }
 
   .token-banner-form-item {
@@ -258,6 +264,7 @@
     align-items: center;
     transition: background-color 0.3s;
     margin-right: 10px;
+    background: #1f3b4f;
 
     &::before {
       position: absolute;
@@ -319,4 +326,7 @@
 .ant-form-item-explain-error{
   font-family: "OCR A Extended";
   font-size: 10px;
+}
+.ant-input-textarea-affix-wrapper.ant-input-affix-wrapper >textarea.ant-input{
+  border-radius: 7px;
 }

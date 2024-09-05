@@ -35,7 +35,7 @@ const IncreaseAcquisitionModal: FC<{
   const [proportion, setProportion] = useState(0.05);
   const [result, setResult] = useState(0);
   // const { idoBuy, idoQueueDetail } = useContext(AirdropContext);
-  const { idoQueueDetail, mine, idoBuy, solanaMemeConfig, memooConfig } = useContext(AirdropContext);
+  const { idoQueueDetail, mine, idoBuy, solanaMemeConfig, memooConfig, triggerRefresh } = useContext(AirdropContext);
   // const { idoBuy } = useAccount();
   // const defaultValue = purchased * 100;
   // useEffect(() => {
@@ -79,7 +79,7 @@ const IncreaseAcquisitionModal: FC<{
   }, [purchased]);
 
   const onConfirm = useCallback(async () => {
-    if (!idoBuy || !idoQueueDetail || !solanaMemeConfig) return;
+    if (!idoBuy || !idoQueueDetail || !solanaMemeConfig || !triggerRefresh) return;
     try {
       setConfirming(true);
       console.log(result);
@@ -97,6 +97,7 @@ const IncreaseAcquisitionModal: FC<{
         console.log('idoBuy-tx:', tx);
         setOpen(false);
         message.success('Buy Successful');
+        triggerRefresh();
       }
     } catch (error) {
       console.error(error);
