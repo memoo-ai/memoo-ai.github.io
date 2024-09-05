@@ -436,7 +436,7 @@ export const useAccount = () => {
   );
 
   const creatorClaimAll = useCallback(
-    async (memeId: string, mintaPublicKey: string) => {
+    async (memeId: string, mintaPublicKey: string, userCanClaimCount: number) => {
       if (!memooConfig || !program || !publicKey || !signTransaction) return;
       try {
         const memeConfigId = new PublicKey(memeId);
@@ -475,7 +475,10 @@ export const useAccount = () => {
           })
           .instruction();
 
-        const transaction = new Transaction().add(instruction1, instruction2);
+        const transaction = new Transaction().add(instruction1);
+        if (userCanClaimCount > 0) {
+          transaction.add(instruction2);
+        }
 
         const latestBlockhash = await connection.getLatestBlockhash('finalized');
         transaction.recentBlockhash = latestBlockhash.blockhash;

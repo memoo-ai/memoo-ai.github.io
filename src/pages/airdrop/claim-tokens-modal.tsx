@@ -53,7 +53,11 @@ const ClaimTokensModal: FC<{
       const tx =
         stage === '1st'
           ? await creatorClaim(solanaMemeConfig?.memeConfigId, solanaMemeConfig?.mintaPublickey)
-          : await creatorClaimAll(solanaMemeConfig?.memeConfigId, solanaMemeConfig?.mintaPublickey);
+          : await creatorClaimAll(
+              solanaMemeConfig?.memeConfigId,
+              solanaMemeConfig?.mintaPublickey,
+              Number(userCanClaimCount),
+            );
       if (tx) {
         setOpen(false);
         message.success('Unlock Successful');

@@ -61,7 +61,7 @@ interface AirdropContext {
   unlockMeme?: (project: `0x${string}`, index: number) => Promise<TransactionReceipt | undefined>;
   // idoClaim?: (project: `0x${string}`) => Promise<TransactionReceipt | undefined>;
   idoClaim?: (memeId: string, mintAPublicKey: string) => Promise<string | undefined>;
-  creatorClaimAll?: (memeId: string, mintAPublicKey: string) => any;
+  creatorClaimAll?: (memeId: string, mintAPublicKey: string, userCanClaimCount: number) => any;
   triggerRefresh?: Function;
   airdropClaim?: (
     memeId: string,

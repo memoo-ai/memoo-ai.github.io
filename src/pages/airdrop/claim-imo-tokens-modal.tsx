@@ -101,7 +101,7 @@ const ClaimImoTokensModal: FC<{ children: ReactNode }> = ({ children }) => {
             className="memoo_button mt-4 h-[50px]"
             onClick={onConfirm}
             loading={confirming}
-            disabled={getNumberOrDefault(Number(idoQueueDetail?.count).toLocaleString()) <= 0 || mine}
+            disabled={getNumberOrDefault(Number(idoQueueDetail?.count).toLocaleString()) <= 0}
           >
             Confirm
           </Button>
