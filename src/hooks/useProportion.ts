@@ -83,8 +83,9 @@ export const useProportion = () => {
 
   const idoUserBuyLimit = useMemo(() => {
     if (!memooConfig) return 0;
-    const idoUserLimit = memooConfig?.idoUserBuyLimit / 10000;
-    return idoUserLimit;
+    const result = memooConfig?.idoUserBuyLimit / 10000;
+    console.log('idoUserLimit:', result);
+    return result;
   }, [memooConfig]);
 
   const totalSupplyPrice = useMemo(() => {
@@ -99,6 +100,7 @@ export const useProportion = () => {
   const tokenAllocationIdo = useMemo(() => {
     if (!memooConfig) return 0;
     const result = memooConfig?.tokenAllocationIdo / 10000;
+    console.log('tokenAllocationIdo:', result);
     return result;
   }, [memooConfig]);
 

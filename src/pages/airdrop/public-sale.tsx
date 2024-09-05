@@ -9,24 +9,31 @@ import Wallet from '@/components/Wallet';
 import { useAccount } from '@/hooks/useWeb3';
 import { IconLaunchedBtn } from '@/components/icons';
 import ClaimImoTokensModal from './claim-imo-tokens-modal';
+import ITooltip from '@/components/ITooltip';
+import { useProportion } from '@/hooks/useProportion';
 
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const PublicSale: FC = () => {
   const { idoLaunchedDetail, idoQueueDetail, stage } = useContext(AirdropContext);
   const { address } = useAccount();
   const iconRef = useRef<any>();
+  const { totalSupplyPrice, tokenAllocationIdo, idoUserBuyLimit } = useProportion();
   const params = useMemo(
     () => [
       { key: 'Market Cap', value: `$${formatDecimals(idoQueueDetail?.marketCap ?? 0)}`, tip: null },
       { key: 'Price', value: `$${formatDecimals(idoQueueDetail?.price ?? 0)}`, tip: null },
-      { key: 'Total Raised', value: `${idoQueueDetail?.totalRaised ?? 'NA/NA'} ${tokenSymbol}`, tip: '1' },
+      {
+        key: 'Total Raised',
+        value: `${idoQueueDetail?.totalRaised ?? 'NA/NA'} ${tokenSymbol}`,
+        tip: `Total IMO raise is always capped \n at ${totalSupplyPrice * tokenAllocationIdo} ${tokenSymbol}`,
+      },
       {
         key: 'Contributed',
         value: `${idoQueueDetail?.contributed ?? 'NA'}/${idoQueueDetail?.maxContributed ?? 'NA'} ${tokenSymbol}`,
-        tip: '1',
+        tip: `Contributed per wallet \n is capped at ${totalSupplyPrice * idoUserBuyLimit} ${tokenSymbol}`,
       },
     ],
-    [idoLaunchedDetail, idoQueueDetail],
+    [idoLaunchedDetail, idoQueueDetail, totalSupplyPrice, idoUserBuyLimit, tokenAllocationIdo],
   );
   const onConfirm = useCallback(() => {
     // TODO it may be replaced by swap contract later
@@ -49,9 +56,7 @@ const PublicSale: FC = () => {
               <label className="text-white text-xs font-OCR leading-4 flex items-center gap-x-1.5">
                 {item.key}{' '}
                 {item.tip && (
-                  <Popover content={item.tip}>
-                    <img src="/create/tip.png" />
-                  </Popover>
+                  <ITooltip className="h-[12px] " placement="bottom" title={item.tip} color="#fff" bgColor="#396D93" />
                 )}
               </label>
               <var className="text-white text-lg font-OCR leading-5">{item.value}</var>

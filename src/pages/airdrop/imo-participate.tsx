@@ -33,7 +33,7 @@ const IMOParticipate: FC = () => {
         tip: `Contributed per wallet \n is capped at ${totalSupplyPrice * idoUserBuyLimit} ${tokenSymbol}`,
       },
     ],
-    [idoActiveDetail, idoQueueDetail],
+    [idoActiveDetail, idoQueueDetail, tokenAllocationIdo, idoUserBuyLimit, totalSupplyPrice],
   );
 
   const disabled = useMemo(
