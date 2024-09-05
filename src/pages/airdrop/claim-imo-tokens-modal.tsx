@@ -35,7 +35,7 @@ const ClaimImoTokensModal: FC<{ children: ReactNode }> = ({ children }) => {
 
   const userImoPrice = useMemo(() => {
     if (!memeUserData || !memooConfig) return 0;
-    const idoPrice = new BigNumber(Number(memooConfig.idoPrice.toString())).dividedBy(10 ** 9);
+    const idoPrice = new BigNumber(Number(memooConfig.idoPrice.toString())).dividedBy(10 ** 10);
     console.log('memeUserIdoCountidoPrice: ', idoPrice.toString());
 
     const memeUserIdoCount = new BigNumber(Number(memeUserData.memeUserIdoCount.toString())).dividedBy(10 ** 9);
