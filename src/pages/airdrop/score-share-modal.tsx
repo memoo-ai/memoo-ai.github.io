@@ -123,7 +123,7 @@ const CreatorRankingShareModal = ({ children, ticker }: any) => {
           >
             <IconTwitter className="w-[20px] h-[18px]" color="#1F3B4F" />
           </a>
-          <a
+          {/* <a
             href={`https://t.me/share/url?url=${encodeURIComponent(shareUrl)}`}
             target="_black"
             className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]"
@@ -132,7 +132,7 @@ const CreatorRankingShareModal = ({ children, ticker }: any) => {
           </a>
           <a className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]">
             <IconGame />
-          </a>
+          </a> */}
           <a
             href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
             target="_black"
@@ -146,9 +146,9 @@ const CreatorRankingShareModal = ({ children, ticker }: any) => {
           >
             <IconDownload />
           </div>
-          <div className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]">
+          {/* <div className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]">
             <IconMore />
-          </div>
+          </div> */}
         </div>
       </Modal>
       {Children.map(children, (child) => {
