@@ -10,7 +10,7 @@ import React, {
 } from 'react';
 
 import './score-share-modal.scss';
-import { Modal, Button, message } from 'antd';
+import { Modal, Button, message, Spin } from 'antd';
 import {
   IconTwitter,
   IconClose,
@@ -28,6 +28,7 @@ const BaseUrl = import.meta.env.VITE_SHARE_URI;
 const CreatorRankingShareModal = ({ children, ticker }: any) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const [loading, setLoading] = useState(false);
   const { idoQueueDetail } = useContext(AirdropContext);
 
   const downloadImg = useCallback(() => {
@@ -41,13 +42,17 @@ const CreatorRankingShareModal = ({ children, ticker }: any) => {
       height: 480,
     })
       .then((dataUrl) => {
+        setLoading(true);
         const link = document.createElement('a');
         link.download = 'my-share-image.png';
         link.href = dataUrl;
         link.click();
+        message.success('Download successfully!');
       })
       .catch((err) => {
         console.log(err);
+        message.error('Download failed.');
+        setLoading(false);
       });
   }, [ref]);
 
@@ -89,6 +94,7 @@ const CreatorRankingShareModal = ({ children, ticker }: any) => {
         closeIcon={<IconClose className="close" />}
       >
         <div className="mt-[21px] p-[28px]">
+          <Spin spinning={loading} fullscreen />
           <div className="score-share-modal-content  relative" ref={ref}>
             <div className=" flex items-end justify-between flex-col absolute top-[28px] right-[28px]">
               <div className="flex items-center ">

@@ -16,7 +16,7 @@ const MeMooScoreBreakdown: FC = () => {
       5: 'Very good',
       6: 'Exceptional',
     };
-    if (meme.scoreField === 'Top Up' || meme.totalScore === 4) {
+    if (meme.scoreField === 'Top Up') {
       return meme.scoreValue === 4 ? 'Just Enough' : 'Loaded';
     }
     if (meme.scoreField === 'Total Raised') {
