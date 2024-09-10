@@ -116,6 +116,7 @@ export default function AirdropClaim() {
           redirectUri: twitterRedirectUri,
           refreshToken: '',
           twitter: twitter ?? 'elonmusk',
+          ticker: ticker,
         };
         const res = await requestTwitterFollow(followParams);
         console.log('follow res: ', res);
