@@ -72,6 +72,7 @@ const LaunchPadAirdrop = () => {
         <ISelect
           options={airdropSelectOptions}
           onSelectChange={(key, orderBy) => {
+            setPagination({ ...pagination, current: 1 });
             setActiveKey(key);
             setOrderBy(orderBy);
           }}

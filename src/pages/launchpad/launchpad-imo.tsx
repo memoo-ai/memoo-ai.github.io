@@ -75,6 +75,7 @@ const LaunchPadImo = () => {
         <ISelect
           options={imoSelectOptions}
           onSelectChange={(key, orderBy) => {
+            setPagination({ ...pagination, current: 1 });
             setActiveKey(key);
             setOrderBy(orderBy);
           }}

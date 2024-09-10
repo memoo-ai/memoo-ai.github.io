@@ -56,7 +56,7 @@ export const ActiveIdoCard = () => {
               <div className="ido-info-item">
                 <img src="./dashboard/icon-raised-target.svg" alt="" className="w-5 h-5 mr-1" />
                 <span className="whitespace-nowrap">Total Raised</span>
-                <span className="overflow-hidden whitespace-nowrap text-ellipsis">
+                <span className="overflow-hidden whitespace-nowrap text-ellipsis text-[16px]">
                   {ido.totalRaised} {tokenSymbol}
                 </span>
               </div>
