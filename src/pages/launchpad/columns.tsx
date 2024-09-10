@@ -114,7 +114,7 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
     sorter: false,
     render: (participants: number) => (
       <span className="font-OCR font-normal text-lg">
-        {participants} &nbsp;
+        {participants}&nbsp;
         {tokenSymbol}
       </span>
     ),
