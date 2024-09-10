@@ -50,7 +50,7 @@ export const columns = (navigate: (path: string) => void) => [
     sorter: false,
     render: (totalRaised: number) => (
       <span className="font-OCR font-norma text-lg">
-        {totalRaised}
+        {totalRaised}&nbsp;
         {tokenSymbol}
       </span>
     ),
@@ -114,7 +114,7 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
     sorter: false,
     render: (participants: number) => (
       <span className="font-OCR font-normal text-lg">
-        {participants}
+        {participants} &nbsp;
         {tokenSymbol}
       </span>
     ),
