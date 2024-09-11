@@ -27,6 +27,11 @@ export interface Memoo {
       type: 'string';
       value: '"authority"';
     },
+    {
+      name: 'DECIMALS10';
+      type: 'u64';
+      value: '10_000_000_000';
+    },
   ];
   instructions: [
     {
@@ -936,7 +941,7 @@ export interface Memoo {
         },
         {
           name: 'memeUserData';
-          isMut: false;
+          isMut: true;
           isSigner: false;
         },
         {
@@ -1561,7 +1566,7 @@ export interface Memoo {
     {
       code: 6010;
       name: 'InputTooSmallThanIdoPrice';
-      msg: 'Input too samll to buy one unit';
+      msg: 'Input too samll to buy 10 unit';
     },
     {
       code: 6011;
@@ -1734,6 +1739,11 @@ export const IDL: Memoo = {
       name: 'AUTHORITY_SEED',
       type: 'string',
       value: '"authority"',
+    },
+    {
+      name: 'DECIMALS10',
+      type: 'u64',
+      value: '10_000_000_000',
     },
   ],
   instructions: [
@@ -2644,7 +2654,7 @@ export const IDL: Memoo = {
         },
         {
           name: 'memeUserData',
-          isMut: false,
+          isMut: true,
           isSigner: false,
         },
         {
@@ -3269,7 +3279,7 @@ export const IDL: Memoo = {
     {
       code: 6010,
       name: 'InputTooSmallThanIdoPrice',
-      msg: 'Input too samll to buy one unit',
+      msg: 'Input too samll to buy 10 unit',
     },
     {
       code: 6011,

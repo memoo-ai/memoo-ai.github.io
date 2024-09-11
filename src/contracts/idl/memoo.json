@@ -26,6 +26,11 @@
       "name": "AUTHORITY_SEED",
       "type": "string",
       "value": "\"authority\""
+    },
+    {
+      "name": "DECIMALS10",
+      "type": "u64",
+      "value": "10_000_000_000"
     }
   ],
   "instructions": [
@@ -960,7 +965,7 @@
         },
         {
           "name": "memeUserData",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -1749,7 +1754,7 @@
     {
       "code": 6010,
       "name": "InputTooSmallThanIdoPrice",
-      "msg": "Input too samll to buy one unit"
+      "msg": "Input too samll to buy 10 unit"
     },
     {
       "code": 6011,
@@ -1891,8 +1896,5 @@
       "name": "MemeIdoCountLt0",
       "msg": "IDO Ccount < 0"
     }
-  ],
-  "metadata": {
-    "address": "Bhkry7KQAZaeUYkEmcHgjJV4RdqRDzD3zucpCiYJjJhw"
-  }
+  ]
 }
