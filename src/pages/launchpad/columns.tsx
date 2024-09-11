@@ -109,10 +109,12 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
     key: 'participants',
     sorter: false,
     render: (participants: number) => (
-      <span className="font-OCR font-normal text-lg">
-        {participants}&nbsp;
-        {tokenSymbol}
-      </span>
+      <div className="flex justify-center">
+        <span className="font-OCR font-normal text-lg">
+          {participants}
+          {/* {tokenSymbol} */}
+        </span>
+      </div>
     ),
   },
   {
