@@ -8,6 +8,8 @@ interface CardProps {
   children: any;
   participated?: boolean;
 }
+
+const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 export const Card = ({ data, children, participated = false }: CardProps) => {
   const navigate = useNavigate();
   const renderIcon = (type: string) => {
@@ -100,7 +102,10 @@ export const Card = ({ data, children, participated = false }: CardProps) => {
       </div>
       <div className="dashboard_item_content">
         <div className="dashboard_item_content_left">Total Raised</div>
-        <div className="dashboard_item_content_right">{data.totalRaised}</div>
+        <div className="dashboard_item_content_right">
+          {data.totalRaised}&nbsp;
+          {tokenSymbol}
+        </div>
       </div>
       <div className="dashboard_item_content">
         <div className="dashboard_item_content_left">Launch Date</div>

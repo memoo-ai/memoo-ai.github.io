@@ -86,11 +86,12 @@
       line-height: 31px;
       text-align: left;
       color: $textSecondaryColor;
+      white-space: nowrap;
 
     }
     .dashboard_item_content_right{
       font-family: 'OCR A Extended' !important;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 400;
       line-height: 31px;
       text-align: right;
