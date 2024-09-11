@@ -624,7 +624,7 @@ export const useAccount = () => {
         console.log('signedTransaction: ', signedTransaction);
 
         const txSignature = await connection.sendRawTransaction(signedTransaction.serialize(), {
-          skipPreflight: false,
+          skipPreflight: true,
         });
         console.log('txSignature: ', txSignature);
         const txDetails = await connection.getParsedTransaction(txSignature, { commitment: 'confirmed' });
