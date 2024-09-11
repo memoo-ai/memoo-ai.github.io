@@ -110,6 +110,7 @@ const AirdropModal = ({ children }: any) => {
             onClick={onConfirm}
             loading={confirming}
             // disabled={getNumberOrDefault(Number(idoLaunchedDetail?.count).toLocaleString()) === 0}
+            disabled={airdropCanClaimCount <= 0}
           >
             CLAIM ALL
           </Button>
