@@ -103,6 +103,10 @@ export const Collector = () => {
       setSolanaMemeConfig(config);
       const memeUser = await getMemeUserData(config?.memeConfigId);
       console.log('memeUser:', memeUser);
+      const memeUserIdoClaimCount = Number(memeUser?.memeUserIdoClaimedCount);
+      const memeUserIdoCount = Number(memeUser?.memeUserIdoCount);
+      console.log('memeUserIdoClaimCount:', memeUserIdoClaimCount);
+      console.log('memeUserIdoCount:', memeUserIdoCount);
       setMemeUserData(memeUser!);
       setLoading(false);
     } catch (error) {

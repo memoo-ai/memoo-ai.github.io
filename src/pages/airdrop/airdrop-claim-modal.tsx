@@ -10,6 +10,7 @@ import {
   useContext,
   useState,
   useCallback,
+  useMemo,
 } from 'react';
 import './airdrop-claim-modal.scss';
 import { AirdropContext } from '.';
@@ -24,9 +25,19 @@ import { base64ToUint8Array } from '@/utils';
 const AirdropClaimModal: FC<{ children: ReactNode }> = ({ children }) => {
   const [open, setOpen] = useState(false);
   const [confirming, setConfirming] = useState(false);
-  const { idoLaunchedDetail, airdropClaim, solanaMemeConfig, idoQueueDetail, triggerRefresh } =
+  const { idoLaunchedDetail, airdropClaim, solanaMemeConfig, idoQueueDetail, triggerRefresh, memeUserData } =
     useContext(AirdropContext);
   const { getSign } = useSolana();
+
+  const airdropCanClaimCount = useMemo(() => {
+    if (!idoLaunchedDetail || !memeUserData) return 0;
+    const userClaimAirdropCount = new BigNumber(memeUserData?.memeUserAirdropClaimedCount.toString()).dividedBy(
+      10 ** 9,
+    );
+    const result = Number(idoLaunchedDetail?.count) - Number(userClaimAirdropCount);
+    console.log('airdropCanClaimCount:', result);
+    return result;
+  }, [idoLaunchedDetail, memeUserData]);
 
   const onConfirm = useCallback(async () => {
     console.log('airdropConfirm');
@@ -89,10 +100,15 @@ const AirdropClaimModal: FC<{ children: ReactNode }> = ({ children }) => {
             />
             <Input
               className="memoo_input h-[66px] font-404px text-white text-[24px] text-center"
-              value={Number(idoLaunchedDetail?.count).toLocaleString()}
+              value={`${Number(airdropCanClaimCount).toLocaleString()} ${idoLaunchedDetail?.tokenName}`}
             />
           </div>
-          <Button className="memoo_button mt-4 h-[50px]" onClick={onConfirm} loading={confirming}>
+          <Button
+            className="memoo_button mt-4 h-[50px]"
+            onClick={onConfirm}
+            loading={confirming}
+            disabled={airdropCanClaimCount <= 0}
+          >
             Confirm
           </Button>
         </div>

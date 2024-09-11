@@ -7,6 +7,7 @@ import React, {
   useEffect,
   useCallback,
   useContext,
+  useMemo,
 } from 'react';
 
 import './airdrop-modal.scss';
@@ -27,8 +28,18 @@ const AirdropModal = ({ children }: any) => {
   const [open, setOpen] = useState(false);
   const [confirming, setConfirming] = useState(false);
   // const { getSign } = useSign();
-  const { idoLaunchedDetail, solanaMemeConfig, airdropClaim } = useContext(CollectorContext);
+  const { idoLaunchedDetail, solanaMemeConfig, airdropClaim, memeUserData } = useContext(CollectorContext);
   const { getSign } = useSolana();
+
+  const airdropCanClaimCount = useMemo(() => {
+    if (!idoLaunchedDetail || !memeUserData) return 0;
+    const userClaimAirdropCount = new BigNumber(memeUserData?.memeUserAirdropClaimedCount.toString()).dividedBy(
+      10 ** 9,
+    );
+    const result = Number(idoLaunchedDetail?.count) - Number(userClaimAirdropCount);
+    console.log('airdropCanClaimCount:', result);
+    return result;
+  }, [idoLaunchedDetail, memeUserData]);
 
   const onConfirm = useCallback(async () => {
     if (!airdropClaim || !idoLaunchedDetail || !solanaMemeConfig) return;
@@ -66,6 +77,7 @@ const AirdropModal = ({ children }: any) => {
         title=""
         open={open}
         onOk={() => {}}
+        wrapClassName="memoo_modal"
         onCancel={() => {
           setOpen(false);
         }}
@@ -77,7 +89,7 @@ const AirdropModal = ({ children }: any) => {
         <div className="confirm_title">Airdrop Unlocked</div>
         <div className="confirm_content">
           <img className="mt-[15px]" src="./dashboard/reward.svg" alt="" />
-          <div className="confirm_content_title mt-[18px]">{idoLaunchedDetail?.tokenName} has arrived!</div>
+          <div className="font-404px text-[32px] text-green mt-[18px]">{idoLaunchedDetail?.tokenName} has arrived!</div>
           <div className="confirm_content_describe mt-[18px]">
             Thanks for being part of the <br /> {idoLaunchedDetail?.tokenName} community.
           </div>
@@ -89,7 +101,8 @@ const AirdropModal = ({ children }: any) => {
             />
             <Input
               className="memoo_input h-[66px] font-404px text-white text-[24px] text-center"
-              value={`${Number(idoLaunchedDetail?.count).toLocaleString()} ${idoLaunchedDetail?.tokenName}`}
+              // value={`${Number(idoLaunchedDetail?.count).toLocaleString()} ${idoLaunchedDetail?.tokenName}`}
+              value={`${Number(airdropCanClaimCount).toLocaleString()} ${idoLaunchedDetail?.tokenName}`}
             />
           </div>
           <Button
