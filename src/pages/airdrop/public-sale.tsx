@@ -14,7 +14,7 @@ import { useProportion } from '@/hooks/useProportion';
 
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const PublicSale: FC = () => {
-  const { idoLaunchedDetail, idoQueueDetail, stage } = useContext(AirdropContext);
+  const { idoLaunchedDetail, idoQueueDetail, stage, memeConfig } = useContext(AirdropContext);
   const { address } = useAccount();
   const iconRef = useRef<any>();
   const { totalSupplyPrice, tokenAllocationIdo, idoUserBuyLimit } = useProportion();
@@ -37,7 +37,9 @@ const PublicSale: FC = () => {
   );
   const onConfirm = useCallback(() => {
     // TODO it may be replaced by swap contract later
-    window.open('https://app.uniswap.org/', '_blank');
+    // window.open('https://app.uniswap.org/', '_blank');
+    const mintAddress = memeConfig?.mintTokenAddress ?? idoQueueDetail?.contractAddress;
+    window.open(`https://raydium.io/swap/?inputMint=sol&outputMint=${mintAddress}`, '_blank');
   }, []);
 
   return (
