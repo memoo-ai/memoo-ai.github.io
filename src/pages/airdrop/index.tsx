@@ -88,6 +88,7 @@ interface AirdropContext {
   // mintAPublickey?: PublicKey;
   solanaMemeConfig?: SolanaMemeConfig;
   unlockTimestamp?: number;
+  userCanClaimCount?: number;
 }
 
 export const AirdropContext = createContext<AirdropContext>({
@@ -148,6 +149,16 @@ const Airdrop: FC = () => {
     setRefresh((v) => v + 1);
   }, []);
 
+  const userCanClaimCount = useMemo(() => {
+    if (!memeUserData) return 0;
+
+    const memeUserIdoClaimedCount = new BigNumber(memeUserData?.memeUserIdoClaimedCount.toString()).dividedBy(10 ** 9);
+    const memeUserIdoCount = new BigNumber(Number(memeUserData.memeUserIdoCount.toString())).dividedBy(10 ** 9);
+    const result = memeUserIdoCount.minus(memeUserIdoClaimedCount);
+    console.log('userCanClaimCount: ', result.toString());
+    return Number(result);
+  }, [memeUserData]);
+
   const context: AirdropContext = useMemo(
     () => ({
       stage,
@@ -175,6 +186,7 @@ const Airdrop: FC = () => {
       unlockTimestamp,
       memeConfig,
       memeCreatorUserData,
+      userCanClaimCount,
     }),
     [
       stage,
@@ -202,6 +214,7 @@ const Airdrop: FC = () => {
       unlockTimestamp,
       memeConfig,
       memeCreatorUserData,
+      userCanClaimCount,
     ],
   );
 

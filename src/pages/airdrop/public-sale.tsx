@@ -14,23 +14,28 @@ import { useProportion } from '@/hooks/useProportion';
 
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const PublicSale: FC = () => {
-  const { idoLaunchedDetail, idoQueueDetail, stage, memeConfig } = useContext(AirdropContext);
+  const { idoLaunchedDetail, idoQueueDetail, stage, memeConfig, userCanClaimCount } = useContext(AirdropContext);
   const { address } = useAccount();
   const iconRef = useRef<any>();
   const { totalSupplyPrice, tokenAllocationIdo, idoUserBuyLimit } = useProportion();
   const params = useMemo(
     () => [
-      { key: 'Market Cap', value: `$${formatDecimals(idoQueueDetail?.marketCap ?? 0)}`, tip: null },
-      { key: 'Price', value: `$${formatDecimals(idoQueueDetail?.price ?? 0)}`, tip: null },
+      { key: 'Market Cap', value: `$${formatDecimals(idoQueueDetail?.marketCap ?? 0)}`, tip: null, big: false },
+
+      { key: 'Price', value: `$${formatDecimals(idoQueueDetail?.price ?? 0)}`, tip: null, big: false },
+
       {
         key: 'Total Raised',
         value: `${idoQueueDetail?.totalRaised ?? 'NA/NA'} ${tokenSymbol}`,
         tip: `Total IMO raise is always capped \n at ${totalSupplyPrice * tokenAllocationIdo} ${tokenSymbol}`,
+        big: false,
       },
       {
         key: 'Contributed',
-        value: `${idoQueueDetail?.contributed ?? 'NA'}/${idoQueueDetail?.maxContributed ?? 'NA'} ${tokenSymbol}`,
+        // value: `${idoQueueDetail?.contributed ?? 'NA'}/${idoQueueDetail?.maxContributed ?? 'NA'} ${tokenSymbol}`,
+        value: `${idoQueueDetail?.contributed ?? 'NA'} ${tokenSymbol}`,
         tip: `Contributed per wallet \n is capped at ${totalSupplyPrice * idoUserBuyLimit} ${tokenSymbol}`,
+        big: true,
       },
     ],
     [idoLaunchedDetail, idoQueueDetail, totalSupplyPrice, idoUserBuyLimit, tokenAllocationIdo],
@@ -61,13 +66,13 @@ const PublicSale: FC = () => {
                   <ITooltip className="h-[12px] " placement="bottom" title={item.tip} color="#fff" bgColor="#396D93" />
                 )}
               </label>
-              <var className="text-white text-lg font-OCR leading-5">{item.value}</var>
+              <var className={`text-white ${item.big ? 'text-2xl' : 'text-lg'} font-OCR leading-5`}>{item.value}</var>
             </li>
           ))}
         </ul>
 
         {/* {address && idoQueueDetail?.isParticipateImo ? ( */}
-        {address ? (
+        {address && userCanClaimCount && userCanClaimCount > 0 ? (
           <div className="flex gap-[11px] w-full">
             <Button
               className={classNames('mt-5 uppercase flex-1 memoo_button reverse h-12 font–404px', {})}

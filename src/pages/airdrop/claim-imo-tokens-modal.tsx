@@ -20,18 +20,16 @@ const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const ClaimImoTokensModal: FC<{ children: ReactNode }> = ({ children }) => {
   const [open, setOpen] = useState(false);
   const [confirming, setConfirming] = useState(false);
-  const { idoQueueDetail, idoClaim, solanaMemeConfig, memeUserData, memooConfig, mine, triggerRefresh } =
-    useContext(AirdropContext);
-
-  const userCanClaimCount = useMemo(() => {
-    if (!memeUserData) return 0;
-
-    const memeUserIdoClaimedCount = new BigNumber(memeUserData?.memeUserIdoClaimedCount.toString()).dividedBy(10 ** 9);
-    const memeUserIdoCount = new BigNumber(Number(memeUserData.memeUserIdoCount.toString())).dividedBy(10 ** 9);
-    const result = memeUserIdoCount.minus(memeUserIdoClaimedCount);
-    console.log('userCanClaimCount: ', result.toString());
-    return result.toString();
-  }, [memeUserData]);
+  const {
+    idoQueueDetail,
+    idoClaim,
+    solanaMemeConfig,
+    memeUserData,
+    memooConfig,
+    mine,
+    triggerRefresh,
+    userCanClaimCount,
+  } = useContext(AirdropContext);
 
   const userImoPrice = useMemo(() => {
     if (!memeUserData || !memooConfig) return 0;
@@ -101,7 +99,7 @@ const ClaimImoTokensModal: FC<{ children: ReactNode }> = ({ children }) => {
             className="memoo_button mt-4 h-[50px]"
             onClick={onConfirm}
             loading={confirming}
-            disabled={getNumberOrDefault(Number(idoQueueDetail?.count).toLocaleString()) <= 0}
+            disabled={Number(userCanClaimCount) <= 0}
           >
             Confirm
           </Button>
