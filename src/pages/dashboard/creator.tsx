@@ -202,30 +202,30 @@ export const Creator = () => {
           />
         );
         break;
-      case 'Waiting_for_pay':
-        button = (
-          <IncreaseModal
-            maxIncrease={maxIncrease}
-            firstProportion={firstProportion}
-            maxProportion={maxProportion}
-            firstIncrease={firstIncrease}
-            purchased={purchased}
-          >
-            <Button
-              className="flex items-center justify-between creator-btn"
-              onMouseOver={() => iconRefs.current[`increase${index}`].setHovered(true)}
-              onMouseLeave={() => iconRefs.current[`increase${index}`].setHovered(false)}
-              onClick={() => {
-                getIDOAndPurchased(item.ticker);
-              }}
-              disabled
-            >
-              <IconQueueBtn className="QueueBtn" ref={(ref) => (iconRefs.current[`increase${index}`] = ref)} />
-              <span className="ml-[9px]">INCREASE</span>
-            </Button>
-          </IncreaseModal>
-        );
-        break;
+      // case 'Waiting_for_pay':
+      //   button = (
+      //     <IncreaseModal
+      //       maxIncrease={maxIncrease}
+      //       firstProportion={firstProportion}
+      //       maxProportion={maxProportion}
+      //       firstIncrease={firstIncrease}
+      //       purchased={purchased}
+      //     >
+      //       <Button
+      //         className="flex items-center justify-between creator-btn"
+      //         onMouseOver={() => iconRefs.current[`increase${index}`].setHovered(true)}
+      //         onMouseLeave={() => iconRefs.current[`increase${index}`].setHovered(false)}
+      //         onClick={() => {
+      //           getIDOAndPurchased(item.ticker);
+      //         }}
+      //         disabled
+      //       >
+      //         <IconQueueBtn className="QueueBtn" ref={(ref) => (iconRefs.current[`increase${index}`] = ref)} />
+      //         <span className="ml-[9px]">INCREASE</span>
+      //       </Button>
+      //     </IncreaseModal>
+      //   );
+      //   break;
       case 'QUEUE':
         button = (
           <IncreaseModal
