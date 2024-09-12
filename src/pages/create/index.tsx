@@ -133,6 +133,10 @@ export default function Create() {
   };
 
   const handleUpload = (file: File, field: string) => {
+    if (!address) {
+      message.warning('Please connect wallet first.');
+      return;
+    }
     if (file) {
       uploadFile(file).then((res) => {
         form.setFieldValue(field, field === 'banners' ? [res.data.file] : res.data.file);
@@ -152,6 +156,10 @@ export default function Create() {
 
   const connectTwitter = useCallback(async () => {
     // TODO: save form data to local; when callback from twitter, the form data will be lost.
+    if (!address) {
+      message.warning('Please connect wallet first.');
+      return;
+    }
     const res = await getTwitterClientId();
     const formData = form.getFieldsValue();
     console.log('formData: ', formData);
