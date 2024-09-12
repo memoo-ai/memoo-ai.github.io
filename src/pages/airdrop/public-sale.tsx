@@ -40,6 +40,11 @@ const PublicSale: FC = () => {
     ],
     [idoLaunchedDetail, idoQueueDetail, totalSupplyPrice, idoUserBuyLimit, tokenAllocationIdo],
   );
+
+  const canClaim = useMemo(() => {
+    if (!address || !userCanClaimCount) return false;
+    return address && userCanClaimCount && userCanClaimCount > 0;
+  }, [idoLaunchedDetail, idoQueueDetail, address]);
   const onConfirm = useCallback(() => {
     // TODO it may be replaced by swap contract later
     // window.open('https://app.uniswap.org/', '_blank');
@@ -50,7 +55,7 @@ const PublicSale: FC = () => {
   return (
     <div className="pubsale px-5 pt-9 pb-5">
       <div className="head flex justify-center">
-        {address ? (
+        {canClaim ? (
           <img className="w-[220px]" src="/create/img-pubsale-success.png" />
         ) : (
           <img className="w-[220px]" src="/create/img-pubsale.png" />
@@ -72,7 +77,7 @@ const PublicSale: FC = () => {
         </ul>
 
         {/* {address && idoQueueDetail?.isParticipateImo ? ( */}
-        {address && userCanClaimCount && userCanClaimCount > 0 ? (
+        {canClaim ? (
           <div className="flex gap-[11px] w-full">
             <Button
               className={classNames('mt-5 uppercase flex-1 memoo_button reverse h-12 font–404px', {})}
