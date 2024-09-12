@@ -31,8 +31,13 @@ const App = () => {
   // const endpoint = clusterApiUrl(network);
   const network = import.meta.env.VITE_RPC_URL;
   const endpoint = import.meta.env.VITE_RPC_URL;
-  // new SolflareWalletAdapter({ network }),
-  const wallets = useMemo(() => [new PhantomWalletAdapter(), new TorusWalletAdapter()], [network]);
+  // ,
+
+  // const wallets = useMemo(
+  //   () => [new PhantomWalletAdapter(), new SolflareWalletAdapter({ network }), new TorusWalletAdapter()],
+  //   [network],
+  // );
+  const wallets = useMemo(() => [new PhantomWalletAdapter()], [network]);
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
