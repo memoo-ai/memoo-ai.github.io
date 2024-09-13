@@ -112,7 +112,7 @@ const CreatorRankingShareModal = ({ children, ticker }: any) => {
               </div>
               <h3 className="font-404px text-[#fff] mt-[36px]">MeMoo Score</h3>
               <p className="text-[#fff] text-[24px] font-404px leading-[5px] mt-[55px]">
-                <span className="text-green text-[96px] line-">70</span>/100
+                <span className="text-green text-[96px] line-">{idoQueueDetail?.memooScoreTotal ?? 0}</span>/100
               </p>
               <p className="text-[#fff] text-[14px] font-OCR leading-[15px] mt-[17px]">
                 Might consider <br /> adding it to my wishlist.

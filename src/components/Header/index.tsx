@@ -86,6 +86,11 @@ const Header = () => {
           </NavLink>
         ))}
       </div>
+      <div className="flex-1">
+        <div className="flex items-center ml-[50px] ">
+          <span className={`${styles.betaBtn}`}>BETA</span>
+        </div>
+      </div>
       <div className="flex items-center gap-[1rem]">
         {/* <Button onclick={loginMeme}> login</Button> */}
         {/* <Wallet /> */}
