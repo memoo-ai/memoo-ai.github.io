@@ -503,7 +503,7 @@ export default function Create() {
                       }}
                       type="button"
                     >
-                      <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
+                      <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center gap-y-[10px]">
                         <img src="./token/icon-upload.svg" alt="upload" className="w-[30px] h-[30px]" />
                         <p className="font-OCR text-[10px] text-green leading-4">Upload Image</p>
                       </div>
@@ -534,7 +534,7 @@ export default function Create() {
             <Form.Item
               label={
                 <p>
-                  Proejct Twitter <span>*</span>
+                  Project Twitter <span>*</span>
                 </p>
               }
             >
@@ -622,7 +622,8 @@ export default function Create() {
               {/* <MySlider min={0} max={1} minPrice={0} maxPrice={100} /> */}
             </Form.Item>
             <p className="create_tip_for_acquisition">
-              The creator can enhance the initial allocation by purchasing an additional {maxProportion * 100}%
+              {/* The creator can enhance the initial allocation by purchasing an additional {maxProportion * 100}% */}
+              Creator can enhance the initial allocation by purchasing an additional {maxProportion * 100}%
             </p>
 
             <div className="create_optional_info">
@@ -645,7 +646,11 @@ export default function Create() {
               {optionalOpen && (
                 <div className="create_optional_form">
                   <Form.Item
-                    label={<p>Upload Project Banner</p>}
+                    label={
+                      <p>
+                        Upload <var>Project Banner</var>
+                      </p>
+                    }
                     valuePropName="bannerList"
                     getValueFromEvent={normFile}
                     name="banners"
@@ -682,10 +687,13 @@ export default function Create() {
                           }}
                         >
                           <button style={{ border: 0, background: 'none' }} type="button">
-                            <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
+                            <div
+                              style={{ marginTop: 8 }}
+                              className="flex flex-col jusity-center items-center gap-y-[10px]"
+                            >
                               <img src="./token/icon-upload.svg" alt="upload" className="w-[30px] h-[30px]" />
                               <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px]">
-                                Recommended 790px X 307px Max size: 50MB
+                                Recommended 790px X 307px Max size: 10MB
                               </p>
                             </div>
                           </button>

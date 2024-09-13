@@ -89,6 +89,16 @@
 
             p>span {
               font-size: 10px;
+
+            }
+            p>var{
+              font-family: OCR A Extended;
+              font-size: 16px;
+              font-weight: 400;
+              line-height: 16px;
+              letter-spacing: -0.05em;
+              text-align: left;
+              white-space: nowrap !important;
             }
 
             &::after {

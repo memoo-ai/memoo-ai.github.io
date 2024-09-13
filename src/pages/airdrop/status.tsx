@@ -51,14 +51,14 @@ export default function Status() {
       case 'Launched':
         return (
           <div className="flex items-center gap-x-1">
-            <span className="font-Montserrat text-[#07E993] text-[18px] font-extrabold">Launched</span>
+            <span className="font-404px text-[#07E993] text-[18px] font-extrabold">Launched</span>
             <IconLaunched color="#07E993" />
           </div>
         );
       case 'IDOEND':
         return (
           <div className="flex items-center gap-x-1">
-            <span className="font-Montserrat text-[#07E993] text-[18px] font-extrabold">Launched</span>
+            <span className="font-404px text-[#07E993] text-[18px] font-extrabold">Launched</span>
             <IconLaunched color="#07E993" />
           </div>
         );

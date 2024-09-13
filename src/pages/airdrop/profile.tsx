@@ -3,7 +3,7 @@ import { FC, useContext, useMemo, useRef, useEffect, useState } from 'react';
 import './profile.scss';
 import { AirdropContext } from '.';
 import { clipAddress, extractDomainName, formatTs, handleCopy } from '@/utils';
-import { IconCopy, IconTwitter, IconTelegram, IconShare, IconFacebook } from '@/components/icons';
+import { IconCopy, IconTwitter, IconTelegram, IconSolana, IconFacebook } from '@/components/icons';
 import { getToolsUrls } from '@/api/common';
 
 const Profile: FC = () => {
@@ -56,7 +56,8 @@ const Profile: FC = () => {
             >
               {idoQueueDetail?.creatorAddress && (
                 <li className="flex items-center gap-x-1.5 h-8">
-                  <img className="w-[20px] h-[20px] mr-[5px]" src="/create/vector.png" alt="" />
+                  {/* <img className="w-[20px] h-[20px] mr-[5px]" src="/create/vector.png" alt="" /> */}
+                  <IconSolana color="#FFF" iconColor="#fff" />
                   {clipAddress(idoQueueDetail?.contractAddress?.toUpperCase() ?? '')}{' '}
                   <a className="cursor-pointer">
                     {/* <img className="w-2.5 object-contain" src="/create/icon-copy.png" /> */}
@@ -87,7 +88,7 @@ const Profile: FC = () => {
             >
               {idoQueueDetail?.lpContractAddress && (
                 <li className="flex items-center gap-x-1.5 h-8">
-                  <img className="w-[20px] h-[20px] mr-[5px]" src="/create/vector.png" alt="" />
+                  <IconSolana color="#FFF" iconColor="#fff" />
                   {clipAddress(idoQueueDetail?.lpContractAddress?.toUpperCase() ?? '')}{' '}
                   <a className="cursor-pointer">
                     {/* <img className="w-2.5 object-contain" src="/create/icon-copy.png" /> */}

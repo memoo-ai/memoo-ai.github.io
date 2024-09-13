@@ -1,17 +1,27 @@
 .header {
   position: sticky;
   top: 0;
-  padding: 0 5rem;
-  height: 5.5rem;
+
+  height: 6rem;
   background-color: $headerBgColor;
   border-bottom: 1px solid #5D64A2;
+  z-index: 999999 !important;
 
   .logo {
     width: 194px;
     height: 69px;
   }
 }
-
+.header-top{
+  background: linear-gradient(90deg, #B53BFF 0%, #07E993 100%);
+  height: 1.5625rem;
+  padding:0 5rem;
+  z-index: 999999;
+}
+.header-content{
+  padding: .375rem 5rem;
+  z-index: 999999;
+}
 .navItem {
 
   // color: #7e7e7e;

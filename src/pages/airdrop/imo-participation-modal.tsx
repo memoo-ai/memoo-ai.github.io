@@ -152,6 +152,11 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
           )} ${tokenSymbol} per wallet: To counteract potential centralization,\nindividual wallet holding limits will be established, ensuring that every purchasing\nentity's holding is limited to maximum of ${idoUserBuyLimitBN
             .multipliedBy(100)
             .toString()}% percentage of the total supply.`}</p>
+          <p className="whitespace-pre font-OCR text-[#4889B7] text-[10px] leading-[14px]">{`Contribution capped at ${formatDecimals(
+            maxContributed,
+          )} ${tokenSymbol} per wallet: To counteract potential centralization, individual wallet holding limits will be established, ensuring that every purchasing entity's holding is limited to maximum of ${idoUserBuyLimitBN
+            .multipliedBy(100)
+            .toString()}% percentage of the total supply.`}</p>
           <Checkbox
             className="font-OCR text-[12px] text-[#4889B7] my-[24px]"
             onChange={(e) => setAccepted(e.target.checked)}

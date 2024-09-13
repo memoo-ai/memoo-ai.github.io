@@ -102,7 +102,10 @@ const PublicSale: FC = () => {
         ) : (
           <div className="w-full">
             <Wallet>
-              <Button className={classNames('mt-5 uppercase w-full memoo_button reverse h-12 font–404px', {})}>
+              <Button
+                className={classNames('mt-5 uppercase w-full memoo_button reverse h-12 font–404px', {})}
+                onClick={onConfirm}
+              >
                 Buy
               </Button>
             </Wallet>
