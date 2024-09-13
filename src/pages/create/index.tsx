@@ -382,7 +382,7 @@ export default function Create() {
         } else if (e?.code === 500 && e?.msg) {
           message.error(e.msg);
         } else {
-          console.error('发生了其他错误:', e);
+          console.error('Other errors have occurred:', e);
         }
       } finally {
         setSaveCraftLoading(false);
