@@ -46,22 +46,23 @@ const Swipe: React.FC<SwipeProps> = React.memo(({ children, speed = 50, directio
   }, [fetchData]);
 
   const updatePosition = useCallback(() => {
-    if (isPaused || !containerRef.current || !contentRef.current || !isScrolling) return;
+    if (isPaused || !containerRef.current || !contentRef.current || !isScrolling || list.length < 5) return;
 
     const contentSize = isVertical ? contentRef.current.offsetHeight : contentRef.current.offsetWidth;
     const containerWidth = containerRef.current.offsetWidth;
+
     setPosition((prevPos) => {
-      const newPos = prevPos + (isReverse ? speed / 60 : -speed / 60);
-      if (isReverse) {
-        return newPos >= containerWidth ? -contentSize : newPos;
+      const newPos = prevPos - speed / 60;
+      if (newPos <= -contentSize) {
+        return containerWidth;
       } else {
-        return newPos <= -contentSize ? containerWidth : newPos;
+        return newPos;
       }
     });
-  }, [isPaused, isVertical, isReverse, speed]);
+  }, [isPaused, isVertical, speed, list.length]);
 
   useAnimationFrame(() => {
-    if (isScrolling) {
+    if (isScrolling && list.length >= 6) {
       updatePosition();
     }
   });
@@ -88,8 +89,6 @@ const Swipe: React.FC<SwipeProps> = React.memo(({ children, speed = 50, directio
             height: '40px',
             width: '100vw',
             position: 'fixed' as const,
-            // marginLeft: '50%',
-            // transform: 'translateX(-50%)',
             top: '88px',
             left: 0,
             background: '#312145',
@@ -113,7 +112,7 @@ const Swipe: React.FC<SwipeProps> = React.memo(({ children, speed = 50, directio
   );
 
   const repeatedList = useMemo(() => {
-    if (list && list.length > 5) {
+    if (list && list.length >= 6) {
       return [...list, ...list];
     }
     return list ?? [];
