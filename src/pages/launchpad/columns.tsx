@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button } from 'antd';
 import { LaunchpadIMO, LaunchpadAirdrop } from '@/types';
 import { formatTs } from '@/utils';
 import IProgress from '@/components/IProgress';
@@ -50,7 +50,7 @@ export const columns = (navigate: (path: string) => void) => [
     sorter: false,
     render: (totalRaised: number) => (
       <span className="font-OCR font-norma text-lg">
-        {totalRaised}
+        {totalRaised}&nbsp;
         {tokenSymbol}
       </span>
     ),
@@ -60,12 +60,8 @@ export const columns = (navigate: (path: string) => void) => [
     key: 'action',
     width: '150px',
     render: (record: LaunchpadIMO) => (
-      // <Wallet>
-
-      // </Wallet>
       <Button
-        variant="secondary"
-        className=" h-[50px] uppercase font-404px font-bold text-lg px-2"
+        className="memoo_button w-[136px] h-[50px] rounded-[7px] reverse"
         onClick={() => navigate(`/airdrop/${record.ticker}`)}
       >
         PARTICIPATE
@@ -113,10 +109,12 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
     key: 'participants',
     sorter: false,
     render: (participants: number) => (
-      <span className="font-OCR font-normal text-lg">
-        {participants}
-        {tokenSymbol}
-      </span>
+      <div className="flex justify-center">
+        <span className="font-OCR font-normal text-lg">
+          {participants}
+          {/* {tokenSymbol} */}
+        </span>
+      </div>
     ),
   },
   {
@@ -125,8 +123,7 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
     width: '150px',
     render: (record: LaunchpadAirdrop) => (
       <Button
-        variant="default"
-        className="w-[136px] h-[50px] uppercase font-404px font-bold text-lg"
+        className="memoo_button w-[136px] h-[50px] rounded-[7px]"
         onClick={() => navigate(`/airdrop/${record.ticker}`)}
       >
         airdrop

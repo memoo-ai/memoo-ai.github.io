@@ -61,7 +61,7 @@ interface AirdropContext {
   unlockMeme?: (project: `0x${string}`, index: number) => Promise<TransactionReceipt | undefined>;
   // idoClaim?: (project: `0x${string}`) => Promise<TransactionReceipt | undefined>;
   idoClaim?: (memeId: string, mintAPublicKey: string) => Promise<string | undefined>;
-  creatorClaimAll?: (memeId: string, mintAPublicKey: string) => any;
+  creatorClaimAll?: (memeId: string, mintAPublicKey: string, userCanClaimCount: number) => any;
   triggerRefresh?: Function;
   airdropClaim?: (
     memeId: string,
@@ -88,6 +88,7 @@ interface AirdropContext {
   // mintAPublickey?: PublicKey;
   solanaMemeConfig?: SolanaMemeConfig;
   unlockTimestamp?: number;
+  userCanClaimCount?: number;
 }
 
 export const AirdropContext = createContext<AirdropContext>({
@@ -148,6 +149,16 @@ const Airdrop: FC = () => {
     setRefresh((v) => v + 1);
   }, []);
 
+  const userCanClaimCount = useMemo(() => {
+    if (!memeUserData) return 0;
+
+    const memeUserIdoClaimedCount = new BigNumber(memeUserData?.memeUserIdoClaimedCount.toString()).dividedBy(10 ** 9);
+    const memeUserIdoCount = new BigNumber(Number(memeUserData.memeUserIdoCount.toString())).dividedBy(10 ** 9);
+    const result = memeUserIdoCount.minus(memeUserIdoClaimedCount);
+    console.log('userCanClaimCount: ', result.toString());
+    return Number(result);
+  }, [memeUserData]);
+
   const context: AirdropContext = useMemo(
     () => ({
       stage,
@@ -175,6 +186,7 @@ const Airdrop: FC = () => {
       unlockTimestamp,
       memeConfig,
       memeCreatorUserData,
+      userCanClaimCount,
     }),
     [
       stage,
@@ -202,6 +214,7 @@ const Airdrop: FC = () => {
       unlockTimestamp,
       memeConfig,
       memeCreatorUserData,
+      userCanClaimCount,
     ],
   );
 
@@ -309,16 +322,18 @@ const Airdrop: FC = () => {
   //     }
   //   })();
   // }, [idoQueueDetail, address, memeUnlockPeriods]);
-
   const preAmount = useMemo(() => {
-    if (!memooConfig || !memeCreatorUserData) return new BN(0);
-    const idoPriceBN = new BN(memooConfig?.idoPrice).div(new BN(10).pow(new BN(9)));
+    if (!memooConfig || !memeCreatorUserData) return new BigNumber(0);
+
+    const idoPriceBN = new BigNumber(memooConfig?.idoPrice.toString()).dividedBy(new BigNumber(10).pow(10));
     console.log('idoPriceBN: ', idoPriceBN.toString());
 
-    const memeUserIdoCountBN = new BN(memeCreatorUserData?.memeUserIdoCount).div(new BN(10).pow(new BN(9)));
+    const memeUserIdoCountBN = new BigNumber(memeCreatorUserData?.memeUserIdoCount.toString()).dividedBy(
+      new BigNumber(10).pow(9),
+    );
     console.log('memeUserIdoCountBN: ', memeUserIdoCountBN.toString());
 
-    const preAmountBN = memeUserIdoCountBN.mul(idoPriceBN);
+    const preAmountBN = memeUserIdoCountBN.multipliedBy(idoPriceBN);
     console.log('preAmount: ', preAmountBN.toString());
 
     return preAmountBN.toNumber();
@@ -363,7 +378,7 @@ const Airdrop: FC = () => {
           {/* <IMOParticipate /> */}
           <AirdropClaim />
           {/* {(stage === 'in-queue' || stage === 'imo') && mine && <PreMarketAcqusition amount={preAmount} />}  */}
-          {stage !== '2st-claim' && mine && <PreMarketAcqusition amount={preAmount} />}
+          {stage !== '2st-claim' && mine && <PreMarketAcqusition amount={Number(preAmount ?? 0)} />}
           <IDODetail />
         </AirdropContext.Provider>
       </div>

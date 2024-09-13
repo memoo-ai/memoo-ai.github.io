@@ -1,5 +1,15 @@
 import { Button, Checkbox, Input, Modal, message, Slider, Form, Upload } from 'antd';
-import { Children, FC, Fragment, ReactNode, cloneElement, isValidElement, useEffect, useState } from 'react';
+import {
+  Children,
+  FC,
+  Fragment,
+  ReactNode,
+  cloneElement,
+  isValidElement,
+  useEffect,
+  useState,
+  useContext,
+} from 'react';
 import './edit-project-modal.scss';
 import {
   PreLaunchDurationEnum,
@@ -19,6 +29,7 @@ import { Trash } from 'lucide-react';
 import { REQUEST_FOLLOWING_STORAGE, UPDATE_PROJECT_TWITTER_STORAGE, EDIT_INFO_STORAGE } from '@/constants';
 import { useSearchParams } from 'react-router-dom';
 import { authorizeTwitter } from '@/utils';
+import { AirdropContext } from '.';
 const FORM_STORAGE_KEY = 'create_token_storage';
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
@@ -37,7 +48,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [projectDetail, setProjectDetail] = useState({});
   const [searchParams] = useSearchParams();
-
+  const { mine, triggerRefresh } = useContext(AirdropContext);
   useEffect(() => {
     getTokenDetail(ticker).then((res) => {
       if (res?.data) {
@@ -146,6 +157,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
 
   const handleSave = async (isConfirm: boolean) => {
     try {
+      if (!triggerRefresh) return;
       await form.validateFields();
       // twitter must have been connected
       // if (!twitter || !twitterAccessToken) {
@@ -164,6 +176,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
         message.success('modify successfully!');
         onSaveSuccess();
         setOpen(false);
+        triggerRefresh();
       } else {
         message.warning('fail in keeping');
       }

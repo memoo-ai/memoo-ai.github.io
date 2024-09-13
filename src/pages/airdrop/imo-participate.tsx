@@ -7,10 +7,12 @@ import { AirdropContext } from '.';
 import ImoParticipationModal from './imo-participation-modal';
 import { formatDecimals } from '@/utils';
 import ITooltip from '@/components/ITooltip';
+import { useProportion } from '@/hooks/useProportion';
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const IMOParticipate: FC = () => {
   const { idoActiveDetail, idoQueueDetail } = useContext(AirdropContext);
   const [ended, setEnded] = useState(false);
+  const { idoUserBuyLimit, totalSupplyPrice, tokenAllocationIdo } = useProportion();
   console.log('idoActiveDetail?.endsIn:', idoActiveDetail?.endsIn);
   const params = useMemo(
     () => [
@@ -18,20 +20,24 @@ const IMOParticipate: FC = () => {
         key: 'Price',
         value: `$${formatDecimals(idoActiveDetail?.price ? idoActiveDetail?.price : 0) ?? 0}`,
         tip: null,
+        big: false,
       },
       // { key: 'Price', value: `$${Number(idoActiveDetail?.price).toLocaleString() ?? 0}`, tip: null },
       {
         key: 'Total Raised',
         value: `${idoActiveDetail?.totalRaised === '' ? 0 : (idoActiveDetail?.totalRaised ?? 'NA/NA')} ${tokenSymbol}`,
-        tip: `Total IMO raise is always capped \n at 2.33 ${tokenSymbol}`,
+        tip: `Total IMO raise is always capped \n at ${totalSupplyPrice * tokenAllocationIdo} ${tokenSymbol}`,
+        big: false,
       },
       {
         key: 'Contributed',
-        value: `${idoQueueDetail?.contributed ?? 'NA'}/${idoQueueDetail?.maxContributed ?? 'NA'} ${tokenSymbol}`,
-        tip: `Contributed per wallet \n is capped at 0.066 ${tokenSymbol}`,
+        // value: `${idoQueueDetail?.contributed ?? 'NA'}/${idoQueueDetail?.maxContributed ?? 'NA'} ${tokenSymbol}`,
+        value: `${idoQueueDetail?.contributed ?? 'NA'} ${tokenSymbol}`,
+        tip: `Contributed per wallet \n is capped at ${totalSupplyPrice * idoUserBuyLimit} ${tokenSymbol}`,
+        big: true,
       },
     ],
-    [idoActiveDetail, idoQueueDetail],
+    [idoActiveDetail, idoQueueDetail, tokenAllocationIdo, idoUserBuyLimit, totalSupplyPrice],
   );
 
   const disabled = useMemo(
@@ -73,8 +79,8 @@ const IMOParticipate: FC = () => {
             }}
           />
           <p className="mt-3 text-white font-OCR leading-5 text-sm">Fair Distribution Policy</p>
-          <p className="text-deep-green text-center font-OCR leading-14 text-xs whitespace-nowrap">
-            Wallet capped at 1% token supply per address.
+          <p className="text-deep-green text-center font-OCR leading-14 text-[11px] whitespace-nowrap">
+            Wallet capped at {idoUserBuyLimit * 100}% token supply per address.
           </p>
         </div>
         <ul className="mt-6 params_list flex flex-col gap-y-6 w-full">
@@ -86,7 +92,7 @@ const IMOParticipate: FC = () => {
                   <ITooltip className="h-[12px] " placement="bottom" title={item.tip} color="#fff" bgColor="#396D93" />
                 )}
               </label>
-              <var className="text-white text-lg font-OCR leading-5">{item.value}</var>
+              <var className={`text-white ${item.big ? 'text-2xl' : 'text-lg'} font-OCR leading-5`}>{item.value}</var>
             </li>
           ))}
         </ul>

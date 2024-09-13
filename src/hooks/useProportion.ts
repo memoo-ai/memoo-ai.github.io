@@ -32,7 +32,7 @@ export const useProportion = () => {
     if (!memooConfig) return 0;
     const rate = Number(memooConfig?.idoCreatorBuyLimit) / 10000;
     const total =
-      Number(new BigNumber(memooConfig?.idoPrice.toString()).dividedBy(10 ** 9)) *
+      Number(new BigNumber(memooConfig?.idoPrice.toString()).dividedBy(10 ** 10)) *
       Number(new BigNumber(memooConfig?.totalSupply.toString()).dividedBy(10 ** 9)) *
       rate;
     return Number(new BigNumber(total));
@@ -44,7 +44,7 @@ export const useProportion = () => {
     if (!memooConfig) return 0;
 
     const totalSupplyBN = new BigNumber(Number(memooConfig?.totalSupply)).dividedBy(10 ** 9);
-    const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 9);
+    const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 10);
     const result = totalSupplyBN.multipliedBy(idoPriceBN).multipliedBy(firstProportion);
     return parseFloat(formatDecimals(result));
   }, [memooConfig, firstProportion]);
@@ -60,7 +60,7 @@ export const useProportion = () => {
     console.log('platformCreateMeme-tokenAllocationCreator:', tokenAllocationCreator);
     const totalSupply = new BigNumber(memooConfig?.totalSupply.toString()).dividedBy(10 ** 9);
     console.log('platformCreateMeme-totalSupply:', Number(totalSupply));
-    const idoPrice = new BigNumber(memooConfig?.idoPrice.toString()).dividedBy(10 ** 9);
+    const idoPrice = new BigNumber(memooConfig?.idoPrice.toString()).dividedBy(10 ** 10);
     console.log('platformCreateMeme-idoPrice:', Number(idoPrice));
     const result = new BigNumber(tokenAllocationCreator).multipliedBy(totalSupply).multipliedBy(idoPrice);
     console.log('platformCreateMeme-result:', Number(result));
@@ -81,6 +81,29 @@ export const useProportion = () => {
     return result.toString() ?? 0;
   }, [memooConfig, firstProportion]);
 
+  const idoUserBuyLimit = useMemo(() => {
+    if (!memooConfig) return 0;
+    const result = memooConfig?.idoUserBuyLimit / 10000;
+    console.log('idoUserLimit:', result);
+    return result;
+  }, [memooConfig]);
+
+  const totalSupplyPrice = useMemo(() => {
+    if (!memooConfig) return 0;
+    const totalSupply = new BigNumber(memooConfig?.totalSupply.toString()).dividedBy(10 ** 9);
+    const idoPrice = new BigNumber(memooConfig?.idoPrice.toString()).dividedBy(10 ** 10);
+    const result = totalSupply.multipliedBy(idoPrice);
+    console.log('totalSupplyPrice:', parseFloat(formatDecimals(result)));
+    return parseFloat(formatDecimals(result)) ?? 0;
+  }, [memooConfig]);
+
+  const tokenAllocationIdo = useMemo(() => {
+    if (!memooConfig) return 0;
+    const result = memooConfig?.tokenAllocationIdo / 10000;
+    console.log('tokenAllocationIdo:', result);
+    return result;
+  }, [memooConfig]);
+
   return {
     firstProportion,
     maxProportion,
@@ -92,5 +115,8 @@ export const useProportion = () => {
     createMaxProportion,
     platformCreateMeme,
     creatorAllocation,
+    idoUserBuyLimit,
+    totalSupplyPrice,
+    tokenAllocationIdo,
   };
 };

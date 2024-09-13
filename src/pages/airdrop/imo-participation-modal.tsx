@@ -26,7 +26,7 @@ const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(0);
-  const { memooConfig, idoBuy, idoQueueDetail, solanaMemeConfig, mine } = useContext(AirdropContext);
+  const { memooConfig, idoBuy, idoQueueDetail, solanaMemeConfig, mine, triggerRefresh } = useContext(AirdropContext);
   const [accepted, setAccepted] = useState(false);
   const [confirming, setConfirming] = useState(false);
   const [selectedGrade, setSelectedGrade] = useState(grades[0]);
@@ -41,8 +41,10 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
     if (!memooConfig) return zeroBN;
     const idoQuotaBN = new BigNumber(Number(memooConfig.tokenAllocationIdo)).dividedBy(10000);
     // const idoPriceBN = new BigNumber(defaultConfig.idoPrice).dividedBy(10 ** defaultConfig.defaultDecimals);
-    const idoPriceBN = new BigNumber(Number(memooConfig.idoPrice)).dividedBy(10 ** 9);
-    return totalSupplyBN.multipliedBy(idoQuotaBN).multipliedBy(idoPriceBN);
+    const idoPriceBN = new BigNumber(Number(memooConfig.idoPrice)).dividedBy(10 ** 10);
+    // const result = totalSupplyBN.multipliedBy(idoQuotaBN).multipliedBy(idoPriceBN);
+    const result = totalSupplyBN.multipliedBy(idoPriceBN);
+    return result;
   }, [memooConfig, totalSupplyBN]);
 
   const idoUserBuyLimitBN = useMemo(() => {
@@ -67,7 +69,7 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
           <span>
             {formatDecimals(capped.multipliedBy(g).multipliedBy(idoUserBuyLimitBN))} {tokenSymbol}
           </span>
-          <span>{formatDecimals(totalSupplyBN.multipliedBy(g).multipliedBy(idoUserBuyLimitBN))} TOKEN</span>
+          <span>~{formatDecimals(totalSupplyBN.multipliedBy(g).multipliedBy(idoUserBuyLimitBN))} TOKEN</span>
         </div>
       ),
       value: parseFloat(formatDecimals(capped.multipliedBy(g).multipliedBy(idoUserBuyLimitBN))),
@@ -86,7 +88,7 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
 
   const onConfirm = useCallback(async () => {
     console.log('participationConfirm');
-    if (!idoBuy || !idoQueueDetail || !solanaMemeConfig) return;
+    if (!idoBuy || !idoQueueDetail || !solanaMemeConfig || !triggerRefresh) return;
     try {
       setConfirming(true);
       // TODO
@@ -97,6 +99,7 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
         console.log('idoBuy-tx:', tx);
         setOpen(false);
         message.success('Participate Successful');
+        triggerRefresh();
       }
     } catch (error) {
       console.error(error);
@@ -126,7 +129,7 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
                 placement="bottom"
                 title={`${
                   (Number(formatDecimals(capped)) / 7) * 6
-                } ${tokenSymbol} will be used to create liquidity pair while${Number(
+                } ${tokenSymbol} will be used to create liquidity pair while ${Number(
                   Number(formatDecimals(capped)) / 7,
                 ).toFixed(2)}  ${tokenSymbol} is collected as IMO platform fee.`}
                 color="#fff"

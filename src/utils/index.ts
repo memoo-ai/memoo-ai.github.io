@@ -226,3 +226,15 @@ export function base64ToUint8Array(hexString: string) {
 
   return arrayBuffer;
 }
+
+export function formatNumberToFixed(input: string | number): string {
+  const number = parseFloat(input.toString());
+
+  if (isNaN(number)) {
+    return '0';
+  }
+
+  const rounded = number.toFixed(2);
+
+  return parseFloat(rounded).toString();
+}

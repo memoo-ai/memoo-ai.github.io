@@ -1,17 +1,26 @@
 import './index.scss';
 import { IconBack } from '@/components/icons';
 import { useNavigate } from 'react-router-dom';
+import { useAccount } from '@/hooks/useWeb3';
+import { message } from 'antd';
 interface BackButtonProps {
   path?: string;
 }
 const BackButton = ({ path = '/dashboard', ...rest }: BackButtonProps) => {
   const navigate = useNavigate();
-
+  const { address, registerTokenMint } = useAccount();
+  const goBack = () => {
+    if (!address) {
+      message.warning('Please connect wallet first.');
+      return;
+    }
+    navigate(path);
+  };
   return (
     <div
       className="back_button"
       onClick={() => {
-        navigate(path);
+        goBack();
       }}
     >
       <span className="back_button_text">Back to Dashboard</span>

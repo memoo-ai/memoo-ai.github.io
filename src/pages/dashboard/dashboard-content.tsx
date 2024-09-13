@@ -20,6 +20,7 @@ const DashboardContent: FC<{ onChangeType: (type: string) => void }> = ({ onChan
     if (type) {
       setActiveKey(type);
       onChangeType(type);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [location.search]);
   const items = [

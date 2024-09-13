@@ -83,7 +83,7 @@ export const Creator = () => {
 
     const creatorLockCountBN = new BigNumber(Number(memeUserData?.creatorLockCount)).dividedBy(10 ** 9);
     const memeUserIdoCountBN = new BigNumber(Number(memeUserData?.memeUserIdoCount)).dividedBy(10 ** 9);
-    const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 9);
+    const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 10);
     const totalCountBN = creatorLockCountBN.plus(memeUserIdoCountBN);
     const totalPurchasedBN = totalCountBN.multipliedBy(idoPriceBN);
     const formattedResult = parseFloat(formatDecimals(totalPurchasedBN));
@@ -202,30 +202,30 @@ export const Creator = () => {
           />
         );
         break;
-      case 'Waiting_for_pay':
-        button = (
-          <IncreaseModal
-            maxIncrease={maxIncrease}
-            firstProportion={firstProportion}
-            maxProportion={maxProportion}
-            firstIncrease={firstIncrease}
-            purchased={purchased}
-          >
-            <Button
-              className="flex items-center justify-between creator-btn"
-              onMouseOver={() => iconRefs.current[`increase${index}`].setHovered(true)}
-              onMouseLeave={() => iconRefs.current[`increase${index}`].setHovered(false)}
-              onClick={() => {
-                getIDOAndPurchased(item.ticker);
-              }}
-              disabled
-            >
-              <IconQueueBtn className="QueueBtn" ref={(ref) => (iconRefs.current[`increase${index}`] = ref)} />
-              <span className="ml-[9px]">INCREASE</span>
-            </Button>
-          </IncreaseModal>
-        );
-        break;
+      // case 'Waiting_for_pay':
+      //   button = (
+      //     <IncreaseModal
+      //       maxIncrease={maxIncrease}
+      //       firstProportion={firstProportion}
+      //       maxProportion={maxProportion}
+      //       firstIncrease={firstIncrease}
+      //       purchased={purchased}
+      //     >
+      //       <Button
+      //         className="flex items-center justify-between creator-btn"
+      //         onMouseOver={() => iconRefs.current[`increase${index}`].setHovered(true)}
+      //         onMouseLeave={() => iconRefs.current[`increase${index}`].setHovered(false)}
+      //         onClick={() => {
+      //           getIDOAndPurchased(item.ticker);
+      //         }}
+      //         disabled
+      //       >
+      //         <IconQueueBtn className="QueueBtn" ref={(ref) => (iconRefs.current[`increase${index}`] = ref)} />
+      //         <span className="ml-[9px]">INCREASE</span>
+      //       </Button>
+      //     </IncreaseModal>
+      //   );
+      //   break;
       case 'QUEUE':
         button = (
           <IncreaseModal

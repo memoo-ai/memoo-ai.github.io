@@ -39,7 +39,7 @@ const ClaimImoTokensModal = ({ children }: any) => {
 
   const userImoPrice = useMemo(() => {
     if (!memeUserData || !memooConfig) return 0;
-    const idoPrice = new BigNumber(Number(memooConfig.idoPrice.toString())).dividedBy(10 ** 9);
+    const idoPrice = new BigNumber(Number(memooConfig.idoPrice.toString())).dividedBy(10 ** 10);
     console.log('memeUserIdoCountidoPrice: ', idoPrice.toString());
 
     const memeUserIdoCount = new BigNumber(Number(memeUserData.memeUserIdoCount.toString())).dividedBy(10 ** 9);
@@ -84,13 +84,17 @@ const ClaimImoTokensModal = ({ children }: any) => {
         <div className="confirm_title">IMO ALLOCATION UNLOCKED</div>
         <div className="confirm_content">
           <img className="mt-[15px]" src="./dashboard/reward.svg" alt="" />
-          <div className="confirm_content_title mt-[18px]">{idoLaunchedDetail?.tokenName} has arrived!</div>
+          <div className="font-404px text-[32px] text-green mt-[18px]">{idoLaunchedDetail?.tokenName} has arrived!</div>
           <div className="confirm_content_describe mt-[18px]">
             For your participation of {userImoPrice} {tokenSymbol} in {idoLaunchedDetail?.tokenName} IMO, <br /> you can
             now unlock you allocation below.
           </div>
           <div className="relative mt-[26px] w-full">
-            <IconLock className="absolute left-[25px] top-[50%] translate-y-[-50%] z-10" />
+            <IconLock
+              className="absolute left-[25px] top-[50%] translate-y-[-50%] z-10"
+              color="#07e993"
+              bgColor="#2b526e"
+            />
             <div className="memoo_input h-[66px] font-404px text-white text-[24px] text-center flex items-center justify-center">
               <img className="w-[50px] h-[50px] rounded-[50%]" src={idoLaunchedDetail?.icon} alt="" />{' '}
               <span>&nbsp;{userCanClaimCount} &nbsp;</span>

@@ -34,8 +34,9 @@ const IncreaseAcquisitionModal: FC<{
   const [confirming, setConfirming] = useState(false);
   const [proportion, setProportion] = useState(0.05);
   const [result, setResult] = useState(0);
+  const [defaultProportion, setDefaultProportion] = useState(0);
   // const { idoBuy, idoQueueDetail } = useContext(AirdropContext);
-  const { idoQueueDetail, mine, idoBuy, solanaMemeConfig, memooConfig } = useContext(AirdropContext);
+  const { idoQueueDetail, mine, idoBuy, solanaMemeConfig, memooConfig, triggerRefresh } = useContext(AirdropContext);
   // const { idoBuy } = useAccount();
   // const defaultValue = purchased * 100;
   // useEffect(() => {
@@ -68,7 +69,7 @@ const IncreaseAcquisitionModal: FC<{
 
   useEffect(() => {
     if (!purchased || !memooConfig) return;
-    const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 9);
+    const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 10);
     const totalSupply = new BigNumber(Number(memooConfig?.totalSupply)).dividedBy(10 ** 9);
     const totalPrice = new BigNumber(totalSupply).multipliedBy(idoPriceBN);
     const defaultValue = new BigNumber(purchased).dividedBy(totalPrice);
@@ -76,10 +77,11 @@ const IncreaseAcquisitionModal: FC<{
     console.log('defaultValue-purchased:', Number(purchased));
     console.log('defaultValue:', Number(defaultValue));
     setProportion(Number(defaultValue ?? 0.05) * 100);
+    setDefaultProportion(Number(defaultValue ?? 0.05) * 100);
   }, [purchased]);
 
   const onConfirm = useCallback(async () => {
-    if (!idoBuy || !idoQueueDetail || !solanaMemeConfig) return;
+    if (!idoBuy || !idoQueueDetail || !solanaMemeConfig || !triggerRefresh) return;
     try {
       setConfirming(true);
       console.log(result);
@@ -97,6 +99,7 @@ const IncreaseAcquisitionModal: FC<{
         console.log('idoBuy-tx:', tx);
         setOpen(false);
         message.success('Buy Successful');
+        triggerRefresh();
       }
     } catch (error) {
       console.error(error);
@@ -143,12 +146,11 @@ const IncreaseAcquisitionModal: FC<{
                 className="memoo_slider flex-auto"
                 tooltip={{ open: true, rootClassName: 'memoo_slider_tooltip', formatter: (value) => `${value}%` }}
                 onChange={(value) => {
-                  setProportion(value);
-                  // if (value > purchased * 100) {
-                  //   setProportion(value);
-                  // } else {
-                  //   setProportion(purchased * 100);
-                  // }
+                  if (value > defaultProportion) {
+                    setProportion(value);
+                  } else {
+                    setProportion(defaultProportion);
+                  }
                 }}
                 value={proportion}
                 max={maxProportion * 100}

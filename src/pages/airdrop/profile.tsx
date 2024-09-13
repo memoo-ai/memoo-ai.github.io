@@ -129,6 +129,12 @@ const Profile: FC = () => {
     ];
   }, [idoQueueDetail, tools]);
 
+  const handleExternalLink = (url: string) => {
+    if (!url) return;
+    const formattedUrl = url.startsWith('http') ? url : `https://${url}`;
+    window.location.href = formattedUrl;
+  };
+
   const socails = useMemo(() => {
     return [
       {
@@ -138,7 +144,12 @@ const Profile: FC = () => {
           <ul className={`${idoQueueDetail?.website ? 'token_list' : ''} flex flex-wrap col-span-6 gap-y-1.5 gap-x-1`}>
             {idoQueueDetail?.website ? (
               <li className="h-8 cursor-pointer token_list_hover">
-                <a href={idoQueueDetail?.website} target="_blank" className="flex items-center gap-x-1.5">
+                <a
+                  className="flex items-center gap-x-1.5"
+                  onClick={() => {
+                    handleExternalLink(idoQueueDetail?.website);
+                  }}
+                >
                   {extractDomainName(idoQueueDetail?.website ?? '')}
                 </a>
               </li>

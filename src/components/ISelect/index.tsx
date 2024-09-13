@@ -15,6 +15,7 @@ interface ISelectProps {
 }
 const ISelect = ({ options, onSelectChange }: ISelectProps) => {
   const [activeKey, setActiveKey] = useState(options[0].key);
+  const [activeLabel, setActiveLabel] = useState(options[0].label);
   const [orderBy, setOrderBy] = useState('desc');
   const iconRef = useRef<any>({});
   const itemDefault: MenuProps['items'] = [
@@ -63,6 +64,7 @@ const ISelect = ({ options, onSelectChange }: ISelectProps) => {
             } font-404px text-[16px] cursor-pointer`}
             onClick={() => {
               setActiveKey(item.key);
+              setActiveLabel(item.label);
               onSelectChange(item.key, orderBy);
             }}
           >
@@ -86,7 +88,7 @@ const ISelect = ({ options, onSelectChange }: ISelectProps) => {
           onMouseOver={() => iconRef.current.setHovered(true)}
           onMouseLeave={() => iconRef.current.setHovered(false)}
         >
-          {activeKey}
+          {activeLabel}
           <IconArrow className="" ref={iconRef} />
         </Button>
       </Dropdown>

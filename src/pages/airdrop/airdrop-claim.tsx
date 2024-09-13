@@ -20,7 +20,7 @@ import ITooltip from '@/components/ITooltip';
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
 let isRequestFollowing = false;
 export default function AirdropClaim() {
-  const { stage, idoQueueDetail, idoLaunchedDetail, idoActiveDetail, triggerRefresh, ticker, airdropClaim } =
+  const { stage, idoQueueDetail, idoLaunchedDetail, idoActiveDetail, triggerRefresh, ticker, memeUserData } =
     useContext(AirdropContext);
   const [following, setFollowing] = useState(false);
   const [searchParams] = useSearchParams();
@@ -67,6 +67,16 @@ export default function AirdropClaim() {
   }, [idoLaunchedDetail, idoActiveDetail, stage]);
 
   const airdropUnlocked = useMemo(() => stage === 'launch' || stage === '1st-claim' || stage === '2st-claim', [stage]);
+
+  const airdropCanClaimCount = useMemo(() => {
+    if (!idoLaunchedDetail || !memeUserData) return 0;
+    const userClaimAirdropCount = new BigNumber(memeUserData?.memeUserAirdropClaimedCount.toString()).dividedBy(
+      10 ** 9,
+    );
+    const result = Number(idoLaunchedDetail?.count) - Number(userClaimAirdropCount);
+    console.log('airdropCanClaimCount:', result);
+    return result;
+  }, [idoLaunchedDetail, memeUserData]);
 
   const handleFollow = useCallback(async (twitter: string) => {
     try {
@@ -116,6 +126,7 @@ export default function AirdropClaim() {
           redirectUri: twitterRedirectUri,
           refreshToken: '',
           twitter: twitter ?? 'elonmusk',
+          ticker: ticker,
         };
         const res = await requestTwitterFollow(followParams);
         console.log('follow res: ', res);
@@ -253,7 +264,7 @@ export default function AirdropClaim() {
           <div className="mt-5 airdrop-unlock flex flex-col items-center gap-y-2">
             <img className="w-5 object-contain" src="/create/icon-airdrop-unlock.png" />
             <p className="text-white font-404px leading-20 text-2xl">
-              {Number(idoLaunchedDetail?.count).toLocaleString()} WIF
+              {Number(airdropCanClaimCount).toLocaleString()} WIF
             </p>
           </div>
         ))}
@@ -266,7 +277,7 @@ export default function AirdropClaim() {
 
       <AirdropClaimModal>
         <Button
-          disabled={!idoQueueDetail?.claimFlag}
+          disabled={!idoQueueDetail?.claimFlag || airdropCanClaimCount <= 0}
           className={classNames('uppercase w-full claim_btn h-12 font–404px mt-5', {
             'mt-20': doingTask,
             'mt-5': airdropUnlocking || airdropUnlocked,

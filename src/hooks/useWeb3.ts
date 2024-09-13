@@ -79,6 +79,7 @@ export const useAccount = () => {
   // const network = import.meta.env.VITE_WALLET_ADAPTER_NETWORK;
   // const connection = new Connection(clusterApiUrl(network));
   const programId = new PublicKey(import.meta.env.VITE_PROGRAM_ID);
+  const globalMemeConfigId = import.meta.env.VITE_GLOBAL_MEMOO_CONFIG_ID;
   const { solanaConfig } = useBaseConfig();
   const program = useAnchorProgram(programId, IDL as Idl);
   const [memooConfig, setMemooConfig] = useState<MemooConfig>();
@@ -87,7 +88,7 @@ export const useAccount = () => {
   const memooConfigPda = useMemo(() => {
     if (!solanaConfig) return;
     // const globalMemeConfigId = '4b6bXbodnZH1K1kPipZzTAUn93SNYhRidyuz79Uoy4HW';
-    const globalMemeConfigId = solanaConfig?.globalMemooConfigId;
+    // const globalMemeConfigId = solanaConfig?.globalMemooConfigId;
     const config = PublicKey.findProgramAddressSync(
       [Buffer.from('global_memoo_config'), new PublicKey(globalMemeConfigId).toBuffer()],
       // [Buffer.from('global_memoo_config'), new PublicKey(solanaConfig?.globalMemooConfigId).toBuffer()],
@@ -203,35 +204,36 @@ export const useAccount = () => {
             userWsolAccount: userWsolAddress,
             wsolMint: NATIVE_MINT,
           })
-          .instruction();
+          .rpc();
+        return registerTokenMintIx;
 
-        transaction.add(registerTokenMintIx);
-        const latestBlockhash = await connection.getLatestBlockhash('finalized');
-        transaction.recentBlockhash = latestBlockhash.blockhash;
-        transaction.feePayer = publicKey;
-        const signedTransaction = await signTransaction(transaction);
-        const fee = await transaction.getEstimatedFee(connection);
-        console.log('fee:', fee);
-        console.log('latestBlockhash:', latestBlockhash);
-        // const signature = await connection.sendRawTransaction(signedTransaction.serialize());
-        const signature = await connection.sendRawTransaction(signedTransaction.serialize(), {
-          skipPreflight: true,
-        });
+        // transaction.add(registerTokenMintIx);
+        // const latestBlockhash = await connection.getLatestBlockhash('finalized');
+        // transaction.recentBlockhash = latestBlockhash.blockhash;
+        // transaction.feePayer = publicKey;
+        // const signedTransaction = await signTransaction(transaction);
+        // const fee = await transaction.getEstimatedFee(connection);
+        // console.log('fee:', fee);
+        // console.log('latestBlockhash:', latestBlockhash);
+        // // const signature = await connection.sendRawTransaction(signedTransaction.serialize());
+        // const signature = await connection.sendRawTransaction(signedTransaction.serialize(), {
+        //   skipPreflight: true,
+        // });
 
-        console.log('Transaction sent. Signature:', signature);
-        const confirmationStrategy = {
-          signature: signature,
-          blockhash: latestBlockhash.blockhash,
-          lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
-        };
+        // console.log('Transaction sent. Signature:', signature);
+        // const confirmationStrategy = {
+        //   signature: signature,
+        //   blockhash: latestBlockhash.blockhash,
+        //   lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+        // };
 
-        const confirmation = await connection.confirmTransaction(confirmationStrategy, 'finalized');
-        console.log('confirmation:', confirmation);
+        // const confirmation = await connection.confirmTransaction(confirmationStrategy, 'finalized');
+        // console.log('confirmation:', confirmation);
 
-        if (confirmation.value.err) {
-          throw new Error(`Transaction failed: ${confirmation.value.err.toString()}`);
-        }
-        return confirmation;
+        // if (confirmation.value.err) {
+        //   throw new Error(`Transaction failed: ${confirmation.value.err.toString()}`);
+        // }
+        // return confirmation;
       } catch (error) {
         console.error('Error in registerTokenMint:', error);
         throw error;
@@ -435,7 +437,7 @@ export const useAccount = () => {
   );
 
   const creatorClaimAll = useCallback(
-    async (memeId: string, mintaPublicKey: string) => {
+    async (memeId: string, mintaPublicKey: string, userCanClaimCount: number) => {
       if (!memooConfig || !program || !publicKey || !signTransaction) return;
       try {
         const memeConfigId = new PublicKey(memeId);
@@ -474,7 +476,10 @@ export const useAccount = () => {
           })
           .instruction();
 
-        const transaction = new Transaction().add(instruction1, instruction2);
+        const transaction = new Transaction().add(instruction1);
+        if (userCanClaimCount > 0) {
+          transaction.add(instruction2);
+        }
 
         const latestBlockhash = await connection.getLatestBlockhash('finalized');
         transaction.recentBlockhash = latestBlockhash.blockhash;
@@ -620,7 +625,7 @@ export const useAccount = () => {
         console.log('signedTransaction: ', signedTransaction);
 
         const txSignature = await connection.sendRawTransaction(signedTransaction.serialize(), {
-          skipPreflight: false,
+          skipPreflight: true,
         });
         console.log('txSignature: ', txSignature);
         const txDetails = await connection.getParsedTransaction(txSignature, { commitment: 'confirmed' });

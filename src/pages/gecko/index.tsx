@@ -167,6 +167,7 @@ const Gecko = () => {
         <ISelect
           options={tokenSelectOptions}
           onSelectChange={(key, orderBy) => {
+            setPagination({ ...pagination, current: 1 });
             setActiveKey(key);
             setOrderBy(orderBy);
           }}

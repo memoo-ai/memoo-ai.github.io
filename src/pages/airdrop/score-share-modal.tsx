@@ -10,7 +10,7 @@ import React, {
 } from 'react';
 
 import './score-share-modal.scss';
-import { Modal, Button, message } from 'antd';
+import { Modal, Button, message, Spin } from 'antd';
 import {
   IconTwitter,
   IconClose,
@@ -28,6 +28,7 @@ const BaseUrl = import.meta.env.VITE_SHARE_URI;
 const CreatorRankingShareModal = ({ children, ticker }: any) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const [loading, setLoading] = useState(false);
   const { idoQueueDetail } = useContext(AirdropContext);
 
   const downloadImg = useCallback(() => {
@@ -41,13 +42,17 @@ const CreatorRankingShareModal = ({ children, ticker }: any) => {
       height: 480,
     })
       .then((dataUrl) => {
+        setLoading(true);
         const link = document.createElement('a');
         link.download = 'my-share-image.png';
         link.href = dataUrl;
         link.click();
+        message.success('Download successfully!');
       })
       .catch((err) => {
         console.log(err);
+        message.error('Download failed.');
+        setLoading(false);
       });
   }, [ref]);
 
@@ -89,6 +94,7 @@ const CreatorRankingShareModal = ({ children, ticker }: any) => {
         closeIcon={<IconClose className="close" />}
       >
         <div className="mt-[21px] p-[28px]">
+          <Spin spinning={loading} fullscreen />
           <div className="score-share-modal-content  relative" ref={ref}>
             <div className=" flex items-end justify-between flex-col absolute top-[28px] right-[28px]">
               <div className="flex items-center ">
@@ -106,7 +112,7 @@ const CreatorRankingShareModal = ({ children, ticker }: any) => {
               </div>
               <h3 className="font-404px text-[#fff] mt-[36px]">MeMoo Score</h3>
               <p className="text-[#fff] text-[24px] font-404px leading-[5px] mt-[55px]">
-                <span className="text-green text-[96px] line-">70</span>/100
+                <span className="text-green text-[96px] line-">{idoQueueDetail?.memooScoreTotal ?? 0}</span>/100
               </p>
               <p className="text-[#fff] text-[14px] font-OCR leading-[15px] mt-[17px]">
                 Might consider <br /> adding it to my wishlist.
@@ -123,7 +129,7 @@ const CreatorRankingShareModal = ({ children, ticker }: any) => {
           >
             <IconTwitter className="w-[20px] h-[18px]" color="#1F3B4F" />
           </a>
-          <a
+          {/* <a
             href={`https://t.me/share/url?url=${encodeURIComponent(shareUrl)}`}
             target="_black"
             className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]"
@@ -132,7 +138,7 @@ const CreatorRankingShareModal = ({ children, ticker }: any) => {
           </a>
           <a className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]">
             <IconGame />
-          </a>
+          </a> */}
           <a
             href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
             target="_black"
@@ -146,9 +152,9 @@ const CreatorRankingShareModal = ({ children, ticker }: any) => {
           >
             <IconDownload />
           </div>
-          <div className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]">
+          {/* <div className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]">
             <IconMore />
-          </div>
+          </div> */}
         </div>
       </Modal>
       {Children.map(children, (child) => {

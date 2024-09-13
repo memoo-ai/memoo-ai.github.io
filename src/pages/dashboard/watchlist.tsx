@@ -23,7 +23,7 @@ export const WatchList = () => {
         setLoading(true);
         const { data } = await getWatchList({
           pageNumber: currentPage,
-          pageSize: 10,
+          pageSize: 11,
         });
         setList(data.records ?? []);
         setTotal(data.total_record ?? 0);

@@ -9,6 +9,7 @@ import { Button } from 'antd';
 import Countdown from '@/pages/airdrop/countdown';
 import { useNavigate } from 'react-router-dom';
 import Empty from '@/components/Empty';
+import { formatNumberToFixed } from '@/utils';
 interface KingsCardsProps {
   btnText?: string;
   btnType?: string;
@@ -67,7 +68,7 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data 
                       <div className="font-OCR text-[14px] text-[#7D83B5] line-[13px]">Ends in</div>
                       <div className="text-right">
                         <Countdown
-                          className=" flex gap-x-2 mt-5 font-OCR text-[18px] text-[#fff] line-[13px]"
+                          className=" flex gap-x-2 mt-5 font-OCR text-[17px] text-[#fff] line-[13px]"
                           timefragments="timefragments-kings"
                           format={([days, hours, minutes, seconds]) => [
                             <div key="hours">
@@ -97,7 +98,7 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data 
                         Memoo Score
                       </div>
                       <IProgress className="w-[83px]" percent={item.memooScore} />
-                      <div className="font-OCR text-[18px] text-[#fff] line-[13px] w-[153px] text-right flex-1">
+                      <div className="font-OCR text-[17px] text-[#fff] line-[13px] w-[153px] text-right flex-1">
                         {item?.memooScore ?? 0}/100
                       </div>
                     </div>
@@ -106,8 +107,8 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data 
                         Total Raised
                       </div>
                       <IProgress className="w-[83px]" percent={(item.contributed / item.maxContributed) * 100} />
-                      <div className="font-OCR text-[18px] text-[#fff] line-[13px]  text-right flex-1">
-                        {item.contributed}/{item.maxContributed} {tokenSymbol}
+                      <div className="font-OCR text-[17px] text-[#fff] line-[13px]  text-right flex-1 whitespace-nowrap">
+                        {formatNumberToFixed(item.contributed)}/{formatNumberToFixed(item.maxContributed)} {tokenSymbol}
                       </div>
                     </div>
                   </div>
