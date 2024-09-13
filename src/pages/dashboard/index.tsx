@@ -148,7 +148,7 @@ const Dashboard = () => {
             <p className="dashboard-left-sub-text">{commonBottom.desc}</p>
           </div>
           <div style={{ height: tabType === 'Collector' ? '100%' : 'auto' }}>
-            <img className="w-[497px] h-[370px]" src={commonBottom.rightImg} alt="" />
+            <img className="w-[497px] h-[370px] img-pointer-events" src={commonBottom.rightImg} alt="" />
           </div>
         </div>
       </div>

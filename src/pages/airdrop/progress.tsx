@@ -110,7 +110,7 @@ const Progress: FC = () => {
       btnText: 'increase',
       btnIcon: (disabled) => (
         <IconQueueBtn
-          className="w-[15px] h-[15px]"
+          className="w-[15px] h-[15px] img-pointer-events"
           color={disabled ? '#7D83B5' : '#19FDA6'}
           hoverColor={disabled ? '#7D83B5' : '#A005FE'}
           ref={(ref) => (iconRefs.current[`increase`] = ref)}
@@ -272,7 +272,7 @@ const Progress: FC = () => {
             })}
           >
             <div className={classNames({ active }, 'icon')}>
-              {typeof item.icon === 'string' ? <img src={item.icon} /> : item.icon}
+              {typeof item.icon === 'string' ? <img className="img-pointer-events" src={item.icon} /> : item.icon}
             </div>
             <h3
               className={classNames(

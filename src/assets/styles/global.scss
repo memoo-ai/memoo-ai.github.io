@@ -634,6 +634,11 @@ div[data-rk] {
   top: 50%;
   transform: translateY(-50%);
 }
+
+.img-pointer-events {
+  user-select: none;
+  pointer-events: none;
+}
 // .swipe-top{
 //   border-top: 1px solid #5D64A2;
 //   margin-left: 50% !important;
