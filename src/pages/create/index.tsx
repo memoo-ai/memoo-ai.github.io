@@ -359,7 +359,7 @@ export default function Create() {
             return;
           }
           localStorage.removeItem(FORM_STORAGE_KEY);
-          message.success('Congratulations! Create meme successfully!');
+          // message.success('Congratulations! Create meme successfully!');
           // Go to dashboard
           // navigate(`/airdrop/${res.data.Ticker}`);
           if (createdTokenRef?.current) {

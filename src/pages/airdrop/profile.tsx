@@ -329,10 +329,10 @@ const Profile: FC = () => {
         <time className="mt-2 block font-OCR text-bluish-purple-light text-sm">
           Created {formatTs(idoQueueDetail?.createdAt ?? 0)}
         </time>
-        <p className="mt-2 font-OCR text-white text-sm leading-5 max-w-2xl">{idoQueueDetail?.description}</p>
+        <p className="mt-2 font-OCR text-white text-sm leading-5 max-w-2xl ">{idoQueueDetail?.description}</p>
       </div>
-      <div className="content p-[22px]">
-        <ul className="basic_list mt-14 flex flex-col gap-y-6">
+      <div className="content p-[22px] mt-[59px]">
+        <ul className="basic_list mt-14 flex flex-col gap-y-3">
           {params.map((item) => (
             <li key={item.key} className="grid grid-cols-12">
               {item.formatKey ? (
@@ -350,7 +350,7 @@ const Profile: FC = () => {
             </li>
           ))}
         </ul>
-        <div className="soscial_info mt-16">
+        <div className="soscial_info pt-16">
           <h1 className="font-404px text-lg text-green leading-5">Social Info</h1>
           <ul className="mt-6 flex flex-col gap-y-1.5">
             {socails.map((item) => (
@@ -358,7 +358,7 @@ const Profile: FC = () => {
                 {item.formatKey ? (
                   item.formatKey(item.key)
                 ) : (
-                  <label className="col-span-3 text-bluish-purple-light text-sm font-OCR leading-4 flex h-8 gap-x-1.5 flex items-center whitespace-pre-wrap">
+                  <label className="col-span-3 text-bluish-purple-light text-sm font-OCR leading-4 flex h-8 gap-x-1.5 items-center whitespace-pre-wrap">
                     {item.key}
                   </label>
                 )}
