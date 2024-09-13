@@ -161,7 +161,7 @@ const Progress: FC = () => {
       //   .dividedBy(1e4)
       //   .multipliedBy(1e2)
       //   .toNumber()}% unlock when\ntoken price hits 0.0005c`,
-      desc: `1st ${50}% unlock when\ntoken price hits 0.0005c`,
+      desc: `1st ${50}% unlock when\ntoken price hits $0.0000021`,
       onClick: () => {},
       btnText: 'claim',
       // btnIcon: `/create/icon-claim${stage === '1st-claim' ? '-active' : ''}.svg`,
@@ -282,7 +282,9 @@ const Progress: FC = () => {
             >
               {item.title}
             </h3>
-            <p className="mt-1.5 font-OCR text-white leading-4 text-sm text-center break-keep whitespace-pre">
+            <p
+              className={`mt-1.5 font-OCR ${active ? 'text-white' : 'text-[#7D83B5]'} leading-4 text-[12px] text-center break-keep whitespace-pre`}
+            >
               {item.desc}
             </p>
             {item.wrapper ? (

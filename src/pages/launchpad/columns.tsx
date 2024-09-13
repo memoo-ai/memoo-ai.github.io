@@ -134,15 +134,28 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
 
 export const imoSelectOptions = [
   {
+    key: 'Newest',
+    label: 'Newest',
+  },
+  {
     key: 'EndsIn',
     label: 'Ends in',
   },
+
   {
     key: 'TotalRaised',
     label: 'Total Raised',
   },
+  {
+    key: 'memooScore',
+    label: 'Memoo Score',
+  },
 ];
 export const airdropSelectOptions = [
+  {
+    key: 'Newest',
+    label: 'Newest',
+  },
   {
     key: 'IDODate',
     label: 'IDO Date',
@@ -150,5 +163,9 @@ export const airdropSelectOptions = [
   {
     key: 'Participants',
     label: 'Participants',
+  },
+  {
+    key: 'memooScore',
+    label: 'Memoo Score',
   },
 ];

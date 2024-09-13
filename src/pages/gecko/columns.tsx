@@ -131,23 +131,39 @@ export const columns = [
 ];
 export const tokenSelectOptions = [
   {
-    key: 'price',
-    label: 'price',
+    key: 'Newest',
+    label: 'Newest',
   },
   {
-    key: '1h',
-    label: '1h',
+    key: 'IDODate',
+    label: 'IDO Date',
   },
   {
-    key: '24h',
-    label: '24h',
+    key: 'Participants',
+    label: 'Participants',
   },
   {
-    key: '24hVolume',
-    label: '24H Volume',
+    key: 'memooScore',
+    label: 'Memoo Score',
   },
-  {
-    key: 'marketCap',
-    label: 'MarketCap',
-  },
+  // {
+  //   key: 'price',
+  //   label: 'price',
+  // },
+  // {
+  //   key: '1h',
+  //   label: '1h',
+  // },
+  // {
+  //   key: '24h',
+  //   label: '24h',
+  // },
+  // {
+  //   key: '24hVolume',
+  //   label: '24H Volume',
+  // },
+  // {
+  //   key: 'marketCap',
+  //   label: 'MarketCap',
+  // },
 ];
