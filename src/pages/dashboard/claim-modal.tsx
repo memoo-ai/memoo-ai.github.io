@@ -14,7 +14,7 @@ import './claim-modal.scss';
 import { Modal, Button, message, Input } from 'antd';
 import { IconLock, IconClose, IconCompleted } from '@/components/icons';
 import BigNumber from 'bignumber.js';
-import { useAccount } from 'wagmi';
+import { useAccount } from '@/hooks/useWeb3';
 import { formatDecimals, formatRestTime, getNumberOrDefault } from '@/utils';
 import { CreatorContext } from './creator';
 import { BN } from '@coral-xyz/anchor';
@@ -56,6 +56,7 @@ const ClaimModal = ({ children }: any) => {
   }, [memeUserData]);
 
   const onConfirm = useCallback(async () => {
+    debugger;
     if (!creatorClaim || !idoQueueDetail || !address || !solanaMemeConfig) return;
     try {
       setConfirming(true);
