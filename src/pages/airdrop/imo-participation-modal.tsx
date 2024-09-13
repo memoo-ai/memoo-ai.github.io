@@ -21,7 +21,7 @@ import { DEFAULT_IDO_LIMIT, zeroBN } from '@/constants';
 import ITooltip from '@/components/ITooltip';
 import { BN } from '@coral-xyz/anchor';
 
-const grades = [1 / 4, 1 / 2, 1];
+const grades = [1 / 10, 1 / 2, 1];
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
   const [open, setOpen] = useState(false);
@@ -127,9 +127,9 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
               <ITooltip
                 className="h-[12px] "
                 placement="bottom"
-                title={`${
-                  (Number(formatDecimals(capped)) / 7) * 6
-                } ${tokenSymbol} will be used to create liquidity pair while ${Number(
+                title={`${((Number(formatDecimals(capped)) / 7) * 6).toFixed(
+                  2,
+                )} ${tokenSymbol} will be used to create liquidity pair while ${Number(
                   Number(formatDecimals(capped)) / 7,
                 ).toFixed(2)}  ${tokenSymbol} is collected as IMO platform fee.`}
                 color="#fff"
