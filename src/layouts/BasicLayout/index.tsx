@@ -41,7 +41,7 @@ const BasicLayout: React.FC = () => {
     console.log(isChangePublickey);
     const token = localStorage.getItem(MEMOO_TOKEN_STORAGE);
     // if ((connected && !isChangePublickey) || !token) {
-    if (connected && !token) {
+    if (connected && (!token || !isChangePublickey)) {
       (async () => {
         // if (!signer) return;
         // const msg = String(Date.now());
@@ -53,6 +53,7 @@ const BasicLayout: React.FC = () => {
         await loginMeme();
         if (publicKey) {
           setPubKey(publicKey?.toBase58());
+          console.log('publicKey: ', publicKey?.toBase58());
         }
         // window.location.reload();
       })();
