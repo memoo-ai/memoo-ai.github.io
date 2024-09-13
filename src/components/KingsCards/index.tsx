@@ -31,7 +31,7 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data 
   return (
     <div
       className="w-[100%] pb-[81px]"
-      style={{ background: `url(${KingsBg}) no-repeat`, backgroundSize: 'cover', height: '785px' }}
+      style={{ background: `url(${KingsBg}) no-repeat center center`, backgroundSize: 'cover' }}
     >
       <div className="flex items-center my-[42px]">
         <span className="font-404px text-green text-[24px] mr-[20px]">KINGS OF THE LAND</span>
@@ -62,7 +62,13 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data 
                       <h5 className="font-OCR text-[12px] text-green">{item.ticker}</h5>
                     </div>
                   </div>
-                  <p className="my-[26px] font-OCR text-[14px] border_b text-[#7D83B5] h-[48px]">{item.description}</p>
+                  <p className="description">
+                    {item.description}Bad Idea AI emerges as a daring response to the pervasive influence and potential
+                    dominance of AI in our lives. ItBad Idea AI emerges as a daring response to the pervasive influence
+                    and potential dominance of AI in our lives. ItItBad Idea AI emerges as a daring response to the
+                    pervasive influence and potential dominance of AI in our lives. It
+                  </p>
+                  <div className="border_b" />
                   <div className="py-[24px]">
                     <div className="flex justify-between items-center">
                       <div className="font-OCR text-[14px] text-[#7D83B5] line-[13px]">Ends in</div>

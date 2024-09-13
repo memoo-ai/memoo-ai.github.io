@@ -6,7 +6,7 @@ import NavMenu from '@/components/NavMenu';
 import { IconMemoo, IconSearch, IconClear, IconVector, IconTwitter, IconTelegram, IconTriangle } from '../icons';
 import { Button } from '@radix-ui/themes';
 import { useLogin } from '@/hooks/useLogin';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Input, Popover, Spin } from 'antd';
 import './index.module.scss';
 import { useLocation } from 'react-router-dom';
@@ -24,11 +24,6 @@ export const menus: MenuItem[] = [
   // { name: 'Dashboard', path: '/dashboard' },
 ];
 
-export const menusTop: MenuItem[] = [
-  { name: 'ABOUT', path: '/home' },
-  { name: 'APP', path: '/' },
-];
-
 const Header = () => {
   const { loginMeme } = useLogin();
   // const [showSearch, setShowSearch] = useState(false);
@@ -43,6 +38,13 @@ const Header = () => {
   );
 
   const location = useLocation();
+
+  const menusTop = useMemo(() => {
+    return [
+      { name: 'ABOUT', path: '/home', isActive: location.pathname === '/home' },
+      { name: 'APP', path: '/', isActive: location.pathname !== '/home' },
+    ];
+  }, [location.pathname]);
 
   return (
     <header className={`${styles.header}`}>
@@ -67,12 +69,11 @@ const Header = () => {
             }}
           />
         </div>
-        <div className="flex items-center gap-x-[25px]">
+        <div className="flex items-center gap-x-[25px] mr-[15px]">
           {menusTop.map((item, index) => (
-            <NavLink to={item.path} key={index} target={item.target} className="font-404px text-[10px] text-[#131522]">
+            <NavLink to={item.path} key={index} className="relative h-100% font-404px text-[10px] text-[#131522]">
               {item.name}
-
-              <IconTriangle />
+              {item.isActive && <IconTriangle className={`${styles.triangle}`} color="#131522" />}
             </NavLink>
           ))}
         </div>
