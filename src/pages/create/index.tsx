@@ -316,12 +316,12 @@ export default function Create() {
       // }
       try {
         const data = form.getFieldsValue();
-        const tokenAddress = await getMemeAddressWithSymbol(data.ticker);
-        console.log('tokenAddress: ', tokenAddress);
-        if (tokenAddress && tokenAddress !== ZERO_ADDRESS) {
-          message.warning(`${data.ticker} is already taken. Please choose another one.`);
-          return;
-        }
+        // const tokenAddress = await getMemeAddressWithSymbol(data.ticker);
+        // console.log('tokenAddress: ', tokenAddress);
+        // if (tokenAddress && tokenAddress !== ZERO_ADDRESS) {
+        //   message.warning(`${data.ticker} is already taken. Please choose another one.`);
+        //   return;
+        // }
 
         if (!isAccept) {
           message.warning('Please accept the terms and conditions.');
@@ -348,7 +348,8 @@ export default function Create() {
           // data.ticker = data.ticker.toUpperCase();
           const res = await confirmTokenCreate(data);
 
-          console.log('res: ', res);
+          console.log('res-confirmTokenCreate: ', res);
+
           const { data: config } = await getMemeConfigId(res.data.Ticker);
           console.log('sonalaConfigMemeId:', config);
 
@@ -375,9 +376,13 @@ export default function Create() {
           navigate('/dashboard');
         }
       } catch (e: any) {
-        console.log(e);
+        console.log('error:', e);
         if (e?.errorFields) {
           form.scrollToField(e.errorFields[0].name, { behavior: 'smooth' });
+        } else if (e?.code === 500 && e?.msg) {
+          message.error(e.msg);
+        } else {
+          console.error('发生了其他错误:', e);
         }
       } finally {
         setSaveCraftLoading(false);

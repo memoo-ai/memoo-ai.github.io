@@ -161,6 +161,38 @@ export function calculateDaysDifference(a: number, b: number): number {
   return daysDifference;
 }
 
+// export const authorizeTwitter = async (
+//   clientId: string,
+//   redirectUri: string,
+//   scope = 'tweet.read+tweet.write+like.write+users.read+follows.read+follows.write',
+//   state = 'twitter',
+//   codeChallenge = 'challenge',
+//   codeChallengeMethod = 'plain',
+//   // eslint-disable-next-line max-params
+// ) => {
+//   const params = {
+//     response_type: 'code',
+//     client_id: clientId,
+//     redirect_uri: redirectUri,
+//     scope: scope,
+//     state: state,
+//     code_challenge: codeChallenge,
+//     code_challenge_method: codeChallengeMethod,
+//   };
+
+//   const twitterAuthUrl = `https://twitter.com/i/oauth2/authorize?${new URLSearchParams(params).toString()}`;
+
+//   window.open(twitterAuthUrl, '_blank', 'width=600,height=700');
+// };
+function generateCodeChallenge(codeVerifier: string) {
+  return crypto.subtle.digest('SHA-256', new TextEncoder().encode(codeVerifier)).then((buffer) => {
+    return btoa(String.fromCharCode(...new Uint8Array(buffer)))
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
+  });
+}
+
 export const authorizeTwitter = async (clientId: string, reidrectUri: string) => {
   // const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
   const params = {
