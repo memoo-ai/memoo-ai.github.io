@@ -1,5 +1,6 @@
 /* eslint-disable no-debugger */
-import { Button, Checkbox, Input, Modal, Slider, message } from 'antd';
+import { Button, Checkbox, Input, Modal, Slider } from 'antd';
+import message from '@/components/IMessage';
 import React, {
   Children,
   FC,

@@ -18,8 +18,8 @@ import {
   Switch,
   TreeSelect,
   Upload,
-  message,
 } from 'antd';
+import message from '@/components/IMessage';
 import { TextArea } from '@radix-ui/themes';
 import MySlider from '@/components/MySlider';
 import {

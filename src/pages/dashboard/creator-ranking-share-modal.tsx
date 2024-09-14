@@ -1,7 +1,8 @@
 import React, { useState, Children, cloneElement, isValidElement, useEffect, useCallback, useRef } from 'react';
 
 import './creator-ranking-share-modal.scss';
-import { Modal, Button, message } from 'antd';
+import { Modal, Button } from 'antd';
+import message from '@/components/IMessage';
 import {
   IconTwitter,
   IconClose,

@@ -1,4 +1,5 @@
-import { Button, Checkbox, Input, Modal, message, Slider, Form, Upload } from 'antd';
+import { Button, Checkbox, Input, Modal, Slider, Form, Upload } from 'antd';
+import message from '@/components/IMessage';
 import { Children, FC, Fragment, ReactNode, cloneElement, isValidElement, useEffect, useState } from 'react';
 import './edit-profile-modal.scss';
 import { getTokenDetail, getTwitterAccessToken, uploadFile, saveEditInfo, getTwitterClientId } from '@/api/token';

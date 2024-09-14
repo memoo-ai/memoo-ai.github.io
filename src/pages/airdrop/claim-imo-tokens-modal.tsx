@@ -1,4 +1,5 @@
-import { Button, Checkbox, Input, Modal, Progress, Slider, message } from 'antd';
+import { Button, Checkbox, Input, Modal, Progress, Slider } from 'antd';
+import message from '@/components/IMessage';
 import {
   Children,
   FC,

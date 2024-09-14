@@ -10,7 +10,8 @@ import React, {
 } from 'react';
 
 import './score-share-modal.scss';
-import { Modal, Button, message, Spin } from 'antd';
+import { Modal, Button, Spin } from 'antd';
+import message from '@/components/IMessage';
 import {
   IconTwitter,
   IconClose,

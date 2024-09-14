@@ -1,5 +1,6 @@
 /* eslint-disable no-debugger */
-import { Button, Checkbox, Input, Modal, Progress, Radio, RadioChangeEvent, Slider, message } from 'antd';
+import { Button, Checkbox, Input, Modal, Progress, Radio, RadioChangeEvent, Slider } from 'antd';
+import message from '@/components/IMessage';
 import {
   Children,
   FC,

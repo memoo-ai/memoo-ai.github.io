@@ -11,7 +11,8 @@ import React, {
 } from 'react';
 
 import './airdrop-modal.scss';
-import { Modal, Button, message, Input } from 'antd';
+import { Modal, Button, Input } from 'antd';
+import message from '@/components/IMessage';
 import { IconLock, IconClose, IconCompleted } from '@/components/icons';
 import { useManageContract } from '@/hooks/useManageContract';
 import { useSign } from '@/hooks/useEthers';

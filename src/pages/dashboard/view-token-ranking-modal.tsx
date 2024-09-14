@@ -1,7 +1,8 @@
 import { useState, Children, cloneElement, isValidElement, useEffect, useCallback } from 'react';
 
 import './view-token-ranking-modal.scss';
-import { Modal, Button, message } from 'antd';
+import { Modal, Button } from 'antd';
+import message from '@/components/IMessage';
 import {
   IconTwitter,
   IconClose,
