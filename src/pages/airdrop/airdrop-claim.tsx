@@ -132,7 +132,7 @@ export default function AirdropClaim() {
         const res = await requestTwitterFollow(followParams);
         console.log('follow res: ', res);
         if (!res.data) {
-          message.error('Failed to follow. Please try again later.');
+          message.warning('Failed to follow. Please try again later.');
           return;
         }
         localStorage.removeItem(REQUEST_FOLLOWING_STORAGE);

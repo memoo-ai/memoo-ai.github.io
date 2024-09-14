@@ -11,7 +11,7 @@ const BackButton = ({ path = '/dashboard', ...rest }: BackButtonProps) => {
   const { address, registerTokenMint } = useAccount();
   const goBack = () => {
     if (!address) {
-      message.warning('Please connect wallet first.');
+      message.info('Please connect wallet first.');
       return;
     }
     navigate(path);

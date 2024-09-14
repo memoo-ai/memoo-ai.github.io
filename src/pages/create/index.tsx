@@ -134,7 +134,7 @@ export default function Create() {
 
   const handleUpload = (file: File, field: string) => {
     if (!address) {
-      message.warning('Please connect wallet first.');
+      message.info('Please connect wallet first.');
       return;
     }
     if (file) {
@@ -157,7 +157,7 @@ export default function Create() {
   const connectTwitter = useCallback(async () => {
     // TODO: save form data to local; when callback from twitter, the form data will be lost.
     if (!address) {
-      message.warning('Please connect wallet first.');
+      message.info('Please connect wallet first.');
       return;
     }
     const res = await getTwitterClientId();
@@ -307,7 +307,7 @@ export default function Create() {
     // TODO check login
     async (isConfirm: boolean) => {
       if (!address) {
-        message.warning('Please connect wallet first.');
+        message.info('Please connect wallet first.');
         return;
       }
       // if (invalidChain) {
@@ -324,7 +324,7 @@ export default function Create() {
         // }
 
         if (!isAccept) {
-          message.warning('Please accept the terms and conditions.');
+          message.info('Please accept the terms and conditions.');
           return;
         }
         await form.validateFields();
@@ -341,7 +341,7 @@ export default function Create() {
         if (isConfirm) {
           // twitter must have been connected
           if (!twitter) {
-            message.warning('Please connect project twitter first.');
+            message.info('Please connect project twitter first.');
             return;
           }
           setConfirmLoading(true);

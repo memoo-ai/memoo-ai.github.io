@@ -1,6 +1,6 @@
 import { message as antdMessage } from 'antd';
 import './index.scss';
-
+import { IconSuccess, IconInfo, IconWarning, IconError } from '@/components/icons';
 interface ConfigOptions {
   className?: string;
   content?: string;
@@ -19,6 +19,7 @@ message.success = (content: string, options?: Omit<ConfigOptions, 'content'>) =>
     ...options,
     content,
     className: `${options?.className || ''} custom-success-message`,
+    icon: <IconSuccess />,
   });
 };
 
@@ -27,6 +28,7 @@ message.error = (content: string, options?: Omit<ConfigOptions, 'content'>) => {
     ...options,
     content,
     className: `${options?.className || ''} custom-error-message`,
+    icon: <IconError />,
   });
 };
 
@@ -35,6 +37,7 @@ message.info = (content: string, options?: Omit<ConfigOptions, 'content'>) => {
     ...options,
     content,
     className: `${options?.className || ''} custom-info-message`,
+    icon: <IconInfo />,
   });
 };
 
@@ -43,6 +46,7 @@ message.warning = (content: string, options?: Omit<ConfigOptions, 'content'>) =>
     ...options,
     content,
     className: `${options?.className || ''} custom-warning-message`,
+    icon: <IconWarning />,
   });
 };
 
