@@ -97,10 +97,10 @@ export default function LaunchPad() {
   return (
     <div className="page">
       <div className="base-container">
-        <div>
+        {/* <div>
           <Swipe direction="left" />
-        </div>
-        <div className="flex justify-center mt-[60px] gap-x-5">
+        </div> */}
+        <div className="flex justify-center mt-[20px] gap-x-5">
           <div className="w-[835px] h-[469px]">
             <BannerBox background={activeKey === 'imo' ? GeckoBannerBg : LaunchpadAirdropBg} title="MEMOOGECKO">
               {activeKey === 'imo' ? (

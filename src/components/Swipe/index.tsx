@@ -88,9 +88,9 @@ const Swipe: React.FC<SwipeProps> = React.memo(({ children, speed = 50, directio
         : {
             height: '40px',
             width: '100vw',
-            position: 'fixed' as const,
-            top: '99px',
-            left: 0,
+            // position: 'fixed' as const,
+            // top: '99px',
+            // left: 0,
             background: '#312145',
             display: 'flex',
             alignItems: 'center',

@@ -11,6 +11,7 @@ import { Input, Popover, Spin } from 'antd';
 import './index.module.scss';
 import { useLocation } from 'react-router-dom';
 import debounce from 'lodash.debounce';
+import Swipe from '@/components/Swipe';
 export interface MenuItem {
   name: string;
   path: string;
@@ -44,6 +45,10 @@ const Header = () => {
       { name: 'ABOUT', path: '/home', isActive: location.pathname === '/home' },
       { name: 'APP', path: '/', isActive: location.pathname !== '/home' },
     ];
+  }, [location.pathname]);
+
+  const showSwipe = useMemo(() => {
+    return location.pathname === '/' || location.pathname === '/gecko';
   }, [location.pathname]);
 
   return (
@@ -157,6 +162,8 @@ const Header = () => {
           <NavMenu menus={menus} />
         </div>
       </div>
+      <div className="w-full h-[1px] bg-[#5D64A2]" />
+      {showSwipe && <Swipe direction="left" />}
     </header>
   );
 };
