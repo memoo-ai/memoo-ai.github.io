@@ -147,7 +147,7 @@ export const imoSelectOptions = [
     label: 'Total Raised',
   },
   {
-    key: 'memooScore',
+    key: 'MemooScore',
     label: 'Memoo Score',
   },
 ];
@@ -158,14 +158,14 @@ export const airdropSelectOptions = [
   },
   {
     key: 'IDODate',
-    label: 'IDO Date',
+    label: 'IMO Date',
   },
   {
     key: 'Participants',
     label: 'Participants',
   },
   {
-    key: 'memooScore',
+    key: 'MemooScore',
     label: 'Memoo Score',
   },
 ];

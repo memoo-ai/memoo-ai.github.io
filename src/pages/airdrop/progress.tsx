@@ -161,7 +161,7 @@ const Progress: FC = () => {
       //   .dividedBy(1e4)
       //   .multipliedBy(1e2)
       //   .toNumber()}% unlock when\ntoken price hits 0.0005c`,
-      desc: `1st ${50}% unlock when\ntoken price hits $0.0000021`,
+      desc: `1st ${50}% unlock when\ntoken price hits $${idoQueueDetail?.unlockPrice}`,
       onClick: () => {},
       btnText: 'claim',
       // btnIcon: `/create/icon-claim${stage === '1st-claim' ? '-active' : ''}.svg`,

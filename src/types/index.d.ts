@@ -228,6 +228,8 @@ declare interface IDOQueueDetail extends IDOClaimStage {
   imoBalance: number;
   claimImoBalance: number;
   memooScore: memooScore[];
+  unlockPrice: string;
+  unlockTime: string;
 }
 
 declare type IDOStatus = 'Draft' | 'Waiting_for_pay' | 'QUEUE' | 'IDO' | 'Launched' | 'IDOEND';

@@ -136,7 +136,7 @@ export const tokenSelectOptions = [
   },
   {
     key: 'IDODate',
-    label: 'IDO Date',
+    label: 'IMO Date',
   },
   {
     key: 'Participants',
