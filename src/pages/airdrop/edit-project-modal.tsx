@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import { Button, Checkbox, Input, Modal, message, Slider, Form, Upload } from 'antd';
 import {
   Children,
@@ -48,7 +49,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [projectDetail, setProjectDetail] = useState({});
   const [searchParams] = useSearchParams();
-  const { mine, triggerRefresh } = useContext(AirdropContext);
+  const { mine } = useContext(AirdropContext);
   useEffect(() => {
     getTokenDetail(ticker).then((res) => {
       if (res?.data) {
@@ -157,7 +158,6 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
 
   const handleSave = async (isConfirm: boolean) => {
     try {
-      if (!triggerRefresh) return;
       await form.validateFields();
       // twitter must have been connected
       // if (!twitter || !twitterAccessToken) {
@@ -176,7 +176,6 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
         message.success('modify successfully!');
         onSaveSuccess();
         setOpen(false);
-        triggerRefresh();
       } else {
         message.warning('fail in keeping');
       }
