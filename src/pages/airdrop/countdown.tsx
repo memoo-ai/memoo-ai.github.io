@@ -14,13 +14,13 @@ const Countdown: FC<{
 
   const remainingTime = useMemo(() => {
     if (!instant) return [];
-
+    console.log('instant:', instant);
     const now = Date.now();
     const remainingTime = instant - now;
 
     if (remainingTime <= 0) {
       onEnded?.(true);
-      return [0, 0, 0, 0]; // 时间已过或无剩余时间
+      return [0, 0, 0, 0];
     }
 
     const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));

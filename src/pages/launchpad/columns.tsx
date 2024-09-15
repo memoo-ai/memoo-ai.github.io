@@ -83,7 +83,7 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
     ),
   },
   {
-    title: 'IDO Date',
+    title: 'IMO Date',
     dataIndex: 'idoDate',
     key: 'idoDate',
     sorter: false,

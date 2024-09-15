@@ -65,7 +65,7 @@ const LaunchPadImo = () => {
   return (
     <div className="launchpad-imo">
       <Spin spinning={loading} fullscreen />
-      <KingsCards btnText="PARTICIPATE" btnType="reverse" data={cardData} />
+      <KingsCards btnText="PARTICIPATE" btnType="reverse" data={cardData} type="IMO" />
       <div className="flex justify-between items-end">
         {/* <div /> */}
         <div className="flex items-center my-[42px]">

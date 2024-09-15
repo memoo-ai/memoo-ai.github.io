@@ -63,7 +63,7 @@ const LaunchPadAirdrop = () => {
   return (
     <div className="w-[100%] launchpad-airdrop">
       <Spin spinning={loading} fullscreen />
-      <KingsCards btnText="AIRDROP" btnType="" data={cardData} />
+      <KingsCards btnText="AIRDROP" btnType="" data={cardData} type="Airdrop" />
       <div className="flex justify-between items-end">
         <div className="flex items-center my-[42px]">
           <span className="font-404px text-green text-[24px] mr-[20px]">HUNT FOR AIDROPS</span>

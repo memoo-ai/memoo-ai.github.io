@@ -120,10 +120,12 @@ export function clipAddress(address: string) {
   return `${address.slice(0, 5)}...${address.slice(-4)}`;
 }
 
-export function formatTs(ts: number, unit: 's' | 'ms' = 's') {
+export function formatTs(ts: number, unit: 's' | 'ms' = 's', type: 'default' | 'monthAndDay' = 'default') {
   const date = new Date((ts ?? 0) * (unit === 's' ? 1000 : 1));
-  const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' };
-  return ts === 0 ? '' : date.toLocaleDateString('en-US', options);
+  const options: Intl.DateTimeFormatOptions =
+    type === 'default' ? { day: '2-digit', month: 'short', year: 'numeric' } : { day: '2-digit', month: 'short' };
+  return ts === 0 ? '' : date.toLocaleDateString('en-GB', options);
+  // return ts === 0 ? '' : date.toLocaleDateString('en-US', options);
 }
 
 export function compareAddrs(addrA: Address, addrB: Address) {

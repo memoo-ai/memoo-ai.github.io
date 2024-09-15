@@ -9,15 +9,16 @@ import { Button } from 'antd';
 import Countdown from '@/pages/airdrop/countdown';
 import { useNavigate } from 'react-router-dom';
 import Empty from '@/components/Empty';
-import { formatNumberToFixed } from '@/utils';
+import { formatNumberToFixed, formatTs } from '@/utils';
 interface KingsCardsProps {
   btnText?: string;
   btnType?: string;
   path?: string;
+  type?: 'Airdrop' | 'IMO';
   data: any[];
 }
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
-const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data }: KingsCardsProps) => {
+const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data, type = 'IMO' }: KingsCardsProps) => {
   const navigate = useNavigate();
   // const data = new Array(3).fill(undefined).map((_, i) => ({
   //   id: i,
@@ -28,6 +29,10 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data 
   //   icon: '',
   //   description: 'description',
   // }));
+  const renderInstant = (item: any) => {
+    const instant = type === 'IMO' ? item.endsIn : item.airdropEndsIn;
+    return instant > 0;
+  };
   return (
     <div
       className="w-[100%] pb-[81px]"
@@ -62,43 +67,55 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data 
                       <h5 className="font-OCR text-[12px] text-green">{item.ticker}</h5>
                     </div>
                   </div>
-                  <p className="description">
-                    {item.description}Bad Idea AI emerges as a daring response to the pervasive influence and potential
-                    dominance of AI in our lives. ItBad Idea AI emerges as a daring response to the pervasive influence
-                    and potential dominance of AI in our lives. ItItBad Idea AI emerges as a daring response to the
-                    pervasive influence and potential dominance of AI in our lives. It
-                  </p>
+                  <p className="description">{item.description}</p>
                   <div className="border_b" />
                   <div className="py-[24px]">
-                    <div className="flex justify-between items-center">
-                      <div className="font-OCR text-[14px] text-[#7D83B5] line-[13px]">Ends in</div>
-                      <div className="text-right">
-                        <Countdown
-                          className=" flex gap-x-2 mt-5 font-OCR text-[17px] text-[#fff] line-[13px]"
-                          timefragments="timefragments-kings"
-                          format={([days, hours, minutes, seconds]) => [
-                            <div key="hours">
-                              <time>{hours}</time>
-                              <span>H</span>
-                            </div>,
-                            <div key="minutes">
-                              <time>{minutes}</time>
-                              <span>M</span>
-                            </div>,
-                            <div key="seconds">
-                              <time>{seconds}</time>
-                              <span>S</span>
-                            </div>,
-                          ]}
-                          instant={(item.endsIn || item.airdropEndsIn * 1000) ?? 0}
-                          // instant={1720510654000}
-                          onEnded={(ended) => {
-                            // setEnded(ended);
-                          }}
-                          symbol=""
-                        />
+                    {type === 'IMO' ? (
+                      <div className="flex justify-between items-center">
+                        <div className="font-OCR text-[14px] text-[#7D83B5] line-[13px]">Ends in</div>
+                        <div className="text-right">
+                          {renderInstant(item) ? (
+                            <Countdown
+                              className=" flex gap-x-2 mt-5 font-OCR text-[17px] text-[#fff] line-[13px]"
+                              timefragments="timefragments-kings"
+                              format={([days, hours, minutes, seconds]) => [
+                                <div key="hours">
+                                  <time>{hours}</time>
+                                  <span>H</span>
+                                </div>,
+                                <div key="minutes">
+                                  <time>{minutes}</time>
+                                  <span>M</span>
+                                </div>,
+                                <div key="seconds">
+                                  <time>{seconds}</time>
+                                  <span>S</span>
+                                </div>,
+                              ]}
+                              instant={type === 'IMO' ? (item.endsIn ?? 0 * 1000) : (item.airdropEndsIn ?? 0 * 1000)}
+                              // instant={1720510654000}
+                              onEnded={(ended) => {
+                                // setEnded(ended);
+                              }}
+                              symbol=""
+                            />
+                          ) : (
+                            <var className=" flex gap-x-2 font-OCR text-[17px] text-[#fff] line-[13px]">
+                              00h 00m 00s
+                            </var>
+                          )}
+                        </div>
                       </div>
-                    </div>
+                    ) : (
+                      <div className="flex justify-between items-center">
+                        <div className="font-OCR text-[14px] text-[#7D83B5] line-[13px]">IMO Date</div>
+                        <div className="text-right">
+                          <var className=" flex gap-x-2 font-OCR text-[17px] text-[#fff] line-[13px]">
+                            {formatTs(item?.airdropEndsIn, 's', 'monthAndDay')}
+                          </var>
+                        </div>
+                      </div>
+                    )}
                     <div className="flex justify-between items-center">
                       <div className="font-OCR text-[14px] text-[#7D83B5] line-[13px] w-[110px] mr-[20px]">
                         Memoo Score

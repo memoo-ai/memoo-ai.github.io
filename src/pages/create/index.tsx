@@ -59,9 +59,12 @@ console.log('twitterRedirectUri: ', twitterRedirectUri);
 const FORM_STORAGE_KEY = 'create_token_storage';
 const TWITTER_CLIENT_ID_KEY = 'twitter_client_id';
 const PreLaunchDurationOptions = [
-  { label: 'immediate', value: PreLaunchDurationEnum.IMMEDIATE },
-  { label: '1 day', value: PreLaunchDurationEnum['1DAY'] },
-  { label: '3 days', value: PreLaunchDurationEnum['3DAYS'] },
+  { label: '0 + 1 DAY', value: PreLaunchDurationEnum.IMMEDIATE },
+  { label: '1 + 1 DayS', value: PreLaunchDurationEnum['1DAY'] },
+  { label: '3 + 1 Days', value: PreLaunchDurationEnum['3DAYS'] },
+  // { label: 'immediate', value: PreLaunchDurationEnum.IMMEDIATE },
+  // { label: '1 day', value: PreLaunchDurationEnum['1DAY'] },
+  // { label: '3 days', value: PreLaunchDurationEnum['3DAYS'] },
 ];
 const CurrentProductDescriptions = [
   'Tokenomics for Meme Tokens',
