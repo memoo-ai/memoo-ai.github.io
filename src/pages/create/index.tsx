@@ -310,7 +310,7 @@ export default function Create() {
     // TODO check login
     async (isConfirm: boolean) => {
       if (!address) {
-        message.info('Please connect wallet first.');
+        message.info('Please connect wallet first.', { key: 'Please connect wallet first.' });
         return;
       }
       // if (invalidChain) {
@@ -327,7 +327,7 @@ export default function Create() {
         // }
 
         if (!isAccept) {
-          message.info('Please accept the terms and conditions.');
+          message.info('Please accept the terms and conditions.', { key: 'Please accept the terms and conditions.' });
           return;
         }
         await form.validateFields();
@@ -344,7 +344,7 @@ export default function Create() {
         if (isConfirm) {
           // twitter must have been connected
           if (!twitter) {
-            message.info('Please connect project twitter first.');
+            message.info('Please connect project twitter first.', { key: 'Please connect project twitter first.' });
             return;
           }
           setConfirmLoading(true);
