@@ -36,6 +36,7 @@ const IncreaseAcquisitionModal: FC<{
   const [proportion, setProportion] = useState(0.05);
   const [result, setResult] = useState(0);
   const [defaultProportion, setDefaultProportion] = useState(0);
+  const [sliderKey, setSliderKey] = useState(0);
   // const { idoBuy, idoQueueDetail } = useContext(AirdropContext);
   const { idoQueueDetail, mine, idoBuy, solanaMemeConfig, memooConfig, triggerRefresh } = useContext(AirdropContext);
   // const { idoBuy } = useAccount();
@@ -110,6 +111,12 @@ const IncreaseAcquisitionModal: FC<{
     }
   }, [idoBuy, idoQueueDetail, result, firstIncrease]);
 
+  useEffect(() => {
+    if (open) {
+      setSliderKey((prevKey) => prevKey + 1);
+    }
+  }, [open]);
+
   return (
     <>
       <Modal
@@ -144,6 +151,7 @@ const IncreaseAcquisitionModal: FC<{
                 {0} {tokenSymbol}
               </span>
               <Slider
+                key={sliderKey}
                 className="memoo_slider flex-auto"
                 tooltip={{ open: true, rootClassName: 'memoo_slider_tooltip', formatter: (value) => `${value}%` }}
                 onChange={(value) => {
@@ -155,16 +163,16 @@ const IncreaseAcquisitionModal: FC<{
                 }}
                 value={proportion}
                 max={maxProportion * 100}
-                min={firstProportion * 100}
-                // defaultValue={defaultValue}
+                min={0}
+                defaultValue={defaultProportion}
               />
               <span className="whitespace-nowrap text-base font-OCR text-white leading-[16px]">
                 {maxIncrease} {tokenSymbol}
               </span>
             </div>
           </div>
-          <p className="font-OCR text-[#4889B7] whitespace-pre-wrap mt-[7px] mb-[19px]">
-            {`Creator can increase initial\nallocation from ${firstProportion * 100}% to ${maxProportion * 100}%.`}
+          <p className="font-OCR text-[#4889B7] text-[10px] leading-3 whitespace-pre-wrap mt-[7px] mb-[19px]">
+            {`Creator can increase initial allocation\nby purchasing an additional ${maxProportion * 100}%.`}
           </p>
           <Input
             className="memoo_input h-[66px]"

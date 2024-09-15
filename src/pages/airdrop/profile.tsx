@@ -329,9 +329,9 @@ const Profile: FC = () => {
         <time className="mt-2 block font-OCR text-bluish-purple-light text-sm">
           Created {formatTs(idoQueueDetail?.createdAt ?? 0)}
         </time>
-        <p className="mt-2 font-OCR text-white text-sm leading-5 max-w-2xl ">{idoQueueDetail?.description}</p>
+        <p className="mt-2 font-OCR text-white text-sm max-w-2xl ">{idoQueueDetail?.description}</p>
       </div>
-      <div className="content p-[22px] mt-[59px]">
+      <div className="content p-[22px]">
         <ul className="basic_list mt-14 flex flex-col gap-y-3">
           {params.map((item) => (
             <li key={item.key} className="grid grid-cols-12">

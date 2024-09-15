@@ -137,7 +137,7 @@ const IncreaseModal: FC<{
                 }}
                 value={proportion}
                 max={maxProportion * 100}
-                min={firstProportion * 100}
+                min={0}
                 // defaultValue={defaultValue}
               />
               <span className="whitespace-nowrap text-base font-OCR text-white leading-[16px]">
@@ -145,8 +145,8 @@ const IncreaseModal: FC<{
               </span>
             </div>
           </div>
-          <p className="font-OCR text-[#4889B7] whitespace-pre-wrap mt-[7px] mb-[19px]">
-            {`Creator can increase initial\nallocation from ${firstProportion * 100}% to ${maxProportion * 100}%.`}
+          <p className="font-OCR text-[#4889B7] text-[10px] leading-3 whitespace-pre-wrap mt-[7px] mb-[19px]">
+            {`Creator can increase initial allocation\nby purchasing an additional ${maxProportion * 100}%.`}
           </p>
           <Input
             className="memoo_input h-[66px]"

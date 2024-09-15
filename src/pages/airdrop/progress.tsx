@@ -20,7 +20,7 @@ const Progress: FC = () => {
   const { stage, idoQueueDetail, memooConfig, mine, totalPurchased, memeUserData, unlockTimestamp } =
     useContext(AirdropContext);
   const { address } = useAccount();
-  const { firstProportion, platformCreateMeme, firstIncrease, maxIncrease, createMaxProportion } = useProportion();
+  const { firstProportion, platformCreateMeme, firstIncrease, maxIncrease, maxProportion } = useProportion();
   const iconRefs = useRef<any>({});
 
   const purchased = useMemo(() => {
@@ -122,7 +122,7 @@ const Progress: FC = () => {
         <IncreaseAcquisitionModal
           maxIncrease={maxIncrease}
           firstProportion={firstProportion}
-          maxProportion={createMaxProportion}
+          maxProportion={maxProportion}
           firstIncrease={firstIncrease}
           purchased={purchased}
         >
