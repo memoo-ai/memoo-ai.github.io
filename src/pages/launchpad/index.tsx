@@ -102,7 +102,7 @@ export default function LaunchPad() {
         </div> */}
         <div className="flex justify-center mt-[20px] gap-x-5">
           <div className="w-[835px] h-[469px]">
-            <BannerBox background={activeKey === 'imo' ? GeckoBannerBg : LaunchpadAirdropBg} title="MEMOOGECKO">
+            <BannerBox background={activeKey === 'imo' ? GeckoBannerBg : LaunchpadAirdropBg} title="MEMOO LAUNCHPAD">
               {activeKey === 'imo' ? (
                 <div className="pt-[60px] flex items-center flex-col">
                   <img className="w-[159px] h-[159px]" src="/logo.svg" alt="" />
