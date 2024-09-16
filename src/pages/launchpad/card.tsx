@@ -62,7 +62,7 @@ export const ActiveIdoCard = () => {
               </div>
               <Button
                 variant="second"
-                className="font-404px text-lg  w-full h-[50px] uppercase mt-[14px]"
+                className="font-404px text-lg font-[400]  w-full h-[50px] uppercase mt-[14px]"
                 onClick={() => {
                   navigate(`/airdrop/${ido.ticker}`);
                 }}

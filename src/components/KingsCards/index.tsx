@@ -67,7 +67,7 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data,
                       <h5 className="font-OCR text-[12px] text-green">{item.ticker}</h5>
                     </div>
                   </div>
-                  <p className="description">{item.description}</p>
+                  <p className="description h-[48px]">{item.description}</p>
                   <div className="border_b" />
                   <div className="py-[24px]">
                     {type === 'IMO' ? (
