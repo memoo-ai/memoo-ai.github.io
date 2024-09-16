@@ -291,7 +291,9 @@ const Profile: FC = () => {
             <div className="profile-share-content pt-2">
               <ul className="content flex items-center justify-center gap-[11px]">
                 <a
-                  className="rounded-[7px] bg-[#07E993] w-[40px] h-[40px] p-[10px] flex justify-center items-center"
+                  className="rounded-[7px] bg-[#07E993] w-[40px] h-[40px] p-[10px] flex justify-center items-center link-hover"
+                  onMouseOver={() => iconRefs.current[`IconTwitter`].setHovered(true)}
+                  onMouseLeave={() => iconRefs.current[`IconTwitter`].setHovered(false)}
                   onClick={() =>
                     popupSharing(
                       `https://twitter.com/intent/tweet?text=${encodeURIComponent(
@@ -300,10 +302,17 @@ const Profile: FC = () => {
                     )
                   }
                 >
-                  <IconTwitter color="#1F3B4F" className="cursor-pointer " />
+                  <IconTwitter
+                    color="#1F3B4F"
+                    hoverColor="#07E993"
+                    ref={(ref) => (iconRefs.current[`IconTwitter`] = ref)}
+                    className="cursor-pointer "
+                  />
                 </a>
                 <a
-                  className="rounded-[7px] bg-[#07E993] w-[40px] h-[40px] p-[10px] flex justify-center items-center"
+                  className="rounded-[7px] bg-[#07E993] w-[40px] h-[40px] p-[10px] flex justify-center items-center link-hover"
+                  onMouseOver={() => iconRefs.current[`IconTelegram`].setHovered(true)}
+                  onMouseLeave={() => iconRefs.current[`IconTelegram`].setHovered(false)}
                   onClick={() =>
                     popupSharing(
                       `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(
@@ -312,10 +321,17 @@ const Profile: FC = () => {
                     )
                   }
                 >
-                  <IconTelegram color="#1F3B4F" className="cursor-pointer " />
+                  <IconTelegram
+                    color="#1F3B4F"
+                    hoverColor="#07E993"
+                    ref={(ref) => (iconRefs.current[`IconTelegram`] = ref)}
+                    className="cursor-pointer "
+                  />
                 </a>
                 <a
-                  className="rounded-[7px] bg-[#07E993] w-[40px] h-[40px] p-[10px] flex justify-center items-center"
+                  className="rounded-[7px] bg-[#07E993] w-[40px] h-[40px] p-[10px] flex justify-center items-center link-hover"
+                  onMouseOver={() => iconRefs.current[`IconFacebook`].setHovered(true)}
+                  onMouseLeave={() => iconRefs.current[`IconFacebook`].setHovered(false)}
                   onClick={() =>
                     popupSharing(
                       `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
@@ -324,7 +340,12 @@ const Profile: FC = () => {
                     )
                   }
                 >
-                  <IconFacebook color="#1F3B4F" className="cursor-pointer " />
+                  <IconFacebook
+                    color="#1F3B4F"
+                    hoverColor="#07E993"
+                    ref={(ref) => (iconRefs.current[`IconFacebook`] = ref)}
+                    className="cursor-pointer "
+                  />
                 </a>
               </ul>
             </div>
