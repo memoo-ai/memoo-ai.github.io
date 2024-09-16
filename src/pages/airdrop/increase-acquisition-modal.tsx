@@ -192,7 +192,7 @@ const IncreaseAcquisitionModal: FC<{
             I accept MeMoo’s <a className="contents text-green">Terms & Conditions.</a>
           </Checkbox>
           <Button
-            disabled={!accepted || result - purchased === 0}
+            disabled={!accepted || result === 0}
             className="memoo_button h-[50px]"
             loading={confirming}
             onClick={onConfirm}

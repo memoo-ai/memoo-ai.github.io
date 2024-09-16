@@ -123,7 +123,7 @@ const IncreaseModal: FC<{
             </div>
             <div className="flex flex-auto items-center gap-x-3">
               <span className="whitespace-nowrap text-base font-OCR text-white leading-[16px]">
-                {firstIncrease} {tokenSymbol}
+                {0} {tokenSymbol}
               </span>
               <Slider
                 className="memoo_slider flex-auto"
@@ -166,7 +166,7 @@ const IncreaseModal: FC<{
           </Checkbox>
           <div>
             <Button
-              disabled={!accepted && Number(formatDecimals(result)) - purchased <= 0}
+              disabled={!accepted && Number(formatDecimals(result)) === 0}
               className="memoo_button w-[100%] h-[50px]"
               loading={confirming}
               onClick={onConfirm}

@@ -120,3 +120,10 @@ export interface ITokenEditInfo {
 export const saveEditInfo = (data: ITokenEditInfo): Promise<ApiResponse<any>> => {
   return http.post(`${prefix}/web-oriented/project`, data);
 };
+export interface PayConfirm {
+  ticker: string;
+  txHash: string;
+}
+export const payConfirm = (data: PayConfirm): Promise<ApiResponse<any>> => {
+  return http.put(`${prefix}/web-oriented/pay-confirm`, data);
+};

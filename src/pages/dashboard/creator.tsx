@@ -75,22 +75,29 @@ export const Creator = () => {
 
   const { address, memooConfig, idoBuy, getMemeUserData, airdropClaim, creatorClaim, idoClaim } = useAccount();
 
-  const { firstProportion, maxProportion, firstIncrease, maxIncrease, platformCreateMeme } = useProportion();
+  const { firstProportion, maxProportion, firstIncrease, maxIncrease, platformCreateMeme, totalCapInitial } =
+    useProportion();
 
   // const firstProportion = useMemo(() => Number(memooConfig?.allocation.creator) / 10000, [memooConfig]);
   const purchased = useMemo(() => {
-    if (!memooConfig || !memeUserData || !platformCreateMeme) return 0;
+    if (!memooConfig || !memeUserData) return 0;
 
     const creatorLockCountBN = new BigNumber(Number(memeUserData?.creatorLockCount)).dividedBy(10 ** 9);
+    console.log('creatorLockCountBN:', Number(creatorLockCountBN));
     const memeUserIdoCountBN = new BigNumber(Number(memeUserData?.memeUserIdoCount)).dividedBy(10 ** 9);
+    console.log('memeUserIdoCountBN:', Number(memeUserIdoCountBN));
     const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 10);
+    console.log('idoPriceBN:', Number(idoPriceBN), 'idoPriceBN-string:', idoPriceBN.toString());
     const totalCountBN = creatorLockCountBN.plus(memeUserIdoCountBN);
+    console.log('totalCountBN:', Number(totalCountBN));
     const totalPurchasedBN = totalCountBN.multipliedBy(idoPriceBN);
+    console.log('totalPurchasedBN:', Number(totalPurchasedBN));
     const formattedResult = parseFloat(formatDecimals(totalPurchasedBN));
-    const result = platformCreateMeme + formattedResult;
-    console.log('purchased: ', parseFloat(formatDecimals(result)));
-    return parseFloat(formatDecimals(result));
-  }, [memooConfig, memeUserData, platformCreateMeme]);
+    console.log('purchased-formattedResult:', formattedResult);
+    // console.log('purchased-platformCreate:', platformCreateMeme);
+    const result = formattedResult;
+    return result;
+  }, [memooConfig, memeUserData]);
 
   const context: CreatorContext = useMemo(
     () => ({
@@ -229,7 +236,7 @@ export const Creator = () => {
       case 'QUEUE':
         button = (
           <IncreaseModal
-            maxIncrease={maxIncrease}
+            maxIncrease={totalCapInitial}
             firstProportion={firstProportion}
             maxProportion={maxProportion}
             firstIncrease={firstIncrease}
@@ -252,7 +259,7 @@ export const Creator = () => {
       case 'IDO':
         button = (
           <IncreaseModal
-            maxIncrease={maxIncrease}
+            maxIncrease={totalCapInitial}
             firstProportion={firstProportion}
             maxProportion={maxProportion}
             firstIncrease={firstIncrease}

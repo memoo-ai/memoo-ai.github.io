@@ -20,11 +20,12 @@ const Progress: FC = () => {
   const { stage, idoQueueDetail, memooConfig, mine, totalPurchased, memeUserData, unlockTimestamp } =
     useContext(AirdropContext);
   const { address } = useAccount();
-  const { firstProportion, platformCreateMeme, firstIncrease, maxIncrease, maxProportion } = useProportion();
+  const { firstProportion, platformCreateMeme, firstIncrease, maxIncrease, totalCapInitial, maxProportion } =
+    useProportion();
   const iconRefs = useRef<any>({});
 
   const purchased = useMemo(() => {
-    if (!memooConfig || !memeUserData || !platformCreateMeme) return 0;
+    if (!memooConfig || !memeUserData) return 0;
 
     const creatorLockCountBN = new BigNumber(Number(memeUserData?.creatorLockCount)).dividedBy(10 ** 9);
     console.log('creatorLockCountBN:', Number(creatorLockCountBN));
@@ -38,10 +39,10 @@ const Progress: FC = () => {
     console.log('totalPurchasedBN:', Number(totalPurchasedBN));
     const formattedResult = parseFloat(formatDecimals(totalPurchasedBN));
     console.log('purchased-formattedResult:', formattedResult);
-    console.log('purchased-platformCreate:', platformCreateMeme);
-    const result = platformCreateMeme + formattedResult;
+    // console.log('purchased-platformCreate:', platformCreateMeme);
+    const result = formattedResult;
     return result;
-  }, [memooConfig, memeUserData, platformCreateMeme]);
+  }, [memooConfig, memeUserData]);
   // console.log('firstProportion:', firstProportion);
   // console.log('maxProportion:', maxProportion);
   // console.log('firstIncrease:', firstIncrease);
@@ -120,7 +121,7 @@ const Progress: FC = () => {
       // btnIcon: `/create/icon-increase${stage === 'in-queue' ? '-active' : ''}.svg`,
       wrapper: (node: ReactNode) => (
         <IncreaseAcquisitionModal
-          maxIncrease={maxIncrease}
+          maxIncrease={totalCapInitial}
           firstProportion={firstProportion}
           maxProportion={maxProportion}
           firstIncrease={firstIncrease}

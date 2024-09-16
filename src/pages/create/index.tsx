@@ -31,6 +31,7 @@ import {
   getTwitterAccessToken,
   uploadFile,
   getTwitterClientId,
+  payConfirm,
   requestTwitterFollow,
 } from '@/api/token';
 import qs from 'qs';
@@ -360,7 +361,12 @@ export default function Create() {
           console.log('sonalaConfigMemeId:', config);
 
           const feeRes = await payFee(config.memeConfigId);
-          if (!feeRes) {
+          if (feeRes) {
+            await payConfirm({
+              ticker: data.ticker,
+              txHash: feeRes,
+            });
+          } else if (!feeRes) {
             message.error('Create failed.');
             return;
           }
