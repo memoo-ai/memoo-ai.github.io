@@ -1,5 +1,5 @@
 import './index.scss';
-import React, { useEffect } from 'react';
+import React, { useRef } from 'react';
 import { Slider } from 'antd';
 interface MySliderProps {
   min?: number;
@@ -24,6 +24,7 @@ const MySlider = ({
   onChange,
 }: MySliderProps) => {
   const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
+  const sliderRef = useRef<HTMLDivElement>(null);
   const handleSliderChange = (newValue: number) => {
     const newProgress = newValue / 100;
     if (onChange) {
@@ -32,7 +33,7 @@ const MySlider = ({
   };
 
   return (
-    <div className="flex-1 flex items-center progress">
+    <div className="flex-1 flex items-center progress" ref={sliderRef}>
       <div className="mr-[14px] font-OCR">
         {minPrice}&nbsp;
         {tokenSymbol}
@@ -46,7 +47,12 @@ const MySlider = ({
         value={value * 100}
         defaultValue={defaultValue * 100}
         onChange={handleSliderChange}
-        tooltip={{ open: true, rootClassName: 'memoo_slider_tooltip', formatter: (value) => `${value}%` }}
+        tooltip={{
+          open: true,
+          rootClassName: 'memoo_slider_tooltip',
+          getPopupContainer: () => sliderRef.current!,
+          formatter: (value) => `${value}%`,
+        }}
       />
       <div className="ml-[14px] font-OCR">
         {maxPrice} {tokenSymbol}

@@ -6,7 +6,7 @@ import NavMenu from '@/components/NavMenu';
 import { IconMemoo, IconSearch, IconClear, IconVector, IconTwitter, IconTelegram, IconTriangle } from '../icons';
 import { Button } from '@radix-ui/themes';
 import { useLogin } from '@/hooks/useLogin';
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { Input, Popover, Spin } from 'antd';
 import './index.module.scss';
 import { useLocation } from 'react-router-dom';
@@ -50,9 +50,15 @@ const Header = () => {
   const showSwipe = useMemo(() => {
     return location.pathname === '/' || location.pathname === '/gecko';
   }, [location.pathname]);
+  useEffect(() => {
+    const headerElement = document.querySelector('.header');
+    if (headerElement) {
+      document.body.appendChild(headerElement);
+    }
+  }, []);
 
   return (
-    <header className={`${styles.header}`}>
+    <header className={`${styles.header} z-[9999]`}>
       <div className={`${styles.headerTop} flex justify-end items-center`}>
         <div className="flex items-center gap-x-[25px] mr-[80px]">
           {/* <img src="./SVG/icon-twitter.svg" className="w-8 cursor-pointer" alt="" /> */}

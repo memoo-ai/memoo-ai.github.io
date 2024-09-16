@@ -78,7 +78,7 @@ export const useProportion = () => {
     const totalSupply = new BigNumber(memooConfig?.totalSupply.toString()).dividedBy(10 ** 9);
     const tokenAllocationCreator = new BigNumber(Number(memooConfig?.tokenAllocationCreator) / 10000);
     const result = totalSupply.multipliedBy(tokenAllocationCreator);
-    return result.toString() ?? 0;
+    return Number(result ?? 0);
   }, [memooConfig, firstProportion]);
 
   const idoUserBuyLimit = useMemo(() => {

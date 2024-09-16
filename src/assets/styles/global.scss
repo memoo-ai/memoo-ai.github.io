@@ -646,3 +646,8 @@ div[data-rk] {
 //   position: relative;
 //   min-width: 100vw;
 // }
+.ant-tooltip-content {
+  z-index: -1;
+  transform: translateZ(0);
+}
+

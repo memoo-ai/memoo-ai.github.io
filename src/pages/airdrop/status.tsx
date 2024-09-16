@@ -89,10 +89,9 @@ export default function Status() {
             memo score{' '}
             <ITooltip
               className="h-[12px]"
-              toolClassName="tooltip-content"
-              width={400}
               placement="bottom"
-              title={`During the pre-launch stages, Memoo Score tracks :\nSocial Info\nCommunity Size\nCommunity Activity\nTop Up\nCreator Activity\nAfter the launch, Memoo Score additionally tracks :\nTotal Raised\nMarket Cap\nLiquidity\nHolders\nTwitter Score\nTrading Volume (24H)`}
+              // title={`During the pre-launch stages, Memoo Score tracks :\nSocial Info\nCommunity Size\nCommunity Activity\nTop Up\nCreator Activity\nAfter the launch, Memoo Score additionally tracks :\nTotal Raised\nMarket Cap\nLiquidity\nHolders\nTwitter Score\nTrading Volume (24H)`}
+              title="During the pre launch stages of the meme token, Memoo Score tracks Social Info, Community Size, Community Activity, Top Up & Creator Activity. After the launch of the meme token, Memoo Score additionally tracks Total Raised, Market Cap, Liquidity, Holders, Twitter Score & 24H Trading Volume. It is then aggregated to a score out of 100."
               color="#fff"
               bgColor="#4A5082"
             />

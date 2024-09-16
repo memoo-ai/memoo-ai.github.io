@@ -592,7 +592,8 @@ export default function Create() {
               }
             >
               <div className="bg-[#07E993] h-[50px] rounded-[7px] flex items-center justify-center text-[#A005FE] text-[24px] font-404px text-center">
-                {creatorAllocation} <span className="text-[18px]">&nbsp;TOKENS</span>
+                {creatorAllocation.toLocaleString('en-US', { useGrouping: true })}{' '}
+                <span className="text-[18px]">&nbsp;TOKENS</span>
               </div>
             </Form.Item>
             <p className="create_tip_for_acquisition">

@@ -2,13 +2,7 @@
   position: sticky;
   top: 0;
   background-color: $headerBgColor;
-
   z-index: 999999 !important;
-
-  .logo {
-    width: 194px;
-    height: 69px;
-  }
 }
 .header-top{
   background: linear-gradient(90deg, #B53BFF 0%, #07E993 100%);
