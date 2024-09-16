@@ -293,7 +293,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
                   <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
                     <IconUpload className="" />
                     <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px] mt-[10px]">
-                      Recommended 790px X 307px Max size: 50MB
+                      Recommended 790px X 307px Max size: 10MB
                     </p>
                   </div>
                 </button>
