@@ -81,7 +81,8 @@ const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 export default function Create() {
   // const { address, chainId } = useAccount();
   const { address, registerTokenMint } = useAccount();
-  const { firstProportion, maxProportion, totalCapInitial, totalCap, creatorAllocation } = useProportion();
+  const { firstProportion, maxProportion, totalCapInitial, totalSupplyPrice, totalCap, creatorAllocation } =
+    useProportion();
   // const [memeConfigId, setmemeConfigId] = useState<memeConfigId>({});
   // const { switchChain } = useSwitchChain();
   const [searchParams] = useSearchParams();
@@ -278,9 +279,11 @@ export default function Create() {
         preLaunchSecond = 3 * 24 * 3600;
       }
 
-      const preValue = totalCapInitial * (data.preMarketAcquisition / 0.3);
+      // const preValue = totalCapInitial * (data.preMarketAcquisition / 0.3);
+      const preValue = totalSupplyPrice * data.preMarketAcquisition;
       console.log('totalCapInitial:', totalCapInitial);
       console.log('preValue: ', preValue);
+      console.log('data.preMarketAcquisition: ', data.preMarketAcquisition);
       // const value = parseEther(String(preValue)) + memeConfigId!.platformFeeCreateMeme;
       // const value = parseEther(String(preValue));
       // const platformFeeCreateMeme = (totalCapInitial * 0.05) / 0.3;
