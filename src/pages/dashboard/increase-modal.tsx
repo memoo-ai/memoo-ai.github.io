@@ -163,7 +163,7 @@ const IncreaseModal: FC<{
           </Checkbox>
           <div>
             <Button
-              disabled={!accepted && Number(formatDecimals(result)) === 0}
+              disabled={!accepted || Number(formatDecimals(result)) === 0}
               className="memoo_button w-[100%] h-[50px]"
               loading={confirming}
               onClick={onConfirm}
