@@ -210,8 +210,8 @@ export default function AirdropClaim() {
           <li key={index} className="follow_list_item flex items-center w-full justify-between px-3 py-3.5">
             <p
               className={classNames('leading-5 font-OCR whitespace-pre-wrap', {
-                'text-white': (!item.followed && stage === 'in-queue') || !address,
-                'text-deep-green': item.followed || stage !== 'in-queue',
+                'text-white': !item.followed && stage === 'in-queue',
+                'text-deep-green': item.followed || stage !== 'in-queue' || !address,
               })}
             >
               Follow @{item.user}

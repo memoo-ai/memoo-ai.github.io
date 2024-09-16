@@ -291,7 +291,11 @@ const Progress: FC = () => {
             {item.wrapper ? (
               item.wrapper(
                 <Button
-                  style={{ visibility: item.btnText ? 'visible' : 'hidden' }}
+                  style={{
+                    visibility: item.btnText ? 'visible' : 'hidden',
+                    backgroundColor: item.enabled ? undefined : 'currentColor',
+                    pointerEvents: item.enabled ? 'auto' : 'none',
+                  }}
                   className="memoo_button reverse mt-[19px] px-[19px] h-[38px]"
                   onClick={() => item.onClick?.()}
                   disabled={!item.enabled}
@@ -307,7 +311,10 @@ const Progress: FC = () => {
               )
             ) : (
               <Button
-                style={{ visibility: item.btnText ? 'visible' : 'hidden' }}
+                style={{
+                  visibility: item.btnText ? 'visible' : 'hidden',
+                  backgroundColor: item.enabled ? undefined : 'currentColor',
+                }}
                 className="memoo_button reverse mt-[19px] px-[19px] h-[38px]"
                 onClick={() => item.onClick?.()}
                 disabled={!item.enabled}

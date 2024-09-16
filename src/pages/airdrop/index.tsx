@@ -225,11 +225,11 @@ const Airdrop: FC = () => {
         // For testin: BigEgg or NewCake
         const { data } = await getIDOQueueDetail(ticker, address ?? 'default');
         setIDOQueueDetail(data);
-        const { data: meme } = await getMeMemo(ticker);
-        setTotalPurchased(meme[0]?.balance ?? 0);
-        setTotalAmount(meme[0]?.ethAmout ?? 0);
+        // const { data: meme } = await getMeMemo(ticker);
+        // setTotalPurchased(meme[0]?.balance ?? 0);
+        // setTotalAmount(meme[0]?.ethAmout ?? 0);
         const { data: config } = await getMemeConfigId(ticker);
-        setSolanaMemeConfig(config);
+        setSolanaMemeConfig(config ?? '');
         // console.log('config.memeConfigId:', config.memeConfigId);
         // debugger;
         // const memeUser = await getMemeUserData(config.memeConfigId);
