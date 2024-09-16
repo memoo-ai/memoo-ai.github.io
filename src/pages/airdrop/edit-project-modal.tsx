@@ -174,11 +174,11 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
       const res = await saveEditInfo({ ...data, ticker });
       setOpen(false);
       if (res?.code === 200) {
-        message.success('modify successfully!');
+        message.success('Edit successful!');
         onSaveSuccess();
         setOpen(false);
       } else {
-        message.warning('fail in keeping');
+        message.warning('Edit failed');
       }
       localStorage.removeItem(UPDATE_PROJECT_TWITTER_STORAGE);
       localStorage.removeItem(EDIT_INFO_STORAGE);
