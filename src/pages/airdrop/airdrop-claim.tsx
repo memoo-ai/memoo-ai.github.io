@@ -18,6 +18,7 @@ import { IconWallet } from '@/components/icons';
 import Wallet from '@/components/SolanaWallet';
 import { useAccount } from '@/hooks/useWeb3';
 import ITooltip from '@/components/ITooltip';
+import { useProportion } from '@/hooks/useProportion';
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
 let isRequestFollowing = false;
 export default function AirdropClaim() {
@@ -27,6 +28,7 @@ export default function AirdropClaim() {
   const [searchParams] = useSearchParams();
   const [confirming, setConfirming] = useState(false);
   const { address } = useAccount();
+  const { tokenAllocationAirdrop } = useProportion();
 
   const follows = useMemo(
     () => [
@@ -180,10 +182,7 @@ export default function AirdropClaim() {
           <Popover>
             {/* <img src="/create/tip.png" /> */}
             <ITooltip
-              title="Lorem ipsum dolor sit amet consectetur adipiscing elit.
-                Morbi fringilla ipsum turpisı sit amet tempus est malesuadased.
-                Integer fringilla magnavel orci ultricies fermentum.
-                Suspendisse sem est."
+              title={`${tokenAllocationAirdrop * 100}% of the total token supply is allocated to this feature. Participants are required to complete two simple tasks to be eligible.`}
               color="#fff"
               bgColor="#396D93"
             />

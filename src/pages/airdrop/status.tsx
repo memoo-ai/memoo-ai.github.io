@@ -90,10 +90,20 @@ export default function Status() {
             <ITooltip
               className="h-[12px] "
               placement="bottom"
-              title="Lorem ipsum dolor sit amet consectetur adipiscing elit.
-                Morbi fringilla ipsum turpisı sit amet tempus est malesuadased.
-                Integer fringilla magnavel orci ultricies fermentum.
-                Suspendisse sem est."
+              title={`During the pre-launch stages, Memoo Score tracks :\n
+                        Social Info\n
+                        Community Size\n
+                        Community Activity\n
+                        Top Up\n
+                        Creator Activity\n
+                        After the launch, Memoo Score additionally tracks :\n
+                        Total Raised\n
+                        Market Cap\n
+                        Liquidity\n
+                        Holders\n
+                        Twitter Score\n
+                        Trading Volume (24H)\n
+                        `}
               color="#fff"
               bgColor="#4A5082"
             />

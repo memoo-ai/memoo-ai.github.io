@@ -135,10 +135,7 @@ const IncreaseAcquisitionModal: FC<{
                 <ITooltip
                   className="h-[12px] "
                   placement="bottom"
-                  title="Lorem ipsum dolor sit amet consectetur adipiscing elit.
-                Morbi fringilla ipsum turpisı sit amet tempus est malesuadased.
-                Integer fringilla magnavel orci ultricies fermentum.
-                Suspendisse sem est."
+                  title={`Creators can secure up to an additional ${maxProportion * 100}% of the meme token before the launch.`}
                   color="#fff"
                   bgColor="#396D93"
                 />

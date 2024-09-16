@@ -570,10 +570,7 @@ export default function Create() {
                   <p>
                     <ITooltip
                       placement="bottom"
-                      title="Lorem ipsum dolor sit amet consectetur adipiscing elit.
-                        Morbi fringilla ipsum turpisı sit amet tempus est malesuadased.
-                        Integer fringilla magnavel orci ultricies fermentum.
-                        Suspendisse sem est."
+                      title="Begins with a preparatory period of your choice followed by a 24-hour IMO window, during which participants can contribute up to a max of 0.5% per wallet. IMO concludes either when the token supply is fully sold out ($3,000 in contributions or 20.718 SOL) or when the 24-hour window expires."
                       color="#fff"
                       bgColor="#4A5082"
                     />
@@ -609,10 +606,7 @@ export default function Create() {
                   <p>
                     <ITooltip
                       placement="bottom"
-                      title="Lorem ipsum dolor sit amet consectetur adipiscing elit.
-                     Morbi fringilla ipsum turpisı sit amet tempus est malesuadased.
-                     Integer fringilla magnavel orci ultricies fermentum.
-                     Suspendisse sem est."
+                      title={`Creators can secure up to an additional ${maxProportion * 100}% of the meme token before the launch.`}
                       color="#fff"
                       bgColor="#4A5082"
                     />

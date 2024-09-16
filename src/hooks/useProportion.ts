@@ -104,6 +104,13 @@ export const useProportion = () => {
     return result;
   }, [memooConfig]);
 
+  const tokenAllocationAirdrop = useMemo(() => {
+    if (!memooConfig) return 0;
+    const result = memooConfig?.tokenAllocationAirdrop / 10000;
+    console.log('tokenAllocationIdo:', result);
+    return result;
+  }, [memooConfig]);
+
   return {
     firstProportion,
     maxProportion,
@@ -118,5 +125,6 @@ export const useProportion = () => {
     idoUserBuyLimit,
     totalSupplyPrice,
     tokenAllocationIdo,
+    tokenAllocationAirdrop,
   };
 };
