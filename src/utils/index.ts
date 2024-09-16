@@ -272,3 +272,7 @@ export function formatNumberToFixed(input: string | number): string {
 
   return parseFloat(rounded).toString();
 }
+
+export function popupSharing(url: string) {
+  window.open(url, '_blank', 'width=600,height=700');
+}

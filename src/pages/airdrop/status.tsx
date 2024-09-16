@@ -88,22 +88,11 @@ export default function Status() {
           <h3 className="flex items-center gap-x-1">
             memo score{' '}
             <ITooltip
-              className="h-[12px] "
+              className="h-[12px]"
+              toolClassName="tooltip-content"
+              width={400}
               placement="bottom"
-              title={`During the pre-launch stages, Memoo Score tracks :\n
-                        Social Info\n
-                        Community Size\n
-                        Community Activity\n
-                        Top Up\n
-                        Creator Activity\n
-                        After the launch, Memoo Score additionally tracks :\n
-                        Total Raised\n
-                        Market Cap\n
-                        Liquidity\n
-                        Holders\n
-                        Twitter Score\n
-                        Trading Volume (24H)\n
-                        `}
+              title={`During the pre-launch stages, Memoo Score tracks :\nSocial Info\nCommunity Size\nCommunity Activity\nTop Up\nCreator Activity\nAfter the launch, Memoo Score additionally tracks :\nTotal Raised\nMarket Cap\nLiquidity\nHolders\nTwitter Score\nTrading Volume (24H)`}
               color="#fff"
               bgColor="#4A5082"
             />

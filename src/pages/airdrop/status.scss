@@ -112,3 +112,13 @@
     width: 22px;
   }
 }
+.tooltip-content{
+  min-width: 400px !important;
+  .ant-tooltip-inner{
+    color: #07E993;
+    font-family: 'OCR A Extended';
+    font-size: 12px;
+    white-space: pre-wrap;
+    width: max-content;
+  }
+}

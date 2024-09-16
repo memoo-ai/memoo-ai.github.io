@@ -24,6 +24,7 @@ import {
 } from '@/components/icons';
 import { toPng } from 'html-to-image';
 import { AirdropContext } from '.';
+import { popupSharing } from '@/utils';
 
 const BaseUrl = import.meta.env.VITE_SHARE_URI;
 const CreatorRankingShareModal = ({ children, ticker, meMessage }: any) => {
@@ -31,6 +32,7 @@ const CreatorRankingShareModal = ({ children, ticker, meMessage }: any) => {
   const ref = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
   const { idoQueueDetail } = useContext(AirdropContext);
+  const iconRefs = useRef<any>({});
 
   const downloadImg = useCallback(() => {
     if (ref.current === null) {
@@ -58,7 +60,7 @@ const CreatorRankingShareModal = ({ children, ticker, meMessage }: any) => {
   }, [ref]);
 
   const shareUrl = useMemo(() => {
-    return `${BaseUrl}${idoQueueDetail?.ticker}`;
+    return `${BaseUrl}airdrop/${idoQueueDetail?.ticker}`;
   }, [BaseUrl, idoQueueDetail]);
 
   // const handleShare = (type: 'twitter' | 'telegram') => {
@@ -122,37 +124,62 @@ const CreatorRankingShareModal = ({ children, ticker, meMessage }: any) => {
         <div className="w-[100%] text-center  text-[#fff] text-[16px] font-OCR">Share MeMoo Score</div>
         <div className="flex items-center justify-center gap-x-1 mt-[16px]">
           <a
-            href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}`}
             target="_black"
-            className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]"
+            className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px] link-hover"
+            onMouseOver={() => iconRefs.current[`IconTwitter`].setHovered(true)}
+            onMouseLeave={() => iconRefs.current[`IconTwitter`].setHovered(false)}
+            onClick={() => popupSharing(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}`)}
           >
-            <IconTwitter className="w-[20px] h-[18px]" color="#1F3B4F" />
+            <IconTwitter
+              className="w-[20px] h-[18px]"
+              color="#1F3B4F"
+              hoverColor="#07E993"
+              ref={(ref) => (iconRefs.current[`IconTwitter`] = ref)}
+            />
           </a>
-          {/* <a
-            href={`https://t.me/share/url?url=${encodeURIComponent(shareUrl)}`}
-            target="_black"
-            className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]"
+          <a
+            onClick={() => popupSharing(`https://t.me/share/url?url=${encodeURIComponent(shareUrl)}`)}
+            className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px] link-hover"
+            onMouseOver={() => iconRefs.current[`IconTelegram`].setHovered(true)}
+            onMouseLeave={() => iconRefs.current[`IconTelegram`].setHovered(false)}
           >
-            <IconTelegram className="w-[20px] h-[18px]" color="#1F3B4F" />
+            <IconTelegram
+              color="#1F3B4F"
+              hoverColor="#07E993"
+              ref={(ref) => (iconRefs.current[`IconTelegram`] = ref)}
+              className="w-[20px] h-[18px]"
+            />
           </a>
-          <a className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]">
-            <IconGame />
+          {/* <a className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px] link-hover"      onMouseOver={() => iconRefs.current[`IconGame`].setHovered(true)}
+            onMouseLeave={() => iconRefs.current[`IconGame`].setHovered(false)}>
+            <IconGame color="#1F3B4F" hoverColor="#07E993" ref={(ref) => (iconRefs.current[`IconGame`] = ref)} />
           </a> */}
           <a
-            href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
-            target="_black"
-            className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]"
+            onClick={() => popupSharing(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`)}
+            className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px] link-hover"
+            onMouseOver={() => iconRefs.current[`IconFacebook`].setHovered(true)}
+            onMouseLeave={() => iconRefs.current[`IconFacebook`].setHovered(false)}
           >
-            <IconFacebook />
+            <IconFacebook
+              color="#1F3B4F"
+              hoverColor="#07E993"
+              ref={(ref) => (iconRefs.current[`IconFacebook`] = ref)}
+            />
           </a>
           <div
-            className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]"
+            className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px] link-hover"
             onClick={downloadImg}
+            onMouseOver={() => iconRefs.current[`IconDownload`].setHovered(true)}
+            onMouseLeave={() => iconRefs.current[`IconDownload`].setHovered(false)}
           >
-            <IconDownload />
+            <IconDownload
+              color="#1F3B4F"
+              hoverColor="#07E993"
+              ref={(ref) => (iconRefs.current[`IconDownload`] = ref)}
+            />
           </div>
           {/* <div className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]">
-            <IconMore />
+            <IconMore color="#1F3B4F" hoverColor="#07E993" ref={(ref) => (iconRefs.current[`IconTwitter`] = ref)} />
           </div> */}
         </div>
       </Modal>

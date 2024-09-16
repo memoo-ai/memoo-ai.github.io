@@ -2,7 +2,7 @@
 import { FC, useContext, useMemo, useRef, useEffect, useState } from 'react';
 import './profile.scss';
 import { AirdropContext } from '.';
-import { clipAddress, extractDomainName, formatTs, handleCopy } from '@/utils';
+import { clipAddress, extractDomainName, formatTs, handleCopy, popupSharing } from '@/utils';
 import { IconCopy, IconTwitter, IconTelegram, IconSolana, IconFacebook } from '@/components/icons';
 import { getToolsUrls } from '@/api/common';
 
@@ -292,25 +292,37 @@ const Profile: FC = () => {
               <ul className="content flex items-center justify-center gap-[11px]">
                 <a
                   className="rounded-[7px] bg-[#07E993] w-[40px] h-[40px] p-[10px] flex justify-center items-center"
-                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                    shareText,
-                  )}&url=${encodeURIComponent(shareUrl)}`}
+                  onClick={() =>
+                    popupSharing(
+                      `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                        shareText,
+                      )}&url=${encodeURIComponent(shareUrl)}`,
+                    )
+                  }
                 >
                   <IconTwitter color="#1F3B4F" className="cursor-pointer " />
                 </a>
                 <a
                   className="rounded-[7px] bg-[#07E993] w-[40px] h-[40px] p-[10px] flex justify-center items-center"
-                  href={`https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(
-                    shareText,
-                  )}`}
+                  onClick={() =>
+                    popupSharing(
+                      `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(
+                        shareText,
+                      )}`,
+                    )
+                  }
                 >
                   <IconTelegram color="#1F3B4F" className="cursor-pointer " />
                 </a>
                 <a
                   className="rounded-[7px] bg-[#07E993] w-[40px] h-[40px] p-[10px] flex justify-center items-center"
-                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                    shareUrl,
-                  )}&quote=${encodeURIComponent(shareText)}`}
+                  onClick={() =>
+                    popupSharing(
+                      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                        shareUrl,
+                      )}&quote=${encodeURIComponent(shareText)}`,
+                    )
+                  }
                 >
                   <IconFacebook color="#1F3B4F" className="cursor-pointer " />
                 </a>

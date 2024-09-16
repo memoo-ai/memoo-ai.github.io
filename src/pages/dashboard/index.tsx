@@ -41,13 +41,13 @@ const Dashboard = () => {
     }
   }, [searchParams]);
 
-  const [commonBanner, setCommonBanner] = useState({
+  const [commonBottom, setCommonBottom] = useState({
     title: 'Exclusive ‘Proof of Creation’ Reward for Creators.',
     desc: 'Exciting Rewards for Exceptional Talent in Meme Creation.',
     link: '/',
     linkText: 'BE A CREATOR',
   });
-  const [commonBottom, setCommonBottom] = useState({
+  const [commonBanner, setCommonBanner] = useState({
     title: 'Exclusive ‘Proof of Creation’ Reward for Creators.',
     title1: '',
     desc: 'Exciting Rewards for Exceptional Talent in Meme Creation.',
@@ -61,14 +61,14 @@ const Dashboard = () => {
       setTabType(type);
       switch (type) {
         case 'Profile':
-          setCommonBottom({
+          setCommonBanner({
             title: 'Unleash the Degen in You',
             title1: 'and get Rewarded.',
             desc: 'Build Your Creator Reputation to Unlock Rewards.',
             rightImg: DashboardBottomImg4,
             bg: DashboardBottomBgImg4,
           });
-          setCommonBanner({
+          setCommonBottom({
             title: 'Exclusive ‘Proof of Creation’ Reward for Creators.',
             desc: 'Exciting Rewards for Exceptional Talent in Meme Creation.',
             link: '/gecko?type=CREATOR Ranking',
@@ -76,29 +76,29 @@ const Dashboard = () => {
           });
           break;
         case 'Creator':
-          setCommonBottom({
+          setCommonBanner({
             title: 'Begin Your Meme',
             title1: 'Token Empire Today.',
-            desc: 'Exciting Rewards for Exceptional Talent in Meme Creation.',
+            desc: 'Ignite Your Memes, Ignite Your Success.',
             rightImg: DashboardBottomImg1,
             bg: DashboardBottomBgImg1,
           });
-          setCommonBanner({
-            title: 'Get Recognized and Stand Among Meme Gods.',
-            desc: 'See Where You Stand Within the Creator Ranks.',
+          setCommonBottom({
+            title: `Exclusive ‘Proof of Creation’\nReward For Creators.`,
+            desc: 'Exciting Rewards for Exception Talent in Meme Creation.',
             link: '/create_token',
             linkText: 'BE A CREATOR',
           });
           break;
         case 'Collector':
-          setCommonBottom({
+          setCommonBanner({
             title: 'Begin Your Meme',
             title1: 'Token Empire Today.',
-            desc: 'Exciting Rewards for Exceptional Talent in Meme Creation.',
+            desc: 'Ignite Your Memes, Ignite Your Success.',
             rightImg: DashboardBottomImg2,
             bg: DashboardBottomBgImg2,
           });
-          setCommonBanner({
+          setCommonBottom({
             title: 'Don’t Miss Out on Airdrops.',
             desc: 'Your Chance to Score Free Meme Treasures.',
             link: '/',
@@ -106,14 +106,14 @@ const Dashboard = () => {
           });
           break;
         case 'WatchList':
-          setCommonBottom({
+          setCommonBanner({
             title: 'Begin Your Meme',
             title1: 'Token Empire Today.',
-            desc: 'Exciting Rewards for Exceptional Talent in Meme Creation.',
+            desc: 'Ignite Your Memes, Ignite Your Success.',
             rightImg: DashboardBottomImg3,
             bg: DashboardBottomBgImg3,
           });
-          setCommonBanner({
+          setCommonBottom({
             title: 'Let MeMoo Score do the Work for You.',
             desc: 'The Key to Informed Meme Token Decision Making.',
             link: '/gecko',
@@ -121,9 +121,9 @@ const Dashboard = () => {
           });
           break;
         default:
-          setCommonBanner({
+          setCommonBottom({
             title: 'Exclusive ‘Proof of Creation’ Reward for Creators.',
-            desc: 'Exciting Rewards for Exceptional Talent in Meme Creation.',
+            desc: 'Ignite Your Memes, Ignite Your Success.',
             link: '/create_token',
             linkText: 'BE A CREATOR',
           });
@@ -142,13 +142,13 @@ const Dashboard = () => {
         <div className="dashboard-header-banner-content">
           <div className="dashboard-header-banner-left flex  flex-col">
             <p className="dashboard-left-text">
-              <span> {commonBottom.title}</span> <br />
-              <span className="mt-[15px]"> {commonBottom.title1}</span>
+              <span> {commonBanner.title}</span> <br />
+              <span className="mt-[15px]"> {commonBanner.title1}</span>
             </p>
-            <p className="dashboard-left-sub-text">{commonBottom.desc}</p>
+            <p className="dashboard-left-sub-text">{commonBanner.desc}</p>
           </div>
           <div style={{ height: tabType === 'Collector' ? '100%' : 'auto' }}>
-            <img className="w-[497px] h-[370px] img-pointer-events" src={commonBottom.rightImg} alt="" />
+            <img className="w-[497px] h-[370px] img-pointer-events" src={commonBanner.rightImg} alt="" />
           </div>
         </div>
       </div>
@@ -166,10 +166,10 @@ const Dashboard = () => {
         <div>
           {' '}
           <CommonBanner
-            title={commonBanner.title}
-            desc={commonBanner.desc}
-            link={commonBanner.link}
-            linkText={commonBanner.linkText}
+            title={commonBottom.title}
+            desc={commonBottom.desc}
+            link={commonBottom.link}
+            linkText={commonBottom.linkText}
             bgType={2}
           />
         </div>

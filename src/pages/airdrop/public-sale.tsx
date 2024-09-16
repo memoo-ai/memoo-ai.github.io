@@ -27,14 +27,14 @@ const PublicSale: FC = () => {
       {
         key: 'Total Raised',
         value: `${idoQueueDetail?.totalRaised ?? 'NA/NA'} ${tokenSymbol}`,
-        tip: `Total IMO raise is always capped \n at ${totalSupplyPrice * tokenAllocationIdo} ${tokenSymbol}`,
+        tip: `Total IMO raise is always\ncapped at ${totalSupplyPrice * tokenAllocationIdo} ${tokenSymbol}`,
         big: false,
       },
       {
         key: 'Contributed',
         // value: `${idoQueueDetail?.contributed ?? 'NA'}/${idoQueueDetail?.maxContributed ?? 'NA'} ${tokenSymbol}`,
         value: `${totalSupplyPrice * idoUserBuyLimit} ${tokenSymbol}`,
-        tip: `Contributed per wallet \n is capped at ${totalSupplyPrice * idoUserBuyLimit} ${tokenSymbol}`,
+        tip: `Contributed per wallet\nis capped at ${totalSupplyPrice * idoUserBuyLimit} ${tokenSymbol}`,
         big: true,
       },
     ],

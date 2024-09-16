@@ -201,7 +201,7 @@ const Gecko = () => {
         }}
       />
       <CommonBanner
-        title="Discover the Next Big Thing on MeMoo LaunchPad."
+        title={`Discover the Next Big Thing on \n MeMoo LaunchPad.`}
         desc="Get in on the Action with the Hottest Meme Project Picks."
         link="/"
         linkText="launchpad"

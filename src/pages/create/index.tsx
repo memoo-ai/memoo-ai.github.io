@@ -570,7 +570,8 @@ export default function Create() {
                   <p>
                     <ITooltip
                       placement="bottom"
-                      title="Begins with a preparatory period of your choice followed by a 24-hour IMO window, during which participants can contribute up to a max of 0.5% per wallet. IMO concludes either when the token supply is fully sold out ($3,000 in contributions or 20.718 SOL) or when the 24-hour window expires."
+                      toolClassName="create-tooltip"
+                      title={`Begins with a preparatory period\nof your choice followed by a\n24-hour IMO window, during\nwhich participants can contribute\nup to a max of 0.5% per wallet.\nIMO concludes either when the\ntoken supply is fully sold out\n($3,000 in contributions or 20.718\nSOL) or when the 24-hour window\nexpires.`}
                       color="#fff"
                       bgColor="#4A5082"
                     />

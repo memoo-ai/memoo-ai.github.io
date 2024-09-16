@@ -62,8 +62,8 @@
     padding-right: 106px;
 
     .create_token_bg {
-      width: 342px;
-      height: 473.35px;
+      width: 422px;
+      height: 584.08px;
 
     }
 
@@ -130,6 +130,7 @@
 
       .custom-upload-banner {
         width: 100%;
+        background: #1f3b4f !important;
 
         .ant-upload-select {
           width: 100%;
@@ -339,4 +340,14 @@
 }
 .ant-input-textarea-affix-wrapper.ant-input-affix-wrapper >textarea.ant-input{
   border-radius: 7px;
+}
+.create-tooltip{
+  min-width: 300px;
+  .ant-tooltip-inner{
+    color: #07E993;
+    font-family: 'OCR A Extended';
+    font-size: 12px;
+    white-space: pre-wrap;
+    width: max-content;
+  }
 }

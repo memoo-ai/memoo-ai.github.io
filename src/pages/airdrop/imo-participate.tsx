@@ -26,14 +26,14 @@ const IMOParticipate: FC = () => {
       {
         key: 'Total Raised',
         value: `${idoActiveDetail?.totalRaised === '' ? 0 : (idoActiveDetail?.totalRaised ?? 'NA/NA')} ${tokenSymbol}`,
-        tip: `Total IMO raise is always capped \n at ${totalSupplyPrice * tokenAllocationIdo} ${tokenSymbol}`,
+        tip: `Total IMO raise is always\ncapped at ${totalSupplyPrice * tokenAllocationIdo} ${tokenSymbol}`,
         big: false,
       },
       {
         key: 'Contributed',
         // value: `${idoQueueDetail?.contributed ?? 'NA'}/${idoQueueDetail?.maxContributed ?? 'NA'} ${tokenSymbol}`,
         value: `${totalSupplyPrice * idoUserBuyLimit} ${tokenSymbol}`,
-        tip: `Contributed per wallet \n is capped at ${totalSupplyPrice * idoUserBuyLimit} ${tokenSymbol}`,
+        tip: `Contribution per wallet\nis capped at ${totalSupplyPrice * idoUserBuyLimit} ${tokenSymbol}`,
         big: true,
       },
     ],
@@ -89,7 +89,7 @@ const IMOParticipate: FC = () => {
               <label className="text-white text-xs font-OCR leading-4 flex items-center gap-x-1.5">
                 {item.key}{' '}
                 {item.tip && (
-                  <ITooltip className="h-[12px] " placement="bottom" title={item.tip} color="#fff" bgColor="#396D93" />
+                  <ITooltip className="h-[12px]" placement="bottom" title={item.tip} color="#fff" bgColor="#396D93" />
                 )}
               </label>
               <var className={`text-white ${item.big ? 'text-2xl' : 'text-lg'} font-OCR leading-5`}>{item.value}</var>
