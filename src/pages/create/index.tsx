@@ -454,6 +454,10 @@ export default function Create() {
   const handleRemoveBanner = () => {
     setBannerUrl('');
   };
+  const handleNoWallet = () => {
+    message.info('Please connect wallet first!', { key: 'icon-upload-no-wallet' });
+  };
+
   return (
     <div className="create_token mb-[70px]">
       <div className="create_token_top">
@@ -517,7 +521,7 @@ export default function Create() {
             >
               <div className="token-icon-form-item">
                 {/* <Input style={{ display: 'none' }} /> */}
-                {iconUrl && (
+                {address && iconUrl && (
                   <div className="icon-url-container">
                     <img src={iconUrl} alt="" />
                     <span className="icon-url-actions">
@@ -525,36 +529,62 @@ export default function Create() {
                     </span>
                   </div>
                 )}
-                {!iconUrl && (
-                  <Upload
-                    listType="picture-card"
-                    accept="image/*"
-                    maxCount={1}
-                    beforeUpload={(file) => handleUpload(file, 'icon')}
-                    showUploadList={{
-                      showPreviewIcon: false,
-                      showRemoveIcon: true,
-                    }}
-                    style={{ height: 140 }}
-                    className="custom-upload-icon"
-                  >
-                    <button
-                      style={{
-                        border: 0,
-                        background: '#1f3b4f',
-                        width: '100%',
-                        height: '100%',
-                        borderRadius: '7px',
-                      }}
-                      type="button"
-                    >
-                      <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center gap-y-[10px]">
-                        <img src="./token/icon-upload.svg" alt="upload" className="w-[30px] h-[30px]" />
-                        <p className="font-OCR text-[10px] text-green leading-4">Upload Image</p>
+                {address
+                  ? !iconUrl && (
+                      <Upload
+                        listType="picture-card"
+                        accept="image/*"
+                        maxCount={1}
+                        beforeUpload={(file) => handleUpload(file, 'icon')}
+                        showUploadList={{
+                          showPreviewIcon: false,
+                          showRemoveIcon: true,
+                        }}
+                        style={{ height: 140 }}
+                        className="custom-upload-icon"
+                      >
+                        <button
+                          style={{
+                            border: 0,
+                            background: '#1f3b4f',
+                            width: '100%',
+                            height: '100%',
+                            borderRadius: '7px',
+                          }}
+                          type="button"
+                        >
+                          <div
+                            style={{ marginTop: 8 }}
+                            className="flex flex-col jusity-center items-center gap-y-[10px]"
+                          >
+                            <img src="./token/icon-upload.svg" alt="upload" className="w-[30px] h-[30px]" />
+                            <p className="font-OCR text-[10px] text-green leading-4">Upload Image</p>
+                          </div>
+                        </button>
+                      </Upload>
+                    )
+                  : !iconUrl && (
+                      <div className="custom-upload-icon upload-no-address" onClick={handleNoWallet}>
+                        <button
+                          style={{
+                            border: 0,
+                            background: '#1f3b4f',
+                            width: '100%',
+                            height: '100%',
+                            borderRadius: '7px',
+                          }}
+                          type="button"
+                        >
+                          <div
+                            style={{ marginTop: 8 }}
+                            className="flex flex-col jusity-center items-center gap-y-[10px]"
+                          >
+                            <img src="./token/icon-upload.svg" alt="upload" className="w-[30px] h-[30px]" />
+                            <p className="font-OCR text-[10px] text-green leading-4">Upload Image</p>
+                          </div>
+                        </button>
                       </div>
-                    </button>
-                  </Upload>
-                )}
+                    )}
               </div>
             </Form.Item>
 
@@ -698,7 +728,7 @@ export default function Create() {
                   >
                     <div className="token-banner-form-item">
                       {/* <Input style={{ display: 'none' }} /> */}
-                      {bannerUrl && (
+                      {address && bannerUrl && (
                         <div className="icon-url-container banner-url-container">
                           <img src={bannerUrl} alt="" />
                           <span className="icon-url-actions">
@@ -706,28 +736,53 @@ export default function Create() {
                           </span>
                         </div>
                       )}
-                      {!bannerUrl && (
-                        <Upload
-                          listType="picture-card"
-                          accept="image/*"
-                          maxCount={1}
-                          beforeUpload={(file) => handleUpload(file, 'banners')}
-                          showUploadList={{
-                            showPreviewIcon: false,
-                            showRemoveIcon: true,
-                          }}
-                          className="custom-upload-banner"
-                          previewFile={(file) => {
-                            return new Promise((resolve) => {
-                              const reader = new FileReader();
-                              reader.readAsDataURL(file);
-                              reader.onload = () => {
-                                resolve(reader.result as string);
-                              };
-                            });
-                          }}
-                        >
-                          <button style={{ border: 0, background: 'none' }} type="button">
+                      {address ? (
+                        !bannerUrl && (
+                          <Upload
+                            listType="picture-card"
+                            accept="image/*"
+                            maxCount={1}
+                            beforeUpload={(file) => handleUpload(file, 'banners')}
+                            showUploadList={{
+                              showPreviewIcon: false,
+                              showRemoveIcon: true,
+                            }}
+                            className="custom-upload-banner"
+                            previewFile={(file) => {
+                              return new Promise((resolve) => {
+                                const reader = new FileReader();
+                                reader.readAsDataURL(file);
+                                reader.onload = () => {
+                                  resolve(reader.result as string);
+                                };
+                              });
+                            }}
+                          >
+                            <button style={{ border: 0, background: 'none' }} type="button">
+                              <div
+                                style={{ marginTop: 8 }}
+                                className="flex flex-col jusity-center items-center gap-y-[10px]"
+                              >
+                                <img src="./token/icon-upload.svg" alt="upload" className="w-[30px] h-[30px]" />
+                                <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px]">
+                                  Recommended 790px X 307px Max size: 10MB
+                                </p>
+                              </div>
+                            </button>
+                          </Upload>
+                        )
+                      ) : (
+                        <div className="upload-no-address custom-upload-icon" onClick={handleNoWallet}>
+                          <button
+                            style={{
+                              border: 0,
+                              background: '#1f3b4f',
+                              width: '100%',
+                              height: '100%',
+                              borderRadius: '7px',
+                            }}
+                            type="button"
+                          >
                             <div
                               style={{ marginTop: 8 }}
                               className="flex flex-col jusity-center items-center gap-y-[10px]"
@@ -738,7 +793,7 @@ export default function Create() {
                               </p>
                             </div>
                           </button>
-                        </Upload>
+                        </div>
                       )}
                     </div>
                   </Form.Item>
