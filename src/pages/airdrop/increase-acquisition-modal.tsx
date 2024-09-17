@@ -57,7 +57,7 @@ const IncreaseAcquisitionModal: FC<{
     console.log('increasing proportion-result:', result);
     setResult(result);
     onCalculated?.(result);
-  }, [proportion, firstProportion, firstIncrease]);
+  }, [proportion, firstProportion, firstIncrease, purchased]);
   // useEffect(() => {
   //   const increasePercent = proportion / 100;
   //   console.log('increasePercent:', increasePercent);

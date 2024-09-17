@@ -451,7 +451,7 @@ declare interface CrowdSourcing {
   icon: string;
   ticker: string;
   tokenName: string;
-  tradeType: string;
+  tradeType: 'IDO_BUY' | 'AIRDROP_CLAIM';
 }
 declare interface SolanaConfig {
   globalMemooConfigId: string;

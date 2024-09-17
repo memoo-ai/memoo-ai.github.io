@@ -6,6 +6,8 @@ interface SwipeXProps {
   item: CrowdSourcing;
   index?: number;
 }
+
+const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const SwipeY = ({ item, index }: SwipeXProps) => {
   const navigate = useNavigate();
   return (
@@ -24,21 +26,21 @@ const SwipeY = ({ item, index }: SwipeXProps) => {
         {item.address.slice(0, 4)}...{item.address.slice(-4)}
       </span>
       <span className="font-REV ml-[5px] text-[#fff] text-[12px]" style={{ fontFamily: 'REV' }}>
-        {item.tradeType === 'airdrop' ? 'participated' : 'contributed'}
+        {item.tradeType === 'AIRDROP_CLAIM' ? 'participated' : 'contributed'}
       </span>
       <span className="font-REV ml-[5px] text-[#fff] text-[12px] whitespace-nowrap">
         {/* {item.tradeType === 'airdrop' ? 'in' : 'of'} */}
-        {item.amout} in
+        {item.tradeType === 'IDO_BUY' && `${item.amout}${tokenSymbol}`} in
       </span>
       <span
         className="font-REV ml-[5px] text-[#fff] text-[12px]"
-        style={{ color: item.tradeType === '#F97F7F' ? '' : '#FECC2E' }}
+        style={{ color: item.tradeType === 'AIRDROP_CLAIM' ? '#F97F7F' : '#FECC2E' }}
       >
         {item.ticker}
       </span>
       <span className="font-REV ml-[5px] text-[#fff] text-[12px]">
         {/* {item.tradeType === 'airdrop' ? 'airdrop' : ''} */}
-        {item.tradeType === 'airdrop' ? 'airdrop' : 'imo'}
+        {item.tradeType === 'AIRDROP_CLAIM' ? 'airdrop' : 'imo'}
       </span>
     </div>
   );

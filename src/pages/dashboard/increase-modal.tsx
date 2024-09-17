@@ -54,7 +54,7 @@ const IncreaseModal: FC<{
     console.log('increasing proportion-result:', result);
     setResult(result);
     onCalculated?.(result);
-  }, [proportion, firstProportion, firstIncrease]);
+  }, [proportion, firstProportion, firstIncrease, purchased]);
 
   useEffect(() => {
     if (!purchased || !memooConfig) return;
