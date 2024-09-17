@@ -11,7 +11,7 @@ const Profile: FC = () => {
   const iconRefs = useRef<any>({});
   const [showShare, setShowShare] = useState(false);
   const [tools, setTools] = useState<any>([]);
-  const shareText = 'From The Ultimate Memecoin Infrastructure.';
+  const shareText = 'Discover this meme token on Memoo.';
 
   const shareUrl = useMemo(() => {
     return `${import.meta.env.VITE_SHARE_URI}airdrop/${idoQueueDetail?.ticker}`;
