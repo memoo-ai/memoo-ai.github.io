@@ -13,6 +13,7 @@
 
 .common-banner-bg-2 {
   background: url('@/assets/imgs/img-banner-bg-2.png') no-repeat center center;
+  background-size: 100%;
 }
 
 .common-banner {
@@ -35,7 +36,7 @@
   .common-banner-title {
     font-family: 'Kitty Kat';
     font-size: 40px;
-    line-height: 31.32px;
+    line-height: 40px;
     text-align: center;
     // width: 771px;
     margin-bottom: 19px;
@@ -44,6 +45,7 @@
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
     white-space: pre-wrap;
+
   }
 
   .common-banner-desc {

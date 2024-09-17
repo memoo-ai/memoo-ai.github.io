@@ -15,11 +15,11 @@ const CreatedTokenCompleteConnectedModal = forwardRef(({ data, iconUrl }: any, r
   const renderText = (preLaunchDuration: string) => {
     switch (preLaunchDuration) {
       case 'IMMEDIATE':
-        return 'IMMEDIATE TO IMO';
+        return '0 + 24H TO IMO';
       case '1DAY':
-        return '24H TO IMO';
+        return '24H + 24H TO IMO';
       case '3DAYS':
-        return '72H TO IMO';
+        return '72H + 24H TO IMO';
       default:
         return 'IMMEDIATE';
     }

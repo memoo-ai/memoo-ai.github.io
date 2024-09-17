@@ -18,7 +18,7 @@ import MemeRecords from './meme-records';
 const Dashboard = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [tabType, setTabType] = useState('creator');
+  const [tabType, setTabType] = useState('Creator');
   useEffect(() => {
     const code = searchParams.get('code');
     const state = searchParams.get('state');
@@ -92,9 +92,9 @@ const Dashboard = () => {
           break;
         case 'Collector':
           setCommonBanner({
-            title: 'Begin Your Meme',
-            title1: 'Token Empire Today.',
-            desc: 'Ignite Your Memes, Ignite Your Success.',
+            title: 'Empower Your Degen Journey.',
+            title1: '',
+            desc: 'Navigate, Discover, and Conquer the Meme Token Landscape.',
             rightImg: DashboardBottomImg2,
             bg: DashboardBottomBgImg2,
           });
@@ -148,7 +148,7 @@ const Dashboard = () => {
             <p className="dashboard-left-sub-text">{commonBanner.desc}</p>
           </div>
           <div style={{ height: tabType === 'Collector' ? '100%' : 'auto' }}>
-            <img className="w-[497px] h-[370px] img-pointer-events" src={commonBanner.rightImg} alt="" />
+            <img className={`img-right-${tabType} img-pointer-events`} src={commonBanner.rightImg} alt="" />
           </div>
         </div>
       </div>

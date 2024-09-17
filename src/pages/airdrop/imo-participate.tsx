@@ -8,12 +8,18 @@ import ImoParticipationModal from './imo-participation-modal';
 import { formatDecimals } from '@/utils';
 import ITooltip from '@/components/ITooltip';
 import { useProportion } from '@/hooks/useProportion';
+import { useAccount } from '@/hooks/useWeb3';
+import message from '@/components/IMessage';
+import Wallet from '@/components/SolanaWallet';
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const IMOParticipate: FC = () => {
-  const { idoActiveDetail, idoQueueDetail } = useContext(AirdropContext);
+  const { idoActiveDetail, idoQueueDetail, mine } = useContext(AirdropContext);
   const [ended, setEnded] = useState(false);
   const { idoUserBuyLimit, totalSupplyPrice, tokenAllocationIdo } = useProportion();
   console.log('idoActiveDetail?.endsIn:', idoActiveDetail?.endsIn);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const { address } = useAccount();
+
   const params = useMemo(
     () => [
       {
@@ -96,14 +102,24 @@ const IMOParticipate: FC = () => {
             </li>
           ))}
         </ul>
-        <ImoParticipationModal>
+        {address ? (
+          <ImoParticipationModal>
+            <Button
+              disabled={disabled || ended || mine}
+              className={classNames('mt-5 uppercase w-full participate_btn h-12 font–404px', {})}
+            >
+              participate
+            </Button>
+          </ImoParticipationModal>
+        ) : (
           <Button
-            disabled={disabled || ended}
+            disabled={disabled || ended || mine}
             className={classNames('mt-5 uppercase w-full participate_btn h-12 font–404px', {})}
+            onClick={() => message.info('Please connect wallet first.', { key: 'imo-Please connect wallet first.' })}
           >
             participate
           </Button>
-        </ImoParticipationModal>
+        )}
       </div>
     </div>
   );
