@@ -11,6 +11,7 @@ const TwitterCallback: FC = () => {
     if (state === 'twitter' && code) {
       const params = {
         code,
+        state,
       };
       if (window.opener) {
         window.opener.postMessage(params, '*');

@@ -30,7 +30,10 @@ const SwipeY = ({ item, index }: SwipeXProps) => {
         {/* {item.tradeType === 'airdrop' ? 'in' : 'of'} */}
         {item.amout} in
       </span>
-      <span className="font-REV ml-[5px] text-[#fff] text-[12px]" style={{ color: getRandomColor() }}>
+      <span
+        className="font-REV ml-[5px] text-[#fff] text-[12px]"
+        style={{ color: item.tradeType === '#F97F7F' ? '' : '#FECC2E' }}
+      >
         {item.ticker}
       </span>
       <span className="font-REV ml-[5px] text-[#fff] text-[12px]">

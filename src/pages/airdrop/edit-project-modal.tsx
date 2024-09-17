@@ -80,7 +80,37 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
       }
     });
   }, [ticker]);
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      console.log('handleMessage-event:', event);
+      const data = event.data;
+      console.log('Received data from child window:', data);
+      console.log('twitter-code', data.code);
+      if (data.code && data.state === 'twitter') {
+        const updateParams = JSON.parse(localStorage.getItem(UPDATE_PROJECT_TWITTER_STORAGE) ?? '');
+        const params = {
+          code: data.code ?? '',
+          grantType: 'authorization_code',
+          // clientd: twitterClientId,
+          redirectUri: twitterRedirectUri,
+          codeVerifier: 'challenge',
+          refreshToken: '',
+          appClientId: updateParams.clientId ?? '',
+        };
+        getTwitterAccessToken(params).then((res) => {
+          const { access_token, twitter } = res.data;
+          setTwitterAccessToken(access_token);
+          setTwitter(twitter);
+        });
+      }
+    };
 
+    window.addEventListener('message', handleMessage);
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
   const onFinish = (values: any) => {
     console.log('Received values of form: ', values);
   };
@@ -106,37 +136,37 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
     }
   };
 
-  useEffect(() => {
-    (async () => {
-      const code = searchParams.get('code');
-      const state = searchParams.get('state');
-      const edit = searchParams.get('edit');
-      let updateParams = null;
-      try {
-        updateParams = JSON.parse(localStorage.getItem(UPDATE_PROJECT_TWITTER_STORAGE) ?? '');
-      } catch (e) {}
-      if (!updateParams) {
-        return;
-      }
-      if (state === 'twitter' && code && updateParams && edit && updateParams.ticker === ticker) {
-        const params = {
-          code,
-          grantType: 'authorization_code',
-          // clientd: twitterClientId,
-          redirectUri: twitterRedirectUri,
-          codeVerifier: 'challenge',
-          refreshToken: '',
-          appClientId: updateParams.clientId ?? '',
-        };
-        getTwitterAccessToken(params).then((res) => {
-          const { access_token, twitter } = res.data;
-          setTwitterAccessToken(access_token);
-          setTwitter(twitter);
-        });
-        setOpen(true);
-      }
-    })();
-  }, [searchParams]);
+  // useEffect(() => {
+  //   (async () => {
+  //     const code = searchParams.get('code');
+  //     const state = searchParams.get('state');
+  //     const edit = searchParams.get('edit');
+  //     let updateParams = null;
+  //     try {
+  //       updateParams = JSON.parse(localStorage.getItem(UPDATE_PROJECT_TWITTER_STORAGE) ?? '');
+  //     } catch (e) {}
+  //     if (!updateParams) {
+  //       return;
+  //     }
+  //     if (state === 'twitter' && code && updateParams && edit && updateParams.ticker === ticker) {
+  //       const params = {
+  //         code,
+  //         grantType: 'authorization_code',
+  //         // clientd: twitterClientId,
+  //         redirectUri: twitterRedirectUri,
+  //         codeVerifier: 'challenge',
+  //         refreshToken: '',
+  //         appClientId: updateParams.clientId ?? '',
+  //       };
+  //       getTwitterAccessToken(params).then((res) => {
+  //         const { access_token, twitter } = res.data;
+  //         setTwitterAccessToken(access_token);
+  //         setTwitter(twitter);
+  //       });
+  //       setOpen(true);
+  //     }
+  //   })();
+  // }, [searchParams]);
 
   const handleRemove = () => {
     setProjectBannerUrl('');

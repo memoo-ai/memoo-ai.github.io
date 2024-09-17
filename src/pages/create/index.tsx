@@ -89,6 +89,7 @@ export default function Create() {
   const [searchParams] = useSearchParams();
   const [isAccept, setIsAccept] = useState(false);
   const [optionalOpen, setOptionalOpen] = useState(false);
+  const [twitterCode, setTwitterCode] = useState('');
   const [form] = Form.useForm();
   const [saveCraftLoading, setSaveCraftLoading] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -179,6 +180,38 @@ export default function Create() {
     console.log('twitterRedirectUri: ', twitterRedirectUri);
     authorizeTwitter(clientId, twitterRedirectUri);
   }, [form, iconUrl, bannerUrl]);
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      console.log('handleMessage-event:', event);
+      const data = event.data;
+      console.log('Received data from child window:', data);
+      setTwitterCode(data.code);
+      console.log('twitter-code', data.code);
+      if (data.code && data.state === 'twitter') {
+        const clientId = localStorage.getItem(TWITTER_CLIENT_ID_KEY);
+        const params = {
+          code: data.code ?? '',
+          grantType: 'authorization_code',
+          // clientd: twitterClientId,
+          redirectUri: twitterRedirectUri,
+          codeVerifier: 'challenge',
+          refreshToken: '',
+          appClientId: clientId ?? '',
+        };
+        getTwitterAccessToken(params).then((res) => {
+          const { access_token, twitter } = res.data;
+          setTwitterAccessToken(access_token);
+          setTwitter(twitter);
+        });
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
 
   useEffect(() => {
     const ticker = searchParams.get('ticker');
@@ -232,39 +265,39 @@ export default function Create() {
         });
       }
     }
-    const code = searchParams.get('code');
-    const state = searchParams.get('state');
-    const clientId = localStorage.getItem(TWITTER_CLIENT_ID_KEY);
-    if (state === 'twitter' && code) {
-      // TODO test twitter follow
-      const followParams = {
-        appClientId: clientId ?? '',
-        code,
-        codeVerifier: 'challenge',
-        grantType: 'authorization_code',
-        redirectUri: twitterRedirectUri,
-        refreshToken: '',
-        twitter: 'elonmusk',
-      };
-      // requestTwitterFollow(followParams).then((res) => {
-      //   console.log('follow res: ', res);
-      // });
-      // call api to bind
-      const params = {
-        code,
-        grantType: 'authorization_code',
-        // clientd: twitterClientId,
-        redirectUri: twitterRedirectUri,
-        codeVerifier: 'challenge',
-        refreshToken: '',
-        appClientId: clientId ?? '',
-      };
-      getTwitterAccessToken(params).then((res) => {
-        const { access_token, twitter } = res.data;
-        setTwitterAccessToken(access_token);
-        setTwitter(twitter);
-      });
-    }
+    // const code = searchParams.get('code');
+    // const state = searchParams.get('state');
+    // const clientId = localStorage.getItem(TWITTER_CLIENT_ID_KEY);
+    // if (state === 'twitter' && code) {
+    //   // TODO test twitter follow
+    //   const followParams = {
+    //     appClientId: clientId ?? '',
+    //     code,
+    //     codeVerifier: 'challenge',
+    //     grantType: 'authorization_code',
+    //     redirectUri: twitterRedirectUri,
+    //     refreshToken: '',
+    //     twitter: 'elonmusk',
+    //   };
+    //   // requestTwitterFollow(followParams).then((res) => {
+    //   //   console.log('follow res: ', res);
+    //   // });
+    //   // call api to bind
+    //   const params = {
+    //     code,
+    //     grantType: 'authorization_code',
+    //     // clientd: twitterClientId,
+    //     redirectUri: twitterRedirectUri,
+    //     codeVerifier: 'challenge',
+    //     refreshToken: '',
+    //     appClientId: clientId ?? '',
+    //   };
+    //   getTwitterAccessToken(params).then((res) => {
+    //     const { access_token, twitter } = res.data;
+    //     setTwitterAccessToken(access_token);
+    //     setTwitter(twitter);
+    //   });
+    // }
   }, [form, searchParams]);
 
   const payFee = useCallback(

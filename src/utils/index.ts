@@ -9,6 +9,7 @@ import { Address } from '@/types';
 import { getTwitterClientId } from '@/api/token';
 import qs from 'qs';
 import { REQUEST_FOLLOWING_STORAGE } from '@/constants';
+import message from '@/components/IMessage';
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -163,54 +164,49 @@ export function calculateDaysDifference(a: number, b: number): number {
   return daysDifference;
 }
 
-// export const authorizeTwitter = async (
-//   clientId: string,
-//   redirectUri: string,
-//   scope = 'tweet.read+tweet.write+like.write+users.read+follows.read+follows.write',
-//   state = 'twitter',
-//   codeChallenge = 'challenge',
-//   codeChallengeMethod = 'plain',
-//   // eslint-disable-next-line max-params
-// ) => {
-//   const params = {
-//     response_type: 'code',
-//     client_id: clientId,
-//     redirect_uri: redirectUri,
-//     scope: scope,
-//     state: state,
-//     code_challenge: codeChallenge,
-//     code_challenge_method: codeChallengeMethod,
-//   };
-
-//   const twitterAuthUrl = `https://twitter.com/i/oauth2/authorize?${new URLSearchParams(params).toString()}`;
-
-//   window.open(twitterAuthUrl, '_blank', 'width=600,height=700');
-// };
-function generateCodeChallenge(codeVerifier: string) {
-  return crypto.subtle.digest('SHA-256', new TextEncoder().encode(codeVerifier)).then((buffer) => {
-    return btoa(String.fromCharCode(...new Uint8Array(buffer)))
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=+$/, '');
-  });
-}
-
-export const authorizeTwitter = async (clientId: string, reidrectUri: string) => {
-  // const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
+export const authorizeTwitter = async (
+  clientId: string,
+  redirectUri: string,
+  scope = 'tweet.read+tweet.write+like.write+users.read+follows.read+follows.write',
+  state = 'twitter',
+  codeChallenge = 'challenge',
+  codeChallengeMethod = 'plain',
+  // eslint-disable-next-line max-params
+) => {
   const params = {
     response_type: 'code',
     client_id: clientId,
-    redirect_uri: reidrectUri,
-    scope: 'tweet.read%20tweet.write%20like.write%20users.read%20follows.read%20follows.write',
-    state: 'twitter',
-    code_challenge: 'challenge',
-    code_challenge_method: 'plain',
+    redirect_uri: redirectUri,
+    scope: scope,
+    state: state,
+    code_challenge: codeChallenge,
+    code_challenge_method: codeChallengeMethod,
   };
-  const url = new URL(`https://twitter.com/i/oauth2/authorize`);
-  url.search = qs.stringify(params, { encode: false });
 
-  window.location.href = url.href;
+  const twitterAuthUrl = `https://twitter.com/i/oauth2/authorize?${new URLSearchParams(params).toString()}`;
+
+  const newWindow = window.open(twitterAuthUrl, '_blank', 'width=600,height=700');
+  if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+    message.warning('Browser blocked pop-ups, please allow pop-ups to continue.');
+  }
 };
+
+// export const authorizeTwitter = async (clientId: string, reidrectUri: string) => {
+//   // const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
+//   const params = {
+//     response_type: 'code',
+//     client_id: clientId,
+//     redirect_uri: reidrectUri,
+//     scope: 'tweet.read%20tweet.write%20like.write%20users.read%20follows.read%20follows.write',
+//     state: 'twitter',
+//     code_challenge: 'challenge',
+//     code_challenge_method: 'plain',
+//   };
+//   const url = new URL(`https://twitter.com/i/oauth2/authorize`);
+//   url.search = qs.stringify(params, { encode: false });
+
+//   window.location.href = url.href;
+// };
 
 export function formatRestTime(timestamp: number) {
   const seconds = Math.floor(timestamp / 1000);
