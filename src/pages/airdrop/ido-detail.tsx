@@ -32,12 +32,12 @@ const IDODetail: FC = () => {
         { key: '24h Trading Vol', value: `$${idoLaunchedDetail?.volume24H ?? 0}` },
         {
           key: '1h',
-          value: '+7%',
+          value: idoLaunchedDetail?.increase1H ?? '0',
           formatValue: (value: string): ReactNode => <span className="text-green font-404px">{value}</span>,
         },
         {
           key: '24h',
-          value: '+86%',
+          value: idoLaunchedDetail?.increase24H ?? '0',
           formatValue: (value: string): ReactNode => <span className="text-green font-404px">{value}</span>,
         },
         { key: 'Max Supply', value: `${idoQueueDetail?.totalSupply ?? 0}` },

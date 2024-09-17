@@ -280,9 +280,10 @@ const Airdrop: FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        if (!solanaMemeConfig) return;
+        if (!solanaMemeConfig || !memooConfig) return;
 
         const memeUser = await getMemeUserData(solanaMemeConfig?.memeConfigId);
+        console.log('memeUser-solanaMemeConfig:', solanaMemeConfig);
         console.log('memeUser:', memeUser);
         setMemeUserData(memeUser!);
         const memeCreator = await getMemeCreatorData(solanaMemeConfig?.memeConfigId);
@@ -295,7 +296,7 @@ const Airdrop: FC = () => {
         setLoading(false);
       }
     })();
-  }, [ticker, solanaMemeConfig, refresh]);
+  }, [ticker, solanaMemeConfig, refresh, memooConfig]);
 
   // useEffect(() => {
   //   if (!idoQueueDetail || !address) return;

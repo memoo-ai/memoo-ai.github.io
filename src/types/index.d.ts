@@ -126,8 +126,8 @@ declare interface IDOLaunchedDetail extends IDOClaimStage {
   holders: string;
   icon: string;
   idoDate: string;
-  increase1H: number;
-  increase24H: number;
+  increase1H: string;
+  increase24H: string;
   liquidity: string;
   lpContractAddress: string;
   lpLock: boolean;

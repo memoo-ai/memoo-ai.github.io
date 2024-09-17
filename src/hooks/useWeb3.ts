@@ -538,6 +538,7 @@ export const useAccount = () => {
   const getMemeCreatorData = useCallback(
     async (memeId: string) => {
       console.log('getMemeUserData');
+      debugger;
       if (!memooConfig || !program || !publicKey) return;
       try {
         // debugger;

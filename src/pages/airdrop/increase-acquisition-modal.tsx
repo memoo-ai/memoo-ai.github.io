@@ -57,7 +57,7 @@ const IncreaseAcquisitionModal: FC<{
     console.log('increasing proportion-result:', result);
     setResult(result);
     onCalculated?.(result);
-  }, [proportion, firstProportion, firstIncrease, purchased]);
+  }, [proportion, firstProportion, firstIncrease]);
   // useEffect(() => {
   //   const increasePercent = proportion / 100;
   //   console.log('increasePercent:', increasePercent);
@@ -80,7 +80,7 @@ const IncreaseAcquisitionModal: FC<{
     console.log('defaultValue:', Number(defaultValue));
     setProportion(Number(defaultValue ?? 0.05) * 100);
     setDefaultProportion(Number(defaultValue ?? 0.05) * 100);
-  }, [purchased]);
+  }, [purchased, memooConfig]);
 
   const onConfirm = useCallback(async () => {
     if (!idoBuy || !idoQueueDetail || !solanaMemeConfig || !triggerRefresh) return;
@@ -110,12 +110,6 @@ const IncreaseAcquisitionModal: FC<{
       setConfirming(false);
     }
   }, [idoBuy, idoQueueDetail, result, firstIncrease]);
-
-  useEffect(() => {
-    if (open) {
-      setSliderKey((prevKey) => prevKey + 1);
-    }
-  }, [open]);
 
   return (
     <>
