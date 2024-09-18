@@ -49,6 +49,7 @@
     "@tanstack/react-table": "^8.16.0",
     "@wagmi/core": "^2.6.9",
     "antd": "^5.17.0",
+    "antd-img-crop": "^4.23.0",
     "axios": "^1.4.0",
     "bignumber.js": "^9.1.2",
     "bs58": "^6.0.0",

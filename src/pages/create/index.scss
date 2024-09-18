@@ -1,3 +1,5 @@
+@import url('@/assets/styles/modal.scss');
+@import url('@/assets/styles/upload.scss');
 .create_token {
   padding: 56px 66px 60px 66px;
   border-radius: 20px;
@@ -115,7 +117,7 @@
 
       .custom-upload-icon {
         width: 100%;
-        background: #1f3b4f;
+        background: #1f3b4f !important;
         border-radius: 7px;
         .ant-upload-select {
           width: 100%;

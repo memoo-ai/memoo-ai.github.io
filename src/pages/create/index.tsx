@@ -53,6 +53,7 @@ import { getMemeConfigId } from '@/api/base';
 import { memooConfig } from '@/types';
 import { useProportion } from '@/hooks/useProportion';
 import { IconMinus, IconPlus } from '@/components/icons';
+import ImgCrop from 'antd-img-crop';
 
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
@@ -144,6 +145,7 @@ export default function Create() {
       return;
     }
     if (file) {
+      console.log(file);
       uploadFile(file).then((res) => {
         form.setFieldValue(field, field === 'banners' ? [res.data.file] : res.data.file);
         if (!form.isFieldsValidating()) {
@@ -532,37 +534,48 @@ export default function Create() {
                 )}
                 {address
                   ? !iconUrl && (
-                      <Upload
-                        listType="picture-card"
-                        accept="image/*"
-                        maxCount={1}
-                        beforeUpload={(file) => handleUpload(file, 'icon')}
-                        showUploadList={{
-                          showPreviewIcon: false,
-                          showRemoveIcon: true,
-                        }}
-                        style={{ height: 140 }}
-                        className="custom-upload-icon"
+                      <ImgCrop
+                        // rotationSlider
+                        // showReset
+                        modalClassName="memoo_modal memoo_upload"
+                        modalTitle=" "
+                        resetText="reset"
+                        modalOk="Save"
+                        modalCancel="Cancel"
+                        quality={1}
                       >
-                        <button
-                          style={{
-                            border: 0,
-                            background: '#1f3b4f',
-                            width: '100%',
-                            height: '100%',
-                            borderRadius: '7px',
+                        <Upload
+                          listType="picture-card"
+                          accept="image/*"
+                          maxCount={1}
+                          beforeUpload={(file) => handleUpload(file, 'icon')}
+                          showUploadList={{
+                            showPreviewIcon: false,
+                            showRemoveIcon: true,
                           }}
-                          type="button"
+                          style={{ height: 140 }}
+                          className="custom-upload-icon"
                         >
-                          <div
-                            style={{ marginTop: 8 }}
-                            className="flex flex-col jusity-center items-center gap-y-[10px]"
+                          <button
+                            style={{
+                              border: 0,
+                              background: '#1f3b4f',
+                              width: '100%',
+                              height: '100%',
+                              borderRadius: '7px',
+                            }}
+                            type="button"
                           >
-                            <img src="./token/icon-upload.svg" alt="upload" className="w-[30px] h-[30px]" />
-                            <p className="font-OCR text-[10px] text-green leading-4">Upload Image</p>
-                          </div>
-                        </button>
-                      </Upload>
+                            <div
+                              style={{ marginTop: 8 }}
+                              className="flex flex-col jusity-center items-center gap-y-[10px]"
+                            >
+                              <img src="./token/icon-upload.svg" alt="upload" className="w-[30px] h-[30px]" />
+                              <p className="font-OCR text-[10px] text-green leading-4">Upload Image</p>
+                            </div>
+                          </button>
+                        </Upload>
+                      </ImgCrop>
                     )
                   : !iconUrl && (
                       <div className="custom-upload-icon upload-no-address" onClick={handleNoWallet}>
@@ -739,38 +752,50 @@ export default function Create() {
                       )}
                       {address ? (
                         !bannerUrl && (
-                          <Upload
-                            listType="picture-card"
-                            accept="image/*"
-                            maxCount={1}
-                            beforeUpload={(file) => handleUpload(file, 'banners')}
-                            showUploadList={{
-                              showPreviewIcon: false,
-                              showRemoveIcon: true,
-                            }}
-                            className="custom-upload-banner"
-                            previewFile={(file) => {
-                              return new Promise((resolve) => {
-                                const reader = new FileReader();
-                                reader.readAsDataURL(file);
-                                reader.onload = () => {
-                                  resolve(reader.result as string);
-                                };
-                              });
-                            }}
+                          <ImgCrop
+                            // rotationSlider
+                            modalClassName="memoo_modal memoo_upload"
+                            // showReset
+                            modalTitle=" "
+                            resetText="reset"
+                            modalOk="Save"
+                            modalCancel="Cancel"
+                            quality={1}
+                            aspect={16 / 6}
                           >
-                            <button style={{ border: 0, background: 'none' }} type="button">
-                              <div
-                                style={{ marginTop: 8 }}
-                                className="flex flex-col jusity-center items-center gap-y-[10px]"
-                              >
-                                <img src="./token/icon-upload.svg" alt="upload" className="w-[30px] h-[30px]" />
-                                <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px]">
-                                  Recommended 790px X 307px Max size: 10MB
-                                </p>
-                              </div>
-                            </button>
-                          </Upload>
+                            <Upload
+                              listType="picture-card"
+                              accept="image/*"
+                              maxCount={1}
+                              beforeUpload={(file) => handleUpload(file, 'banners')}
+                              showUploadList={{
+                                showPreviewIcon: false,
+                                showRemoveIcon: true,
+                              }}
+                              className="custom-upload-banner"
+                              previewFile={(file) => {
+                                return new Promise((resolve) => {
+                                  const reader = new FileReader();
+                                  reader.readAsDataURL(file);
+                                  reader.onload = () => {
+                                    resolve(reader.result as string);
+                                  };
+                                });
+                              }}
+                            >
+                              <button style={{ border: 0, background: 'none' }} type="button">
+                                <div
+                                  style={{ marginTop: 8 }}
+                                  className="flex flex-col jusity-center items-center gap-y-[10px]"
+                                >
+                                  <img src="./token/icon-upload.svg" alt="upload" className="w-[30px] h-[30px]" />
+                                  <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px]">
+                                    Recommended 790px X 307px Max size: 10MB
+                                  </p>
+                                </div>
+                              </button>
+                            </Upload>
+                          </ImgCrop>
                         )
                       ) : (
                         <div className="upload-no-address custom-upload-icon" onClick={handleNoWallet}>

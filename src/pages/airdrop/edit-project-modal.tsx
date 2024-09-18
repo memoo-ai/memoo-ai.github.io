@@ -32,6 +32,7 @@ import { REQUEST_FOLLOWING_STORAGE, UPDATE_PROJECT_TWITTER_STORAGE, EDIT_INFO_ST
 import { useSearchParams } from 'react-router-dom';
 import { authorizeTwitter } from '@/utils';
 import { AirdropContext } from '.';
+import ImgCrop from 'antd-img-crop';
 const FORM_STORAGE_KEY = 'create_token_storage';
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
@@ -301,33 +302,43 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
                 </span>
               </div>
             ) : (
-              <Upload
-                listType="picture-card"
-                accept="image/*"
-                maxCount={1}
-                beforeUpload={(file) => handleUpload(file)}
-                showUploadList={{ showPreviewIcon: true, showRemoveIcon: false }}
-                style={{ width: '100%', height: 140 }}
-                className="edit-upload-banner"
-                previewFile={(file) => {
-                  return new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = () => {
-                      resolve(reader.result as string);
-                    };
-                  });
-                }}
+              <ImgCrop
+                modalClassName="memoo_modal memoo_upload"
+                modalTitle=" "
+                resetText="reset"
+                modalOk="Save"
+                modalCancel="Cancel"
+                quality={1}
+                aspect={16 / 6}
               >
-                <button style={{ border: 0, background: 'none' }} type="button">
-                  <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
-                    <IconUpload className="" />
-                    <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px] mt-[10px]">
-                      Recommended 790px X 307px Max size: 10MB
-                    </p>
-                  </div>
-                </button>
-              </Upload>
+                <Upload
+                  listType="picture-card"
+                  accept="image/*"
+                  maxCount={1}
+                  beforeUpload={(file) => handleUpload(file)}
+                  showUploadList={{ showPreviewIcon: true, showRemoveIcon: false }}
+                  style={{ width: '100%', height: 140 }}
+                  className="edit-upload-banner"
+                  previewFile={(file) => {
+                    return new Promise((resolve) => {
+                      const reader = new FileReader();
+                      reader.readAsDataURL(file);
+                      reader.onload = () => {
+                        resolve(reader.result as string);
+                      };
+                    });
+                  }}
+                >
+                  <button style={{ border: 0, background: 'none' }} type="button">
+                    <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
+                      <IconUpload className="" />
+                      <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px] mt-[10px]">
+                        Recommended 790px X 307px Max size: 10MB
+                      </p>
+                    </div>
+                  </button>
+                </Upload>
+              </ImgCrop>
             )}
           </Form.Item>
           <Form.Item label={<p className="edit-form-label">Website</p>} name="website">
