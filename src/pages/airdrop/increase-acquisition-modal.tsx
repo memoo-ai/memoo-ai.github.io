@@ -10,6 +10,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
   useState,
 } from 'react';
 import './increase-acquisition-modal.scss';
@@ -39,6 +40,7 @@ const IncreaseAcquisitionModal: FC<{
   const [sliderKey, setSliderKey] = useState(0);
   // const { idoBuy, idoQueueDetail } = useContext(AirdropContext);
   const { idoQueueDetail, mine, idoBuy, solanaMemeConfig, memooConfig, triggerRefresh } = useContext(AirdropContext);
+  const [tipRerender, setTipRerender] = useState(0);
   // const { idoBuy } = useAccount();
   // const defaultValue = purchased * 100;
   // useEffect(() => {
@@ -111,6 +113,10 @@ const IncreaseAcquisitionModal: FC<{
     }
   }, [idoBuy, idoQueueDetail, result, firstIncrease]);
 
+  useLayoutEffect(() => {
+    if (open) setTimeout(() => setTipRerender((count) => count + 1), 200);
+  }, [open]);
+
   return (
     <>
       <Modal
@@ -142,7 +148,7 @@ const IncreaseAcquisitionModal: FC<{
                 {0} {tokenSymbol}
               </span>
               <Slider
-                key={sliderKey}
+                key={tipRerender}
                 className="memoo_slider flex-auto"
                 tooltip={{ open: true, rootClassName: 'memoo_slider_tooltip', formatter: (value) => `${value}%` }}
                 onChange={(value) => {
