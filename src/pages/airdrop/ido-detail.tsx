@@ -19,9 +19,11 @@ const IDODetail: FC = () => {
           value: idoLaunchedDetail?.tokenName,
           formatValue: (value: string) => (
             <div className="flex items-center gap-x-2.5">
-              <div className="flex ido_params_token items-center py-1.5 gap-x-1 px-5">
-                <img src={idoLaunchedDetail?.icon} className="max-w-[27px]" />
-                <span className="font-OCR text-white text-sm">{value}</span>
+              <div className="flex ido_params_token items-center py-1.5 gap-x-[10px] px-5">
+                {/* <img src={idoLaunchedDetail?.icon} className="max-w-[27px]" /> */}
+                <img src="/create/raydium.svg" className="max-w-[27px]" />
+                {/* <span className="font-OCR text-white text-sm">{value}</span> */}
+                <span className="font-OCR text-white text-sm">Raydium</span>
               </div>
               <span className="text-white text-lg font-OCR leading-5">{idoLaunchedDetail?.lpLock ? 'Yes' : 'No'}</span>
             </div>

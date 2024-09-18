@@ -86,7 +86,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
       const data = event.data;
       console.log('Received data from child window:', data);
       console.log('twitter-code', data.code);
-      if (data.code && data.state === 'twitter') {
+      if (data.code && data.state === 'twitter' && data.type === 'twitter_bind') {
         const updateParams = JSON.parse(localStorage.getItem(UPDATE_PROJECT_TWITTER_STORAGE) ?? '');
         const params = {
           code: data.code ?? '',

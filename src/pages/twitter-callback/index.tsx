@@ -12,6 +12,7 @@ const TwitterCallback: FC = () => {
       const params = {
         code,
         state,
+        type: 'twitter_bind',
       };
       if (window.opener) {
         window.opener.postMessage(params, '*');

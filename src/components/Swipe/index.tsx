@@ -112,7 +112,7 @@ const Swipe: React.FC<SwipeProps> = React.memo(({ children, speed = 50, directio
   );
 
   const repeatedList = useMemo(() => {
-    if (list && list.length >= 6) {
+    if (list && list.length > 5) {
       return [...list, ...list];
     }
     return list ?? [];

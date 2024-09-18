@@ -187,7 +187,7 @@ export default function Create() {
       console.log('Received data from child window:', data);
       setTwitterCode(data.code);
       console.log('twitter-code', data.code);
-      if (data.code && data.state === 'twitter') {
+      if (data.code && data.state === 'twitter' && data.type === 'twitter_bind') {
         const clientId = localStorage.getItem(TWITTER_CLIENT_ID_KEY);
         const params = {
           code: data.code ?? '',

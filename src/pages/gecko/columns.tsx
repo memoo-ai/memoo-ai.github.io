@@ -75,7 +75,7 @@ export const columns = [
     dataIndex: 'price',
     key: 'price',
     sorter: false,
-    render: (price: number) => <div className="font-normal text-lg ">SOL {formatDecimals(price)}</div>,
+    render: (price: number) => <div className="font-normal text-lg ">${formatDecimals(price)}</div>,
   },
   {
     title: '1h',

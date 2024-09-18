@@ -19,27 +19,44 @@ const Dashboard = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [tabType, setTabType] = useState('Creator');
+
   useEffect(() => {
     const code = searchParams.get('code');
     const state = searchParams.get('state');
-    let followingParams = null;
-    let updateParams = null;
-    try {
-      followingParams = JSON.parse(localStorage.getItem(REQUEST_FOLLOWING_STORAGE) ?? '');
-    } catch (e) {}
-    try {
-      updateParams = JSON.parse(localStorage.getItem(UPDATE_PROJECT_TWITTER_STORAGE) ?? '');
-    } catch (e) {}
-    console.log('updateParams: ', updateParams, localStorage.getItem(UPDATE_PROJECT_TWITTER_STORAGE));
-    if (!followingParams && !updateParams) {
-      return;
-    }
-    if (state === 'twitter' && code && followingParams) {
-      navigate(`/airdrop/${followingParams.ticker}?code=${code}&state=${state}`);
-    } else if (state === 'twitter' && code && updateParams) {
-      navigate(`/airdrop/${updateParams.ticker}?code=${code}&state=${state}&edit=true`);
+
+    if (state === 'twitter' && code) {
+      const params = {
+        code,
+        state,
+        type: 'airdrop',
+      };
+      if (window.opener) {
+        window.opener.postMessage(params, '*');
+      }
+      window.close();
     }
   }, [searchParams]);
+  // useEffect(() => {
+  //   const code = searchParams.get('code');
+  //   const state = searchParams.get('state');
+  //   let followingParams = null;
+  //   let updateParams = null;
+  //   try {
+  //     followingParams = JSON.parse(localStorage.getItem(REQUEST_FOLLOWING_STORAGE) ?? '');
+  //   } catch (e) {}
+  //   try {
+  //     updateParams = JSON.parse(localStorage.getItem(UPDATE_PROJECT_TWITTER_STORAGE) ?? '');
+  //   } catch (e) {}
+  //   console.log('updateParams: ', updateParams, localStorage.getItem(UPDATE_PROJECT_TWITTER_STORAGE));
+  //   if (!followingParams && !updateParams) {
+  //     return;
+  //   }
+  //   if (state === 'twitter' && code && followingParams) {
+  //     navigate(`/airdrop/${followingParams.ticker}?code=${code}&state=${state}`);
+  //   } else if (state === 'twitter' && code && updateParams) {
+  //     navigate(`/airdrop/${updateParams.ticker}?code=${code}&state=${state}&edit=true`);
+  //   }
+  // }, [searchParams]);
 
   const [commonBottom, setCommonBottom] = useState({
     title: 'Exclusive ‘Proof of Creation’ Reward for Creators.',

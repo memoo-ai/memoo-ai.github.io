@@ -19,7 +19,7 @@ import Wallet from '@/components/SolanaWallet';
 import { useAccount } from '@/hooks/useWeb3';
 import ITooltip from '@/components/ITooltip';
 import { useProportion } from '@/hooks/useProportion';
-const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
+const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_AIRDROP_REDIRECT_URI;
 let isRequestFollowing = false;
 export default function AirdropClaim() {
   const { stage, idoQueueDetail, idoLaunchedDetail, idoActiveDetail, triggerRefresh, ticker, memeUserData } =
@@ -102,12 +102,13 @@ export default function AirdropClaim() {
       setFollowing(false);
     }
   }, []);
-
   useEffect(() => {
-    (async () => {
-      const ticker = searchParams.get('ticker');
-      const code = searchParams.get('code');
-      const state = searchParams.get('state');
+    const handleMessage = async (event: MessageEvent) => {
+      console.log('handleMessage-event:', event);
+      const data = event.data;
+      console.log('Received data from child window:', data);
+      console.log('twitter-code', data.code);
+      // debugger;
       let followingParams = null;
       try {
         followingParams = JSON.parse(localStorage.getItem(REQUEST_FOLLOWING_STORAGE) ?? '');
@@ -118,15 +119,15 @@ export default function AirdropClaim() {
       if (isRequestFollowing) {
         return;
       }
-      if (state === 'twitter' && code && followingParams) {
+      if (data.state === 'twitter' && data.code && data.type === 'airdrop' && followingParams) {
         isRequestFollowing = true;
         const { ticker, twitter, clientId } = followingParams;
         const followParams = {
           appClientId: clientId,
-          code,
+          code: data.code,
           codeVerifier: 'challenge',
           grantType: 'authorization_code',
-          redirectUri: twitterRedirectUri,
+          redirectUri: `${twitterRedirectUri}`,
           refreshToken: '',
           twitter: twitter ?? 'elonmusk',
           ticker: ticker,
@@ -141,9 +142,56 @@ export default function AirdropClaim() {
         isRequestFollowing = false;
         triggerRefresh?.();
       }
-      console.log('ticker: ', ticker);
-    })();
-  }, [searchParams]);
+    };
+
+    window.addEventListener('message', handleMessage);
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const ticker = searchParams.get('ticker');
+  //     const code = searchParams.get('code');
+  //     const state = searchParams.get('state');
+  //     let followingParams = null;
+  //     try {
+  //       followingParams = JSON.parse(localStorage.getItem(REQUEST_FOLLOWING_STORAGE) ?? '');
+  //     } catch (e) {}
+  //     if (!followingParams) {
+  //       return;
+  //     }
+  //     if (isRequestFollowing) {
+  //       return;
+  //     }
+  //     if (state === 'twitter' && code && followingParams) {
+  //       isRequestFollowing = true;
+  //       const { ticker, twitter, clientId } = followingParams;
+  //       const followParams = {
+  //         appClientId: clientId,
+  //         code,
+  //         codeVerifier: 'challenge',
+  //         grantType: 'authorization_code',
+  //         redirectUri: `${twitterRedirectUri}?type=airdrop`,
+  //         refreshToken: '',
+  //         twitter: twitter ?? 'elonmusk',
+  //         ticker: ticker,
+  //       };
+  //       const res = await requestTwitterFollow(followParams);
+  //       console.log('follow res: ', res);
+  //       if (!res.data) {
+  //         message.warning('Failed to follow. Please try again later.');
+  //         return;
+  //       }
+  //       localStorage.removeItem(REQUEST_FOLLOWING_STORAGE);
+  //       isRequestFollowing = false;
+  //       triggerRefresh?.();
+  //     }
+  //     console.log('ticker: ', ticker);
+  //   })();
+  // }, [searchParams]);
   // const testAirdrop = async () => {
   //   if (airdropClaim) {
   //     await airdropClaim(
