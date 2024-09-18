@@ -12,6 +12,7 @@ import {
   useEffect,
   useLayoutEffect,
   useState,
+  useRef,
 } from 'react';
 import './increase-acquisition-modal.scss';
 import { formatDecimals } from '@/utils';
@@ -34,13 +35,14 @@ const IncreaseAcquisitionModal: FC<{
   const [open, setOpen] = useState(false);
   const [accepted, setAccepted] = useState(false);
   const [confirming, setConfirming] = useState(false);
-  const [proportion, setProportion] = useState(0.05);
+  const [proportion, setProportion] = useState(0);
   const [result, setResult] = useState(0);
   const [defaultProportion, setDefaultProportion] = useState(0);
   const [sliderKey, setSliderKey] = useState(0);
   // const { idoBuy, idoQueueDetail } = useContext(AirdropContext);
   const { idoQueueDetail, mine, idoBuy, solanaMemeConfig, memooConfig, triggerRefresh } = useContext(AirdropContext);
   const [tipRerender, setTipRerender] = useState(0);
+  const sliderRef = useRef<HTMLDivElement>(null);
   // const { idoBuy } = useAccount();
   // const defaultValue = purchased * 100;
   // useEffect(() => {
@@ -80,8 +82,8 @@ const IncreaseAcquisitionModal: FC<{
 
     console.log('defaultValue-purchased:', Number(purchased));
     console.log('defaultValue:', Number(defaultValue));
-    setProportion(Number(defaultValue ?? 0.05) * 100);
-    setDefaultProportion(Number(defaultValue ?? 0.05) * 100);
+    setProportion(Number(defaultValue ?? 0) * 100);
+    setDefaultProportion(Number(defaultValue ?? 0) * 100);
   }, [purchased, memooConfig]);
 
   const onConfirm = useCallback(async () => {
@@ -142,7 +144,7 @@ const IncreaseAcquisitionModal: FC<{
                 {/* <img className="h-[12px] object-contain" src="/create/tip.png" /> */}
               </div>
             </div>
-            <div className="flex flex-auto items-center gap-x-3">
+            <div className="flex flex-auto items-center gap-x-3" ref={sliderRef}>
               <span className="whitespace-nowrap text-base font-OCR text-white leading-[16px]">
                 {/* {firstIncrease} {tokenSymbol} */}
                 {0} {tokenSymbol}
@@ -150,7 +152,12 @@ const IncreaseAcquisitionModal: FC<{
               <Slider
                 key={tipRerender}
                 className="memoo_slider flex-auto"
-                tooltip={{ open: true, rootClassName: 'memoo_slider_tooltip', formatter: (value) => `${value}%` }}
+                tooltip={{
+                  open: true,
+                  rootClassName: 'memoo_slider_tooltip',
+                  formatter: (value) => `${value}%`,
+                  getPopupContainer: () => sliderRef.current!,
+                }}
                 onChange={(value) => {
                   if (value > defaultProportion) {
                     setProportion(value);
