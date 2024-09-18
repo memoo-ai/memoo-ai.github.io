@@ -6,19 +6,14 @@ import DashboardBottomImg1 from './assets/dashboard_banner1.png';
 import DashboardBottomImg2 from './assets/dashboard_banner2.png';
 import DashboardBottomImg3 from './assets/dashboard_banner3.png';
 import DashboardBottomImg4 from './assets/dashboard_banner4.png';
-import DashboardBottomBgImg1 from './assets/dashboard_banner_bg1.png';
-import DashboardBottomBgImg2 from './assets/dashboard_banner_bg2.png';
-import DashboardBottomBgImg3 from './assets/dashboard_banner_bg3.png';
-import DashboardBottomBgImg4 from './assets/dashboard_banner_bg4.png';
-import HeaderBannerBg from './assets/header-banner-bg.png';
+import DashboardBanner from './dashboard-banner';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { REQUEST_FOLLOWING_STORAGE, UPDATE_PROJECT_TWITTER_STORAGE } from '@/constants';
 import MemeRecords from './meme-records';
-
+export type TabType = 'Profile' | 'Creator' | 'Collector' | 'WatchList';
 const Dashboard = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [tabType, setTabType] = useState('Creator');
+  const [tabType, setTabType] = useState<TabType>('Creator');
 
   useEffect(() => {
     const code = searchParams.get('code');
@@ -65,25 +60,21 @@ const Dashboard = () => {
     linkText: 'BE A CREATOR',
   });
   const [commonBanner, setCommonBanner] = useState({
-    title: 'Exclusive ‘Proof of Creation’ Reward for Creators.',
-    title1: '',
+    title: 'Begin Your Meme\nToken Empire Today.',
     desc: 'Exciting Rewards for Exceptional Talent in Meme Creation.',
     rightImg: DashboardBottomImg1,
-    bg: DashboardBottomBgImg1,
   });
 
   const changeType = useCallback(
-    (type: string) => {
+    (type: TabType) => {
       console.log(type);
       setTabType(type);
       switch (type) {
         case 'Profile':
           setCommonBanner({
-            title: 'Unleash the Degen in You',
-            title1: 'and get Rewarded.',
+            title: `Unleash the Degen in You\nand get Rewarded.`,
             desc: 'Build Your Creator Reputation to Unlock Rewards.',
             rightImg: DashboardBottomImg4,
-            bg: DashboardBottomBgImg4,
           });
           setCommonBottom({
             title: 'Exclusive ‘Proof of Creation’ Reward for Creators.',
@@ -94,11 +85,9 @@ const Dashboard = () => {
           break;
         case 'Creator':
           setCommonBanner({
-            title: 'Begin Your Meme',
-            title1: 'Token Empire Today.',
+            title: 'Begin Your Meme\nToken Empire Today.',
             desc: 'Ignite Your Memes, Ignite Your Success.',
             rightImg: DashboardBottomImg1,
-            bg: DashboardBottomBgImg1,
           });
           setCommonBottom({
             title: `Exclusive ‘Proof of Creation’\nReward For Creators.`,
@@ -110,10 +99,8 @@ const Dashboard = () => {
         case 'Collector':
           setCommonBanner({
             title: 'Empower Your Degen Journey.',
-            title1: '',
             desc: 'Navigate, Discover, and Conquer the Meme Token Landscape.',
             rightImg: DashboardBottomImg2,
-            bg: DashboardBottomBgImg2,
           });
           setCommonBottom({
             title: 'Don’t Miss Out on Airdrops.',
@@ -124,11 +111,9 @@ const Dashboard = () => {
           break;
         case 'WatchList':
           setCommonBanner({
-            title: 'Begin Your Meme',
-            title1: 'Token Empire Today.',
+            title: 'Begin Your Meme\nToken Empire Today.',
             desc: 'Ignite Your Memes, Ignite Your Success.',
             rightImg: DashboardBottomImg3,
-            bg: DashboardBottomBgImg3,
           });
           setCommonBottom({
             title: 'Let MeMoo Score do the Work for You.',
@@ -151,24 +136,26 @@ const Dashboard = () => {
   );
   return (
     <div className="dashboard-page">
-      <div
+      <DashboardBanner
+        title={commonBanner.title}
+        desc={commonBanner.desc}
+        img={commonBanner.rightImg}
+        tabType={tabType}
+      />
+      {/* <div
         className="dashboard-header-banner-bg"
-        style={{ background: `url(${HeaderBannerBg}) no-repeat`, backgroundSize: 'cover' }}
+        style={{ background: `url(${commonBanner.bg}) no-repeat`, backgroundSize: 'cover' }}
       >
-        {/* <div className="header-banner-bg" style={{ background: `url(${commonBottom.bg})` }}> */}
         <div className="dashboard-header-banner-content">
           <div className="dashboard-header-banner-left flex  flex-col">
-            <p className="dashboard-left-text">
-              <span> {commonBanner.title}</span> <br />
-              <span className="mt-[15px]"> {commonBanner.title1}</span>
-            </p>
+            <p className="dashboard-left-text">{commonBanner.title}</p>
             <p className="dashboard-left-sub-text">{commonBanner.desc}</p>
           </div>
-          <div style={{ height: tabType === 'Collector' ? '100%' : 'auto' }}>
+          <div>
             <img className={`img-right-${tabType} img-pointer-events`} src={commonBanner.rightImg} alt="" />
           </div>
         </div>
-      </div>
+      </div> */}
       {/* <div className="header_banner_bg" style={{ backgroundImage: `url(${dashboardBannerImg})` }}>
       </div> */}
       {/* <MemeRecords /> */}
@@ -176,7 +163,7 @@ const Dashboard = () => {
         <div className="dashboard_content">
           <DashboardContent
             onChangeType={(e) => {
-              changeType(e);
+              changeType(e as TabType);
             }}
           />
         </div>
