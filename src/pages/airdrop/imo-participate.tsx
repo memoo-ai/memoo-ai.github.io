@@ -13,7 +13,7 @@ import message from '@/components/IMessage';
 import Wallet from '@/components/SolanaWallet';
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const IMOParticipate: FC = () => {
-  const { idoActiveDetail, idoQueueDetail, mine } = useContext(AirdropContext);
+  const { idoActiveDetail, idoQueueDetail, mine, stage } = useContext(AirdropContext);
   const [ended, setEnded] = useState(false);
   const { idoUserBuyLimit, totalSupplyPrice, tokenAllocationIdo } = useProportion();
   console.log('idoActiveDetail?.endsIn:', idoActiveDetail?.endsIn);
@@ -24,7 +24,7 @@ const IMOParticipate: FC = () => {
     () => [
       {
         key: 'Price',
-        value: `$${formatDecimals(idoActiveDetail?.price ? idoActiveDetail?.price : 0) ?? 0}`,
+        value: `${stage === 'imo' ? tokenSymbol : '$'}${formatDecimals(idoActiveDetail?.price ? idoActiveDetail?.price : 0) ?? 0}`,
         tip: null,
         big: false,
       },

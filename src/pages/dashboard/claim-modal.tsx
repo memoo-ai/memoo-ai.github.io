@@ -57,13 +57,15 @@ const ClaimModal = ({ children }: any) => {
   }, [memeUserData]);
 
   const onConfirm = useCallback(async () => {
-    debugger;
+    // debugger;
     if (!creatorClaim || !idoQueueDetail || !address || !solanaMemeConfig) return;
     try {
       setConfirming(true);
-      await creatorClaim(solanaMemeConfig?.memeConfigId, solanaMemeConfig?.mintaPublickey);
-      setOpen(false);
-      message.success('Unlock Successful');
+      const tx = await creatorClaim(solanaMemeConfig?.memeConfigId, solanaMemeConfig?.mintaPublickey);
+      if (tx) {
+        setOpen(false);
+        message.success('Unlock Successful');
+      }
     } catch (error) {
       console.error(error);
       message.error('Unlock Failed');
@@ -145,7 +147,12 @@ const ClaimModal = ({ children }: any) => {
           ) : (
             <div className="h-[66px]" />
           )}
-          <Button loading={confirming} className="memoo_button w-[100%] h-[50px]" onClick={onConfirm}>
+          <Button
+            disabled={tokens <= 0 && Number(userCanClaimCount) <= 0}
+            loading={confirming}
+            className="memoo_button w-[100%] h-[50px]"
+            onClick={onConfirm}
+          >
             CLAIM ALL
           </Button>
         </div>

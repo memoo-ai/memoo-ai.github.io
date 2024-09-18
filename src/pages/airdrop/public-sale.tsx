@@ -14,7 +14,7 @@ import { useProportion } from '@/hooks/useProportion';
 
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const PublicSale: FC = () => {
-  const { idoLaunchedDetail, idoQueueDetail, stage, memeConfig, userCanClaimCount } = useContext(AirdropContext);
+  const { idoLaunchedDetail, idoQueueDetail, stage, memeConfig, userCanClaimCount, mine } = useContext(AirdropContext);
   const { address } = useAccount();
   const iconRef = useRef<any>();
   const { totalSupplyPrice, tokenAllocationIdo, idoUserBuyLimit } = useProportion();
@@ -77,7 +77,7 @@ const PublicSale: FC = () => {
         </ul>
 
         {/* {address && idoQueueDetail?.isParticipateImo ? ( */}
-        {canClaim ? (
+        {canClaim && !mine ? (
           <div className="flex gap-[11px] w-full">
             <Button
               className={classNames('mt-5 uppercase flex-1 memoo_button reverse h-12 font–404px', {})}

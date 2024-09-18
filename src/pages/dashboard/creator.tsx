@@ -290,7 +290,7 @@ export const Creator = () => {
         );
         break;
       case 'Launched':
-        button = (
+        button = item.stageOneClaim && (
           <ClaimModal ticker={item.ticker}>
             {' '}
             <Button

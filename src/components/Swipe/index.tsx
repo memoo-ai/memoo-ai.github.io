@@ -46,23 +46,23 @@ const Swipe: React.FC<SwipeProps> = React.memo(({ children, speed = 50, directio
   }, [fetchData]);
 
   const updatePosition = useCallback(() => {
-    if (isPaused || !containerRef.current || !contentRef.current || !isScrolling || list.length < 5) return;
+    if (isPaused || !containerRef.current || !contentRef.current || !isScrolling) return;
 
     const contentSize = isVertical ? contentRef.current.offsetHeight : contentRef.current.offsetWidth;
-    const containerWidth = containerRef.current.offsetWidth;
+    const containerSize = isVertical ? containerRef.current.offsetHeight : containerRef.current.offsetWidth;
 
     setPosition((prevPos) => {
       const newPos = prevPos - speed / 60;
-      if (newPos <= -contentSize) {
-        return containerWidth;
+      if (newPos <= -contentSize / 2) {
+        return 0;
       } else {
         return newPos;
       }
     });
-  }, [isPaused, isVertical, speed, list.length]);
+  }, [isPaused, isVertical, speed, isScrolling]);
 
   useAnimationFrame(() => {
-    if (isScrolling && list.length >= 6) {
+    if (isScrolling) {
       updatePosition();
     }
   });
@@ -88,9 +88,6 @@ const Swipe: React.FC<SwipeProps> = React.memo(({ children, speed = 50, directio
         : {
             height: '40px',
             width: '100vw',
-            // position: 'fixed' as const,
-            // top: '99px',
-            // left: 0,
             background: '#312145',
             display: 'flex',
             alignItems: 'center',
@@ -112,16 +109,21 @@ const Swipe: React.FC<SwipeProps> = React.memo(({ children, speed = 50, directio
   );
 
   const repeatedList = useMemo(() => {
-    if (list && list.length > 5) {
-      return [...list, ...list];
+    if (list && list.length > 0) {
+      const minItems = 15; // Minimum number of items, can be adjusted as needed
+      let repeatedItems = [...list];
+      while (repeatedItems.length < minItems) {
+        repeatedItems = [...repeatedItems, ...list];
+      }
+      return repeatedItems;
     }
-    return list ?? [];
+    return [];
   }, [list]);
 
   return (
     <div ref={containerRef} style={containerStyle} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <motion.div ref={contentRef} style={contentStyle}>
-        {repeatedList?.map((item, index) => (
+        {repeatedList.map((item, index) => (
           <SwipeItem key={`${item.ticker}-${index}`} item={item} index={index} isVertical={isVertical} />
         ))}
       </motion.div>

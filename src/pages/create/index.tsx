@@ -245,8 +245,9 @@ export default function Create() {
         try {
           const formData = JSON.parse(data);
           console.log('data: ', formData);
+
           if (!formData.preLaunchDuration) {
-            formData.preLaunchDuration = PreLaunchDurationEnum['IMMEDIATE'];
+            formData.preLaunchDuration = PreLaunchDurationEnum['3DAYS'];
           }
           if (!formData.preMarketAcquisition) {
             formData.preMarketAcquisition = 0;
@@ -261,7 +262,7 @@ export default function Create() {
         } catch (e) {}
       } else {
         form.setFieldsValue({
-          preLaunchDuration: PreLaunchDurationEnum['IMMEDIATE'],
+          preLaunchDuration: PreLaunchDurationEnum['3DAYS'],
         });
       }
     }
