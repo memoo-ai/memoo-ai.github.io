@@ -11,6 +11,7 @@ import {
   useEffect,
   useState,
   useContext,
+  SetStateAction,
 } from 'react';
 import './edit-project-modal.scss';
 import {
@@ -32,10 +33,16 @@ import { REQUEST_FOLLOWING_STORAGE, UPDATE_PROJECT_TWITTER_STORAGE, EDIT_INFO_ST
 import { useSearchParams } from 'react-router-dom';
 import { authorizeTwitter } from '@/utils';
 import { AirdropContext } from '.';
-import ImgCrop from 'antd-img-crop';
+import EasyCrop from '@/components/ImgCrop/EasyCrop';
+import Cropper from 'react-easy-crop';
+import { ZOOM_STEP, PREFIX } from '@/components/ImgCrop/constants';
+
 const FORM_STORAGE_KEY = 'create_token_storage';
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
+
+const minZoom = 1;
+const maxZoom = 3;
 
 const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess: () => void }> = ({
   children,
@@ -52,6 +59,10 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
   const [projectDetail, setProjectDetail] = useState({});
   const [searchParams] = useSearchParams();
   const { mine } = useContext(AirdropContext);
+  const [image, setImage] = useState(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   useEffect(() => {
     getTokenDetail(ticker).then((res) => {
       if (res?.data) {
@@ -134,6 +145,70 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
         setProjectBannerUrl(res.data.fileUrl);
       });
       return false;
+    }
+  };
+  const handleImageChange = (file: File) => {
+    // const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImage(reader.result as any);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  const onCropComplete = (croppedArea: any, croppedAreaPixels: any) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  };
+  const getCroppedImg = (
+    imageSrc: string | null,
+    crop: { width: number; height: number; x: number; y: number } | null,
+  ) => {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.src = imageSrc as string;
+      image.crossOrigin = 'anonymous';
+
+      image.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          reject(new Error('Canvas context is not available'));
+          return;
+        }
+        if (!crop) {
+          reject(new Error('Crop context is not available'));
+          return;
+        }
+        canvas.width = crop.width;
+        canvas.height = crop.height;
+        ctx.drawImage(image, crop.x, crop.y, crop.width, crop.height, 0, 0, crop.width, crop.height);
+
+        canvas.toBlob((blob) => {
+          resolve(blob);
+        }, 'image/jpeg');
+      };
+
+      image.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+  const handleCrop = async () => {
+    try {
+      const croppedImage = await getCroppedImg(image, croppedAreaPixels);
+      console.log('croppedImage:', croppedImage);
+      if (croppedImage) {
+        // const file = new File([croppedImage], 'croppedImage.jpg', { type: croppedImage.type });
+        uploadFile(croppedImage).then((res) => {
+          form.setFieldValue('banners', [res.data.file]);
+          setProjectBannerUrl(res.data.fileUrl);
+          setImage(null);
+        });
+        return false;
+      }
+    } catch (e) {
+      console.error('Error cropping image:', e);
     }
   };
 
@@ -301,44 +376,93 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
                   <Trash size={16} onClick={handleRemove} />
                 </span>
               </div>
+            ) : image ? (
+              <div className="flex flex-col">
+                <div className="w-full h-[40vh] ">
+                  <Cropper
+                    image={image}
+                    crop={crop}
+                    zoom={zoom}
+                    aspect={16 / 6}
+                    showGrid={false}
+                    onCropChange={setCrop}
+                    onZoomChange={setZoom}
+                    onCropComplete={onCropComplete}
+                  />
+                </div>
+              </div>
             ) : (
-              <ImgCrop
-                modalClassName="memoo_modal memoo_upload"
-                modalTitle=" "
-                resetText="reset"
-                modalOk="Save"
-                modalCancel="Cancel"
-                quality={1}
-                aspect={16 / 6}
+              <Upload
+                listType="picture-card"
+                accept="image/*"
+                maxCount={1}
+                beforeUpload={(file) => handleImageChange(file)}
+                showUploadList={{ showPreviewIcon: true, showRemoveIcon: false }}
+                style={{ width: '100%', height: 140 }}
+                className="edit-upload-banner"
+                previewFile={(file) => {
+                  return new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = () => {
+                      resolve(reader.result as string);
+                    };
+                  });
+                }}
               >
-                <Upload
-                  listType="picture-card"
-                  accept="image/*"
-                  maxCount={1}
-                  beforeUpload={(file) => handleUpload(file)}
-                  showUploadList={{ showPreviewIcon: true, showRemoveIcon: false }}
-                  style={{ width: '100%', height: 140 }}
-                  className="edit-upload-banner"
-                  previewFile={(file) => {
-                    return new Promise((resolve) => {
-                      const reader = new FileReader();
-                      reader.readAsDataURL(file);
-                      reader.onload = () => {
-                        resolve(reader.result as string);
-                      };
-                    });
-                  }}
-                >
-                  <button style={{ border: 0, background: 'none' }} type="button">
-                    <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
-                      <IconUpload className="" />
-                      <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px] mt-[10px]">
-                        Recommended 790px X 307px Max size: 10MB
-                      </p>
-                    </div>
+                <button style={{ border: 0, background: 'none' }} type="button">
+                  <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
+                    <IconUpload className="" />
+                    <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px] mt-[10px]">
+                      Recommended 790px X 307px Max size: 10MB
+                    </p>
+                  </div>
+                </button>
+              </Upload>
+            )}
+          </Form.Item>
+          <Form.Item label="&nbsp;">
+            {image && (
+              <div className="flex items-center justify-center flex-col">
+                <section className="flex w-[60%] items-center">
+                  <button
+                    className="text-[18px] text-[#07E993] disabled:text-[#1a5e5c]"
+                    onClick={() => setZoom(Number((zoom - ZOOM_STEP).toFixed(1)))}
+                    disabled={zoom - ZOOM_STEP < minZoom}
+                  >
+                    －
                   </button>
-                </Upload>
-              </ImgCrop>
+                  <Slider
+                    className="flex1 w-full"
+                    min={minZoom}
+                    max={maxZoom}
+                    step={ZOOM_STEP}
+                    value={zoom}
+                    onChange={setZoom}
+                    tooltipVisible={false}
+                  />
+                  <button
+                    className="text-[18px] text-[#07E993] disabled:text-[#1a5e5c]"
+                    onClick={() => setZoom(Number((zoom + ZOOM_STEP).toFixed(1)))}
+                    disabled={zoom + ZOOM_STEP > maxZoom}
+                  >
+                    ＋
+                  </button>
+                </section>
+                <div className="flex justify-center mt-[16px] gap-x-[20px]">
+                  <Button
+                    className="memoo_button w-[120px] h-[40px]"
+                    onClick={() => {
+                      setImage(null);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button className="memoo_button w-[120px] h-[40px]" onClick={handleCrop}>
+                    Save
+                  </Button>
+                </div>
+              </div>
             )}
           </Form.Item>
           <Form.Item label={<p className="edit-form-label">Website</p>} name="website">

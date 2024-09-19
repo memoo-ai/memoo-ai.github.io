@@ -2,7 +2,7 @@
 
   .reactEasyCrop_Container{
     background: #1f3b4f;
-    margin-bottom: 30px;
+    margin-bottom: 23px;
   }
   .img-crop-control ,.img-crop-control-zoom {
     button{
@@ -48,8 +48,12 @@
     -webkit-text-fill-color: transparent !important;
   }
 }
-
+.ant-modal .ant-modal-footer{
+  display: flex;
+  justify-content: center;
+}
   .ant-modal-footer{
+
     .ant-btn{
       border: unset;
       border-radius: 7px !important;
