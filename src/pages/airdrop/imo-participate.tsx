@@ -24,7 +24,7 @@ const IMOParticipate: FC = () => {
     () => [
       {
         key: 'Price',
-        value: `${stage === 'imo' ? tokenSymbol : '$'}${formatDecimals(idoActiveDetail?.price ? idoActiveDetail?.price : 0) ?? 0}`,
+        value: `${formatDecimals(idoActiveDetail?.price ? idoActiveDetail?.price : 0) ?? 0}${stage === 'imo' ? tokenSymbol : ''}`,
         tip: null,
         big: false,
       },
