@@ -272,3 +272,9 @@ export function formatNumberToFixed(input: string | number): string {
 export function popupSharing(url: string) {
   window.open(url, '_blank', 'width=600,height=700');
 }
+export function formatRatioToPercentage(a: number, b: number) {
+  if (b === 0) {
+    throw new Error('The divisor cannot be zero');
+  }
+  return (a * 100) / b;
+}

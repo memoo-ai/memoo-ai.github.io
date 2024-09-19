@@ -56,6 +56,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
   const [projectBannerUrl, setProjectBannerUrl] = useState('');
   const [twitter, setTwitter] = useState('');
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [cropLoading, setCropLoading] = useState(false);
   const [projectDetail, setProjectDetail] = useState({});
   const [searchParams] = useSearchParams();
   const { mine } = useContext(AirdropContext);
@@ -196,6 +197,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
   };
   const handleCrop = async () => {
     try {
+      setCropLoading(true);
       const croppedImage = await getCroppedImg(image, croppedAreaPixels);
       console.log('croppedImage:', croppedImage);
       if (croppedImage) {
@@ -204,11 +206,13 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
           form.setFieldValue('banners', [res.data.file]);
           setProjectBannerUrl(res.data.fileUrl);
           setImage(null);
+          setCropLoading(false);
         });
         return false;
       }
     } catch (e) {
       console.error('Error cropping image:', e);
+      setCropLoading(false);
     }
   };
 
@@ -423,7 +427,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
           </Form.Item>
           <Form.Item label="&nbsp;">
             {image && (
-              <div className="flex items-center justify-center flex-col">
+              <div className="flex items-center justify-center gap-x-[10px]">
                 <section className="flex w-[60%] items-center">
                   <button
                     className="text-[18px] text-[#07E993] disabled:text-[#1a5e5c]"
@@ -433,7 +437,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
                     －
                   </button>
                   <Slider
-                    className="flex1 w-full"
+                    className="flex1 w-full memoo_slider"
                     min={minZoom}
                     max={maxZoom}
                     step={ZOOM_STEP}
@@ -449,16 +453,16 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
                     ＋
                   </button>
                 </section>
-                <div className="flex justify-center mt-[16px] gap-x-[20px]">
+                <div className="flex justify-center items-center gap-x-[10px]">
                   <Button
-                    className="memoo_button w-[120px] h-[40px]"
+                    className="memoo_button w-[115px] reverse"
                     onClick={() => {
                       setImage(null);
                     }}
                   >
                     Cancel
                   </Button>
-                  <Button className="memoo_button w-[120px] h-[40px]" onClick={handleCrop}>
+                  <Button className="memoo_button w-[115px] reverse" onClick={handleCrop} loading={cropLoading}>
                     Save
                   </Button>
                 </div>
