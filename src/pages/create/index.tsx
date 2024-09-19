@@ -674,7 +674,7 @@ export default function Create() {
               </div>
             </Form.Item>
             <p className="create_tip_for_acquisition">
-              Creator is entitled <br /> to {maxProportion * 100}% of token supply
+              Creator is entitled <br /> to {firstProportion * 100}% of token supply
             </p>
             <Form.Item
               label={

@@ -53,7 +53,9 @@
   justify-content: center;
 }
   .ant-modal-footer{
-
+    .ant-btn-primary{
+      box-shadow: none;
+    }
     .ant-btn{
       border: unset;
       border-radius: 7px !important;
