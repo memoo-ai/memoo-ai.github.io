@@ -53,7 +53,7 @@ import { getMemeConfigId } from '@/api/base';
 import { memooConfig } from '@/types';
 import { useProportion } from '@/hooks/useProportion';
 import { IconMinus, IconPlus } from '@/components/icons';
-import ImgCrop from 'antd-img-crop';
+import ImgCrop from '@/components/ImgCrop';
 
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;

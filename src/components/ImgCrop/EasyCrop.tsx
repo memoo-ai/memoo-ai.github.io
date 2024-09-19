@@ -110,6 +110,7 @@ const EasyCrop = forwardRef<EasyCropRef, EasyCropProps>((props, ref) => {
             max={maxZoom}
             step={ZOOM_STEP}
             value={zoom}
+            tooltipVisible={false}
             onChange={setZoom}
           />
           <button
@@ -138,6 +139,7 @@ const EasyCrop = forwardRef<EasyCropRef, EasyCropProps>((props, ref) => {
             step={ROTATION_STEP}
             value={rotation}
             onChange={setRotation}
+            tooltipVisible={false}
           />
           <button
             className={`${buttonClass} [font-size:16px]`}
