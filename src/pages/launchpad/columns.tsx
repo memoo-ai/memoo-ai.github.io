@@ -1,6 +1,6 @@
 import { Button } from 'antd';
 import { LaunchpadIMO, LaunchpadAirdrop } from '@/types';
-import { formatTs } from '@/utils';
+import { formatTs, formatRatioToPercentage } from '@/utils';
 import IProgress from '@/components/IProgress';
 export enum IDOStatus {
   active = 'active',
@@ -36,10 +36,10 @@ export const columns = (navigate: (path: string) => void) => [
     dataIndex: 'memooScore',
     key: 'memooScore',
     sorter: false,
-    render: (memooScore: number) => (
+    render: (memooScore: number, record: LaunchpadIMO) => (
       <div className="flex flex-col justify-end items-end pt-5">
-        <span>{memooScore ?? 0}</span>
-        <IProgress percent={memooScore} />
+        <span>{formatRatioToPercentage(memooScore, record.totalScore)}</span>
+        <IProgress percent={formatRatioToPercentage(memooScore, record.totalScore)} />
       </div>
     ),
   },
@@ -96,10 +96,10 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
     dataIndex: 'memooScore',
     key: 'memooScore',
     sorter: false,
-    render: (memooScore: number) => (
+    render: (memooScore: number, record: LaunchpadAirdrop) => (
       <div className="flex flex-col justify-end items-end pt-5">
-        <span>{memooScore ?? 0}</span>
-        <IProgress percent={memooScore} />
+        <span>{formatRatioToPercentage(memooScore, record.totalScore)}</span>
+        <IProgress percent={formatRatioToPercentage(memooScore, record.totalScore)} />
       </div>
     ),
   },

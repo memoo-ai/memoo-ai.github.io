@@ -2,7 +2,7 @@ import './card.scss';
 import { IconDraft, IconQueue, IconLaunched, IconIMO } from '@/components/icons';
 import { IDOStatus } from '@/types';
 import { useNavigate } from 'react-router-dom';
-import { formatTs } from '@/utils';
+import { formatTs, formatRatioToPercentage } from '@/utils';
 interface CardProps {
   data: any;
   children: any;
@@ -113,7 +113,9 @@ export const Card = ({ data, children, participated = false }: CardProps) => {
       </div>
       <div className="dashboard_item_content">
         <div className="dashboard_item_content_left">MeMoo Score</div>
-        <div className="dashboard_item_content_right">{data.memooScore}/100</div>
+        <div className="dashboard_item_content_right">
+          {formatRatioToPercentage(data.memooScore, data.totalScore)}/100
+        </div>
       </div>
       {participated && (
         <div className="dashboard_item_content">

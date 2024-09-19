@@ -7,7 +7,7 @@ import IProgress from '@/components/IProgress';
 // You can use a Zod schema here if you want.
 
 import { TrendingTokens } from '@/types';
-import { formatDecimals } from '@/utils';
+import { formatDecimals, formatRatioToPercentage } from '@/utils';
 
 export const columnsOld: ColumnDef<TrendingTokens>[] = [
   {
@@ -121,10 +121,10 @@ export const columns = [
     dataIndex: 'memooScore',
     key: 'memooScore',
     sorter: false,
-    render: (memooScore: number) => (
+    render: (memooScore: number, record: TrendingTokens) => (
       <div className="flex flex-col justify-end items-end pt-5">
-        <span>{memooScore ?? 0}</span>
-        <IProgress percent={memooScore} />
+        <span>{formatRatioToPercentage(memooScore, record.totalScore)}</span>
+        <IProgress percent={formatRatioToPercentage(memooScore, record.totalScore)} />
       </div>
     ),
   },

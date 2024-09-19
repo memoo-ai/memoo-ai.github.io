@@ -274,7 +274,8 @@ export function popupSharing(url: string) {
 }
 export function formatRatioToPercentage(a: number, b: number) {
   if (b === 0) {
-    throw new Error('The divisor cannot be zero');
+    return 0;
   }
-  return (a * 100) / b;
+  const result = (a * 100) / b;
+  return result.toFixed(0) ?? 0;
 }

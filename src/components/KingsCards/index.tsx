@@ -9,7 +9,7 @@ import { Button } from 'antd';
 import Countdown from '@/pages/airdrop/countdown';
 import { useNavigate } from 'react-router-dom';
 import Empty from '@/components/Empty';
-import { formatNumberToFixed, formatTs } from '@/utils';
+import { formatNumberToFixed, formatTs, formatRatioToPercentage } from '@/utils';
 interface KingsCardsProps {
   btnText?: string;
   btnType?: string;
@@ -120,9 +120,12 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data,
                       <div className="font-OCR text-[14px] text-[#7D83B5] line-[13px] w-[110px] mr-[20px]">
                         Memoo Score
                       </div>
-                      <IProgress className="w-[83px]" percent={item.memooScore} />
+                      <IProgress
+                        className="w-[83px]"
+                        percent={formatRatioToPercentage(item.memooScore, item.totalScore)}
+                      />
                       <div className="font-OCR text-[17px] text-[#fff] line-[13px] w-[153px] text-right flex-1">
-                        {item?.memooScore ?? 0}/100
+                        {formatRatioToPercentage(item.memooScore, item.totalScore)}/100
                       </div>
                     </div>
                     <div className="flex justify-between items-center">

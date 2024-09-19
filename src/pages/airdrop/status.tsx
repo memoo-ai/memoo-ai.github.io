@@ -6,6 +6,7 @@ import ScoreShareModal from './score-share-modal';
 import { AirdropContext } from '.';
 import ITooltip from '@/components/ITooltip';
 import { IconQueue, IconLaunched, IconIMO } from '@/components/icons';
+import { formatRatioToPercentage } from '@/utils';
 const MESSAGE_THRESHOLDS: [number, string][] = [
   [30, 'GTFO!'],
   [45, 'Take some luck to\nmake this work!'],
@@ -18,11 +19,13 @@ const MESSAGE_THRESHOLDS: [number, string][] = [
 export default function Status() {
   // const [process, setProcess] = useState<'in-queue' | 'active'>('in-queue');
   const { idoQueueDetail } = useContext(AirdropContext);
-  const meMessage = useMemo(
-    () =>
-      MESSAGE_THRESHOLDS.find(([threshold]) => Number(idoQueueDetail?.memooScoreTotal ?? 0) <= threshold)?.[1] ||
-      'GTFO!',
+  const memooScore = useMemo(
+    () => formatRatioToPercentage(idoQueueDetail?.memooScoreTotal ?? 0, idoQueueDetail?.totalScore ?? 0),
     [idoQueueDetail],
+  );
+  const meMessage = useMemo(
+    () => MESSAGE_THRESHOLDS.find(([threshold]) => Number(memooScore ?? 0) <= threshold)?.[1] || 'GTFO!',
+    [memooScore],
   );
 
   const renderIcon = useMemo(() => {
@@ -97,14 +100,10 @@ export default function Status() {
             />
           </h3>
           <div className="flex items-end mt-3 mb-4">
-            <span className="numerator">{idoQueueDetail?.memooScoreTotal ?? 0}</span>
+            <span className="numerator">{memooScore}</span>
             <span className="denominator">/100</span>
           </div>
-          <Progress
-            className="status_memo_score_bar"
-            showInfo={false}
-            percent={Number(idoQueueDetail?.memooScoreTotal ?? 0)}
-          />
+          <Progress className="status_memo_score_bar" showInfo={false} percent={Number(memooScore)} />
         </div>
       </div>
       {/* <p className="mt-3 consider">Might consider{'\n'}adding it to my wishlist.</p> */}
