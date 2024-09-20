@@ -83,6 +83,9 @@ export default function AirdropClaim() {
 
   const handleFollow = useCallback(async (twitter: string) => {
     try {
+      if (!twitter) {
+        return message.info('Please refresh and retry');
+      }
       const res = await getTwitterClientId();
       let clientId = res.data;
       const followingParams = {
