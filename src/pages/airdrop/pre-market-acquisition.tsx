@@ -11,7 +11,7 @@ const PreMarketAcqusition = ({ amount }: PreMarketAcqusitionProps) => {
       <div className="pre-market-acquisition-content flex items-center justify-between mt-[19px] text-[#fff]">
         <div className="font-OCR text-[14px] ">Total Contributed</div>
         <div className='font-OCR text-[24px]"'>
-          {Number(amount)}
+          {Number(amount)}&nbsp;
           {tokenSymbol}
         </div>
       </div>

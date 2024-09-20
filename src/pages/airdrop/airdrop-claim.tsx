@@ -242,7 +242,7 @@ export default function AirdropClaim() {
         {doingTask && <span className="endsin font-OCR text-white">Ends in</span>}
       </div>
       <div className="in_queue flex justify-between">
-        <p className="text-deep-green text-xs whitespace-pre-wrap font-OCR">
+        <p className="text-deep-green text-[10px] whitespace-pre-wrap font-OCR">
           Complete tasks to be{'\n'}eligible for token airdrop.{' '}
         </p>
         {doingTask && (
