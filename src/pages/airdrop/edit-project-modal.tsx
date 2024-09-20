@@ -425,9 +425,9 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
               </Upload>
             )}
           </Form.Item>
-          <Form.Item label="&nbsp;">
-            {image && (
-              <div className="flex items-center justify-center gap-x-[10px]">
+          {image && (
+            <Form.Item label="&nbsp;">
+              <div className="flex items-center justify-center gap-x-[10px] mt-[-20px]">
                 <section className="flex w-[60%] items-center">
                   <button
                     className="text-[18px] text-[#07E993] disabled:text-[#1a5e5c]"
@@ -467,8 +467,8 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
                   </Button>
                 </div>
               </div>
-            )}
-          </Form.Item>
+            </Form.Item>
+          )}
           <Form.Item label={<p className="edit-form-label">Website</p>} name="website">
             <div className="reactive">
               <Input className="custom-input rounded-[7px] px-8" />
