@@ -110,7 +110,7 @@ export default function Status() {
       <p className="mt-3 consider">{meMessage}</p>
       <div className="mt-4 intend flex justify-between">
         <p>MeMoo Score is an indicative metric.{'\n'}Users are advised to DYOR.</p>
-        <ScoreShareModal meMessage={meMessage}>
+        <ScoreShareModal meMessage={meMessage} memooScore={memooScore}>
           <IconTranspond className="outlink cursor-pointer" />
         </ScoreShareModal>
       </div>

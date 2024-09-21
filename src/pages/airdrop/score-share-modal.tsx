@@ -27,7 +27,7 @@ import { AirdropContext } from '.';
 import { popupSharing } from '@/utils';
 
 const BaseUrl = import.meta.env.VITE_SHARE_URI;
-const CreatorRankingShareModal = ({ children, ticker, meMessage }: any) => {
+const CreatorRankingShareModal = ({ children, memooScore, meMessage }: any) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
@@ -115,7 +115,7 @@ const CreatorRankingShareModal = ({ children, ticker, meMessage }: any) => {
               </div>
               <h3 className="font-404px text-[#fff] mt-[36px]">MeMoo Score</h3>
               <p className="text-[#fff] text-[24px] font-404px leading-[5px] mt-[55px]">
-                <span className="text-green text-[96px] line-">{idoQueueDetail?.memooScoreTotal ?? 0}</span>/100
+                <span className="text-green text-[96px] line-">{memooScore ?? 0}</span>/100
               </p>
               <p className="text-[#fff] text-[14px] font-OCR leading-[15px] mt-[17px]">{meMessage}</p>
             </div>
