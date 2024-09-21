@@ -239,13 +239,19 @@ export default function AirdropClaim() {
             />
           </Popover>
         </h3>
-        {doingTask && <span className="endsin font-OCR text-white">Ends in</span>}
+        {doingTask ? (
+          <span className="endsin font-OCR text-white">Ends in</span>
+        ) : (
+          <span className="endsin font-404px text-white">
+            {idoQueueDetail?.platformTwitterBind && idoQueueDetail?.projectTwitterBind ? 'COMPLETED' : 'WITHOUT'}
+          </span>
+        )}
       </div>
       <div className="in_queue flex justify-between">
         <p className="text-deep-green text-[10px] whitespace-pre-wrap font-OCR leading-[11px]">
           Complete tasks to be{'\n'}eligible for token airdrop.{' '}
         </p>
-        {doingTask && (
+        {doingTask ? (
           <Countdown
             instant={
               idoQueueDetail?.airdropEndsIn && typeof idoQueueDetail?.airdropEndsIn === 'number'
@@ -253,6 +259,8 @@ export default function AirdropClaim() {
                 : 0
             }
           />
+        ) : (
+          <div />
         )}
       </div>
       <ul className="follow_list flex flex-col gap-y-2 mt-4">
