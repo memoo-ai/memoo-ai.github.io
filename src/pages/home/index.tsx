@@ -155,11 +155,11 @@ const Home = () => {
               <div className="flex items-center">
                 <div className="flex flex-col items-center mr-[120px]">
                   <img src="./SVG/img-security.svg" className="w-[262px] h-[130px] mb-[30px]" />
-                  <p className="content-data-security">of memecoins on Base chain{'\n'} have security threats.</p>
+                  <p className="content-data-security">of memecoins on Solana chain{'\n'} have security threats.</p>
                 </div>
                 <div className="flex flex-col items-center">
                   <img src="./SVG/img-malicious.svg" className="w-[313px] h-[130px] mb-[30px]" />
-                  <p className="content-data-security">of memecoins on {'\n'}Base chain are malicious.</p>
+                  <p className="content-data-security">of memecoins on {'\n'}Solana chain are malicious.</p>
                 </div>
               </div>
             </div>

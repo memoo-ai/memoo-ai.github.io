@@ -55,7 +55,7 @@ const Dashboard = () => {
 
   const [commonBottom, setCommonBottom] = useState({
     title: 'Exclusive ‘Proof of Creation’ Reward for Creators.',
-    desc: 'Exciting Rewards for Exceptional Talent in Meme Creation.',
+    desc: 'Exciting Rewards for Exceptional Meme Creation Talent.',
     link: '/',
     linkText: 'BE A CREATOR',
   });
@@ -78,7 +78,7 @@ const Dashboard = () => {
           });
           setCommonBottom({
             title: 'Exclusive ‘Proof of Creation’ Reward for Creators.',
-            desc: 'Exciting Rewards for Exceptional Talent in Meme Creation.',
+            desc: 'Exciting Rewards for Exceptional Meme Creation Talent.',
             link: '/gecko?type=CREATOR Ranking',
             linkText: 'BE A CREATOR',
           });
@@ -91,7 +91,7 @@ const Dashboard = () => {
           });
           setCommonBottom({
             title: `Exclusive ‘Proof of Creation’\nReward For Creators.`,
-            desc: 'Exciting Rewards for Exception Talent in Meme Creation.',
+            desc: 'Exciting Rewards for Exceptional Meme Creation Talent.',
             link: '/create_token',
             linkText: 'BE A CREATOR',
           });
