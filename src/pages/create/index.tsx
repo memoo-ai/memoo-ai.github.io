@@ -648,7 +648,7 @@ export default function Create() {
                     <ITooltip
                       placement="bottom"
                       toolClassName="create-tooltip"
-                      title={`Begins with a preparatory period of your choice for airdrop tasks followed by a 24-hour IMO window, during which participants can contribute up to a max of 0.5% per wallet. IMO concludes either when the token supply is fully sold out ($3,000 in contributions or 20.718 SOL) or when the 24-hour window expires.`}
+                      title={`Choose a preparation period for community building and airdrop tasks before the 24H Initial Memecoin Offering (IMO) begins. During the sale, participants can buy up to 0.5% of the token supply per waller. The sale ends either when all tokens are sold out ($3,000 or 20.718 SOL), or after the 24H window expires.`}
                       color="#fff"
                       bgColor="#4A5082"
                     />
