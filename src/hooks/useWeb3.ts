@@ -236,7 +236,8 @@ export const useAccount = () => {
         // return confirmation;
       } catch (error) {
         console.error('Error in registerTokenMint:', error);
-        throw error;
+        return null;
+        // throw error;
       }
     },
     [connection, signTransaction, solanaConfig, publicKey, program, memooConfig],

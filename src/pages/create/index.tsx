@@ -379,6 +379,7 @@ export default function Create() {
 
         data.twitter = twitter;
         data.accessToken = twitterAccessToken;
+        if (!data.setPreMarketAcquisition) data.preMarketAcquisition = 0;
         // data.twitter = 'twitter';
         // data.accessToken = 'twitterAccessToken';
         if (isConfirm) {
