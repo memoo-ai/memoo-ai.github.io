@@ -151,7 +151,17 @@ export const Collector = () => {
                 <div className="flex justify-between items-end mt-[15px]">
                   {tab === 'Airdrop' && (
                     <div>
-                      {item && 'claimFlag' in item && item?.claimFlag ? (
+                      {item?.claimFlag === 0 && (
+                        // <div className="flex">
+                        //   <IconAwaiting className="IconAwaiting" />{' '}
+                        //   <span className="font-404px text-[#07E993] ml-[11px]">AWAITING</span>
+                        // </div>
+                        <div className="flex">
+                          <img src="/dashboard/claimed.png" alt="" />
+                          <span className="font-404px text-[#07E993] ml-[11px]">Claimed</span>
+                        </div>
+                      )}
+                      {item?.claimFlag === 1 && (
                         <AirdropModal ticker={item.ticker}>
                           {' '}
                           <Button
@@ -172,13 +182,43 @@ export const Collector = () => {
                             <span className="ml-[9px]">CLAIM AIRDROP</span>
                           </Button>
                         </AirdropModal>
-                      ) : (
+                      )}
+                      {item?.claimFlag === 2 && (
                         <div className="flex">
-                          <IconAwaiting className="IconAwaiting" />{' '}
-                          <span className="font-404px text-[#07E993] ml-[11px]">AWAITING</span>
+                          <img src="/dashboard/claimed.png" alt="" />
+                          <span className="font-404px text-[#07E993] ml-[11px]">Claimed</span>
                         </div>
                       )}
                     </div>
+                    // <div>
+                    //   {item && 'claimFlag' in item && item?.claimFlag ? (
+                    //        <AirdropModal ticker={item.ticker}>
+                    //        {' '}
+                    //        <Button
+                    //          className="flex items-center justify-between collector-btn"
+                    //          key="increase"
+                    //          onMouseOver={() => iconRefs.current[`AirdropBtn${index}`].setHovered(true)}
+                    //          onMouseLeave={() => iconRefs.current[`AirdropBtn${index}`].setHovered(false)}
+                    //          disabled={!item.claimFlag}
+                    //          onClick={() => {
+                    //            getLaunchedDetail(item.ticker);
+                    //          }}
+                    //        >
+                    //          <IconAirdropBtn
+                    //            className="IconAirdropBtn"
+                    //            color="#07E993"
+                    //            ref={(ref) => (iconRefs.current[`AirdropBtn${index}`] = ref)}
+                    //          />
+                    //          <span className="ml-[9px]">CLAIM AIRDROP</span>
+                    //        </Button>
+                    //      </AirdropModal>
+                    //   ) : (
+                    //     <div className="flex">
+                    //     <IconAwaiting className="IconAwaiting" />{' '}
+                    //     <span className="font-404px text-[#07E993] ml-[11px]">AWAITING</span>
+                    //   </div>
+                    //   )}
+                    // </div>
                   )}
                   {/* <ClaimImoTokensModal>
                     <div className="font-OCR text-[#7D83B5]">Contributed</div>
