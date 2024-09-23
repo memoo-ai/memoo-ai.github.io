@@ -49,39 +49,39 @@ const CreatorRankingShareModal = ({ children, memooScore, meMessage }: any) => {
     //   }
     // });
 
-    // const canvas = await html2canvas(ref.current, {
-    //   // scale: 2,
-    //   backgroundColor: null,
-    //   width: 480,
-    //   height: 480,
-    // });
-
-    // const a = document.createElement('a');
-    // // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
-    // a.href = canvas.toDataURL('image/jpeg').replace('image/jpeg', 'image/octet-stream');
-    // a.download = `${name}-${Math.ceil(Date.now() / 1000)}.jpg`;
-    // a.click();
-    toPng(ref.current, {
-      cacheBust: true,
+    const canvas = await html2canvas(ref.current, {
+      // scale: 2,
+      backgroundColor: null,
       width: 480,
       height: 480,
-      skipFonts: true,
-      preferredFontFormat: 'woff2',
-    })
-      .then((dataUrl) => {
-        setLoading(true);
-        const link = document.createElement('a');
-        link.download = 'my-share-image.png';
-        link.href = dataUrl;
-        link.click();
-        message.success('Download successfully!');
-        setLoading(false);
-      })
-      .catch(async (err) => {
-        console.log(err);
-        message.error('Download failed.');
-        setLoading(false);
-      });
+    });
+
+    const a = document.createElement('a');
+    // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
+    a.href = canvas.toDataURL('image/jpeg').replace('image/jpeg', 'image/octet-stream');
+    a.download = `${name}-${Math.ceil(Date.now() / 1000)}.jpg`;
+    a.click();
+    // toPng(ref.current, {
+    //   cacheBust: true,
+    //   width: 480,
+    //   height: 480,
+    //   skipFonts: true,
+    //   preferredFontFormat: 'woff2',
+    // })
+    //   .then((dataUrl) => {
+    //     setLoading(true);
+    //     const link = document.createElement('a');
+    //     link.download = 'my-share-image.png';
+    //     link.href = dataUrl;
+    //     link.click();
+    //     message.success('Download successfully!');
+    //     setLoading(false);
+    //   })
+    //   .catch(async (err) => {
+    //     console.log(err);
+    //     message.error('Download failed.');
+    //     setLoading(false);
+    //   });
   }, [ref]);
 
   const shareUrl = useMemo(() => {
