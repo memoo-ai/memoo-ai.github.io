@@ -293,7 +293,8 @@ declare interface DashboardCollectorAirdrop {
   tokenName: string;
   totalRaised: string;
   totalSupply: number;
-  claimFlag: number;
+  claimFlag: boolean;
+  claimedFlag: string;
 }
 declare interface DashboardCollectorParticipated {
   contributed: string;
@@ -307,7 +308,8 @@ declare interface DashboardCollectorParticipated {
   tokenName: string;
   totalRaised: string;
   totalSupply: number;
-  claimFlag: number;
+  claimFlag: string;
+  claimedFlag: string;
 }
 declare type DashboardCollectorItem = DashboardCollectorAirdrop & DashboardCollectorParticipated;
 
