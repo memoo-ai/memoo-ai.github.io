@@ -342,7 +342,7 @@ export default function Create() {
   const handleTickerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     form.setFieldsValue({
-      ticker: value.toUpperCase(),
+      ticker: value.toUpperCase().trim(),
     });
   };
 

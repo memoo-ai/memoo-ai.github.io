@@ -7,6 +7,7 @@ import React, {
   useCallback,
   useRef,
   useMemo,
+  useEffect,
 } from 'react';
 
 import './score-share-modal.scss';
@@ -22,7 +23,7 @@ import {
   IconDownload,
   IconMore,
 } from '@/components/icons';
-import { toPng } from 'html-to-image';
+import { toPng, toBlob } from 'html-to-image';
 import { AirdropContext } from '.';
 import { popupSharing, getBase64FromImageUrl } from '@/utils';
 import html2canvas from 'html2canvas';
@@ -34,7 +35,7 @@ const CreatorRankingShareModal = ({ children, memooScore, meMessage }: any) => {
   const [loading, setLoading] = useState(false);
   const { idoQueueDetail } = useContext(AirdropContext);
   const iconRefs = useRef<any>({});
-
+  const [base64Image, setBase64Image] = useState('');
   const toCanvas = async () => {
     if (!ref.current) return;
     const canvas = await html2canvas(ref.current, {
@@ -66,13 +67,10 @@ const CreatorRankingShareModal = ({ children, memooScore, meMessage }: any) => {
     //     console.warn('Cross-domain style sheet cannot be accessed and has been ignored:', sheet.href);
     //   }
     // });
-
     toPng(ref.current, {
-      cacheBust: true,
+      cacheBust: false,
       width: 480,
       height: 480,
-      skipFonts: true,
-      // preferredFontFormat: 'woff2',
     })
       .then((dataUrl) => {
         setLoading(true);
@@ -92,7 +90,69 @@ const CreatorRankingShareModal = ({ children, memooScore, meMessage }: any) => {
           message.error('Download failed.');
         }
       });
+    // toPng(ref.current, {
+    //   cacheBust: true,
+    //   width: 480,
+    //   height: 480,
+    //   skipFonts: true,
+    //   // preferredFontFormat: 'woff2',
+    // })
+    //   .then((dataUrl) => {
+    //     setLoading(true);
+    //     const link = document.createElement('a');
+    //     link.download = 'my-share-image.png';
+    //     link.href = dataUrl;
+    //     link.click();
+    //     message.success('Download successfully!');
+    //     setLoading(false);
+    //   })
+    //   .catch(async (err) => {
+    //     console.log(err);
+    //     // message.error('Download failed.');
+    //     setLoading(false);
+    //     const result = toCanvas();
+    //     if (!result) {
+    //       message.error('Download failed.');
+    //     }
+    //   });
   }, [ref]);
+
+  async function getBase64FromImageUrl(imageUrl: string) {
+    try {
+      const response = await fetch(imageUrl, {
+        mode: 'cors',
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch image. Status: ${response.status}`);
+      }
+
+      const blob = await response.blob();
+
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          resolve(reader.result);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      return null;
+    }
+  }
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      if (idoQueueDetail?.icon) {
+        const base64 = await getBase64FromImageUrl(idoQueueDetail.icon);
+        setBase64Image(base64 as any);
+      }
+    };
+
+    fetchImage();
+  }, [idoQueueDetail]);
 
   const shareUrl = useMemo(() => {
     return `${BaseUrl}airdrop/${idoQueueDetail?.ticker}`;
@@ -156,12 +216,7 @@ const CreatorRankingShareModal = ({ children, memooScore, meMessage }: any) => {
               <p className="text-[#fff] text-[14px] font-OCR">memoo.ai</p>
             </div>
             <div className=" flex  justify-center flex-col">
-              <img
-                className="w-[60px] h-[60px] rounded-full mt-[36px]"
-                // crossOrigin="anonymous"
-                src={idoQueueDetail?.icon}
-                alt=""
-              />
+              <img className="w-[60px] h-[60px] rounded-full mt-[36px]" src={base64Image} alt="" />
               <h3 className="text-[#fff] text-[24px] font-404px text-left">{idoQueueDetail?.tokenName}</h3>
               <h5 className="text-[#fff] text-[14px] font-OCR text-left">{idoQueueDetail?.ticker}</h5>
               <h5 className="text-[#fff] text-[14px] font-OCR text-left mt-[36px]">Check out this meme token at</h5>
