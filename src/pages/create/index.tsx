@@ -317,10 +317,9 @@ export default function Create() {
       }
 
       // const preValue = totalCapInitial * (data.preMarketAcquisition / 0.3);
-      const preValue = totalSupplyPrice * data.preMarketAcquisition;
+      const preValue = totalSupplyPrice * (data.preMarketAcquisition ?? 0);
       console.log('totalCapInitial:', totalCapInitial);
       console.log('preValue: ', preValue);
-      console.log('data.preMarketAcquisition: ', data.preMarketAcquisition);
       // const value = parseEther(String(preValue)) + memeConfigId!.platformFeeCreateMeme;
       // const value = parseEther(String(preValue));
       // const platformFeeCreateMeme = (totalCapInitial * 0.05) / 0.3;
