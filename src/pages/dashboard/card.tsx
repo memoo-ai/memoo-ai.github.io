@@ -74,8 +74,10 @@ export const Card = ({ data, children, participated = false }: CardProps) => {
     <div
       className="dashboard_item"
       onClick={() => {
-        if (data.status !== 'Draft') {
+        if (data.status !== 'Draft' || data.status === 'Waiting_for_pay') {
           navigate(`/airdrop/${data.ticker}`);
+        } else {
+          navigate(`/create_token?ticker=${data.ticker}`);
         }
       }}
     >

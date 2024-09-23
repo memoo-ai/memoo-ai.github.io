@@ -187,7 +187,7 @@ export const authorizeTwitter = async (
 
   const newWindow = window.open(twitterAuthUrl, '_blank', 'width=600,height=700');
   if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-    message.warning('Browser blocked pop-ups, please allow pop-ups to continue.');
+    message.warning('To proceed, please allow pop-ups on this browser');
   }
 };
 
@@ -278,4 +278,23 @@ export function formatRatioToPercentage(a: number, b: number) {
   }
   const result = (a * 100) / b;
   return result.toFixed(0) ?? 0;
+}
+export function getBase64FromImageUrl(url: string, callback: Function) {
+  const img = new Image();
+  img.crossOrigin = 'Anonymous';
+  img.onload = function () {
+    const canvas = document.createElement('canvas');
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    const ctx = canvas.getContext('2d');
+    ctx!.drawImage(img, 0, 0, img.width, img.height);
+
+    const dataURL = canvas.toDataURL('image/png');
+    callback(dataURL);
+  };
+  img.onerror = function () {
+    callback(null);
+  };
+  img.src = url;
 }

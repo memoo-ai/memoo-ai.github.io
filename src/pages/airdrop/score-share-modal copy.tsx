@@ -24,7 +24,7 @@ import {
 } from '@/components/icons';
 import { toPng } from 'html-to-image';
 import { AirdropContext } from '.';
-import { popupSharing, getBase64FromImageUrl } from '@/utils';
+import { popupSharing } from '@/utils';
 import html2canvas from 'html2canvas';
 
 const BaseUrl = import.meta.env.VITE_SHARE_URI;
@@ -49,54 +49,39 @@ const CreatorRankingShareModal = ({ children, memooScore, meMessage }: any) => {
     //   }
     // });
 
-    // const canvas = await html2canvas(ref.current, {
-    //   // scale: 2,
-    //   backgroundColor: null,
+    const canvas = await html2canvas(ref.current, {
+      scale: 2,
+      backgroundColor: null,
+    });
+
+    const a = document.createElement('a');
+    // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
+    a.href = canvas.toDataURL('image/jpeg').replace('image/jpeg', 'image/octet-stream');
+    a.download = `${name}-${Math.ceil(Date.now() / 1000)}.jpg`;
+    a.click();
+    // toPng(ref.current, {
+    //   cacheBust: true,
     //   width: 480,
     //   height: 480,
-    // });
-
-    // const a = document.createElement('a');
-    // // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
-    // a.href = canvas.toDataURL('image/jpeg').replace('image/jpeg', 'image/octet-stream');
-    // a.download = `${name}-${Math.ceil(Date.now() / 1000)}.jpg`;
-    // a.click();
-    toPng(ref.current, {
-      cacheBust: true,
-      width: 480,
-      height: 480,
-      skipFonts: true,
-      preferredFontFormat: 'woff2',
-    })
-      .then((dataUrl) => {
-        setLoading(true);
-        const link = document.createElement('a');
-        link.download = 'my-share-image.png';
-        link.href = dataUrl;
-        link.click();
-        message.success('Download successfully!');
-        setLoading(false);
-      })
-      .catch(async (err) => {
-        console.log(err);
-        message.error('Download failed.');
-        setLoading(false);
-      });
+    // })
+    //   .then((dataUrl) => {
+    //     setLoading(true);
+    //     const link = document.createElement('a');
+    //     link.download = 'my-share-image.png';
+    //     link.href = dataUrl;
+    //     link.click();
+    //     message.success('Download successfully!');
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     message.error('Download failed.');
+    //     setLoading(false);
+    //   });
   }, [ref]);
 
   const shareUrl = useMemo(() => {
     return `${BaseUrl}airdrop/${idoQueueDetail?.ticker}`;
   }, [BaseUrl, idoQueueDetail]);
-
-  // const iconUrl = useMemo(async () => {
-  //   let url = '';
-  //   await getBase64FromImageUrl(idoQueueDetail?.icon ?? '', async (base64Image: string) => {
-  //     if (base64Image) {
-  //       url = base64Image;
-  //     }
-  //   });
-  //   return url;
-  // }, [BaseUrl, idoQueueDetail]);
 
   // const handleShare = (type: 'twitter' | 'telegram') => {
   //   switch (type) {
@@ -146,12 +131,7 @@ const CreatorRankingShareModal = ({ children, memooScore, meMessage }: any) => {
               <p className="text-[#fff] text-[14px] font-OCR">memoo.ai</p>
             </div>
             <div className=" flex  justify-center flex-col">
-              <img
-                className="w-[60px] h-[60px] rounded-full mt-[36px]"
-                crossOrigin="anonymous"
-                src={idoQueueDetail?.icon}
-                alt=""
-              />
+              <img className="w-[60px] h-[60px] rounded-full mt-[36px]" src={idoQueueDetail?.icon} alt="" />
               <h3 className="text-[#fff] text-[24px] font-404px text-left">{idoQueueDetail?.tokenName}</h3>
               <h5 className="text-[#fff] text-[14px] font-OCR text-left">{idoQueueDetail?.ticker}</h5>
               <h5 className="text-[#fff] text-[14px] font-OCR text-left mt-[36px]">Check out this meme token at</h5>

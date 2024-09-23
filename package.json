@@ -61,6 +61,7 @@
     "ethers": "^6.11.1",
     "framer-motion": "^11.2.13",
     "html-to-image": "^1.11.11",
+    "html2canvas": "^1.4.1",
     "install": "^0.13.0",
     "is-mobile": "^4.0.0",
     "lodash.debounce": "^4.0.8",

@@ -92,7 +92,7 @@ const ClaimImoTokensModal: FC<{ children: ReactNode }> = ({ children }) => {
             <div className="memoo_input h-[66px] font-404px text-white text-[24px] text-center flex items-center justify-center">
               <img className="w-[50px] h-[50px] rounded-[50%]" src={idoQueueDetail?.icon} alt="" />{' '}
               {/* <span>&nbsp;{(idoQueueDetail?.imoBalance ?? 0) - (idoQueueDetail?.claimImoBalance ?? 0)} &nbsp;</span> */}
-              <span>&nbsp;{userCanClaimCount} &nbsp;</span>
+              <span>&nbsp;{userCanClaimCount?.toLocaleString()} &nbsp;</span>
               <span>{idoQueueDetail?.ticker}</span>
             </div>
           </div>
