@@ -1,6 +1,8 @@
 import './index.scss';
 import React, { useRef } from 'react';
 import { Slider } from 'antd';
+import { useProportion } from '@/hooks/useProportion';
+import { formatDecimals } from '@/utils';
 interface MySliderProps {
   min?: number;
   max?: number;
@@ -25,6 +27,7 @@ const MySlider = ({
 }: MySliderProps) => {
   const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
   const sliderRef = useRef<HTMLDivElement>(null);
+  const { totalSupplyPrice } = useProportion();
   const handleSliderChange = (newValue: number) => {
     const newProgress = newValue / 100;
     if (onChange) {
@@ -51,7 +54,13 @@ const MySlider = ({
           open: true,
           rootClassName: 'memoo_slider_tooltip',
           getPopupContainer: () => sliderRef.current!,
-          formatter: (value) => `${value}%`,
+          formatter: (value) => {
+            console.log('formatterValue:', value);
+            console.log('formattermax:', max);
+            const percent = value! / 100;
+            const result = formatDecimals(percent * totalSupplyPrice);
+            return `${value}% (${result} ${tokenSymbol})`;
+          },
         }}
       />
       <div className="ml-[14px] font-OCR">

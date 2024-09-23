@@ -14,7 +14,7 @@ import { getTwitterClientId, requestTwitterFollow } from '@/api/token';
 import { authorizeTwitter } from '@/utils';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import BigNumber from 'bignumber.js';
-import { IconWallet } from '@/components/icons';
+import { IconWallet, IconFollow } from '@/components/icons';
 import Wallet from '@/components/SolanaWallet';
 import { useAccount } from '@/hooks/useWeb3';
 import ITooltip from '@/components/ITooltip';
@@ -291,14 +291,22 @@ export default function AirdropClaim() {
               //   </Wallet>
               // ) :
               stage === 'in-queue' && (
-                <img
+                <IconFollow
                   onClick={() => (item.followed ? null : handleFollow(item.user ? item.user : ''))}
                   className={classNames('w-5', {
                     'cursor-pointer': !item.followed,
                     'opacity-30': item.followed && address,
                   })}
-                  src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
+                  hoverColor={item.followed ? '#07E993' : '#fff'}
                 />
+                // <img
+
+                //   className={classNames('w-5', {
+                //     'cursor-pointer': !item.followed,
+                //     'opacity-30': item.followed && address,
+                //   })}
+                //   src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
+                // />
               )}
           </li>
         ))}
