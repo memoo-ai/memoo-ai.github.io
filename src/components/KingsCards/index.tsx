@@ -92,7 +92,7 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data,
                                   <span>S</span>
                                 </div>,
                               ]}
-                              instant={type === 'IMO' ? (item.endsIn ?? 0 * 1000) : (item.airdropEndsIn ?? 0 * 1000)}
+                              instant={type === 'IMO' ? item.endsIn * 1000 : item.airdropEndsIn * 1000}
                               // instant={1720510654000}
                               onEnded={(ended) => {
                                 // setEnded(ended);

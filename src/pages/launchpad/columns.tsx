@@ -2,6 +2,7 @@ import { Button } from 'antd';
 import { LaunchpadIMO, LaunchpadAirdrop } from '@/types';
 import { formatTs, formatRatioToPercentage } from '@/utils';
 import IProgress from '@/components/IProgress';
+import Countdown from '@/pages/airdrop/countdown';
 export enum IDOStatus {
   active = 'active',
   upcoming = 'upcoming',
@@ -28,7 +29,35 @@ export const columns = (navigate: (path: string) => void) => [
     key: 'endsIn',
     sorter: false,
     render: (endsIn: number) => (
-      <div className="font-OCR font-normal text-lg ">{endsIn ? formatTs(endsIn ?? 0) : ''}</div>
+      // <div className="font-OCR font-normal text-lg ">{endsIn ? formatTs(endsIn ?? 0) : ''}</div>
+      <Countdown
+        className=" flex gap-x-2 mt-5 font-OCR text-[17px] text-[#fff] line-[13px]"
+        timefragments="timefragments-kings"
+        format={([days, hours, minutes, seconds]) => [
+          // <div key="days">
+          //   <time>{days}</time>
+          //   <span>D</span>
+          // </div>,
+          <div key="hours">
+            <time>{hours}</time>
+            <span>H</span>
+          </div>,
+          <div key="minutes">
+            <time>{minutes}</time>
+            <span>M</span>
+          </div>,
+          <div key="seconds">
+            <time>{seconds}</time>
+            <span>S</span>
+          </div>,
+        ]}
+        instant={endsIn * 1000}
+        // instant={1720510654000}
+        onEnded={(ended) => {
+          // setEnded(ended);
+        }}
+        symbol=""
+      />
     ),
   },
   {
