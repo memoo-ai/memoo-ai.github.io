@@ -398,7 +398,9 @@ export default function Create() {
             return;
           }
           if (Number(balance) < platformFeeCreateMemeSol + 0.0001) {
-            message.warning(`Insufficient balance in the wallet to create`);
+            message.warning(`Insufficient balance in the wallet to create`, {
+              key: 'Insufficient balance in the wallet to create',
+            });
             return;
           }
           setConfirmLoading(true);
@@ -417,7 +419,7 @@ export default function Create() {
               txHash: feeRes,
             });
           } else if (!feeRes) {
-            message.error('Create failed.');
+            message.error('Token Creation Failed.', { key: 'Create failed.' });
             return;
           }
           localStorage.removeItem(FORM_STORAGE_KEY);

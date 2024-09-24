@@ -14,7 +14,12 @@ const message = () => {
   return null;
 };
 
-message.success = (content: string, options?: Omit<ConfigOptions, 'content'>) => {
+message.success = (
+  content: string,
+  options: Omit<ConfigOptions, 'content'> = {
+    duration: 2,
+  },
+) => {
   antdMessage.success({
     ...options,
     content,
