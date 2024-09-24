@@ -84,8 +84,15 @@ const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 export default function Create() {
   // const { address, chainId } = useAccount();
   const { address, registerTokenMint } = useAccount();
-  const { firstProportion, maxProportion, totalCapInitial, totalSupplyPrice, totalCap, creatorAllocation } =
-    useProportion();
+  const {
+    firstProportion,
+    maxProportion,
+    totalCapInitial,
+    totalSupplyPrice,
+    totalCap,
+    creatorAllocation,
+    platformFeeCreateMemeSol,
+  } = useProportion();
   // const [memeConfigId, setmemeConfigId] = useState<memeConfigId>({});
   // const { switchChain } = useSwitchChain();
   const [searchParams] = useSearchParams();
@@ -388,6 +395,10 @@ export default function Create() {
           // twitter must have been connected
           if (!twitter) {
             message.info('Please connect project twitter first.', { key: 'Please connect project twitter first.' });
+            return;
+          }
+          if (Number(balance) < platformFeeCreateMemeSol + 0.0001) {
+            message.warning(`Insufficient balance in the wallet to create`);
             return;
           }
           setConfirmLoading(true);

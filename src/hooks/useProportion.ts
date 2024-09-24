@@ -110,6 +110,12 @@ export const useProportion = () => {
     console.log('tokenAllocationIdo:', result);
     return result;
   }, [memooConfig]);
+  const platformFeeCreateMemeSol = useMemo(() => {
+    if (!memooConfig) return 0;
+    const result = new BigNumber(memooConfig?.platformFeeCreateMemeSol.toString()).dividedBy(10 ** 9);
+    console.log('platformFeeCreateMemeSol:', Number(result));
+    return Number(result);
+  }, [memooConfig]);
 
   return {
     firstProportion,
@@ -126,5 +132,6 @@ export const useProportion = () => {
     totalSupplyPrice,
     tokenAllocationIdo,
     tokenAllocationAirdrop,
+    platformFeeCreateMemeSol,
   };
 };
