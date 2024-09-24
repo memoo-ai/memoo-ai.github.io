@@ -83,12 +83,12 @@ const CreatorRankingShareModal = ({ children, memooScore, meMessage }: any) => {
       })
       .catch(async (err) => {
         console.log(err);
-        // message.error('Download failed.');
+        message.error('Download failed.');
         setLoading(false);
-        const result = toCanvas();
-        if (!result) {
-          message.error('Download failed.');
-        }
+        // const result = toCanvas();
+        // if (!result) {
+        //   message.error('Download failed.');
+        // }
       });
     // toPng(ref.current, {
     //   cacheBust: true,

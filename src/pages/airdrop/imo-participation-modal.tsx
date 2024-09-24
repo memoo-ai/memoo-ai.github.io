@@ -70,7 +70,10 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
           <span>
             {formatDecimals(capped.multipliedBy(g).multipliedBy(idoUserBuyLimitBN))} {tokenSymbol}
           </span>
-          <span>~{formatDecimals(totalSupplyBN.multipliedBy(g).multipliedBy(idoUserBuyLimitBN))} TOKEN</span>
+          <span>
+            ~{Number(formatDecimals(totalSupplyBN.multipliedBy(g).multipliedBy(idoUserBuyLimitBN))).toLocaleString()}{' '}
+            TOKEN
+          </span>
         </div>
       ),
       value: parseFloat(formatDecimals(capped.multipliedBy(g).multipliedBy(idoUserBuyLimitBN))),

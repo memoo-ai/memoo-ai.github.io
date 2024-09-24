@@ -51,9 +51,11 @@ const ClaimImoTokensModal: FC<{ children: ReactNode }> = ({ children }) => {
       const tx = await idoClaim(solanaMemeConfig?.memeConfigId, solanaMemeConfig?.mintaPublickey);
       console.log('idoClaim tx:', tx);
       if (tx) {
+        triggerRefresh();
         setOpen(false);
         message.success('Claim Successful');
-        triggerRefresh();
+      } else {
+        message.error('Claim Failed');
       }
     } catch (error) {
       console.error(error);

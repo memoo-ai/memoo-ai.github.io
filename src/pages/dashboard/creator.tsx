@@ -46,6 +46,7 @@ interface CreatorContext {
   rate?: number;
   memeUserData?: MemeUserIdoData;
   creatorClaim?: (memeId: string, mintAPublicKey: string) => Promise<string | undefined>;
+  creatorClaimAll?: (memeId: string, mintAPublicKey: string, userCanClaimCount: number) => any;
   idoClaim?: (memeId: string, mintAPublicKey: string) => Promise<string | undefined>;
   // mintAPublickey?: PublicKey;
   solanaMemeConfig?: SolanaMemeConfig;
@@ -73,7 +74,8 @@ export const Creator = () => {
   const [stage, setStage] = useState<'1st' | '2nd'>('1st');
   const [unlockTimestamp, setUnlockTimestamp] = useState();
 
-  const { address, memooConfig, idoBuy, getMemeUserData, airdropClaim, creatorClaim, idoClaim } = useAccount();
+  const { address, memooConfig, idoBuy, getMemeUserData, airdropClaim, creatorClaim, idoClaim, creatorClaimAll } =
+    useAccount();
 
   const { firstProportion, maxProportion, firstIncrease, maxIncrease, platformCreateMeme, totalCapInitial } =
     useProportion();
@@ -109,6 +111,7 @@ export const Creator = () => {
       stage,
       solanaMemeConfig,
       creatorClaim,
+      creatorClaimAll,
       idoClaim,
       unlockTimestamp,
       memeUserData,
@@ -122,6 +125,7 @@ export const Creator = () => {
       stage,
       solanaMemeConfig,
       creatorClaim,
+      creatorClaimAll,
       idoClaim,
       unlockTimestamp,
       memeUserData,

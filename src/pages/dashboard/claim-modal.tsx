@@ -26,7 +26,7 @@ const ClaimModal = ({ children }: any) => {
   const { address } = useAccount();
   const [open, setOpen] = useState(false);
   const [confirming, setConfirming] = useState(false);
-  const { creatorClaim, stage, idoQueueDetail, solanaMemeConfig, unlockTimestamp, memeUserData } =
+  const { creatorClaim, creatorClaimAll, stage, idoQueueDetail, solanaMemeConfig, unlockTimestamp, memeUserData } =
     useContext(CreatorContext);
 
   const tokens = useMemo(() => {
@@ -58,10 +58,17 @@ const ClaimModal = ({ children }: any) => {
 
   const onConfirm = useCallback(async () => {
     // debugger;
-    if (!creatorClaim || !idoQueueDetail || !address || !solanaMemeConfig) return;
+    if (!creatorClaim || !idoQueueDetail || !address || !solanaMemeConfig || !creatorClaimAll) return;
     try {
       setConfirming(true);
-      const tx = await creatorClaim(solanaMemeConfig?.memeConfigId, solanaMemeConfig?.mintaPublickey);
+      const tx =
+        stage === '1st'
+          ? await creatorClaim(solanaMemeConfig?.memeConfigId, solanaMemeConfig?.mintaPublickey)
+          : await creatorClaimAll(
+              solanaMemeConfig?.memeConfigId,
+              solanaMemeConfig?.mintaPublickey,
+              Number(userCanClaimCount),
+            );
       if (tx) {
         setOpen(false);
         message.success('Unlock Successful');

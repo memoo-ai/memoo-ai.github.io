@@ -107,10 +107,10 @@ export default function AirdropClaim() {
   }, []);
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
-      console.log('handleMessage-event:', event);
+      // console.log('handleMessage-event:', event);
       const data = event.data;
-      console.log('Received data from child window:', data);
-      console.log('twitter-code', data.code);
+      // console.log('Received data from child window:', data);
+      // console.log('twitter-code', data.code);
       // debugger;
       let followingParams = null;
       try {

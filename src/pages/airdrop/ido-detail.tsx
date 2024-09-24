@@ -42,7 +42,7 @@ const IDODetail: FC = () => {
           value: idoLaunchedDetail?.increase24H ?? '0',
           formatValue: (value: string): ReactNode => <span className="text-green font-404px">{value}</span>,
         },
-        { key: 'Max Supply', value: `${idoQueueDetail?.totalSupply ?? 0}` },
+        { key: 'Max Supply', value: `${Number(idoQueueDetail?.totalSupply ?? 0).toLocaleString()}` },
         {
           key: 'All Time High',
           value: `$${formatDecimals(idoLaunchedDetail?.allTimeHigh ?? 0) ?? 0}`,

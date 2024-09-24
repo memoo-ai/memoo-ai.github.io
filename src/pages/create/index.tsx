@@ -54,6 +54,7 @@ import { memooConfig } from '@/types';
 import { useProportion } from '@/hooks/useProportion';
 import { IconMinus, IconPlus } from '@/components/icons';
 import ImgCrop from '@/components/ImgCrop';
+import useSolanaWallet from '@/utils/solanaWeb3/solanaWallet';
 
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
@@ -104,6 +105,8 @@ export default function Create() {
   const { getMemeAddressWithSymbol } = useMemeFactoryContract();
   const navigate = useNavigate();
   const createdTokenRef = useRef<CreatedTokenCompleteConnectedModalRef>(null);
+
+  const { balance } = useSolanaWallet();
   // const [memooConfig, setMemooConfig] = useState<memooConfig>();
   // useEffect(() => {
   //   (async () => {

@@ -1,3 +1,4 @@
+/* eslint-disable max-params */
 /* eslint-disable no-debugger */
 import { useWallet, useConnection, useAnchorWallet } from '@solana/wallet-adapter-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';

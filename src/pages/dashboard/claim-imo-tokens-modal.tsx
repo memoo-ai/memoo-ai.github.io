@@ -98,7 +98,7 @@ const ClaimImoTokensModal = ({ children }: any) => {
             />
             <div className="memoo_input h-[66px] font-404px text-white text-[24px] text-center flex items-center justify-center">
               <img className="w-[50px] h-[50px] rounded-[50%]" src={idoLaunchedDetail?.icon} alt="" />{' '}
-              <span>&nbsp;{userCanClaimCount} &nbsp;</span>
+              <span>&nbsp;{Number(userCanClaimCount).toLocaleString()} &nbsp;</span>
               <span>{idoLaunchedDetail?.ticker}</span>
             </div>
           </div>
