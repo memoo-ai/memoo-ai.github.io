@@ -9,7 +9,7 @@ import {
   IconMemoo,
   IconTelegram,
   IconFacebook,
-  IconGame,
+  IconDiscord,
   IconDownload,
   IconMore,
 } from '@/components/icons';
@@ -111,7 +111,7 @@ const CreatorRankingShareModal = ({ children, ticker }: any) => {
             <IconTelegram className="w-[20px] h-[18px]" color="#1F3B4F" />
           </div>
           <div className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]">
-            <IconGame />
+            <IconDiscord />
           </div>
           <div className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px]">
             <IconFacebook />

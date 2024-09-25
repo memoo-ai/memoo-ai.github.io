@@ -57,7 +57,7 @@ export const IconTelegram = forwardRef(
     );
   },
 );
-export const IconGame = forwardRef(
+export const IconDiscord = forwardRef(
   ({ className, hoverColor = '#B53BFF', color = '#1F3B4F', ...rest }: IconProps, ref) => {
     const [hovered, setHovered] = useState(false);
     useImperativeHandle(ref, () => ({

@@ -155,7 +155,7 @@ const IncreaseAcquisitionModal: FC<{
                 tooltip={{
                   open: true,
                   rootClassName: 'memoo_slider_tooltip',
-                  formatter: (value) => `${value}%`,
+                  formatter: (value) => `${value}% ${formatDecimals(result)} ${tokenSymbol}`,
                   getPopupContainer: () => sliderRef.current!,
                 }}
                 onChange={(value) => {

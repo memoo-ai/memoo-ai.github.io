@@ -9,7 +9,7 @@ import {
   IconMemoo,
   IconTelegram,
   IconFacebook,
-  IconGame,
+  IconDiscord,
   IconDownload,
   IconMore,
 } from '@/components/icons';

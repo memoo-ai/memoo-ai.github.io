@@ -52,7 +52,7 @@ import ITooltip from '@/components/ITooltip';
 import { getMemeConfigId } from '@/api/base';
 import { memooConfig } from '@/types';
 import { useProportion } from '@/hooks/useProportion';
-import { IconMinus, IconPlus } from '@/components/icons';
+import { IconMinus, IconPlus, IconDiscord, IconTelegram } from '@/components/icons';
 import ImgCrop from '@/components/ImgCrop';
 import useSolanaWallet from '@/utils/solanaWeb3/solanaWallet';
 
@@ -106,6 +106,7 @@ export default function Create() {
   const [bannerUrl, setBannerUrl] = useState('');
   const [connectTwitterLoading, setConnectTwitterLoading] = useState(false);
   const [twitter, setTwitter] = useState('');
+  const [createTwitter, setCreateTwitter] = useState('');
   const [twitterAccessToken, setTwitterAccessToken] = useState('');
   const [clientId, setClientId] = useState('');
   const [preMarketAcquisition, setPreMarketAcquisition] = useState(0);
@@ -214,6 +215,22 @@ export default function Create() {
           const { access_token, twitter } = res.data;
           setTwitterAccessToken(access_token);
           setTwitter(twitter);
+        });
+      } else if (data.code && data.state === 'twitter' && data.type === 'twitter_create') {
+        const clientId = localStorage.getItem(TWITTER_CLIENT_ID_KEY);
+        const params = {
+          code: data.code ?? '',
+          grantType: 'authorization_code',
+          // clientd: twitterClientId,
+          redirectUri: twitterRedirectUri,
+          codeVerifier: 'challenge',
+          refreshToken: '',
+          appClientId: clientId ?? '',
+        };
+        getTwitterAccessToken(params).then((res) => {
+          const { access_token, twitter } = res.data;
+          setTwitterAccessToken(access_token);
+          setCreateTwitter(twitter);
         });
       }
     };
@@ -839,19 +856,41 @@ export default function Create() {
                       )}
                     </div>
                   </Form.Item>
-                  <Form.Item label={<p>Website</p>} name="website">
+                  <Form.Item label={<p className="whitespace-pre-wrap">{`Project\nWebsite`}</p>} name="website">
                     <div className="reactive">
                       <Input className="custom-input rounded-[7px] px-8" />
                       <img className="website-logo" src="/create/icon-website.png" alt="" />
                     </div>
                   </Form.Item>
-                  {/* <Form.Item label="Creator's Twitter">
-                    <Input maxLength={20} />
+                  {/* <Form.Item label={<p className="whitespace-pre-wrap">{`Project\nTelegram`}</p>} name="telegram">
+                    <div className="reactive">
+                      <Input className="custom-input rounded-[7px] px-8" />
+                      <IconTelegram className="website-logo w-[17px] h-[15px]" hoverColor="#07E993" />
+                    </div>
+                  </Form.Item>
+                  <Form.Item label={<p className="whitespace-pre-wrap">{`Project\nDiscord`}</p>} name="discord">
+                    <div className="reactive">
+                      <Input className="custom-input rounded-[7px] px-8" />
+                      <IconDiscord className="website-logo w-[17px] h-[15px]" color="#07E993" hoverColor="#07E993" />
+                    </div>
+                  </Form.Item>
+                  <Form.Item label={<p>Creator’s Twitter</p>}>
                     <div className="flex items-center">
                       <img src="./token/icon-twitter.svg" className="w-4 h-4 mr-4" />
-                      <Button variant="secondary" className="w-[136px] h-[32px]">
-                        CONNECT
-                      </Button>
+                      {createTwitter && <img src="./create/icon-authed.svg" />}
+                      {!createTwitter && (
+                        <Button variant="secondary" className="w-[136px] h-[32px]" onClick={connectTwitter}>
+                          CONNECT
+                        </Button>
+                      )}
+                    </div>
+                  </Form.Item>
+                  <Form.Item label={<p className="whitespace-pre-wrap">{`Pinned\nTwitter links`}</p>} name="discord">
+                    <div className="flex flex-col items-center gap-y-[15px]">
+                      <Input className="custom-input rounded-[7px] px-8" />
+                      <Input className="custom-input rounded-[7px] px-8" />
+                      <Input className="custom-input rounded-[7px] px-8" />
+                      <Input className="custom-input rounded-[7px] px-8" />
                     </div>
                   </Form.Item> */}
                 </div>

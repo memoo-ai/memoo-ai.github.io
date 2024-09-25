@@ -19,7 +19,7 @@ import {
   IconMemoo,
   IconTelegram,
   IconFacebook,
-  IconGame,
+  IconDiscord,
   IconDownload,
   IconMore,
 } from '@/components/icons';
@@ -260,9 +260,9 @@ const CreatorRankingShareModal = ({ children, memooScore, meMessage }: any) => {
               className="w-[20px] h-[18px]"
             />
           </a>
-          {/* <a className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px] link-hover"      onMouseOver={() => iconRefs.current[`IconGame`].setHovered(true)}
-            onMouseLeave={() => iconRefs.current[`IconGame`].setHovered(false)}>
-            <IconGame color="#1F3B4F" hoverColor="#07E993" ref={(ref) => (iconRefs.current[`IconGame`] = ref)} />
+          {/* <a className="w-[40px] h-[40px] flex items-center justify-center bg-[#07E993] rounded-[7px] link-hover"      onMouseOver={() => iconRefs.current[`IconDiscord`].setHovered(true)}
+            onMouseLeave={() => iconRefs.current[`IconDiscord`].setHovered(false)}>
+            <IconDiscord color="#1F3B4F" hoverColor="#07E993" ref={(ref) => (iconRefs.current[`IconDiscord`] = ref)} />
           </a> */}
           <a
             onClick={() => popupSharing(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`)}

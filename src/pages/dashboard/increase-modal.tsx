@@ -124,7 +124,11 @@ const IncreaseModal: FC<{
               </span>
               <Slider
                 className="memoo_slider flex-auto"
-                tooltip={{ open: true, rootClassName: 'memoo_slider_tooltip', formatter: (value) => `${value}%` }}
+                tooltip={{
+                  open: true,
+                  rootClassName: 'memoo_slider_tooltip',
+                  formatter: (value) => `${value}% ${formatDecimals(result)} ${tokenSymbol}`,
+                }}
                 onChange={(value) => {
                   if (value > defaultProportion) {
                     setProportion(value);
