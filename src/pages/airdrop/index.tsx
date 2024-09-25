@@ -219,6 +219,10 @@ const Airdrop: FC = () => {
   );
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  useEffect(() => {
     (async () => {
       try {
         setLoading(true);

@@ -150,7 +150,7 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data,
             );
           })
         ) : (
-          <div className="w-[100%]">
+          <div className="w-[100%] h-[600px]">
             <Empty className="h-[513px]" />
           </div>
         )}
