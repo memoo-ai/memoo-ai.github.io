@@ -3,7 +3,7 @@ import './public-sale.scss';
 import { Button, Popover } from 'antd';
 import classNames from 'classnames';
 import { AirdropContext } from '.';
-import { formatDecimals } from '@/utils';
+import { formatDecimals, formatRatioToPercentage } from '@/utils';
 import Wallet from '@/components/Wallet';
 // import { useAccount } from 'wagmi';
 import { useAccount } from '@/hooks/useWeb3';
@@ -11,6 +11,7 @@ import { IconLaunchedBtn } from '@/components/icons';
 import ClaimImoTokensModal from './claim-imo-tokens-modal';
 import ITooltip from '@/components/ITooltip';
 import { useProportion } from '@/hooks/useProportion';
+import IProgress from '@/components/IProgress';
 
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const PublicSale: FC = () => {
@@ -20,15 +21,25 @@ const PublicSale: FC = () => {
   const { totalSupplyPrice, tokenAllocationIdo, idoUserBuyLimit } = useProportion();
   const params = useMemo(
     () => [
-      { key: 'Market Cap', value: `$${formatDecimals(idoQueueDetail?.marketCap ?? 0)}`, tip: null, big: false },
+      {
+        key: 'Market Cap',
+        value: `$${formatDecimals(idoQueueDetail?.marketCap ?? 0)}`,
+        tip: null,
+        big: false,
+        progress: null,
+      },
 
-      { key: 'Price', value: `$${formatDecimals(idoQueueDetail?.price ?? 0)}`, tip: null, big: false },
+      { key: 'Price', value: `$${formatDecimals(idoQueueDetail?.price ?? 0)}`, tip: null, big: false, progress: null },
 
       {
         key: 'Total Raised',
         value: `${idoQueueDetail?.totalRaised ?? 'NA/NA'} ${tokenSymbol}`,
         tip: `Total IMO raise is always\ncapped at ${totalSupplyPrice * tokenAllocationIdo} ${tokenSymbol}`,
         big: false,
+        progress: formatRatioToPercentage(
+          idoQueueDetail?.totalRaisedNumerator ?? 0,
+          idoQueueDetail?.totalRaisedDenominator ?? 0,
+        ),
       },
       {
         key: 'Contributed',
@@ -36,6 +47,7 @@ const PublicSale: FC = () => {
         value: `${totalSupplyPrice * idoUserBuyLimit} ${tokenSymbol}`,
         tip: `Contributed per wallet\nis capped at ${totalSupplyPrice * idoUserBuyLimit} ${tokenSymbol}`,
         big: true,
+        progress: null,
       },
     ],
     [idoLaunchedDetail, idoQueueDetail, totalSupplyPrice, idoUserBuyLimit, tokenAllocationIdo],
@@ -71,7 +83,10 @@ const PublicSale: FC = () => {
                   <ITooltip className="h-[12px] " placement="bottom" title={item.tip} color="#fff" bgColor="#396D93" />
                 )}
               </label>
-              <var className={`text-white ${item.big ? 'text-2xl' : 'text-lg'} font-OCR leading-5`}>{item.value}</var>
+              <div>
+                <var className={`text-white ${item.big ? 'text-2xl' : 'text-lg'} font-OCR leading-5`}>{item.value}</var>
+                {item.progress && <IProgress className="other_progress" percent={item.progress} />}
+              </div>
             </li>
           ))}
         </ul>

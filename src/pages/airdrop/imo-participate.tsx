@@ -5,12 +5,13 @@ import { Button } from 'antd';
 import classNames from 'classnames';
 import { AirdropContext } from '.';
 import ImoParticipationModal from './imo-participation-modal';
-import { formatDecimals } from '@/utils';
+import { formatDecimals, formatRatioToPercentage } from '@/utils';
 import ITooltip from '@/components/ITooltip';
 import { useProportion } from '@/hooks/useProportion';
 import { useAccount } from '@/hooks/useWeb3';
 import message from '@/components/IMessage';
 import Wallet from '@/components/SolanaWallet';
+import IProgress from '@/components/IProgress';
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const IMOParticipate: FC = () => {
   const { idoActiveDetail, idoQueueDetail, mine, stage } = useContext(AirdropContext);
@@ -27,6 +28,7 @@ const IMOParticipate: FC = () => {
         value: `${formatDecimals(idoActiveDetail?.price ? idoActiveDetail?.price : 0) ?? 0} ${stage === 'imo' ? tokenSymbol : ''}`,
         tip: null,
         big: false,
+        progress: null,
       },
       // { key: 'Price', value: `$${Number(idoActiveDetail?.price).toLocaleString() ?? 0}`, tip: null },
       {
@@ -34,6 +36,10 @@ const IMOParticipate: FC = () => {
         value: `${idoActiveDetail?.totalRaised === '' ? 0 : (idoActiveDetail?.totalRaised ?? 'NA/NA')} ${tokenSymbol}`,
         tip: `Total IMO raise is always\ncapped at ${totalSupplyPrice * tokenAllocationIdo} ${tokenSymbol}`,
         big: false,
+        progress: formatRatioToPercentage(
+          idoActiveDetail?.totalRaisedNumerator ?? 0,
+          idoActiveDetail?.totalRaisedDenominator ?? 0,
+        ),
       },
       {
         key: 'Contributed',
@@ -41,6 +47,7 @@ const IMOParticipate: FC = () => {
         value: `${totalSupplyPrice * idoUserBuyLimit} ${tokenSymbol}`,
         tip: `Contribution per wallet\nis capped at ${totalSupplyPrice * idoUserBuyLimit} ${tokenSymbol}`,
         big: true,
+        progress: null,
       },
     ],
     [idoActiveDetail, idoQueueDetail, tokenAllocationIdo, idoUserBuyLimit, totalSupplyPrice],
@@ -91,14 +98,17 @@ const IMOParticipate: FC = () => {
         </div>
         <ul className="mt-6 params_list flex flex-col gap-y-6 w-full">
           {params.map((item) => (
-            <li key={item.key} className="flex justify-between">
+            <li key={item.key} className="flex justify-between items-start">
               <label className="text-white text-xs font-OCR leading-4 flex items-center gap-x-1.5">
                 {item.key}{' '}
                 {item.tip && (
                   <ITooltip className="h-[12px]" placement="bottom" title={item.tip} color="#fff" bgColor="#396D93" />
                 )}
               </label>
-              <var className={`text-white ${item.big ? 'text-2xl' : 'text-lg'} font-OCR leading-5`}>{item.value}</var>
+              <div>
+                <var className={`text-white ${item.big ? 'text-2xl' : 'text-lg'} font-OCR leading-5`}>{item.value}</var>
+                {item.progress && <IProgress className="other_progress" percent={item.progress} />}
+              </div>
             </li>
           ))}
         </ul>

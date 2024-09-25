@@ -102,6 +102,8 @@ declare interface IDOActiveDetail extends IDOClaimStage {
   totalSupply: string;
   twitter: string;
   website: string;
+  totalRaisedNumerator: string;
+  totalRaisedDenominator: string;
   rewardEndsIn: number;
 }
 
@@ -231,6 +233,8 @@ declare interface IDOQueueDetail extends IDOClaimStage {
   memooScore: memooScore[];
   unlockPrice: string;
   unlockTime: string;
+  totalRaisedNumerator: string;
+  totalRaisedDenominator: string;
 }
 
 declare type IDOStatus = 'Draft' | 'Waiting_for_pay' | 'QUEUE' | 'IDO' | 'Launched' | 'IDOEND';
@@ -249,6 +253,8 @@ declare interface LaunchpadIMO {
   ticker: string;
   tokenName: string;
   totalRaised: string;
+  totalRaisedDenominator: string;
+  totalRaisedNumerator: string;
   totalScore: number;
 }
 declare interface LaunchpadAirdrop {

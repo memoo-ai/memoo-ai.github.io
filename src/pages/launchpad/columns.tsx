@@ -78,13 +78,16 @@ export const columns = (navigate: (path: string) => void) => [
     dataIndex: 'totalRaised',
     key: 'totalRaised',
     sorter: false,
-    render: (totalRaised: number, record: LaunchpadIMO) => (
+    render: (totalRaised: string, record: LaunchpadIMO) => (
       <div className="flex flex-col justify-end items-start pt-5">
         <span className="font-OCR font-norma text-lg">
           {totalRaised}&nbsp;
           {tokenSymbol}
         </span>
-        <IProgress className="w-[130px]" percent={formatRatioToPercentage(0, record.totalScore)} />
+        <IProgress
+          className="w-[130px]"
+          percent={formatRatioToPercentage(Number(record.totalRaisedNumerator), Number(record.totalRaisedDenominator))}
+        />
       </div>
     ),
     // width: '140px',
