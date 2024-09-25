@@ -275,39 +275,50 @@ export default function AirdropClaim() {
               Follow @{item.user}
               {'\n'}on twitter
             </p>
-            {address &&
-              //   ? (
-              //   <Wallet>
-              //     {stage === 'in-queue' && (
-              //       <img
-              //         onClick={() => (item.followed ? null : handleFollow(item.user ? item.user : ''))}
-              //         className={classNames('w-5', {
-              //           'cursor-pointer': !item.followed,
-              //           'opacity-30': !address,
-              //         })}
-              //         src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
-              //       />
-              //     )}
-              //   </Wallet>
-              // ) :
-              stage === 'in-queue' && (
-                <IconFollow
-                  onClick={() => (item.followed ? null : handleFollow(item.user ? item.user : ''))}
-                  className={classNames('w-5', {
-                    'cursor-pointer': !item.followed,
-                    'opacity-30': item.followed && address,
-                  })}
-                  hoverColor={item.followed ? '#07E993' : '#fff'}
-                />
-                // <img
+            {
+              address &&
+                //   ? (
+                //   <Wallet>
+                //     {stage === 'in-queue' && (
+                //       <img
+                //         onClick={() => (item.followed ? null : handleFollow(item.user ? item.user : ''))}
+                //         className={classNames('w-5', {
+                //           'cursor-pointer': !item.followed,
+                //           'opacity-30': !address,
+                //         })}
+                //         src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
+                //       />
+                //     )}
+                //   </Wallet>
+                // ) :
+                stage === 'in-queue' &&
+                (item.followed ? (
+                  <img
+                    className={classNames('w-5', {
+                      'cursor-pointer': !item.followed,
+                      'opacity-30': !address,
+                    })}
+                    src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
+                  />
+                ) : (
+                  <IconFollow
+                    onClick={() => (item.followed ? null : handleFollow(item.user ? item.user : ''))}
+                    className={classNames('w-5', {
+                      'cursor-pointer': !item.followed,
+                      'opacity-30': item.followed && address,
+                    })}
+                    hoverColor={item.followed ? '#07E993' : '#fff'}
+                  />
+                ))
+              // <img
 
-                //   className={classNames('w-5', {
-                //     'cursor-pointer': !item.followed,
-                //     'opacity-30': item.followed && address,
-                //   })}
-                //   src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
-                // />
-              )}
+              //   className={classNames('w-5', {
+              //     'cursor-pointer': !item.followed,
+              //     'opacity-30': item.followed && address,
+              //   })}
+              //   src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
+              // />
+            }
           </li>
         ))}
         {/* <li className="follow_list_item flex items-center w-full justify-between px-3 py-3.5" onClick={testAirdrop} /> */}
