@@ -3,6 +3,9 @@ import { LaunchpadIMO, LaunchpadAirdrop } from '@/types';
 import { formatTs, formatRatioToPercentage } from '@/utils';
 import IProgress from '@/components/IProgress';
 import Countdown from '@/pages/airdrop/countdown';
+import { IconCollect } from '@/components/icons';
+import Sample from '@/components/Sample';
+
 export enum IDOStatus {
   active = 'active',
   upcoming = 'upcoming',
@@ -18,11 +21,36 @@ export const columns = (navigate: (path: string) => void) => [
     render: (tokenName: string, record: LaunchpadIMO) => (
       <div className="flex items-center">
         <img src={record.icon} alt="" className="w-[84px] h-[84px] rounded-full mr-5" />
-        <span className="font-OCR font-normal text-lg mr-2 text-[#ffffff]">{tokenName}</span>
+        <span className="font-OCR font-normal text-lg mr-2 text-[#ffffff] h-[84px] flex items-center relative">
+          {/* <Sample className="absolute left-0 top-0" /> */}
+          {tokenName}
+        </span>
         <span className="font-OCR font-normal text-[12px] text-[#07E993] mt-2">{record.ticker}</span>
       </div>
     ),
   },
+  // {
+  //   title: '',
+  //   dataIndex: 'endsIn',
+  //   key: 'endsIn',
+  //   sorter: false,
+  //   render: (endsIn: number) => (
+  //     <div>
+  //       <img className="w-[28px] h-[23px]" src="/create/topupicon.png" />
+  //     </div>
+  //   ),
+  // },
+  // {
+  //   title: '',
+  //   dataIndex: 'endsIn',
+  //   key: 'endsIn',
+  //   sorter: false,
+  //   render: (endsIn: number) => (
+  //     <div>
+  //       <IconCollect color="#3D255B" />
+  //     </div>
+  //   ),
+  // },
   {
     title: 'Ends In',
     dataIndex: 'endsIn',
@@ -31,7 +59,7 @@ export const columns = (navigate: (path: string) => void) => [
     render: (endsIn: number) => (
       // <div className="font-OCR font-normal text-lg ">{endsIn ? formatTs(endsIn ?? 0) : ''}</div>
       <Countdown
-        className=" flex gap-x-2 mt-5 font-OCR text-[17px] text-[#fff] line-[13px]"
+        className=" flex gap-x-2 font-OCR text-[17px] text-[#fff] line-[13px]"
         timefragments="timefragments-kings"
         format={([days, hours, minutes, seconds]) => [
           // <div key="days">
@@ -111,14 +139,40 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
     title: 'Token',
     dataIndex: 'tokenName',
     key: 'tokenName',
-    render: (tokenName: string, record: LaunchpadAirdrop) => (
+    width: '387px',
+    render: (tokenName: string, record: LaunchpadIMO) => (
       <div className="flex items-center">
         <img src={record.icon} alt="" className="w-[84px] h-[84px] rounded-full mr-5" />
-        <span className="font-OCR font-bold text-lg mr-2">{tokenName}</span>
+        <span className="font-OCR font-normal text-lg mr-2 text-[#ffffff] h-[84px] flex items-center relative">
+          {/* <Sample className="absolute left-0 top-0" /> */}
+          {tokenName}
+        </span>
         <span className="font-OCR font-normal text-[12px] text-[#07E993] mt-2">{record.ticker}</span>
       </div>
     ),
   },
+  // {
+  //   title: '',
+  //   dataIndex: 'endsIn',
+  //   key: 'endsIn',
+  //   sorter: false,
+  //   render: (endsIn: number) => (
+  //     <div>
+  //       <img className="w-[28px] h-[23px]" src="/create/topupicon.png" />
+  //     </div>
+  //   ),
+  // },
+  // {
+  //   title: '',
+  //   dataIndex: 'collect',
+  //   key: 'collect',
+  //   sorter: false,
+  //   render: (endsIn: number) => (
+  //     <div>
+  //       <IconCollect color="#3D255B" />
+  //     </div>
+  //   ),
+  // },
   {
     title: 'IMO Date',
     dataIndex: 'idoDate',

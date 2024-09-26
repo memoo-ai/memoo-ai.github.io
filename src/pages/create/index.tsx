@@ -862,7 +862,7 @@ export default function Create() {
                       <img className="website-logo" src="/create/icon-website.png" alt="" />
                     </div>
                   </Form.Item>
-                  {/* <Form.Item label={<p className="whitespace-pre-wrap">{`Project\nTelegram`}</p>} name="telegram">
+                  <Form.Item label={<p className="whitespace-pre-wrap">{`Project\nTelegram`}</p>} name="telegram">
                     <div className="reactive">
                       <Input className="custom-input rounded-[7px] px-8" />
                       <IconTelegram className="website-logo w-[17px] h-[15px]" hoverColor="#07E993" />
@@ -885,14 +885,17 @@ export default function Create() {
                       )}
                     </div>
                   </Form.Item>
-                  <Form.Item label={<p className="whitespace-pre-wrap">{`Pinned\nTwitter links`}</p>} name="discord">
+                  <Form.Item
+                    label={<p className="whitespace-pre-wrap">{`Pinned\nTwitter links`}</p>}
+                    name="twitterLinks"
+                  >
                     <div className="flex flex-col items-center gap-y-[15px]">
                       <Input className="custom-input rounded-[7px] px-8" />
                       <Input className="custom-input rounded-[7px] px-8" />
                       <Input className="custom-input rounded-[7px] px-8" />
                       <Input className="custom-input rounded-[7px] px-8" />
                     </div>
-                  </Form.Item> */}
+                  </Form.Item>
                 </div>
               )}
             </div>

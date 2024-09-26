@@ -27,7 +27,7 @@ import {
 } from '@/api/token';
 import qs from 'qs';
 import { Button as ConnectButton } from '@/components/ui/button';
-import { IconTwitter, IconUpload, IconWebsite } from '@/components/icons';
+import { IconTwitter, IconUpload, IconWebsite, IconTelegram, IconDiscord } from '@/components/icons';
 import { Trash } from 'lucide-react';
 import { REQUEST_FOLLOWING_STORAGE, UPDATE_PROJECT_TWITTER_STORAGE, EDIT_INFO_STORAGE } from '@/constants';
 import { useSearchParams } from 'react-router-dom';
@@ -55,6 +55,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
   const [twitterAccessToken, setTwitterAccessToken] = useState('');
   const [projectBannerUrl, setProjectBannerUrl] = useState('');
   const [twitter, setTwitter] = useState('');
+  const [createTwitter, setCreateTwitter] = useState('');
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [cropLoading, setCropLoading] = useState(false);
   const [projectDetail, setProjectDetail] = useState({});
@@ -475,26 +476,37 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
               <img className="website-logo" src="/create/icon-website.png" alt="" />
             </div>
           </Form.Item>
-          {/* <Form.Item label={<p className="w-[113px] whitespace-normal edit-form-label">Creator’s Twitter</p>}>
+          <Form.Item label={<p className="whitespace-pre-wrap">{`Project\nTelegram`}</p>} name="telegram">
+            <div className="reactive">
+              <Input className="custom-input rounded-[7px] px-8" />
+              <IconTelegram className="website-logo w-[17px] h-[15px]" hoverColor="#07E993" />
+            </div>
+          </Form.Item>
+          <Form.Item label={<p className="whitespace-pre-wrap">{`Project\nDiscord`}</p>} name="discord">
+            <div className="reactive">
+              <Input className="custom-input rounded-[7px] px-8" />
+              <IconDiscord className="website-logo w-[17px] h-[15px]" color="#07E993" hoverColor="#07E993" />
+            </div>
+          </Form.Item>
+          {/* <Form.Item label={<p>Creator’s Twitter</p>}>
             <div className="flex items-center">
-              <div style={{ width: '15px' }} className="mr-[7px]">
-                <IconTwitter hoverColor="#07E993" className="" />
-              </div>
-              {twitterAccessToken && <img src="./create/icon-authed.svg" />}
-              {!twitterAccessToken && (
-                <ConnectButton variant="secondary" className="w-[136px] h-[32px]" onClick={connectTwitter}>
+              <img src="./token/icon-twitter.svg" className="w-4 h-4 mr-4" />
+              {createTwitter && <img src="./create/icon-authed.svg" />}
+              {!createTwitter && (
+                <Button variant="secondary" className="w-[136px] h-[32px]" onClick={connectTwitter}>
                   CONNECT
-                </ConnectButton>
+                </Button>
               )}
             </div>
           </Form.Item> */}
-          {/* <Form.Item
-            label={<p className="w-[113px] whitespace-normal edit-form-label">Pinned Twitter links</p>}
-            name="links"
-          >
-            <Input maxLength={20} className="custom-input" />
-            <Input maxLength={20} className="custom-input mt-[15px]" />
-          </Form.Item> */}
+          <Form.Item label={<p className="whitespace-pre-wrap">{`Pinned\nTwitter links`}</p>} name="twitterLinks">
+            <div className="flex flex-col items-center gap-y-[15px]">
+              <Input className="custom-input rounded-[7px] px-8" />
+              <Input className="custom-input rounded-[7px] px-8" />
+              <Input className="custom-input rounded-[7px] px-8" />
+              <Input className="custom-input rounded-[7px] px-8" />
+            </div>
+          </Form.Item>
         </Form>
         <div className="edit_project flex flex-col">
           <Button className="memoo_button mt-4 h-[50px]" onClick={() => handleSave(true)} loading={confirmLoading}>

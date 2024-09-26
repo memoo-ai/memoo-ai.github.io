@@ -45,6 +45,7 @@ import MeMooScoreBreakdown from './memoo-score-breakdown';
 import { BN } from '@coral-xyz/anchor';
 import { getMemeConfigId } from '@/api/base';
 import { PublicKey, RpcResponseAndContext, SignatureResult } from '@solana/web3.js';
+import PinnedTweet from './pinned-tweet';
 
 interface AirdropContext {
   stage: TokenCreateStage;
@@ -392,6 +393,7 @@ const Airdrop: FC = () => {
           <Banner />
           <Profile />
           <MeMooScoreBreakdown />
+          <PinnedTweet />
         </AirdropContext.Provider>
       </div>
     </div>
