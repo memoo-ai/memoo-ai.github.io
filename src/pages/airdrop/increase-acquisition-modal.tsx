@@ -1,5 +1,6 @@
 /* eslint-disable no-debugger */
-import { Button, Checkbox, Input, Modal, Slider, message } from 'antd';
+import { Button, Checkbox, Input, Modal, Slider } from 'antd';
+import message from '@/components/IMessage';
 import {
   Children,
   FC,
@@ -9,7 +10,9 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
   useState,
+  useRef,
 } from 'react';
 import './increase-acquisition-modal.scss';
 import { formatDecimals } from '@/utils';
@@ -32,11 +35,14 @@ const IncreaseAcquisitionModal: FC<{
   const [open, setOpen] = useState(false);
   const [accepted, setAccepted] = useState(false);
   const [confirming, setConfirming] = useState(false);
-  const [proportion, setProportion] = useState(0.05);
+  const [proportion, setProportion] = useState(0);
   const [result, setResult] = useState(0);
   const [defaultProportion, setDefaultProportion] = useState(0);
+  const [sliderKey, setSliderKey] = useState(0);
   // const { idoBuy, idoQueueDetail } = useContext(AirdropContext);
   const { idoQueueDetail, mine, idoBuy, solanaMemeConfig, memooConfig, triggerRefresh } = useContext(AirdropContext);
+  const [tipRerender, setTipRerender] = useState(0);
+  const sliderRef = useRef<HTMLDivElement>(null);
   // const { idoBuy } = useAccount();
   // const defaultValue = purchased * 100;
   // useEffect(() => {
@@ -76,9 +82,9 @@ const IncreaseAcquisitionModal: FC<{
 
     console.log('defaultValue-purchased:', Number(purchased));
     console.log('defaultValue:', Number(defaultValue));
-    setProportion(Number(defaultValue ?? 0.05) * 100);
-    setDefaultProportion(Number(defaultValue ?? 0.05) * 100);
-  }, [purchased]);
+    setProportion(Number(defaultValue ?? 0) * 100);
+    setDefaultProportion(Number(defaultValue ?? 0) * 100);
+  }, [purchased, memooConfig]);
 
   const onConfirm = useCallback(async () => {
     if (!idoBuy || !idoQueueDetail || !solanaMemeConfig || !triggerRefresh) return;
@@ -109,6 +115,10 @@ const IncreaseAcquisitionModal: FC<{
     }
   }, [idoBuy, idoQueueDetail, result, firstIncrease]);
 
+  useLayoutEffect(() => {
+    if (open) setTimeout(() => setTipRerender((count) => count + 1), 200);
+  }, [open]);
+
   return (
     <>
       <Modal
@@ -127,24 +137,27 @@ const IncreaseAcquisitionModal: FC<{
                 <ITooltip
                   className="h-[12px] "
                   placement="bottom"
-                  title="Lorem ipsum dolor sit amet consectetur adipiscing elit.
-                Morbi fringilla ipsum turpisı sit amet tempus est malesuadased.
-                Integer fringilla magnavel orci ultricies fermentum.
-                Suspendisse sem est."
+                  title={`Creators can secure up to an additional ${maxProportion * 100}% of the meme token before the launch.`}
                   color="#fff"
                   bgColor="#396D93"
                 />
                 {/* <img className="h-[12px] object-contain" src="/create/tip.png" /> */}
               </div>
             </div>
-            <div className="flex flex-auto items-center gap-x-3">
+            <div className="flex flex-auto items-center gap-x-3" ref={sliderRef}>
               <span className="whitespace-nowrap text-base font-OCR text-white leading-[16px]">
                 {/* {firstIncrease} {tokenSymbol} */}
                 {0} {tokenSymbol}
               </span>
               <Slider
+                key={tipRerender}
                 className="memoo_slider flex-auto"
-                tooltip={{ open: true, rootClassName: 'memoo_slider_tooltip', formatter: (value) => `${value}%` }}
+                tooltip={{
+                  open: true,
+                  rootClassName: 'memoo_slider_tooltip',
+                  formatter: (value) => `${value}% ${formatDecimals(result)} ${tokenSymbol}`,
+                  getPopupContainer: () => sliderRef.current!,
+                }}
                 onChange={(value) => {
                   if (value > defaultProportion) {
                     setProportion(value);
@@ -154,16 +167,16 @@ const IncreaseAcquisitionModal: FC<{
                 }}
                 value={proportion}
                 max={maxProportion * 100}
-                min={firstProportion * 100}
-                // defaultValue={defaultValue}
+                min={0}
+                defaultValue={defaultProportion}
               />
               <span className="whitespace-nowrap text-base font-OCR text-white leading-[16px]">
                 {maxIncrease} {tokenSymbol}
               </span>
             </div>
           </div>
-          <p className="font-OCR text-[#4889B7] whitespace-pre-wrap mt-[7px] mb-[19px]">
-            {`Creator can increase initial\nallocation from ${firstProportion * 100}% to ${maxProportion * 100}%.`}
+          <p className="font-OCR text-[#4889B7] text-[10px] leading-3 whitespace-pre-wrap mt-[7px] mb-[19px]">
+            {`Creator can increase initial allocation\nby purchasing an additional ${maxProportion * 100}%.`}
           </p>
           <Input
             className="memoo_input h-[66px]"
@@ -183,7 +196,7 @@ const IncreaseAcquisitionModal: FC<{
             I accept MeMoo’s <a className="contents text-green">Terms & Conditions.</a>
           </Checkbox>
           <Button
-            disabled={!accepted || result - purchased === 0}
+            disabled={!accepted || result === 0}
             className="memoo_button h-[50px]"
             loading={confirming}
             onClick={onConfirm}

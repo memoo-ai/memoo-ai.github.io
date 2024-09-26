@@ -7,7 +7,7 @@ import IProgress from '@/components/IProgress';
 // You can use a Zod schema here if you want.
 
 import { TrendingTokens } from '@/types';
-import { formatDecimals } from '@/utils';
+import { formatDecimals, formatRatioToPercentage } from '@/utils';
 
 export const columnsOld: ColumnDef<TrendingTokens>[] = [
   {
@@ -75,7 +75,7 @@ export const columns = [
     dataIndex: 'price',
     key: 'price',
     sorter: false,
-    render: (price: number) => <div className="font-normal text-lg ">SOL {formatDecimals(price)}</div>,
+    render: (price: number) => <div className="font-normal text-lg ">${formatDecimals(price)}</div>,
   },
   {
     title: '1h',
@@ -121,15 +121,28 @@ export const columns = [
     dataIndex: 'memooScore',
     key: 'memooScore',
     sorter: false,
-    render: (memooScore: number) => (
+    render: (memooScore: number, record: TrendingTokens) => (
       <div className="flex flex-col justify-end items-end pt-5">
-        <span>{memooScore ?? 0}</span>
-        <IProgress percent={memooScore} />
+        <span>{formatRatioToPercentage(memooScore, record.totalScore)}</span>
+        <IProgress percent={formatRatioToPercentage(memooScore, record.totalScore)} />
       </div>
     ),
   },
 ];
 export const tokenSelectOptions = [
+  // {
+  //   key: 'Newest',
+  //   label: 'Newest',
+  // },
+  // {
+  //   key: 'IDODate',
+  //   label: 'IMO Date',
+  // },
+  // {
+  //   key: 'Participants',
+  //   label: 'Participants',
+  // },
+
   {
     key: 'price',
     label: 'price',
@@ -150,4 +163,8 @@ export const tokenSelectOptions = [
     key: 'marketCap',
     label: 'MarketCap',
   },
+  // {
+  //   key: 'memooScore',
+  //   label: 'Memoo Score',
+  // },
 ];

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { LaunchpadIDOCompeted } from '@/types';
 import Empty from '@/components/Empty';
 import background from '@/assets/imgs/card-bg.png';
+import { formatRatioToPercentage } from '@/utils';
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 export const ActiveIdoCard = () => {
   const [idos, setIdos] = useState<LaunchpadIDOCompeted[]>([]);
@@ -51,7 +52,7 @@ export const ActiveIdoCard = () => {
               <div className="ido-info-item ido-info-item-border">
                 <img src="./dashboard/icon-ido-score.svg" alt="" className="w-5 h-5 mr-1" />
                 <span>Memoo Score</span>
-                <span>{ido.memooScore ?? 0}/100</span>
+                <span>{formatRatioToPercentage(ido.memooScore, ido.totalScore)}/100</span>
               </div>
               <div className="ido-info-item">
                 <img src="./dashboard/icon-raised-target.svg" alt="" className="w-5 h-5 mr-1" />
@@ -62,7 +63,7 @@ export const ActiveIdoCard = () => {
               </div>
               <Button
                 variant="second"
-                className="font-404px text-lg  w-full h-[50px] uppercase mt-[14px]"
+                className="font-404px text-lg font-[400]  w-full h-[50px] uppercase mt-[14px]"
                 onClick={() => {
                   navigate(`/airdrop/${ido.ticker}`);
                 }}

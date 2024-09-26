@@ -48,7 +48,7 @@ export const saveTokenCraft = (data: ITokenSaveData) => {
   return http.post(`${prefix}/web-oriented/token`, data);
 };
 
-export const uploadFile = (file: File): Promise<ApiResponse<{ file: string; fileUrl: string }>> => {
+export const uploadFile = (file: any): Promise<ApiResponse<{ file: string; fileUrl: string }>> => {
   const formData = new FormData();
   formData.set('file', file);
   return http.post(`${prefix}/web-oriented/file-upload`, formData, {
@@ -119,4 +119,11 @@ export interface ITokenEditInfo {
 }
 export const saveEditInfo = (data: ITokenEditInfo): Promise<ApiResponse<any>> => {
   return http.post(`${prefix}/web-oriented/project`, data);
+};
+export interface PayConfirm {
+  ticker: string;
+  txHash: string;
+}
+export const payConfirm = (data: PayConfirm): Promise<ApiResponse<any>> => {
+  return http.put(`${prefix}/web-oriented/pay-confirm`, data);
 };

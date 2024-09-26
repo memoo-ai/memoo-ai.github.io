@@ -9,6 +9,7 @@ import { Address } from '@/types';
 import { getTwitterClientId } from '@/api/token';
 import qs from 'qs';
 import { REQUEST_FOLLOWING_STORAGE } from '@/constants';
+import message from '@/components/IMessage';
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -120,10 +121,12 @@ export function clipAddress(address: string) {
   return `${address.slice(0, 5)}...${address.slice(-4)}`;
 }
 
-export function formatTs(ts: number, unit: 's' | 'ms' = 's') {
+export function formatTs(ts: number, unit: 's' | 'ms' = 's', type: 'default' | 'monthAndDay' = 'default') {
   const date = new Date((ts ?? 0) * (unit === 's' ? 1000 : 1));
-  const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' };
-  return ts === 0 ? '' : date.toLocaleDateString('en-US', options);
+  const options: Intl.DateTimeFormatOptions =
+    type === 'default' ? { day: '2-digit', month: 'short', year: 'numeric' } : { day: '2-digit', month: 'short' };
+  return ts === 0 ? '' : date.toLocaleDateString('en-GB', options);
+  // return ts === 0 ? '' : date.toLocaleDateString('en-US', options);
 }
 
 export function compareAddrs(addrA: Address, addrB: Address) {
@@ -161,22 +164,49 @@ export function calculateDaysDifference(a: number, b: number): number {
   return daysDifference;
 }
 
-export const authorizeTwitter = async (clientId: string, reidrectUri: string) => {
-  // const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
+export const authorizeTwitter = async (
+  clientId: string,
+  redirectUri: string,
+  scope = 'tweet.read+tweet.write+like.write+users.read+follows.read+follows.write',
+  state = 'twitter',
+  codeChallenge = 'challenge',
+  codeChallengeMethod = 'plain',
+  // eslint-disable-next-line max-params
+) => {
   const params = {
     response_type: 'code',
     client_id: clientId,
-    redirect_uri: reidrectUri,
-    scope: 'tweet.read%20tweet.write%20like.write%20users.read%20follows.read%20follows.write',
-    state: 'twitter',
-    code_challenge: 'challenge',
-    code_challenge_method: 'plain',
+    redirect_uri: redirectUri,
+    scope: scope,
+    state: state,
+    code_challenge: codeChallenge,
+    code_challenge_method: codeChallengeMethod,
   };
-  const url = new URL(`https://twitter.com/i/oauth2/authorize`);
-  url.search = qs.stringify(params, { encode: false });
 
-  window.location.href = url.href;
+  const twitterAuthUrl = `https://twitter.com/i/oauth2/authorize?${new URLSearchParams(params).toString()}`;
+
+  const newWindow = window.open(twitterAuthUrl, '_blank', 'width=600,height=700');
+  if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+    message.warning('To proceed, please allow pop-ups on this browser');
+  }
 };
+
+// export const authorizeTwitter = async (clientId: string, reidrectUri: string) => {
+//   // const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
+//   const params = {
+//     response_type: 'code',
+//     client_id: clientId,
+//     redirect_uri: reidrectUri,
+//     scope: 'tweet.read%20tweet.write%20like.write%20users.read%20follows.read%20follows.write',
+//     state: 'twitter',
+//     code_challenge: 'challenge',
+//     code_challenge_method: 'plain',
+//   };
+//   const url = new URL(`https://twitter.com/i/oauth2/authorize`);
+//   url.search = qs.stringify(params, { encode: false });
+
+//   window.location.href = url.href;
+// };
 
 export function formatRestTime(timestamp: number) {
   const seconds = Math.floor(timestamp / 1000);
@@ -237,4 +267,34 @@ export function formatNumberToFixed(input: string | number): string {
   const rounded = number.toFixed(2);
 
   return parseFloat(rounded).toString();
+}
+
+export function popupSharing(url: string) {
+  window.open(url, '_blank', 'width=600,height=700');
+}
+export function formatRatioToPercentage(a: number | string, b: number | string) {
+  if (b === 0) {
+    return 0;
+  }
+  const result = (Number(a) * 100) / Number(b);
+  return result.toFixed(0) ?? 0;
+}
+export function getBase64FromImageUrl(url: string, callback: Function) {
+  const img = new Image();
+  img.crossOrigin = 'Anonymous';
+  img.onload = function () {
+    const canvas = document.createElement('canvas');
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    const ctx = canvas.getContext('2d');
+    ctx!.drawImage(img, 0, 0, img.width, img.height);
+
+    const dataURL = canvas.toDataURL('image/png');
+    callback(dataURL);
+  };
+  img.onerror = function () {
+    callback(null);
+  };
+  img.src = url;
 }

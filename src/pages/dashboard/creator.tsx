@@ -46,6 +46,7 @@ interface CreatorContext {
   rate?: number;
   memeUserData?: MemeUserIdoData;
   creatorClaim?: (memeId: string, mintAPublicKey: string) => Promise<string | undefined>;
+  creatorClaimAll?: (memeId: string, mintAPublicKey: string, userCanClaimCount: number) => any;
   idoClaim?: (memeId: string, mintAPublicKey: string) => Promise<string | undefined>;
   // mintAPublickey?: PublicKey;
   solanaMemeConfig?: SolanaMemeConfig;
@@ -73,24 +74,32 @@ export const Creator = () => {
   const [stage, setStage] = useState<'1st' | '2nd'>('1st');
   const [unlockTimestamp, setUnlockTimestamp] = useState();
 
-  const { address, memooConfig, idoBuy, getMemeUserData, airdropClaim, creatorClaim, idoClaim } = useAccount();
+  const { address, memooConfig, idoBuy, getMemeUserData, airdropClaim, creatorClaim, idoClaim, creatorClaimAll } =
+    useAccount();
 
-  const { firstProportion, maxProportion, firstIncrease, maxIncrease, platformCreateMeme } = useProportion();
+  const { firstProportion, maxProportion, firstIncrease, maxIncrease, platformCreateMeme, totalCapInitial } =
+    useProportion();
 
   // const firstProportion = useMemo(() => Number(memooConfig?.allocation.creator) / 10000, [memooConfig]);
   const purchased = useMemo(() => {
-    if (!memooConfig || !memeUserData || !platformCreateMeme) return 0;
+    if (!memooConfig || !memeUserData) return 0;
 
     const creatorLockCountBN = new BigNumber(Number(memeUserData?.creatorLockCount)).dividedBy(10 ** 9);
+    console.log('creatorLockCountBN:', Number(creatorLockCountBN));
     const memeUserIdoCountBN = new BigNumber(Number(memeUserData?.memeUserIdoCount)).dividedBy(10 ** 9);
+    console.log('memeUserIdoCountBN:', Number(memeUserIdoCountBN));
     const idoPriceBN = new BigNumber(Number(memooConfig?.idoPrice)).dividedBy(10 ** 10);
+    console.log('idoPriceBN:', Number(idoPriceBN), 'idoPriceBN-string:', idoPriceBN.toString());
     const totalCountBN = creatorLockCountBN.plus(memeUserIdoCountBN);
+    console.log('totalCountBN:', Number(totalCountBN));
     const totalPurchasedBN = totalCountBN.multipliedBy(idoPriceBN);
+    console.log('totalPurchasedBN:', Number(totalPurchasedBN));
     const formattedResult = parseFloat(formatDecimals(totalPurchasedBN));
-    const result = platformCreateMeme + formattedResult;
-    console.log('purchased: ', parseFloat(formatDecimals(result)));
-    return parseFloat(formatDecimals(result));
-  }, [memooConfig, memeUserData, platformCreateMeme]);
+    console.log('purchased-formattedResult:', formattedResult);
+    // console.log('purchased-platformCreate:', platformCreateMeme);
+    const result = formattedResult;
+    return result;
+  }, [memooConfig, memeUserData]);
 
   const context: CreatorContext = useMemo(
     () => ({
@@ -102,6 +111,7 @@ export const Creator = () => {
       stage,
       solanaMemeConfig,
       creatorClaim,
+      creatorClaimAll,
       idoClaim,
       unlockTimestamp,
       memeUserData,
@@ -115,6 +125,7 @@ export const Creator = () => {
       stage,
       solanaMemeConfig,
       creatorClaim,
+      creatorClaimAll,
       idoClaim,
       unlockTimestamp,
       memeUserData,
@@ -229,7 +240,7 @@ export const Creator = () => {
       case 'QUEUE':
         button = (
           <IncreaseModal
-            maxIncrease={maxIncrease}
+            maxIncrease={totalCapInitial}
             firstProportion={firstProportion}
             maxProportion={maxProportion}
             firstIncrease={firstIncrease}
@@ -252,7 +263,7 @@ export const Creator = () => {
       case 'IDO':
         button = (
           <IncreaseModal
-            maxIncrease={maxIncrease}
+            maxIncrease={totalCapInitial}
             firstProportion={firstProportion}
             maxProportion={maxProportion}
             firstIncrease={firstIncrease}
@@ -283,7 +294,7 @@ export const Creator = () => {
         );
         break;
       case 'Launched':
-        button = (
+        button = item.stageOneClaim && (
           <ClaimModal ticker={item.ticker}>
             {' '}
             <Button

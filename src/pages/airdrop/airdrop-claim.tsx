@@ -3,7 +3,8 @@ import { useCallback, useContext, useMemo, useState, useEffect } from 'react';
 import Countdown from './countdown';
 import { TokenCreateStage } from '@/types';
 import './airdrop-claim.scss';
-import { Button, Popover, Spin, message } from 'antd';
+import { Button, Popover, Spin } from 'antd';
+import message from '@/components/IMessage';
 import classNames from 'classnames';
 import { AirdropContext } from '../airdrop';
 import { follow } from '@/api/airdrop';
@@ -13,11 +14,12 @@ import { getTwitterClientId, requestTwitterFollow } from '@/api/token';
 import { authorizeTwitter } from '@/utils';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import BigNumber from 'bignumber.js';
-import { IconWallet } from '@/components/icons';
+import { IconWallet, IconFollow } from '@/components/icons';
 import Wallet from '@/components/SolanaWallet';
 import { useAccount } from '@/hooks/useWeb3';
 import ITooltip from '@/components/ITooltip';
-const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
+import { useProportion } from '@/hooks/useProportion';
+const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_AIRDROP_REDIRECT_URI;
 let isRequestFollowing = false;
 export default function AirdropClaim() {
   const { stage, idoQueueDetail, idoLaunchedDetail, idoActiveDetail, triggerRefresh, ticker, memeUserData } =
@@ -26,6 +28,7 @@ export default function AirdropClaim() {
   const [searchParams] = useSearchParams();
   const [confirming, setConfirming] = useState(false);
   const { address } = useAccount();
+  const { tokenAllocationAirdrop } = useProportion();
 
   const follows = useMemo(
     () => [
@@ -80,6 +83,9 @@ export default function AirdropClaim() {
 
   const handleFollow = useCallback(async (twitter: string) => {
     try {
+      if (!twitter) {
+        return message.info('Please refresh and retry');
+      }
       const res = await getTwitterClientId();
       let clientId = res.data;
       const followingParams = {
@@ -99,12 +105,13 @@ export default function AirdropClaim() {
       setFollowing(false);
     }
   }, []);
-
   useEffect(() => {
-    (async () => {
-      const ticker = searchParams.get('ticker');
-      const code = searchParams.get('code');
-      const state = searchParams.get('state');
+    const handleMessage = async (event: MessageEvent) => {
+      // console.log('handleMessage-event:', event);
+      const data = event.data;
+      // console.log('Received data from child window:', data);
+      // console.log('twitter-code', data.code);
+      // debugger;
       let followingParams = null;
       try {
         followingParams = JSON.parse(localStorage.getItem(REQUEST_FOLLOWING_STORAGE) ?? '');
@@ -115,15 +122,15 @@ export default function AirdropClaim() {
       if (isRequestFollowing) {
         return;
       }
-      if (state === 'twitter' && code && followingParams) {
+      if (data.state === 'twitter' && data.code && data.type === 'airdrop' && followingParams) {
         isRequestFollowing = true;
         const { ticker, twitter, clientId } = followingParams;
         const followParams = {
           appClientId: clientId,
-          code,
+          code: data.code,
           codeVerifier: 'challenge',
           grantType: 'authorization_code',
-          redirectUri: twitterRedirectUri,
+          redirectUri: `${twitterRedirectUri}`,
           refreshToken: '',
           twitter: twitter ?? 'elonmusk',
           ticker: ticker,
@@ -131,16 +138,63 @@ export default function AirdropClaim() {
         const res = await requestTwitterFollow(followParams);
         console.log('follow res: ', res);
         if (!res.data) {
-          message.error('Failed to follow. Please try again later.');
+          message.warning('Failed to follow. Please try again later.');
           return;
         }
         localStorage.removeItem(REQUEST_FOLLOWING_STORAGE);
         isRequestFollowing = false;
         triggerRefresh?.();
       }
-      console.log('ticker: ', ticker);
-    })();
-  }, [searchParams]);
+    };
+
+    window.addEventListener('message', handleMessage);
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const ticker = searchParams.get('ticker');
+  //     const code = searchParams.get('code');
+  //     const state = searchParams.get('state');
+  //     let followingParams = null;
+  //     try {
+  //       followingParams = JSON.parse(localStorage.getItem(REQUEST_FOLLOWING_STORAGE) ?? '');
+  //     } catch (e) {}
+  //     if (!followingParams) {
+  //       return;
+  //     }
+  //     if (isRequestFollowing) {
+  //       return;
+  //     }
+  //     if (state === 'twitter' && code && followingParams) {
+  //       isRequestFollowing = true;
+  //       const { ticker, twitter, clientId } = followingParams;
+  //       const followParams = {
+  //         appClientId: clientId,
+  //         code,
+  //         codeVerifier: 'challenge',
+  //         grantType: 'authorization_code',
+  //         redirectUri: `${twitterRedirectUri}?type=airdrop`,
+  //         refreshToken: '',
+  //         twitter: twitter ?? 'elonmusk',
+  //         ticker: ticker,
+  //       };
+  //       const res = await requestTwitterFollow(followParams);
+  //       console.log('follow res: ', res);
+  //       if (!res.data) {
+  //         message.warning('Failed to follow. Please try again later.');
+  //         return;
+  //       }
+  //       localStorage.removeItem(REQUEST_FOLLOWING_STORAGE);
+  //       isRequestFollowing = false;
+  //       triggerRefresh?.();
+  //     }
+  //     console.log('ticker: ', ticker);
+  //   })();
+  // }, [searchParams]);
   // const testAirdrop = async () => {
   //   if (airdropClaim) {
   //     await airdropClaim(
@@ -179,22 +233,25 @@ export default function AirdropClaim() {
           <Popover>
             {/* <img src="/create/tip.png" /> */}
             <ITooltip
-              title="Lorem ipsum dolor sit amet consectetur adipiscing elit.
-                Morbi fringilla ipsum turpisı sit amet tempus est malesuadased.
-                Integer fringilla magnavel orci ultricies fermentum.
-                Suspendisse sem est."
+              title={`${tokenAllocationAirdrop * 100}% of the total token supply is allocated to this feature. Participants are required to complete two simple tasks to be eligible.`}
               color="#fff"
               bgColor="#396D93"
             />
           </Popover>
         </h3>
-        {doingTask && <span className="endsin font-OCR text-white">Ends in</span>}
+        {doingTask ? (
+          <span className="endsin font-OCR text-white">Ends in</span>
+        ) : (
+          <span className="endsin font-404px text-white">
+            {idoQueueDetail?.platformTwitterBind && idoQueueDetail?.projectTwitterBind ? 'COMPLETED' : 'WITHOUT'}
+          </span>
+        )}
       </div>
       <div className="in_queue flex justify-between">
-        <p className="text-deep-green text-xs whitespace-pre-wrap">
+        <p className="text-deep-green text-[10px] whitespace-pre-wrap font-OCR leading-[11px]">
           Complete tasks to be{'\n'}eligible for token airdrop.{' '}
         </p>
-        {doingTask && (
+        {doingTask ? (
           <Countdown
             instant={
               idoQueueDetail?.airdropEndsIn && typeof idoQueueDetail?.airdropEndsIn === 'number'
@@ -202,6 +259,8 @@ export default function AirdropClaim() {
                 : 0
             }
           />
+        ) : (
+          <div />
         )}
       </div>
       <ul className="follow_list flex flex-col gap-y-2 mt-4">
@@ -209,38 +268,57 @@ export default function AirdropClaim() {
           <li key={index} className="follow_list_item flex items-center w-full justify-between px-3 py-3.5">
             <p
               className={classNames('leading-5 font-OCR whitespace-pre-wrap', {
-                'text-white': (!item.followed && stage === 'in-queue') || !address,
-                'text-deep-green': item.followed || stage !== 'in-queue',
+                'text-white': !item.followed && stage === 'in-queue',
+                'text-deep-green': item.followed || stage !== 'in-queue' || !address,
               })}
             >
               Follow @{item.user}
               {'\n'}on twitter
             </p>
-            {!address ? (
-              <Wallet>
-                {stage === 'in-queue' && (
+            {
+              address &&
+                //   ? (
+                //   <Wallet>
+                //     {stage === 'in-queue' && (
+                //       <img
+                //         onClick={() => (item.followed ? null : handleFollow(item.user ? item.user : ''))}
+                //         className={classNames('w-5', {
+                //           'cursor-pointer': !item.followed,
+                //           'opacity-30': !address,
+                //         })}
+                //         src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
+                //       />
+                //     )}
+                //   </Wallet>
+                // ) :
+                stage === 'in-queue' &&
+                (item.followed ? (
                   <img
+                    className={classNames('w-5', {
+                      'cursor-pointer': !item.followed,
+                      'opacity-30': !address,
+                    })}
+                    src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
+                  />
+                ) : (
+                  <IconFollow
                     onClick={() => (item.followed ? null : handleFollow(item.user ? item.user : ''))}
                     className={classNames('w-5', {
                       'cursor-pointer': !item.followed,
                       'opacity-30': item.followed && address,
                     })}
-                    src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
+                    hoverColor={item.followed ? '#07E993' : '#fff'}
                   />
-                )}
-              </Wallet>
-            ) : (
-              stage === 'in-queue' && (
-                <img
-                  onClick={() => (item.followed ? null : handleFollow(item.user ? item.user : ''))}
-                  className={classNames('w-5', {
-                    'cursor-pointer': !item.followed,
-                    'opacity-30': item.followed && address,
-                  })}
-                  src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
-                />
-              )
-            )}
+                ))
+              // <img
+
+              //   className={classNames('w-5', {
+              //     'cursor-pointer': !item.followed,
+              //     'opacity-30': item.followed && address,
+              //   })}
+              //   src={`/create/icon-${item.followed ? 'followed' : 'outlink-media'}.png`}
+              // />
+            }
           </li>
         ))}
         {/* <li className="follow_list_item flex items-center w-full justify-between px-3 py-3.5" onClick={testAirdrop} /> */}

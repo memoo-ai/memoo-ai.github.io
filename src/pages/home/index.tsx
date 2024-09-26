@@ -112,13 +112,18 @@ const Home = () => {
             <div className="flex items-center gap-12 mt-[50px]">
               {/* <img src="./SVG/icon-twitter.svg" className="w-8 cursor-pointer" alt="" /> */}
               <IconVector className="cursor-pointer w-[47.24px] h-[34px]" />
+              <IconTelegram
+                className="cursor-pointer w-[36.06px] h-[33.75px]"
+                onClick={() => {
+                  window.open('https://t.me/memooai_official', '_blank');
+                }}
+              />
               <IconTwitter
                 className="cursor-pointer w-[40.24px] h-[33.92px]"
                 onClick={() => {
                   window.open('https://x.com/MemooAI', '_blank');
                 }}
               />
-              <IconTelegram className="cursor-pointer w-[36.06px] h-[33.75px]" />
             </div>
           </div>
           <div className="content-banner-right items pt-[3rem]">
@@ -150,11 +155,11 @@ const Home = () => {
               <div className="flex items-center">
                 <div className="flex flex-col items-center mr-[120px]">
                   <img src="./SVG/img-security.svg" className="w-[262px] h-[130px] mb-[30px]" />
-                  <p className="content-data-security">of memecoins on Base chain{'\n'} have security threats.</p>
+                  <p className="content-data-security">of memecoins on Solana chain{'\n'} have security threats.</p>
                 </div>
                 <div className="flex flex-col items-center">
                   <img src="./SVG/img-malicious.svg" className="w-[313px] h-[130px] mb-[30px]" />
-                  <p className="content-data-security">of memecoins on {'\n'}Base chain are malicious.</p>
+                  <p className="content-data-security">of memecoins on {'\n'}Solana chain are malicious.</p>
                 </div>
               </div>
             </div>

@@ -1,3 +1,4 @@
+/* eslint-disable max-nested-callbacks */
 import React, { useState, useRef, useCallback, useEffect, ReactNode, useMemo } from 'react';
 import { motion, useAnimationFrame } from 'framer-motion';
 import SwipeX from './swipeX';
@@ -11,9 +12,11 @@ interface SwipeProps {
   isScrolling?: boolean;
 }
 
-const SwipeItem = React.memo(({ item, isVertical, index }: { item: any; isVertical: boolean; index: number }) => {
-  return isVertical ? <SwipeY item={item} index={index} /> : <SwipeX item={item} />;
-});
+const SwipeItem = React.memo(
+  ({ item, isVertical, index }: { item: any; isVertical: boolean; index: number | string }) => {
+    return isVertical ? <SwipeY item={item} index={Number(index)} /> : <SwipeX item={item} />;
+  },
+);
 
 const Swipe: React.FC<SwipeProps> = React.memo(({ children, speed = 50, direction = 'up', isScrolling = true }) => {
   const [position, setPosition] = useState(0);
@@ -21,6 +24,7 @@ const Swipe: React.FC<SwipeProps> = React.memo(({ children, speed = 50, directio
   const [list, setList] = useState<any[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  // const prevItemsRef = useRef(list);
 
   const isVertical = useMemo(() => direction === 'up' || direction === 'down', [direction]);
   const isReverse = useMemo(() => direction === 'down' || direction === 'right', [direction]);
@@ -28,6 +32,7 @@ const Swipe: React.FC<SwipeProps> = React.memo(({ children, speed = 50, directio
   const fetchData = useCallback(async () => {
     try {
       const { data } = isVertical ? await getCrowdSourcing() : await getCrossDirection();
+      // setList(data ?? []);
       setList((prevList) => {
         if (JSON.stringify(prevList) !== JSON.stringify(data)) {
           return data;
@@ -49,16 +54,17 @@ const Swipe: React.FC<SwipeProps> = React.memo(({ children, speed = 50, directio
     if (isPaused || !containerRef.current || !contentRef.current || !isScrolling) return;
 
     const contentSize = isVertical ? contentRef.current.offsetHeight : contentRef.current.offsetWidth;
-    const containerWidth = containerRef.current.offsetWidth;
+    const containerSize = isVertical ? containerRef.current.offsetHeight : containerRef.current.offsetWidth;
+
     setPosition((prevPos) => {
-      const newPos = prevPos + (isReverse ? speed / 60 : -speed / 60);
-      if (isReverse) {
-        return newPos >= containerWidth ? -contentSize : newPos;
+      const newPos = prevPos - speed / 60;
+      if (newPos <= -contentSize / 2) {
+        return 0;
       } else {
-        return newPos <= -contentSize ? containerWidth : newPos;
+        return newPos;
       }
     });
-  }, [isPaused, isVertical, isReverse, speed]);
+  }, [isPaused, isVertical, speed, isScrolling]);
 
   useAnimationFrame(() => {
     if (isScrolling) {
@@ -87,12 +93,10 @@ const Swipe: React.FC<SwipeProps> = React.memo(({ children, speed = 50, directio
         : {
             height: '40px',
             width: '100vw',
-            position: 'relative' as const,
-            marginLeft: '50%',
-            transform: 'translateX(-50%)',
             background: '#312145',
             display: 'flex',
             alignItems: 'center',
+            zIndex: 9999,
           }),
     }),
     [isVertical],
@@ -110,19 +114,63 @@ const Swipe: React.FC<SwipeProps> = React.memo(({ children, speed = 50, directio
   );
 
   const repeatedList = useMemo(() => {
-    if (list && list.length > 5) {
-      return [...list, ...list];
+    if (list && list.length > 0) {
+      const minItems = 15; // Minimum number of items, can be adjusted as needed
+      let repeatedItems = [...list];
+      while (repeatedItems.length < minItems) {
+        repeatedItems = [...repeatedItems, ...list];
+      }
+      return repeatedItems;
     }
-    return list ?? [];
+    return [];
   }, [list]);
+  const shakeAnimation = {
+    x: [-10, 10, -8, 8, -6, 6, -4, 4, 0],
+    transition: {
+      duration: 0.3,
+    },
+  };
+
+  const pushDownAnimation = {
+    y: [-20, 0],
+    opacity: [0, 1],
+    transition: { duration: 0.2 },
+  };
 
   return (
     <div ref={containerRef} style={containerStyle} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-      <motion.div ref={contentRef} style={contentStyle}>
-        {repeatedList?.map((item, index) => (
-          <SwipeItem key={`${item.ticker}-${index}`} item={item} index={index} isVertical={isVertical} />
-        ))}
-      </motion.div>
+      {isVertical ? (
+        repeatedList.map((item, index) => (
+          <motion.div
+            // key={`${item.ticker}`}
+            key={`${item.ticker}-${Math.random()}`}
+            layout
+            initial={index === 0 ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
+            animate={index === 0 ? { ...shakeAnimation, opacity: 1 } : pushDownAnimation}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <SwipeItem
+              key={`${item.ticker}-${index}`}
+              item={item}
+              index={`${item.ticker}-${index}`}
+              isVertical={isVertical}
+            />
+          </motion.div>
+        ))
+      ) : (
+        <motion.div ref={contentRef} style={contentStyle}>
+          {list.map((item, index) => (
+            <SwipeItem
+              key={`${item.ticker}-${index}`}
+              item={item}
+              index={`${item.ticker}-${index}`}
+              isVertical={isVertical}
+            />
+          ))}
+        </motion.div>
+      )}
+
       {children}
     </div>
   );

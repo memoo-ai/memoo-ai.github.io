@@ -86,8 +86,8 @@ const Gecko = () => {
           </div>
         </div>
       </div> */}
-      <Swipe direction="left" />
-      <div className="flex justify-center mt-[21px] gap-x-5">
+      {/* <Swipe direction="left" /> */}
+      <div className="flex justify-center mt-[20px] gap-x-5">
         <div className="w-[835px] h-[469px]">
           <BannerBox background={LaunchpadAirdropBg} title="MEMOOGECKO">
             {/* {activeKey === 'imo' ? (
@@ -201,7 +201,7 @@ const Gecko = () => {
         }}
       />
       <CommonBanner
-        title="Discover the Next Big Thing on MeMoo LaunchPad."
+        title={`Discover the Next Big Thing on \n MeMoo LaunchPad.`}
         desc="Get in on the Action with the Hottest Meme Project Picks."
         link="/"
         linkText="launchpad"

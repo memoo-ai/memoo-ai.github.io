@@ -102,6 +102,8 @@ declare interface IDOActiveDetail extends IDOClaimStage {
   totalSupply: string;
   twitter: string;
   website: string;
+  totalRaisedNumerator: string;
+  totalRaisedDenominator: string;
   rewardEndsIn: number;
 }
 
@@ -126,8 +128,8 @@ declare interface IDOLaunchedDetail extends IDOClaimStage {
   holders: string;
   icon: string;
   idoDate: string;
-  increase1H: number;
-  increase24H: number;
+  increase1H: string;
+  increase24H: string;
   liquidity: string;
   lpContractAddress: string;
   lpLock: boolean;
@@ -196,7 +198,8 @@ declare interface IDOQueueDetail extends IDOClaimStage {
   liquidity: string;
   lpContractAddress: Address;
   marketCap: string;
-  memooScoreTotal: string;
+  memooScoreTotal: number;
+  totalScore: number;
   banners: string[];
   memeTwitterBind: boolean;
   pinnedTwitter: string;
@@ -228,6 +231,10 @@ declare interface IDOQueueDetail extends IDOClaimStage {
   imoBalance: number;
   claimImoBalance: number;
   memooScore: memooScore[];
+  unlockPrice: string;
+  unlockTime: string;
+  totalRaisedNumerator: string;
+  totalRaisedDenominator: string;
 }
 
 declare type IDOStatus = 'Draft' | 'Waiting_for_pay' | 'QUEUE' | 'IDO' | 'Launched' | 'IDOEND';
@@ -241,28 +248,33 @@ declare interface pageParams {
 declare interface LaunchpadIMO {
   endsIn: string;
   icon: string;
-  meMooScore: string;
+  meMooScore: number;
   status: string;
   ticker: string;
   tokenName: string;
   totalRaised: string;
+  totalRaisedDenominator: string;
+  totalRaisedNumerator: string;
+  totalScore: number;
 }
 declare interface LaunchpadAirdrop {
   icon: string;
   idoDate: string;
-  memooScore: string;
+  memooScore: number;
   participants: number;
   status: string;
   ticker: string;
   tokenName: string;
+  totalScore: number;
 }
 declare interface LaunchpadIDOCompeted {
   athRoi: string;
   icon: string;
-  memooScore: string;
+  memooScore: number;
   ticker: string;
   tokenName: string;
   totalRaised: string;
+  totalScore: number;
 }
 
 declare interface DashboardCreator {
@@ -287,6 +299,8 @@ declare interface DashboardCollectorAirdrop {
   tokenName: string;
   totalRaised: string;
   totalSupply: number;
+  claimFlag: boolean;
+  claimedFlag: string;
 }
 declare interface DashboardCollectorParticipated {
   contributed: string;
@@ -300,6 +314,8 @@ declare interface DashboardCollectorParticipated {
   tokenName: string;
   totalRaised: string;
   totalSupply: number;
+  claimFlag: string;
+  claimedFlag: string;
 }
 declare type DashboardCollectorItem = DashboardCollectorAirdrop & DashboardCollectorParticipated;
 
@@ -320,11 +336,12 @@ declare interface TrendingTokens {
   increase1H: number;
   increase24H: number;
   marketCap: number;
-  memooScore: string;
+  memooScore: number;
   price: number;
   ticker: string;
   tokenName: string;
   volume24H: number;
+  totalScore: number;
 }
 declare interface TrendingCreators {
   collectiveHolders: number;
@@ -449,7 +466,7 @@ declare interface CrowdSourcing {
   icon: string;
   ticker: string;
   tokenName: string;
-  tradeType: string;
+  tradeType: 'IDO_BUY' | 'AIRDROP_CLAIM';
 }
 declare interface SolanaConfig {
   globalMemooConfigId: string;

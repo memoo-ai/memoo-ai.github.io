@@ -1,3 +1,4 @@
+/* eslint-disable max-params */
 /* eslint-disable no-debugger */
 import { useWallet, useConnection, useAnchorWallet } from '@solana/wallet-adapter-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -236,7 +237,8 @@ export const useAccount = () => {
         // return confirmation;
       } catch (error) {
         console.error('Error in registerTokenMint:', error);
-        throw error;
+        return null;
+        // throw error;
       }
     },
     [connection, signTransaction, solanaConfig, publicKey, program, memooConfig],
@@ -538,6 +540,7 @@ export const useAccount = () => {
   const getMemeCreatorData = useCallback(
     async (memeId: string) => {
       console.log('getMemeUserData');
+      // debugger;
       if (!memooConfig || !program || !publicKey) return;
       try {
         // debugger;

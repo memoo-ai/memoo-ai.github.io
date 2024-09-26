@@ -1,0 +1,89 @@
+.custom-success-message{
+  margin-top: 105px;
+  .ant-message-custom-content {
+    background: #EBFBF5;
+
+    border: 1px solid #b7eb8f !important;
+    padding: 13px 15px;
+    border-radius: 7px;
+    min-width: 335px;
+
+    span{
+      color:#058D5E;
+      font-family: OCR A Extended;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 14px;
+      letter-spacing: -0.05em;
+      text-align: left;
+      margin-left: 10px;
+    }
+  }
+}
+.custom-error-message{
+  margin-top: 105px;
+  .ant-message-custom-content {
+    background: #FDEDEF;
+    border: 1px solid #EDC4C1 !important;
+    padding: 13px 15px;
+    border-radius: 7px;
+    min-width: 335px;
+
+    span{
+      color:#AE0705;
+      font-family: OCR A Extended;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 14px;
+      letter-spacing: -0.05em;
+      text-align: left;
+      margin-left: 10px;
+    }
+  }
+}
+.custom-info-message{
+  margin-top: 105px;
+  .ant-message-custom-content {
+    background: #E5FAFD;
+    border: 2px solid #AAE3EC !important;
+    padding: 13px 15px;
+    border-radius: 7px;
+    min-width: 335px;
+    box-shadow: none;
+
+    span{
+      color:#047685;
+      font-family: OCR A Extended;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 14px;
+      letter-spacing: -0.05em;
+      text-align: left;
+      margin-left: 10px;
+    }
+  }
+}
+.custom-warning-message{
+  margin-top: 105px;
+  .ant-message-custom-content {
+    background: #FFF9EA;
+    border: 1px solid #DCD4A1 !important;
+    padding: 13px 15px;
+    border-radius: 7px;
+    min-width: 335px;
+
+    span{
+      color:#976B01;
+      font-family: OCR A Extended;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 14px;
+      letter-spacing: -0.05em;
+      text-align: left;
+      margin-left: 10px;
+    }
+  }
+}
+.ant-message .ant-message-notice-wrapper .ant-message-notice-content{
+  padding: 0;
+}

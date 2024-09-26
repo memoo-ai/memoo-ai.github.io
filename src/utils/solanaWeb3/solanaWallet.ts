@@ -16,6 +16,7 @@ const useSolanaWallet = () => {
     (async () => {
       // Query balance
       const balance = await connection.getBalance(publicKey);
+      console.log('Solanabalance:', balance);
       setBalance(new BigNumber(balance).dividedBy(LAMPORTS_PER_SOL));
     })();
   }, [publicKey, connection]);

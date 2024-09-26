@@ -1,0 +1,82 @@
+.dashboard-header-banner-bg {
+  width: 100vw;
+  height: 470px;
+  // background: url(./header-banner-bg.png) no-repeat;
+  // background-size: 100% 100%;
+  background-size: cover;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  position: relative;
+
+  .dashboard-header-banner-content {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5.625rem;
+    padding-bottom: 58px;
+    align-items: center;
+    height: 100%;
+    .dashboard-header-banner-left{
+
+      .dashboard-left-text {
+        font-family: Kitty Kat;
+        font-size: 40px;
+        font-weight: 400;
+        text-align: left;
+        background: linear-gradient(90deg, #07E993 2.81%, #14FCFB 96.11%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        white-space: pre-wrap;
+        line-height: 40px;
+      }
+      .dashboard-left-sub-text {
+        font-family: OCR A Extended;
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 24.83px;
+        letter-spacing: -0.05em;
+        text-align: left;
+        color: #fff;
+        margin-top: 21px;
+      }
+    }
+    .dashboard-header-banner-right{
+      height: 100%;
+      display: flex;
+      align-items: flex-start;
+    }
+  }
+}
+.dashboard-banner-bg-Profile{
+  background: url('/dashboard/dashboard_banner_bg4.png') no-repeat;
+  background-size: cover;
+}
+.dashboard-banner-bg-Creator{
+  background: url('/dashboard/dashboard_banner_bg1.png') no-repeat;
+  background-size: cover;
+}
+.dashboard-banner-bg-Collector{
+  background: url('/dashboard/dashboard_banner_bg2.png') no-repeat;
+  background-size: cover;
+}
+.dashboard-banner-bg-WatchList{
+  background: url('/dashboard/dashboard_banner_bg3.png') no-repeat;
+  background-size: cover;
+}
+.img-right-Profile{
+  width: 432px;
+  height: 371px;
+}
+.img-right-Creator{
+  width: 497px;
+  height: 370px;
+  margin-top: 40px;
+}
+.img-right-Collector{
+  width: 440px;
+  height: 398px;
+}
+.img-right-WatchList{
+  width: 286px;
+  height: 346px;
+  margin-top: 62px;
+}

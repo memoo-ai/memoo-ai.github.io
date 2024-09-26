@@ -1,7 +1,8 @@
 import { Button } from 'antd';
 import { LaunchpadIMO, LaunchpadAirdrop } from '@/types';
-import { formatTs } from '@/utils';
+import { formatTs, formatRatioToPercentage } from '@/utils';
 import IProgress from '@/components/IProgress';
+import Countdown from '@/pages/airdrop/countdown';
 export enum IDOStatus {
   active = 'active',
   upcoming = 'upcoming',
@@ -28,7 +29,35 @@ export const columns = (navigate: (path: string) => void) => [
     key: 'endsIn',
     sorter: false,
     render: (endsIn: number) => (
-      <div className="font-OCR font-normal text-lg ">{endsIn ? formatTs(endsIn ?? 0) : ''}</div>
+      // <div className="font-OCR font-normal text-lg ">{endsIn ? formatTs(endsIn ?? 0) : ''}</div>
+      <Countdown
+        className=" flex gap-x-2 mt-5 font-OCR text-[17px] text-[#fff] line-[13px]"
+        timefragments="timefragments-kings"
+        format={([days, hours, minutes, seconds]) => [
+          // <div key="days">
+          //   <time>{days}</time>
+          //   <span>D</span>
+          // </div>,
+          <div key="hours">
+            <time>{hours}</time>
+            <span>H</span>
+          </div>,
+          <div key="minutes">
+            <time>{minutes}</time>
+            <span>M</span>
+          </div>,
+          <div key="seconds">
+            <time>{seconds}</time>
+            <span>S</span>
+          </div>,
+        ]}
+        instant={endsIn * 1000}
+        // instant={1720510654000}
+        onEnded={(ended) => {
+          // setEnded(ended);
+        }}
+        symbol=""
+      />
     ),
   },
   {
@@ -36,24 +65,32 @@ export const columns = (navigate: (path: string) => void) => [
     dataIndex: 'memooScore',
     key: 'memooScore',
     sorter: false,
-    render: (memooScore: number) => (
-      <div className="flex flex-col justify-end items-end pt-5">
-        <span>{memooScore ?? 0}</span>
-        <IProgress percent={memooScore} />
+    render: (memooScore: number, record: LaunchpadIMO) => (
+      <div className="flex flex-col justify-end items-start pt-5">
+        <span className="font-OCR font-norma text-lg">{formatRatioToPercentage(memooScore, record.totalScore)}</span>
+        <IProgress className="w-[130px]" percent={formatRatioToPercentage(memooScore, record.totalScore)} />
       </div>
     ),
+    // width: '140px',
   },
   {
     title: 'Total Raised',
     dataIndex: 'totalRaised',
     key: 'totalRaised',
     sorter: false,
-    render: (totalRaised: number) => (
-      <span className="font-OCR font-norma text-lg">
-        {totalRaised}&nbsp;
-        {tokenSymbol}
-      </span>
+    render: (totalRaised: string, record: LaunchpadIMO) => (
+      <div className="flex flex-col justify-end items-start pt-5">
+        <span className="font-OCR font-norma text-lg">
+          {totalRaised}&nbsp;
+          {tokenSymbol}
+        </span>
+        <IProgress
+          className="w-[130px]"
+          percent={formatRatioToPercentage(Number(record.totalRaisedNumerator), Number(record.totalRaisedDenominator))}
+        />
+      </div>
     ),
+    // width: '140px',
   },
   {
     title: 'Action',
@@ -83,7 +120,7 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
     ),
   },
   {
-    title: 'IDO Date',
+    title: 'IMO Date',
     dataIndex: 'idoDate',
     key: 'idoDate',
     sorter: false,
@@ -96,10 +133,10 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
     dataIndex: 'memooScore',
     key: 'memooScore',
     sorter: false,
-    render: (memooScore: number) => (
+    render: (memooScore: number, record: LaunchpadAirdrop) => (
       <div className="flex flex-col justify-end items-end pt-5">
-        <span>{memooScore ?? 0}</span>
-        <IProgress percent={memooScore} />
+        <span>{formatRatioToPercentage(memooScore, record.totalScore)}</span>
+        <IProgress percent={formatRatioToPercentage(memooScore, record.totalScore)} />
       </div>
     ),
   },
@@ -134,21 +171,38 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
 
 export const imoSelectOptions = [
   {
+    key: 'Newest',
+    label: 'Newest',
+  },
+  {
     key: 'EndsIn',
     label: 'Ends in',
   },
+
   {
     key: 'TotalRaised',
     label: 'Total Raised',
   },
+  {
+    key: 'MemooScore',
+    label: 'Memoo Score',
+  },
 ];
 export const airdropSelectOptions = [
   {
+    key: 'Newest',
+    label: 'Newest',
+  },
+  {
     key: 'IDODate',
-    label: 'IDO Date',
+    label: 'IMO Date',
   },
   {
     key: 'Participants',
     label: 'Participants',
+  },
+  {
+    key: 'MemooScore',
+    label: 'Memoo Score',
   },
 ];

@@ -1,0 +1,96 @@
+.memoo_upload{
+
+  .reactEasyCrop_Container{
+    background: #1f3b4f;
+    // margin-bottom: 23px;
+  }
+  .img-crop-control ,.img-crop-control-zoom {
+    button{
+      color: #07e993 !important;
+      // font-size: 18px;
+    }
+  }
+  .ant-slider-step{
+    background: #2b526e;
+    border-radius: 7px;
+    height: 5px;
+  }
+  .ant-slider-rail{
+    border-radius: 7px;
+    height: 5px;
+  }
+  .ant-slider-track{
+    background: $mainColor !important;
+    border-radius: 7px;
+    height: 5px;
+    z-index: 99;
+  }
+  // .ant-slider-tooltip{
+  //   display: none;
+  //   .ant-tooltip-inner{
+  //     display: none !important;
+  //   }
+  // }
+  // .ant-slider-handle,.ant-tooltip-open{
+  //   display: none;
+  // }
+.ant-modal-header{
+  .ant-modal-title {
+    font-family: '404px' !important;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 29px; /* 120.833% */
+
+    background: linear-gradient(90deg, #07e993 1.89%, #14fcfb 97%) !important;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+  }
+}
+.ant-modal .ant-modal-footer{
+  display: flex;
+  justify-content: center;
+}
+  .ant-modal-footer{
+    .ant-btn-primary{
+      box-shadow: none;
+    }
+    .ant-btn{
+      border: unset;
+      border-radius: 7px !important;
+      background: #07e993;
+      min-width: 115px;
+      color: #a005fe;
+      text-align: center;
+      font-family: '404px';
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 20px; /* 125% */
+
+      &:hover {
+        background: #b53bff !important;
+        color: #19fda6 !important;
+      }
+
+      &.reverse {
+        background: #a005fe;
+        color: #07e993;
+        &:hover {
+          background: #19fda6 !important;
+          color: #b53bff !important;
+        }
+      }
+
+      &:disabled {
+        background: #242842 !important;
+        color: #7d83b5 !important;
+        &:hover {
+          background-color: inherit;
+          color: #7d83b5 !important;
+        }
+      }
+    }
+  }
+}

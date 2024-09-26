@@ -121,7 +121,7 @@ const ConnectWallet = () => {
                     <div className="flex justify-center items-center w-[40px]">
                       <opt.icon ref={(ref) => (iconRefs.current[opt.type] = ref)} />
                     </div>
-                    <span className="font-404px font-bold text-lg leading-5">{opt.name}</span>
+                    <span className="font-404px text-lg leading-5">{opt.name}</span>
                   </div>
                 </DropdownMenu.Item>
               ))}

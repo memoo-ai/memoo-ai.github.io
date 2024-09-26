@@ -30,6 +30,10 @@ const routeConfig: RouteObject[] = [
         path: '/airdrop/:ticker',
         Component: lazy(() => import('../pages/airdrop')),
       },
+      {
+        path: '/twitter_callback',
+        Component: lazy(() => import('../pages/twitter-callback')),
+      },
     ],
   },
   {

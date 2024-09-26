@@ -2,7 +2,7 @@ import './index.scss';
 import { IconBack } from '@/components/icons';
 import { useNavigate } from 'react-router-dom';
 import { useAccount } from '@/hooks/useWeb3';
-import { message } from 'antd';
+import message from '@/components/IMessage';
 interface BackButtonProps {
   path?: string;
 }
@@ -11,7 +11,7 @@ const BackButton = ({ path = '/dashboard', ...rest }: BackButtonProps) => {
   const { address, registerTokenMint } = useAccount();
   const goBack = () => {
     if (!address) {
-      message.warning('Please connect wallet first.');
+      message.info('Please connect wallet first.');
       return;
     }
     navigate(path);

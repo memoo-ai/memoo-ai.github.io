@@ -1,5 +1,6 @@
 /* eslint-disable no-debugger */
-import { Button, Checkbox, Input, Modal, Slider, message } from 'antd';
+import { Button, Checkbox, Input, Modal, Slider } from 'antd';
+import message from '@/components/IMessage';
 import React, {
   Children,
   FC,
@@ -53,7 +54,7 @@ const IncreaseModal: FC<{
     console.log('increasing proportion-result:', result);
     setResult(result);
     onCalculated?.(result);
-  }, [proportion, firstProportion, firstIncrease]);
+  }, [proportion, firstProportion, firstIncrease, purchased]);
 
   useEffect(() => {
     if (!purchased || !memooConfig) return;
@@ -110,10 +111,7 @@ const IncreaseModal: FC<{
                 <ITooltip
                   className="h-[12px] "
                   placement="bottom"
-                  title="Lorem ipsum dolor sit amet consectetur adipiscing elit.
-                Morbi fringilla ipsum turpisı sit amet tempus est malesuadased.
-                Integer fringilla magnavel orci ultricies fermentum.
-                Suspendisse sem est."
+                  title={`Creators can secure up to an additional ${maxProportion * 100}% of the meme token before the launch.`}
                   color="#fff"
                   bgColor="#396D93"
                 />
@@ -122,11 +120,15 @@ const IncreaseModal: FC<{
             </div>
             <div className="flex flex-auto items-center gap-x-3">
               <span className="whitespace-nowrap text-base font-OCR text-white leading-[16px]">
-                {firstIncrease} {tokenSymbol}
+                {0} {tokenSymbol}
               </span>
               <Slider
                 className="memoo_slider flex-auto"
-                tooltip={{ open: true, rootClassName: 'memoo_slider_tooltip', formatter: (value) => `${value}%` }}
+                tooltip={{
+                  open: true,
+                  rootClassName: 'memoo_slider_tooltip',
+                  formatter: (value) => `${value}% ${formatDecimals(result)} ${tokenSymbol}`,
+                }}
                 onChange={(value) => {
                   if (value > defaultProportion) {
                     setProportion(value);
@@ -136,7 +138,7 @@ const IncreaseModal: FC<{
                 }}
                 value={proportion}
                 max={maxProportion * 100}
-                min={firstProportion * 100}
+                min={0}
                 // defaultValue={defaultValue}
               />
               <span className="whitespace-nowrap text-base font-OCR text-white leading-[16px]">
@@ -144,8 +146,8 @@ const IncreaseModal: FC<{
               </span>
             </div>
           </div>
-          <p className="font-OCR text-[#4889B7] whitespace-pre-wrap mt-[7px] mb-[19px]">
-            {`Creator can increase initial\nallocation from ${firstProportion * 100}% to ${maxProportion * 100}%.`}
+          <p className="font-OCR text-[#4889B7] text-[10px] leading-3 whitespace-pre-wrap mt-[7px] mb-[19px]">
+            {`Creator can increase initial allocation\nby purchasing an additional ${maxProportion * 100}%.`}
           </p>
           <Input
             className="memoo_input h-[66px]"
@@ -165,7 +167,7 @@ const IncreaseModal: FC<{
           </Checkbox>
           <div>
             <Button
-              disabled={!accepted && Number(formatDecimals(result)) - purchased <= 0}
+              disabled={!accepted || Number(formatDecimals(result)) === 0}
               className="memoo_button w-[100%] h-[50px]"
               loading={confirming}
               onClick={onConfirm}

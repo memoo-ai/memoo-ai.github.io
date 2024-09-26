@@ -28,5 +28,12 @@
   &:disabled {
     background: #242842 !important;
     color: #7d83b5 !important;
+    &:hover {
+      background-color: inherit;
+      color: #7d83b5 !important;
+    }
   }
+}
+.memoo_button:disabled:hover {
+  background-color: inherit;
 }

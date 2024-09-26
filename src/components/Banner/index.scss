@@ -13,6 +13,7 @@
 
 .common-banner-bg-2 {
   background: url('@/assets/imgs/img-banner-bg-2.png') no-repeat center center;
+  background-size: 100%;
 }
 
 .common-banner {
@@ -34,18 +35,23 @@
 
   .common-banner-title {
     font-family: 'Kitty Kat';
-    font-size: 48px;
-    line-height: 50px;
+    font-size: 40px;
+    line-height: 40px;
     text-align: center;
-    color: #07E993;
-    width: 758px;
+    // width: 771px;
     margin-bottom: 19px;
+    background: linear-gradient(90deg, #07E993 0%, #14FCFB 100%);
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    white-space: pre-wrap;
+
   }
 
   .common-banner-desc {
     font-family: 'OCR A Extended';
-    font-size: 24px;
-    line-height: 26px;
+    font-size: 20px;
+    line-height: 20.69px;
     text-align: center;
     height: 65px;
 

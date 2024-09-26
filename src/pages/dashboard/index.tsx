@@ -6,99 +6,103 @@ import DashboardBottomImg1 from './assets/dashboard_banner1.png';
 import DashboardBottomImg2 from './assets/dashboard_banner2.png';
 import DashboardBottomImg3 from './assets/dashboard_banner3.png';
 import DashboardBottomImg4 from './assets/dashboard_banner4.png';
-import DashboardBottomBgImg1 from './assets/dashboard_banner_bg1.png';
-import DashboardBottomBgImg2 from './assets/dashboard_banner_bg2.png';
-import DashboardBottomBgImg3 from './assets/dashboard_banner_bg3.png';
-import DashboardBottomBgImg4 from './assets/dashboard_banner_bg4.png';
-import HeaderBannerBg from './assets/header-banner-bg.png';
+import DashboardBanner from './dashboard-banner';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { REQUEST_FOLLOWING_STORAGE, UPDATE_PROJECT_TWITTER_STORAGE } from '@/constants';
 import MemeRecords from './meme-records';
-
+export type TabType = 'Profile' | 'Creator' | 'Collector' | 'WatchList';
 const Dashboard = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [tabType, setTabType] = useState('creator');
+  const [tabType, setTabType] = useState<TabType>('Creator');
+
   useEffect(() => {
     const code = searchParams.get('code');
     const state = searchParams.get('state');
-    let followingParams = null;
-    let updateParams = null;
-    try {
-      followingParams = JSON.parse(localStorage.getItem(REQUEST_FOLLOWING_STORAGE) ?? '');
-    } catch (e) {}
-    try {
-      updateParams = JSON.parse(localStorage.getItem(UPDATE_PROJECT_TWITTER_STORAGE) ?? '');
-    } catch (e) {}
-    console.log('updateParams: ', updateParams, localStorage.getItem(UPDATE_PROJECT_TWITTER_STORAGE));
-    if (!followingParams && !updateParams) {
-      return;
-    }
-    if (state === 'twitter' && code && followingParams) {
-      navigate(`/airdrop/${followingParams.ticker}?code=${code}&state=${state}`);
-    } else if (state === 'twitter' && code && updateParams) {
-      navigate(`/airdrop/${updateParams.ticker}?code=${code}&state=${state}&edit=true`);
+
+    if (state === 'twitter' && code) {
+      const params = {
+        code,
+        state,
+        type: 'airdrop',
+      };
+      if (window.opener) {
+        window.opener.postMessage(params, '*');
+      }
+      window.close();
     }
   }, [searchParams]);
+  // useEffect(() => {
+  //   const code = searchParams.get('code');
+  //   const state = searchParams.get('state');
+  //   let followingParams = null;
+  //   let updateParams = null;
+  //   try {
+  //     followingParams = JSON.parse(localStorage.getItem(REQUEST_FOLLOWING_STORAGE) ?? '');
+  //   } catch (e) {}
+  //   try {
+  //     updateParams = JSON.parse(localStorage.getItem(UPDATE_PROJECT_TWITTER_STORAGE) ?? '');
+  //   } catch (e) {}
+  //   console.log('updateParams: ', updateParams, localStorage.getItem(UPDATE_PROJECT_TWITTER_STORAGE));
+  //   if (!followingParams && !updateParams) {
+  //     return;
+  //   }
+  //   if (state === 'twitter' && code && followingParams) {
+  //     navigate(`/airdrop/${followingParams.ticker}?code=${code}&state=${state}`);
+  //   } else if (state === 'twitter' && code && updateParams) {
+  //     navigate(`/airdrop/${updateParams.ticker}?code=${code}&state=${state}&edit=true`);
+  //   }
+  // }, [searchParams]);
 
-  const [commonBanner, setCommonBanner] = useState({
+  const [commonBottom, setCommonBottom] = useState({
     title: 'Exclusive ‘Proof of Creation’ Reward for Creators.',
-    desc: 'Exciting Rewards for Exceptional Talent in Meme Creation.',
+    desc: 'Exciting Rewards for Exceptional Meme Creation Talent.',
     link: '/',
     linkText: 'BE A CREATOR',
   });
-  const [commonBottom, setCommonBottom] = useState({
-    title: 'Exclusive ‘Proof of Creation’ Reward for Creators.',
-    title1: '',
+  const [commonBanner, setCommonBanner] = useState({
+    title: 'Begin Your Meme\nToken Empire Today.',
     desc: 'Exciting Rewards for Exceptional Talent in Meme Creation.',
     rightImg: DashboardBottomImg1,
-    bg: DashboardBottomBgImg1,
   });
 
   const changeType = useCallback(
-    (type: string) => {
+    (type: TabType) => {
       console.log(type);
       setTabType(type);
       switch (type) {
         case 'Profile':
-          setCommonBottom({
-            title: 'Unleash the Degen in You',
-            title1: 'and get Rewarded.',
+          setCommonBanner({
+            title: `Unleash the Degen in You\nand get Rewarded.`,
             desc: 'Build Your Creator Reputation to Unlock Rewards.',
             rightImg: DashboardBottomImg4,
-            bg: DashboardBottomBgImg4,
           });
-          setCommonBanner({
+          setCommonBottom({
             title: 'Exclusive ‘Proof of Creation’ Reward for Creators.',
-            desc: 'Exciting Rewards for Exceptional Talent in Meme Creation.',
+            desc: 'Exciting Rewards for Exceptional Meme Creation Talent.',
             link: '/gecko?type=CREATOR Ranking',
             linkText: 'BE A CREATOR',
           });
           break;
         case 'Creator':
-          setCommonBottom({
-            title: 'Begin Your Meme',
-            title1: 'Token Empire Today.',
-            desc: 'Exciting Rewards for Exceptional Talent in Meme Creation.',
-            rightImg: DashboardBottomImg1,
-            bg: DashboardBottomBgImg1,
-          });
           setCommonBanner({
-            title: 'Get Recognized and Stand Among Meme Gods.',
-            desc: 'See Where You Stand Within the Creator Ranks.',
+            title: 'Begin Your Meme\nToken Empire Today.',
+            desc: 'Ignite Your Memes, Ignite Your Success.',
+            rightImg: DashboardBottomImg1,
+          });
+          setCommonBottom({
+            title: `Exclusive ‘Proof of Creation’\nReward For Creators.`,
+            desc: 'Exciting Rewards for Exceptional Meme Creation Talent.',
             link: '/create_token',
             linkText: 'BE A CREATOR',
           });
           break;
         case 'Collector':
-          setCommonBottom({
-            title: 'Begin Your Meme',
-            title1: 'Token Empire Today.',
-            desc: 'Exciting Rewards for Exceptional Talent in Meme Creation.',
-            rightImg: DashboardBottomImg2,
-            bg: DashboardBottomBgImg2,
-          });
           setCommonBanner({
+            title: 'Empower Your Degen Journey.',
+            desc: 'Navigate, Discover, and Conquer the Meme Token Landscape.',
+            rightImg: DashboardBottomImg2,
+          });
+          setCommonBottom({
             title: 'Don’t Miss Out on Airdrops.',
             desc: 'Your Chance to Score Free Meme Treasures.',
             link: '/',
@@ -106,14 +110,12 @@ const Dashboard = () => {
           });
           break;
         case 'WatchList':
-          setCommonBottom({
-            title: 'Begin Your Meme',
-            title1: 'Token Empire Today.',
-            desc: 'Exciting Rewards for Exceptional Talent in Meme Creation.',
-            rightImg: DashboardBottomImg3,
-            bg: DashboardBottomBgImg3,
-          });
           setCommonBanner({
+            title: 'Begin Your Meme\nToken Empire Today.',
+            desc: 'Ignite Your Memes, Ignite Your Success.',
+            rightImg: DashboardBottomImg3,
+          });
+          setCommonBottom({
             title: 'Let MeMoo Score do the Work for You.',
             desc: 'The Key to Informed Meme Token Decision Making.',
             link: '/gecko',
@@ -121,9 +123,9 @@ const Dashboard = () => {
           });
           break;
         default:
-          setCommonBanner({
+          setCommonBottom({
             title: 'Exclusive ‘Proof of Creation’ Reward for Creators.',
-            desc: 'Exciting Rewards for Exceptional Talent in Meme Creation.',
+            desc: 'Ignite Your Memes, Ignite Your Success.',
             link: '/create_token',
             linkText: 'BE A CREATOR',
           });
@@ -134,24 +136,26 @@ const Dashboard = () => {
   );
   return (
     <div className="dashboard-page">
-      <div
+      <DashboardBanner
+        title={commonBanner.title}
+        desc={commonBanner.desc}
+        img={commonBanner.rightImg}
+        tabType={tabType}
+      />
+      {/* <div
         className="dashboard-header-banner-bg"
-        style={{ background: `url(${HeaderBannerBg}) no-repeat`, backgroundSize: 'cover' }}
+        style={{ background: `url(${commonBanner.bg}) no-repeat`, backgroundSize: 'cover' }}
       >
-        {/* <div className="header-banner-bg" style={{ background: `url(${commonBottom.bg})` }}> */}
         <div className="dashboard-header-banner-content">
           <div className="dashboard-header-banner-left flex  flex-col">
-            <p className="dashboard-left-text">
-              <span> {commonBottom.title}</span> <br />
-              <span className="mt-[15px]"> {commonBottom.title1}</span>
-            </p>
-            <p className="dashboard-left-sub-text">{commonBottom.desc}</p>
+            <p className="dashboard-left-text">{commonBanner.title}</p>
+            <p className="dashboard-left-sub-text">{commonBanner.desc}</p>
           </div>
-          <div style={{ height: tabType === 'Collector' ? '100%' : 'auto' }}>
-            <img className="w-[497px] h-[370px]" src={commonBottom.rightImg} alt="" />
+          <div>
+            <img className={`img-right-${tabType} img-pointer-events`} src={commonBanner.rightImg} alt="" />
           </div>
         </div>
-      </div>
+      </div> */}
       {/* <div className="header_banner_bg" style={{ backgroundImage: `url(${dashboardBannerImg})` }}>
       </div> */}
       {/* <MemeRecords /> */}
@@ -159,17 +163,17 @@ const Dashboard = () => {
         <div className="dashboard_content">
           <DashboardContent
             onChangeType={(e) => {
-              changeType(e);
+              changeType(e as TabType);
             }}
           />
         </div>
         <div>
           {' '}
           <CommonBanner
-            title={commonBanner.title}
-            desc={commonBanner.desc}
-            link={commonBanner.link}
-            linkText={commonBanner.linkText}
+            title={commonBottom.title}
+            desc={commonBottom.desc}
+            link={commonBottom.link}
+            linkText={commonBottom.linkText}
             bgType={2}
           />
         </div>

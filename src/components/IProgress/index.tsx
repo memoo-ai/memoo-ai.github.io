@@ -1,6 +1,11 @@
 import { Progress } from 'antd';
 import './index.scss';
-const IProgress = ({ className = '', showInfo = false, percent = 0 }) => {
-  return <Progress className={`${className} memoo_progress`} showInfo={showInfo} percent={percent} />;
+interface props {
+  className?: string;
+  showInfo?: boolean;
+  percent?: number | string;
+}
+const IProgress = ({ className = '', showInfo = false, percent = 0 }: props) => {
+  return <Progress className={`${className} memoo_progress`} showInfo={showInfo} percent={Number(percent)} />;
 };
 export default IProgress;

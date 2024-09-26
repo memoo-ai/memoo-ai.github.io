@@ -1,4 +1,5 @@
-import { Button, Checkbox, Input, Modal, Progress, Slider, message } from 'antd';
+import { Button, Checkbox, Input, Modal, Progress, Slider } from 'antd';
+import message from '@/components/IMessage';
 import {
   Children,
   FC,
@@ -50,9 +51,11 @@ const ClaimImoTokensModal: FC<{ children: ReactNode }> = ({ children }) => {
       const tx = await idoClaim(solanaMemeConfig?.memeConfigId, solanaMemeConfig?.mintaPublickey);
       console.log('idoClaim tx:', tx);
       if (tx) {
+        triggerRefresh();
         setOpen(false);
         message.success('Claim Successful');
-        triggerRefresh();
+      } else {
+        message.error('Claim Failed');
       }
     } catch (error) {
       console.error(error);
@@ -91,7 +94,7 @@ const ClaimImoTokensModal: FC<{ children: ReactNode }> = ({ children }) => {
             <div className="memoo_input h-[66px] font-404px text-white text-[24px] text-center flex items-center justify-center">
               <img className="w-[50px] h-[50px] rounded-[50%]" src={idoQueueDetail?.icon} alt="" />{' '}
               {/* <span>&nbsp;{(idoQueueDetail?.imoBalance ?? 0) - (idoQueueDetail?.claimImoBalance ?? 0)} &nbsp;</span> */}
-              <span>&nbsp;{userCanClaimCount} &nbsp;</span>
+              <span>&nbsp;{userCanClaimCount?.toLocaleString()} &nbsp;</span>
               <span>{idoQueueDetail?.ticker}</span>
             </div>
           </div>

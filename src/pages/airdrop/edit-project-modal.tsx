@@ -1,4 +1,6 @@
-import { Button, Checkbox, Input, Modal, message, Slider, Form, Upload } from 'antd';
+/* eslint-disable no-debugger */
+import { Button, Checkbox, Input, Modal, Slider, Form, Upload } from 'antd';
+import message from '@/components/IMessage';
 import {
   Children,
   FC,
@@ -9,6 +11,7 @@ import {
   useEffect,
   useState,
   useContext,
+  SetStateAction,
 } from 'react';
 import './edit-project-modal.scss';
 import {
@@ -30,9 +33,16 @@ import { REQUEST_FOLLOWING_STORAGE, UPDATE_PROJECT_TWITTER_STORAGE, EDIT_INFO_ST
 import { useSearchParams } from 'react-router-dom';
 import { authorizeTwitter } from '@/utils';
 import { AirdropContext } from '.';
+import EasyCrop from '@/components/ImgCrop/EasyCrop';
+import Cropper from 'react-easy-crop';
+import { ZOOM_STEP, PREFIX } from '@/components/ImgCrop/constants';
+
 const FORM_STORAGE_KEY = 'create_token_storage';
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
+
+const minZoom = 1;
+const maxZoom = 3;
 
 const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess: () => void }> = ({
   children,
@@ -46,9 +56,14 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
   const [projectBannerUrl, setProjectBannerUrl] = useState('');
   const [twitter, setTwitter] = useState('');
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [cropLoading, setCropLoading] = useState(false);
   const [projectDetail, setProjectDetail] = useState({});
   const [searchParams] = useSearchParams();
-  const { mine, triggerRefresh } = useContext(AirdropContext);
+  const { mine } = useContext(AirdropContext);
+  const [image, setImage] = useState(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   useEffect(() => {
     getTokenDetail(ticker).then((res) => {
       if (res?.data) {
@@ -78,7 +93,37 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
       }
     });
   }, [ticker]);
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      console.log('handleMessage-event:', event);
+      const data = event.data;
+      console.log('Received data from child window:', data);
+      console.log('twitter-code', data.code);
+      if (data.code && data.state === 'twitter' && data.type === 'twitter_bind') {
+        const updateParams = JSON.parse(localStorage.getItem(UPDATE_PROJECT_TWITTER_STORAGE) ?? '');
+        const params = {
+          code: data.code ?? '',
+          grantType: 'authorization_code',
+          // clientd: twitterClientId,
+          redirectUri: twitterRedirectUri,
+          codeVerifier: 'challenge',
+          refreshToken: '',
+          appClientId: updateParams.clientId ?? '',
+        };
+        getTwitterAccessToken(params).then((res) => {
+          const { access_token, twitter } = res.data;
+          setTwitterAccessToken(access_token);
+          setTwitter(twitter);
+        });
+      }
+    };
 
+    window.addEventListener('message', handleMessage);
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
   const onFinish = (values: any) => {
     console.log('Received values of form: ', values);
   };
@@ -103,38 +148,105 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
       return false;
     }
   };
+  const handleImageChange = (file: File) => {
+    // const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImage(reader.result as any);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  const onCropComplete = (croppedArea: any, croppedAreaPixels: any) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  };
+  const getCroppedImg = (
+    imageSrc: string | null,
+    crop: { width: number; height: number; x: number; y: number } | null,
+  ) => {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.src = imageSrc as string;
+      image.crossOrigin = 'anonymous';
 
-  useEffect(() => {
-    (async () => {
-      const code = searchParams.get('code');
-      const state = searchParams.get('state');
-      const edit = searchParams.get('edit');
-      let updateParams = null;
-      try {
-        updateParams = JSON.parse(localStorage.getItem(UPDATE_PROJECT_TWITTER_STORAGE) ?? '');
-      } catch (e) {}
-      if (!updateParams) {
-        return;
-      }
-      if (state === 'twitter' && code && updateParams && edit && updateParams.ticker === ticker) {
-        const params = {
-          code,
-          grantType: 'authorization_code',
-          // clientd: twitterClientId,
-          redirectUri: twitterRedirectUri,
-          codeVerifier: 'challenge',
-          refreshToken: '',
-          appClientId: updateParams.clientId ?? '',
-        };
-        getTwitterAccessToken(params).then((res) => {
-          const { access_token, twitter } = res.data;
-          setTwitterAccessToken(access_token);
-          setTwitter(twitter);
+      image.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          reject(new Error('Canvas context is not available'));
+          return;
+        }
+        if (!crop) {
+          reject(new Error('Crop context is not available'));
+          return;
+        }
+        canvas.width = crop.width;
+        canvas.height = crop.height;
+        ctx.drawImage(image, crop.x, crop.y, crop.width, crop.height, 0, 0, crop.width, crop.height);
+
+        canvas.toBlob((blob) => {
+          resolve(blob);
+        }, 'image/jpeg');
+      };
+
+      image.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+  const handleCrop = async () => {
+    try {
+      setCropLoading(true);
+      const croppedImage = await getCroppedImg(image, croppedAreaPixels);
+      console.log('croppedImage:', croppedImage);
+      if (croppedImage) {
+        // const file = new File([croppedImage], 'croppedImage.jpg', { type: croppedImage.type });
+        uploadFile(croppedImage).then((res) => {
+          form.setFieldValue('banners', [res.data.file]);
+          setProjectBannerUrl(res.data.fileUrl);
+          setImage(null);
+          setCropLoading(false);
         });
-        setOpen(true);
+        return false;
       }
-    })();
-  }, [searchParams]);
+    } catch (e) {
+      console.error('Error cropping image:', e);
+      setCropLoading(false);
+    }
+  };
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const code = searchParams.get('code');
+  //     const state = searchParams.get('state');
+  //     const edit = searchParams.get('edit');
+  //     let updateParams = null;
+  //     try {
+  //       updateParams = JSON.parse(localStorage.getItem(UPDATE_PROJECT_TWITTER_STORAGE) ?? '');
+  //     } catch (e) {}
+  //     if (!updateParams) {
+  //       return;
+  //     }
+  //     if (state === 'twitter' && code && updateParams && edit && updateParams.ticker === ticker) {
+  //       const params = {
+  //         code,
+  //         grantType: 'authorization_code',
+  //         // clientd: twitterClientId,
+  //         redirectUri: twitterRedirectUri,
+  //         codeVerifier: 'challenge',
+  //         refreshToken: '',
+  //         appClientId: updateParams.clientId ?? '',
+  //       };
+  //       getTwitterAccessToken(params).then((res) => {
+  //         const { access_token, twitter } = res.data;
+  //         setTwitterAccessToken(access_token);
+  //         setTwitter(twitter);
+  //       });
+  //       setOpen(true);
+  //     }
+  //   })();
+  // }, [searchParams]);
 
   const handleRemove = () => {
     setProjectBannerUrl('');
@@ -157,7 +269,6 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
 
   const handleSave = async (isConfirm: boolean) => {
     try {
-      if (!triggerRefresh) return;
       await form.validateFields();
       // twitter must have been connected
       // if (!twitter || !twitterAccessToken) {
@@ -173,12 +284,11 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
       const res = await saveEditInfo({ ...data, ticker });
       setOpen(false);
       if (res?.code === 200) {
-        message.success('modify successfully!');
+        message.success('Edit successful!');
         onSaveSuccess();
         setOpen(false);
-        triggerRefresh();
       } else {
-        message.warning('fail in keeping');
+        message.warning('Edit failed');
       }
       localStorage.removeItem(UPDATE_PROJECT_TWITTER_STORAGE);
       localStorage.removeItem(EDIT_INFO_STORAGE);
@@ -270,12 +380,27 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
                   <Trash size={16} onClick={handleRemove} />
                 </span>
               </div>
+            ) : image ? (
+              <div className="flex flex-col">
+                <div className="w-full h-[40vh] ">
+                  <Cropper
+                    image={image}
+                    crop={crop}
+                    zoom={zoom}
+                    aspect={16 / 6}
+                    showGrid={false}
+                    onCropChange={setCrop}
+                    onZoomChange={setZoom}
+                    onCropComplete={onCropComplete}
+                  />
+                </div>
+              </div>
             ) : (
               <Upload
                 listType="picture-card"
                 accept="image/*"
                 maxCount={1}
-                beforeUpload={(file) => handleUpload(file)}
+                beforeUpload={(file) => handleImageChange(file)}
                 showUploadList={{ showPreviewIcon: true, showRemoveIcon: false }}
                 style={{ width: '100%', height: 140 }}
                 className="edit-upload-banner"
@@ -293,13 +418,57 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
                   <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
                     <IconUpload className="" />
                     <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px] mt-[10px]">
-                      Recommended 790px X 307px Max size: 50MB
+                      Recommended 790px X 307px Max size: 10MB
                     </p>
                   </div>
                 </button>
               </Upload>
             )}
           </Form.Item>
+          {image && (
+            <Form.Item label="&nbsp;">
+              <div className="flex items-center justify-center gap-x-[10px] mt-[-20px]">
+                <section className="flex w-[60%] items-center">
+                  <button
+                    className="text-[18px] text-[#07E993] disabled:text-[#1a5e5c]"
+                    onClick={() => setZoom(Number((zoom - ZOOM_STEP).toFixed(1)))}
+                    disabled={zoom - ZOOM_STEP < minZoom}
+                  >
+                    －
+                  </button>
+                  <Slider
+                    className="flex1 w-full memoo_slider"
+                    min={minZoom}
+                    max={maxZoom}
+                    step={ZOOM_STEP}
+                    value={zoom}
+                    onChange={setZoom}
+                    tooltipVisible={false}
+                  />
+                  <button
+                    className="text-[18px] text-[#07E993] disabled:text-[#1a5e5c]"
+                    onClick={() => setZoom(Number((zoom + ZOOM_STEP).toFixed(1)))}
+                    disabled={zoom + ZOOM_STEP > maxZoom}
+                  >
+                    ＋
+                  </button>
+                </section>
+                <div className="flex justify-center items-center gap-x-[10px]">
+                  <Button
+                    className="memoo_button w-[115px] reverse"
+                    onClick={() => {
+                      setImage(null);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button className="memoo_button w-[115px] reverse" onClick={handleCrop} loading={cropLoading}>
+                    Save
+                  </Button>
+                </div>
+              </div>
+            </Form.Item>
+          )}
           <Form.Item label={<p className="edit-form-label">Website</p>} name="website">
             <div className="reactive">
               <Input className="custom-input rounded-[7px] px-8" />

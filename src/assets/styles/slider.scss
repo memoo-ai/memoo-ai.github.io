@@ -16,19 +16,24 @@
   }
 }
 
-.memoo_slider_tooltip {
-  .ant-tooltip-inner {
-    padding: unset;
-    min-height: unset;
+.memoo_slider_tooltip{
+  font-family: "OCR A Extended";
+  border: 1px solid #07E993;
+  background-color: #1F3B4F;
+  border-radius: 4px;
+  // padding: 4px 5px;
+  color: #07E993;
+  min-width: 100px;
+  height: 19px;
 
-    color: #fff;
-    text-align: center;
-    font-family: 'OCR A Extended';
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 16px; /* 133.333% */
-    letter-spacing: -0.6px;
-  }
+   .ant-tooltip-inner{
+      color: #07E993;
+      font-family: "OCR A Extended";
+      font-size: 10px;
+      line-height: 16px;
+      height: 19px;
+      padding: 0;
+      text-align: center;
+   }
 }
 

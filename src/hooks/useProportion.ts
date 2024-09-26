@@ -78,7 +78,7 @@ export const useProportion = () => {
     const totalSupply = new BigNumber(memooConfig?.totalSupply.toString()).dividedBy(10 ** 9);
     const tokenAllocationCreator = new BigNumber(Number(memooConfig?.tokenAllocationCreator) / 10000);
     const result = totalSupply.multipliedBy(tokenAllocationCreator);
-    return result.toString() ?? 0;
+    return Number(result ?? 0);
   }, [memooConfig, firstProportion]);
 
   const idoUserBuyLimit = useMemo(() => {
@@ -104,6 +104,19 @@ export const useProportion = () => {
     return result;
   }, [memooConfig]);
 
+  const tokenAllocationAirdrop = useMemo(() => {
+    if (!memooConfig) return 0;
+    const result = memooConfig?.tokenAllocationAirdrop / 10000;
+    console.log('tokenAllocationIdo:', result);
+    return result;
+  }, [memooConfig]);
+  const platformFeeCreateMemeSol = useMemo(() => {
+    if (!memooConfig) return 0;
+    const result = new BigNumber(memooConfig?.platformFeeCreateMemeSol.toString()).dividedBy(10 ** 9);
+    console.log('platformFeeCreateMemeSol:', Number(result));
+    return Number(result);
+  }, [memooConfig]);
+
   return {
     firstProportion,
     maxProportion,
@@ -118,5 +131,7 @@ export const useProportion = () => {
     idoUserBuyLimit,
     totalSupplyPrice,
     tokenAllocationIdo,
+    tokenAllocationAirdrop,
+    platformFeeCreateMemeSol,
   };
 };

@@ -11,7 +11,8 @@ import React, {
 } from 'react';
 
 import './claim-modal.scss';
-import { Modal, Button, message, Input } from 'antd';
+import { Modal, Button, Input } from 'antd';
+import message from '@/components/IMessage';
 import { IconLock, IconClose, IconCompleted } from '@/components/icons';
 import BigNumber from 'bignumber.js';
 import { useAccount } from '@/hooks/useWeb3';
@@ -25,7 +26,7 @@ const ClaimModal = ({ children }: any) => {
   const { address } = useAccount();
   const [open, setOpen] = useState(false);
   const [confirming, setConfirming] = useState(false);
-  const { creatorClaim, stage, idoQueueDetail, solanaMemeConfig, unlockTimestamp, memeUserData } =
+  const { creatorClaim, creatorClaimAll, stage, idoQueueDetail, solanaMemeConfig, unlockTimestamp, memeUserData } =
     useContext(CreatorContext);
 
   const tokens = useMemo(() => {
@@ -56,13 +57,22 @@ const ClaimModal = ({ children }: any) => {
   }, [memeUserData]);
 
   const onConfirm = useCallback(async () => {
-    debugger;
-    if (!creatorClaim || !idoQueueDetail || !address || !solanaMemeConfig) return;
+    // debugger;
+    if (!creatorClaim || !idoQueueDetail || !address || !solanaMemeConfig || !creatorClaimAll) return;
     try {
       setConfirming(true);
-      await creatorClaim(solanaMemeConfig?.memeConfigId, solanaMemeConfig?.mintaPublickey);
-      setOpen(false);
-      message.success('Unlock Successful');
+      const tx =
+        stage === '1st'
+          ? await creatorClaim(solanaMemeConfig?.memeConfigId, solanaMemeConfig?.mintaPublickey)
+          : await creatorClaimAll(
+              solanaMemeConfig?.memeConfigId,
+              solanaMemeConfig?.mintaPublickey,
+              Number(userCanClaimCount),
+            );
+      if (tx) {
+        setOpen(false);
+        message.success('Unlock Successful');
+      }
     } catch (error) {
       console.error(error);
       message.error('Unlock Failed');
@@ -144,7 +154,12 @@ const ClaimModal = ({ children }: any) => {
           ) : (
             <div className="h-[66px]" />
           )}
-          <Button loading={confirming} className="memoo_button w-[100%] h-[50px]" onClick={onConfirm}>
+          <Button
+            disabled={tokens <= 0 && Number(userCanClaimCount) <= 0}
+            loading={confirming}
+            className="memoo_button w-[100%] h-[50px]"
+            onClick={onConfirm}
+          >
             CLAIM ALL
           </Button>
         </div>

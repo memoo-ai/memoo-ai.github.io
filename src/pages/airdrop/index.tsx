@@ -219,17 +219,21 @@ const Airdrop: FC = () => {
   );
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  useEffect(() => {
     (async () => {
       try {
         setLoading(true);
         // For testin: BigEgg or NewCake
         const { data } = await getIDOQueueDetail(ticker, address ?? 'default');
         setIDOQueueDetail(data);
-        const { data: meme } = await getMeMemo(ticker);
-        setTotalPurchased(meme[0]?.balance ?? 0);
-        setTotalAmount(meme[0]?.ethAmout ?? 0);
+        // const { data: meme } = await getMeMemo(ticker);
+        // setTotalPurchased(meme[0]?.balance ?? 0);
+        // setTotalAmount(meme[0]?.ethAmout ?? 0);
         const { data: config } = await getMemeConfigId(ticker);
-        setSolanaMemeConfig(config);
+        setSolanaMemeConfig(config ?? '');
         // console.log('config.memeConfigId:', config.memeConfigId);
         // debugger;
         // const memeUser = await getMemeUserData(config.memeConfigId);
@@ -280,9 +284,10 @@ const Airdrop: FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        if (!solanaMemeConfig) return;
+        if (!solanaMemeConfig || !memooConfig) return;
 
         const memeUser = await getMemeUserData(solanaMemeConfig?.memeConfigId);
+        console.log('memeUser-solanaMemeConfig:', solanaMemeConfig);
         console.log('memeUser:', memeUser);
         setMemeUserData(memeUser!);
         const memeCreator = await getMemeCreatorData(solanaMemeConfig?.memeConfigId);
@@ -295,7 +300,7 @@ const Airdrop: FC = () => {
         setLoading(false);
       }
     })();
-  }, [ticker, solanaMemeConfig, refresh]);
+  }, [ticker, solanaMemeConfig, refresh, memooConfig]);
 
   // useEffect(() => {
   //   if (!idoQueueDetail || !address) return;

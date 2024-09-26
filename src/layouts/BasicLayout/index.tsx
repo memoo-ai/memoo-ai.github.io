@@ -50,12 +50,13 @@ const BasicLayout: React.FC = () => {
         console.log('loginMeme');
         // // TODO
         console.log('useEffect,loginMeme');
+        localStorage.removeItem(MEMOO_TOKEN_STORAGE);
         await loginMeme();
         if (publicKey) {
           setPubKey(publicKey?.toBase58());
           console.log('publicKey: ', publicKey?.toBase58());
+          window.location.reload();
         }
-        // window.location.reload();
       })();
     }
   }, [connected, publicKey]);

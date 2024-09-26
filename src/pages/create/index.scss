@@ -1,3 +1,5 @@
+@import url('@/assets/styles/modal.scss');
+@import url('@/assets/styles/upload.scss');
 .create_token {
   padding: 56px 66px 60px 66px;
   border-radius: 20px;
@@ -62,8 +64,8 @@
     padding-right: 106px;
 
     .create_token_bg {
-      width: 342px;
-      height: 473.35px;
+      width: 422px;
+      height: 584.08px;
 
     }
 
@@ -89,6 +91,16 @@
 
             p>span {
               font-size: 10px;
+
+            }
+            p>var{
+              font-family: OCR A Extended;
+              font-size: 16px;
+              font-weight: 400;
+              line-height: 16px;
+              letter-spacing: -0.05em;
+              text-align: left;
+              white-space: nowrap !important;
             }
 
             &::after {
@@ -105,7 +117,7 @@
 
       .custom-upload-icon {
         width: 100%;
-        background: #1f3b4f;
+        background: #1f3b4f !important;
         border-radius: 7px;
         .ant-upload-select {
           width: 100%;
@@ -120,6 +132,7 @@
 
       .custom-upload-banner {
         width: 100%;
+        background: #1f3b4f !important;
 
         .ant-upload-select {
           width: 100%;
@@ -329,4 +342,19 @@
 }
 .ant-input-textarea-affix-wrapper.ant-input-affix-wrapper >textarea.ant-input{
   border-radius: 7px;
+}
+.create-tooltip{
+  min-width: 300px;
+  .ant-tooltip-inner{
+    color: #07E993;
+    font-family: 'OCR A Extended';
+    font-size: 12px;
+    white-space: pre-wrap;
+    width: max-content;
+  }
+}
+.upload-no-address{
+  border: 1px solid #07E993;
+  width: 100%;
+  height: 140px;
 }

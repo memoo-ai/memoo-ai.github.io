@@ -27,7 +27,7 @@ const ISelect = ({ options, onSelectChange }: ISelectProps) => {
       key: 'desc',
       label: (
         <p
-          className={`${orderBy === 'desc' ? 'text-[#A005FE]' : 'text-[#07E993]'} font-404px text-[16px]`}
+          className={`${orderBy === 'desc' ? 'text-[#A005FE]' : 'text-[#07E993]'} font-404px text-[12px]`}
           onClick={() => {
             setOrderBy('desc');
             onSelectChange(activeKey, 'desc');
@@ -41,7 +41,7 @@ const ISelect = ({ options, onSelectChange }: ISelectProps) => {
       key: 'asc',
       label: (
         <p
-          className={`${orderBy === 'asc' ? 'text-[#A005FE]' : 'text-[#07E993]'} font-404px text-[16px]`}
+          className={`${orderBy === 'asc' ? 'text-[#A005FE]' : 'text-[#07E993]'} font-404px text-[12px]`}
           onClick={() => {
             setOrderBy('asc');
             onSelectChange(activeKey, 'asc');
@@ -61,7 +61,7 @@ const ISelect = ({ options, onSelectChange }: ISelectProps) => {
           <div
             className={`${
               activeKey === item.key ? 'text-[#A005FE]' : 'text-[#07E993]'
-            } font-404px text-[16px] cursor-pointer`}
+            } font-404px text-[12px] cursor-pointer`}
             onClick={() => {
               setActiveKey(item.key);
               setActiveLabel(item.label);

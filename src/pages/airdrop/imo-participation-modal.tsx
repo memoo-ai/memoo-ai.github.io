@@ -1,5 +1,6 @@
 /* eslint-disable no-debugger */
-import { Button, Checkbox, Input, Modal, Progress, Radio, RadioChangeEvent, Slider, message } from 'antd';
+import { Button, Checkbox, Input, Modal, Progress, Radio, RadioChangeEvent, Slider } from 'antd';
+import message from '@/components/IMessage';
 import {
   Children,
   FC,
@@ -21,7 +22,7 @@ import { DEFAULT_IDO_LIMIT, zeroBN } from '@/constants';
 import ITooltip from '@/components/ITooltip';
 import { BN } from '@coral-xyz/anchor';
 
-const grades = [1 / 4, 1 / 2, 1];
+const grades = [1 / 10, 1 / 2, 1];
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
   const [open, setOpen] = useState(false);
@@ -69,7 +70,10 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
           <span>
             {formatDecimals(capped.multipliedBy(g).multipliedBy(idoUserBuyLimitBN))} {tokenSymbol}
           </span>
-          <span>~{formatDecimals(totalSupplyBN.multipliedBy(g).multipliedBy(idoUserBuyLimitBN))} TOKEN</span>
+          <span>
+            ~{Number(formatDecimals(totalSupplyBN.multipliedBy(g).multipliedBy(idoUserBuyLimitBN))).toLocaleString()}{' '}
+            TOKEN
+          </span>
         </div>
       ),
       value: parseFloat(formatDecimals(capped.multipliedBy(g).multipliedBy(idoUserBuyLimitBN))),
@@ -127,11 +131,11 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
               <ITooltip
                 className="h-[12px] "
                 placement="bottom"
-                title={`${
-                  (Number(formatDecimals(capped)) / 7) * 6
-                } ${tokenSymbol} will be used to create liquidity pair while ${Number(
+                title={`${((Number(formatDecimals(capped)) / 7) * 6).toFixed(
+                  2,
+                )} ${tokenSymbol} will be used to create liquidity pair while ${Number(
                   Number(formatDecimals(capped)) / 7,
-                ).toFixed(2)}  ${tokenSymbol} is collected as IMO platform fee.`}
+                ).toFixed(2)} ${tokenSymbol} is collected as IMO platform fee.`}
                 color="#fff"
                 bgColor="#396D93"
               />

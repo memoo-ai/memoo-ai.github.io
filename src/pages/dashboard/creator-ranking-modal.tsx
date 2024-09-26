@@ -1,7 +1,8 @@
 import { useState, Children, cloneElement, isValidElement, useEffect, useCallback } from 'react';
 
 import './airdrop-modal.scss';
-import { Modal, Button, message } from 'antd';
+import { Modal, Button } from 'antd';
+import message from '@/components/IMessage';
 import { IconLock, IconClose, IconCompleted } from '@/components/icons';
 import { getIDOLaunchedDetail } from '@/api/airdrop';
 import { getTokenDetail } from '@/api/token';

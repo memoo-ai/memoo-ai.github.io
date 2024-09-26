@@ -2,8 +2,8 @@
 import { FC, useContext, useMemo, useRef, useEffect, useState } from 'react';
 import './profile.scss';
 import { AirdropContext } from '.';
-import { clipAddress, extractDomainName, formatTs, handleCopy } from '@/utils';
-import { IconCopy, IconTwitter, IconTelegram, IconShare, IconFacebook } from '@/components/icons';
+import { clipAddress, extractDomainName, formatTs, handleCopy, popupSharing } from '@/utils';
+import { IconCopy, IconTwitter, IconTelegram, IconSolana, IconFacebook } from '@/components/icons';
 import { getToolsUrls } from '@/api/common';
 
 const Profile: FC = () => {
@@ -11,7 +11,7 @@ const Profile: FC = () => {
   const iconRefs = useRef<any>({});
   const [showShare, setShowShare] = useState(false);
   const [tools, setTools] = useState<any>([]);
-  const shareText = 'From The Ultimate Memecoin Infrastructure.';
+  const shareText = 'Discover this meme token on Memoo.';
 
   const shareUrl = useMemo(() => {
     return `${import.meta.env.VITE_SHARE_URI}airdrop/${idoQueueDetail?.ticker}`;
@@ -56,7 +56,8 @@ const Profile: FC = () => {
             >
               {idoQueueDetail?.creatorAddress && (
                 <li className="flex items-center gap-x-1.5 h-8">
-                  <img className="w-[20px] h-[20px] mr-[5px]" src="/create/vector.png" alt="" />
+                  {/* <img className="w-[20px] h-[20px] mr-[5px]" src="/create/vector.png" alt="" /> */}
+                  <IconSolana color="#FFF" iconColor="#fff" />
                   {clipAddress(idoQueueDetail?.contractAddress?.toUpperCase() ?? '')}{' '}
                   <a className="cursor-pointer">
                     {/* <img className="w-2.5 object-contain" src="/create/icon-copy.png" /> */}
@@ -87,7 +88,7 @@ const Profile: FC = () => {
             >
               {idoQueueDetail?.lpContractAddress && (
                 <li className="flex items-center gap-x-1.5 h-8">
-                  <img className="w-[20px] h-[20px] mr-[5px]" src="/create/vector.png" alt="" />
+                  <IconSolana color="#FFF" iconColor="#fff" />
                   {clipAddress(idoQueueDetail?.lpContractAddress?.toUpperCase() ?? '')}{' '}
                   <a className="cursor-pointer">
                     {/* <img className="w-2.5 object-contain" src="/create/icon-copy.png" /> */}
@@ -290,28 +291,61 @@ const Profile: FC = () => {
             <div className="profile-share-content pt-2">
               <ul className="content flex items-center justify-center gap-[11px]">
                 <a
-                  className="rounded-[7px] bg-[#07E993] w-[40px] h-[40px] p-[10px] flex justify-center items-center"
-                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                    shareText,
-                  )}&url=${encodeURIComponent(shareUrl)}`}
+                  className="rounded-[7px] bg-[#07E993] w-[40px] h-[40px] p-[10px] flex justify-center items-center link-hover"
+                  onMouseOver={() => iconRefs.current[`IconTwitter`].setHovered(true)}
+                  onMouseLeave={() => iconRefs.current[`IconTwitter`].setHovered(false)}
+                  onClick={() =>
+                    popupSharing(
+                      `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                        shareText,
+                      )}&url=${encodeURIComponent(shareUrl)}`,
+                    )
+                  }
                 >
-                  <IconTwitter color="#1F3B4F" className="cursor-pointer " />
+                  <IconTwitter
+                    color="#1F3B4F"
+                    hoverColor="#07E993"
+                    ref={(ref) => (iconRefs.current[`IconTwitter`] = ref)}
+                    className="cursor-pointer "
+                  />
                 </a>
                 <a
-                  className="rounded-[7px] bg-[#07E993] w-[40px] h-[40px] p-[10px] flex justify-center items-center"
-                  href={`https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(
-                    shareText,
-                  )}`}
+                  className="rounded-[7px] bg-[#07E993] w-[40px] h-[40px] p-[10px] flex justify-center items-center link-hover"
+                  onMouseOver={() => iconRefs.current[`IconTelegram`].setHovered(true)}
+                  onMouseLeave={() => iconRefs.current[`IconTelegram`].setHovered(false)}
+                  onClick={() =>
+                    popupSharing(
+                      `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(
+                        shareText,
+                      )}`,
+                    )
+                  }
                 >
-                  <IconTelegram color="#1F3B4F" className="cursor-pointer " />
+                  <IconTelegram
+                    color="#1F3B4F"
+                    hoverColor="#07E993"
+                    ref={(ref) => (iconRefs.current[`IconTelegram`] = ref)}
+                    className="cursor-pointer "
+                  />
                 </a>
                 <a
-                  className="rounded-[7px] bg-[#07E993] w-[40px] h-[40px] p-[10px] flex justify-center items-center"
-                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                    shareUrl,
-                  )}&quote=${encodeURIComponent(shareText)}`}
+                  className="rounded-[7px] bg-[#07E993] w-[40px] h-[40px] p-[10px] flex justify-center items-center link-hover"
+                  onMouseOver={() => iconRefs.current[`IconFacebook`].setHovered(true)}
+                  onMouseLeave={() => iconRefs.current[`IconFacebook`].setHovered(false)}
+                  onClick={() =>
+                    popupSharing(
+                      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                        shareUrl,
+                      )}&quote=${encodeURIComponent(shareText)}`,
+                    )
+                  }
                 >
-                  <IconFacebook color="#1F3B4F" className="cursor-pointer " />
+                  <IconFacebook
+                    color="#1F3B4F"
+                    hoverColor="#07E993"
+                    ref={(ref) => (iconRefs.current[`IconFacebook`] = ref)}
+                    className="cursor-pointer "
+                  />
                 </a>
               </ul>
             </div>
@@ -328,10 +362,10 @@ const Profile: FC = () => {
         <time className="mt-2 block font-OCR text-bluish-purple-light text-sm">
           Created {formatTs(idoQueueDetail?.createdAt ?? 0)}
         </time>
-        <p className="mt-2 font-OCR text-white text-sm leading-5 max-w-2xl">{idoQueueDetail?.description}</p>
+        <p className="mt-2 font-OCR text-white text-sm max-w-2xl ">{idoQueueDetail?.description}</p>
       </div>
       <div className="content p-[22px]">
-        <ul className="basic_list mt-14 flex flex-col gap-y-6">
+        <ul className="basic_list mt-14 flex flex-col gap-y-3">
           {params.map((item) => (
             <li key={item.key} className="grid grid-cols-12">
               {item.formatKey ? (
@@ -349,7 +383,7 @@ const Profile: FC = () => {
             </li>
           ))}
         </ul>
-        <div className="soscial_info mt-16">
+        <div className="soscial_info pt-16">
           <h1 className="font-404px text-lg text-green leading-5">Social Info</h1>
           <ul className="mt-6 flex flex-col gap-y-1.5">
             {socails.map((item) => (
@@ -357,7 +391,7 @@ const Profile: FC = () => {
                 {item.formatKey ? (
                   item.formatKey(item.key)
                 ) : (
-                  <label className="col-span-3 text-bluish-purple-light text-sm font-OCR leading-4 flex h-8 gap-x-1.5 flex items-center whitespace-pre-wrap">
+                  <label className="col-span-3 text-bluish-purple-light text-sm font-OCR leading-4 flex h-8 gap-x-1.5 items-center whitespace-pre-wrap">
                     {item.key}
                   </label>
                 )}

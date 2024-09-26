@@ -20,11 +20,12 @@ const Progress: FC = () => {
   const { stage, idoQueueDetail, memooConfig, mine, totalPurchased, memeUserData, unlockTimestamp } =
     useContext(AirdropContext);
   const { address } = useAccount();
-  const { firstProportion, platformCreateMeme, firstIncrease, maxIncrease, createMaxProportion } = useProportion();
+  const { firstProportion, platformCreateMeme, firstIncrease, maxIncrease, totalCapInitial, maxProportion } =
+    useProportion();
   const iconRefs = useRef<any>({});
 
   const purchased = useMemo(() => {
-    if (!memooConfig || !memeUserData || !platformCreateMeme) return 0;
+    if (!memooConfig || !memeUserData) return 0;
 
     const creatorLockCountBN = new BigNumber(Number(memeUserData?.creatorLockCount)).dividedBy(10 ** 9);
     console.log('creatorLockCountBN:', Number(creatorLockCountBN));
@@ -38,10 +39,10 @@ const Progress: FC = () => {
     console.log('totalPurchasedBN:', Number(totalPurchasedBN));
     const formattedResult = parseFloat(formatDecimals(totalPurchasedBN));
     console.log('purchased-formattedResult:', formattedResult);
-    console.log('purchased-platformCreate:', platformCreateMeme);
-    const result = platformCreateMeme + formattedResult;
+    // console.log('purchased-platformCreate:', platformCreateMeme);
+    const result = formattedResult;
     return result;
-  }, [memooConfig, memeUserData, platformCreateMeme]);
+  }, [memooConfig, memeUserData]);
   // console.log('firstProportion:', firstProportion);
   // console.log('maxProportion:', maxProportion);
   // console.log('firstIncrease:', firstIncrease);
@@ -110,7 +111,7 @@ const Progress: FC = () => {
       btnText: 'increase',
       btnIcon: (disabled) => (
         <IconQueueBtn
-          className="w-[15px] h-[15px]"
+          className="w-[15px] h-[15px] img-pointer-events"
           color={disabled ? '#7D83B5' : '#19FDA6'}
           hoverColor={disabled ? '#7D83B5' : '#A005FE'}
           ref={(ref) => (iconRefs.current[`increase`] = ref)}
@@ -120,9 +121,9 @@ const Progress: FC = () => {
       // btnIcon: `/create/icon-increase${stage === 'in-queue' ? '-active' : ''}.svg`,
       wrapper: (node: ReactNode) => (
         <IncreaseAcquisitionModal
-          maxIncrease={maxIncrease}
+          maxIncrease={totalCapInitial}
           firstProportion={firstProportion}
-          maxProportion={createMaxProportion}
+          maxProportion={maxProportion}
           firstIncrease={firstIncrease}
           purchased={purchased}
         >
@@ -161,7 +162,7 @@ const Progress: FC = () => {
       //   .dividedBy(1e4)
       //   .multipliedBy(1e2)
       //   .toNumber()}% unlock when\ntoken price hits 0.0005c`,
-      desc: `1st ${50}% unlock when\ntoken price hits 0.0005c`,
+      desc: `1st ${50}% unlock when\ntoken price hits $${idoQueueDetail?.unlockPrice}`,
       onClick: () => {},
       btnText: 'claim',
       // btnIcon: `/create/icon-claim${stage === '1st-claim' ? '-active' : ''}.svg`,
@@ -272,7 +273,7 @@ const Progress: FC = () => {
             })}
           >
             <div className={classNames({ active }, 'icon')}>
-              {typeof item.icon === 'string' ? <img src={item.icon} /> : item.icon}
+              {typeof item.icon === 'string' ? <img className="img-pointer-events" src={item.icon} /> : item.icon}
             </div>
             <h3
               className={classNames(
@@ -282,13 +283,19 @@ const Progress: FC = () => {
             >
               {item.title}
             </h3>
-            <p className="mt-1.5 font-OCR text-white leading-4 text-sm text-center break-keep whitespace-pre">
+            <p
+              className={`mt-1.5 font-OCR ${active ? 'text-white' : 'text-[#7D83B5]'} leading-4 text-[12px] text-center break-keep whitespace-pre`}
+            >
               {item.desc}
             </p>
             {item.wrapper ? (
               item.wrapper(
                 <Button
-                  style={{ visibility: item.btnText ? 'visible' : 'hidden' }}
+                  style={{
+                    visibility: item.btnText ? 'visible' : 'hidden',
+                    backgroundColor: item.enabled ? undefined : 'currentColor',
+                    pointerEvents: item.enabled ? 'auto' : 'none',
+                  }}
                   className="memoo_button reverse mt-[19px] px-[19px] h-[38px]"
                   onClick={() => item.onClick?.()}
                   disabled={!item.enabled}
@@ -304,7 +311,10 @@ const Progress: FC = () => {
               )
             ) : (
               <Button
-                style={{ visibility: item.btnText ? 'visible' : 'hidden' }}
+                style={{
+                  visibility: item.btnText ? 'visible' : 'hidden',
+                  backgroundColor: item.enabled ? undefined : 'currentColor',
+                }}
                 className="memoo_button reverse mt-[19px] px-[19px] h-[38px]"
                 onClick={() => item.onClick?.()}
                 disabled={!item.enabled}

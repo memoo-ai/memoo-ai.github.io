@@ -9,15 +9,16 @@ import { Button } from 'antd';
 import Countdown from '@/pages/airdrop/countdown';
 import { useNavigate } from 'react-router-dom';
 import Empty from '@/components/Empty';
-import { formatNumberToFixed } from '@/utils';
+import { formatNumberToFixed, formatTs, formatRatioToPercentage } from '@/utils';
 interface KingsCardsProps {
   btnText?: string;
   btnType?: string;
   path?: string;
+  type?: 'Airdrop' | 'IMO';
   data: any[];
 }
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
-const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data }: KingsCardsProps) => {
+const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data, type = 'IMO' }: KingsCardsProps) => {
   const navigate = useNavigate();
   // const data = new Array(3).fill(undefined).map((_, i) => ({
   //   id: i,
@@ -28,10 +29,14 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data 
   //   icon: '',
   //   description: 'description',
   // }));
+  const renderInstant = (item: any) => {
+    const instant = type === 'IMO' ? item.endsIn : item.airdropEndsIn;
+    return instant > 0;
+  };
   return (
     <div
       className="w-[100%] pb-[81px]"
-      style={{ background: `url(${KingsBg}) no-repeat`, backgroundSize: 'cover', height: '785px' }}
+      style={{ background: `url(${KingsBg}) no-repeat center center`, backgroundSize: 'cover' }}
     >
       <div className="flex items-center my-[42px]">
         <span className="font-404px text-green text-[24px] mr-[20px]">KINGS OF THE LAND</span>
@@ -62,44 +67,65 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data 
                       <h5 className="font-OCR text-[12px] text-green">{item.ticker}</h5>
                     </div>
                   </div>
-                  <p className="my-[26px] font-OCR text-[14px] border_b text-[#7D83B5] h-[48px]">{item.description}</p>
+                  <p className="description h-[48px]">{item.description}</p>
+                  <div className="border_b" />
                   <div className="py-[24px]">
-                    <div className="flex justify-between items-center">
-                      <div className="font-OCR text-[14px] text-[#7D83B5] line-[13px]">Ends in</div>
-                      <div className="text-right">
-                        <Countdown
-                          className=" flex gap-x-2 mt-5 font-OCR text-[17px] text-[#fff] line-[13px]"
-                          timefragments="timefragments-kings"
-                          format={([days, hours, minutes, seconds]) => [
-                            <div key="hours">
-                              <time>{hours}</time>
-                              <span>H</span>
-                            </div>,
-                            <div key="minutes">
-                              <time>{minutes}</time>
-                              <span>M</span>
-                            </div>,
-                            <div key="seconds">
-                              <time>{seconds}</time>
-                              <span>S</span>
-                            </div>,
-                          ]}
-                          instant={(item.endsIn || item.airdropEndsIn * 1000) ?? 0}
-                          // instant={1720510654000}
-                          onEnded={(ended) => {
-                            // setEnded(ended);
-                          }}
-                          symbol=""
-                        />
+                    {type === 'IMO' ? (
+                      <div className="flex justify-between items-center">
+                        <div className="font-OCR text-[14px] text-[#7D83B5] line-[13px]">Ends in</div>
+                        <div className="text-right">
+                          {renderInstant(item) ? (
+                            <Countdown
+                              className=" flex gap-x-2 mt-5 font-OCR text-[17px] text-[#fff] line-[13px]"
+                              timefragments="timefragments-kings"
+                              format={([days, hours, minutes, seconds]) => [
+                                <div key="hours">
+                                  <time>{hours}</time>
+                                  <span>H</span>
+                                </div>,
+                                <div key="minutes">
+                                  <time>{minutes}</time>
+                                  <span>M</span>
+                                </div>,
+                                <div key="seconds">
+                                  <time>{seconds}</time>
+                                  <span>S</span>
+                                </div>,
+                              ]}
+                              instant={type === 'IMO' ? item.endsIn * 1000 : item.airdropEndsIn * 1000}
+                              // instant={1720510654000}
+                              onEnded={(ended) => {
+                                // setEnded(ended);
+                              }}
+                              symbol=""
+                            />
+                          ) : (
+                            <var className=" flex gap-x-2 font-OCR text-[17px] text-[#fff] line-[13px]">
+                              00h 00m 00s
+                            </var>
+                          )}
+                        </div>
                       </div>
-                    </div>
+                    ) : (
+                      <div className="flex justify-between items-center">
+                        <div className="font-OCR text-[14px] text-[#7D83B5] line-[13px]">IMO Date</div>
+                        <div className="text-right">
+                          <var className=" flex gap-x-2 font-OCR text-[17px] text-[#fff] line-[13px]">
+                            {formatTs(item?.airdropEndsIn, 's', 'monthAndDay')}
+                          </var>
+                        </div>
+                      </div>
+                    )}
                     <div className="flex justify-between items-center">
                       <div className="font-OCR text-[14px] text-[#7D83B5] line-[13px] w-[110px] mr-[20px]">
                         Memoo Score
                       </div>
-                      <IProgress className="w-[83px]" percent={item.memooScore} />
+                      <IProgress
+                        className="w-[83px]"
+                        percent={formatRatioToPercentage(item.memooScore, item.totalScore)}
+                      />
                       <div className="font-OCR text-[17px] text-[#fff] line-[13px] w-[153px] text-right flex-1">
-                        {item?.memooScore ?? 0}/100
+                        {formatRatioToPercentage(item.memooScore, item.totalScore)}/100
                       </div>
                     </div>
                     <div className="flex justify-between items-center">
@@ -124,7 +150,7 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data 
             );
           })
         ) : (
-          <div className="w-[100%]">
+          <div className="w-[100%] h-[600px]">
             <Empty className="h-[513px]" />
           </div>
         )}
