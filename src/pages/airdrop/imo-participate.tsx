@@ -44,7 +44,8 @@ const IMOParticipate: FC = () => {
       {
         key: 'Contributed',
         // value: `${idoQueueDetail?.contributed ?? 'NA'}/${idoQueueDetail?.maxContributed ?? 'NA'} ${tokenSymbol}`,
-        value: `${totalSupplyPrice * idoUserBuyLimit} ${tokenSymbol}`,
+        // value: `${totalSupplyPrice * idoUserBuyLimit} ${tokenSymbol}`,
+        value: `${idoQueueDetail?.contributed} ${tokenSymbol}`,
         tip: `Contribution per wallet\nis capped at ${totalSupplyPrice * idoUserBuyLimit} ${tokenSymbol}`,
         big: true,
         progress: null,
