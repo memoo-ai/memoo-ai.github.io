@@ -3,7 +3,7 @@ import { FC, useContext, useMemo, useRef, useEffect, useState } from 'react';
 import './profile.scss';
 import { AirdropContext } from '.';
 import { clipAddress, extractDomainName, formatTs, handleCopy, popupSharing } from '@/utils';
-import { IconCopy, IconTwitter, IconTelegram, IconSolana, IconFacebook } from '@/components/icons';
+import { IconCopy, IconTwitter, IconTelegram, IconSolana, IconFacebook, IconDiscord } from '@/components/icons';
 import { getToolsUrls } from '@/api/common';
 
 const Profile: FC = () => {
@@ -207,6 +207,27 @@ const Profile: FC = () => {
                     className="w-[20px]"
                   />{' '}
                   {idoQueueDetail?.telegram ?? ''}
+                </a>
+              </li>
+            )}
+            {idoQueueDetail?.discord && (
+              <li
+                className="h-8 token_list_hover"
+                onMouseOver={() => iconRefs.current['IconDiscord'].setHovered(true)}
+                onMouseLeave={() => iconRefs.current['IconDiscord'].setHovered(false)}
+              >
+                <a
+                  href={`https://t.me/${idoQueueDetail?.discord}`}
+                  target="_blank"
+                  className="flex items-center gap-x-1.5"
+                >
+                  <IconDiscord
+                    ref={(ref) => (iconRefs.current['IconDiscord'] = ref)}
+                    color="#FFF"
+                    hoverColor="#07E993"
+                    className="w-[20px]"
+                  />{' '}
+                  {idoQueueDetail?.discord ?? ''}
                 </a>
               </li>
             )}

@@ -87,7 +87,7 @@ declare interface IDOActiveDetail extends IDOClaimStage {
   liquidity: string;
   lpContractAddress: string;
   marketCap: string;
-  meMooScore: string;
+  memooScore: string;
   memeTwitterBind: boolean;
   participants: number;
   pinnedTwitter: string;
@@ -135,7 +135,7 @@ declare interface IDOLaunchedDetail extends IDOClaimStage {
   lpLock: boolean;
   marketCap: string;
   maxSupply: string;
-  meMooScore: string;
+  memooScore: string;
   memeTwitterBind: boolean;
   participants: number;
   pinnedTwitter: string;
@@ -180,6 +180,24 @@ declare interface memooScore {
   scoreField: string;
   scoreValue: number;
   totalScore: number;
+}
+
+interface PinnedTwitterData {
+  bookmarkCount: number;
+  impressionCount: number;
+  likeCount: number;
+  name: string;
+  pinnedTwitterUrl: string;
+  profileImageUrl: string;
+  replyCount: number;
+  repostCount: number;
+  text: string;
+  ticker: string;
+  timeStampVal: number;
+  twitterMsgCreatedAt: string;
+  url: string;
+  username: string;
+  verified: boolean;
 }
 declare interface IDOQueueDetail extends IDOClaimStage {
   commitment: string;
@@ -235,6 +253,8 @@ declare interface IDOQueueDetail extends IDOClaimStage {
   unlockTime: string;
   totalRaisedNumerator: string;
   totalRaisedDenominator: string;
+  discord: string;
+  pinnedTwitterData: PinnedTwitterData[];
 }
 
 declare type IDOStatus = 'Draft' | 'Waiting_for_pay' | 'QUEUE' | 'IDO' | 'Launched' | 'IDOEND';
@@ -248,7 +268,7 @@ declare interface pageParams {
 declare interface LaunchpadIMO {
   endsIn: string;
   icon: string;
-  meMooScore: number;
+  memooScore: number;
   status: string;
   ticker: string;
   tokenName: string;
@@ -266,6 +286,10 @@ declare interface LaunchpadAirdrop {
   ticker: string;
   tokenName: string;
   totalScore: number;
+  endsIn: string;
+  totalRaised: string;
+  totalRaisedDenominator: string;
+  totalRaisedNumerator: string;
 }
 declare interface LaunchpadIDOCompeted {
   athRoi: string;
@@ -324,7 +348,7 @@ declare interface DashboardWatchList {
   endsIn: number;
   icon: string;
   launchDate: number;
-  meMooScore: string;
+  memooScore: string;
   status: string;
   ticker: string;
   tokenName: string;
