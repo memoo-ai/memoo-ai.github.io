@@ -22,7 +22,7 @@ import { DEFAULT_IDO_LIMIT, zeroBN } from '@/constants';
 import ITooltip from '@/components/ITooltip';
 import { BN } from '@coral-xyz/anchor';
 
-const grades = [1 / 10, 1 / 2, 1];
+const grades = [1 / 4, 1 / 2, 1];
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
   const [open, setOpen] = useState(false);
