@@ -56,7 +56,7 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data,
                 <div className="kings-cards-item-banner">
                   <img
                     className="w-[100%] h-[158px] rounded-tl-[15px] rounded-tr-[15px] "
-                    src={item?.banners[0] ? item.banners[0] : DefaultBannerBg}
+                    src={item?.banners ? item.banners[0] : DefaultBannerBg}
                     alt=""
                   />
                 </div>
