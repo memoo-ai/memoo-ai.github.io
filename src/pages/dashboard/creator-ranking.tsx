@@ -30,13 +30,13 @@ export default function CreatorRanking() {
               <Button className="w-[227px] h-[50px] mt-[18px]">CLAIM</Button>
             </CreatorRankingModal>
           </div>
-          <div className="creator_ranking_btn flex items-center flex-col mt-[28px]">
+          {/* <div className="creator_ranking_btn flex items-center flex-col mt-[28px]">
             <h5 className="text-[#7D83B5] font-OCR text-center">View other top dogs at</h5>
             <img className="mt-[6px]" src="./dashboard/memoogecko.png" alt="" />
             <ViewTokenRankingModal>
               <Button className="w-[227px] h-[50px] mt-[18px]">VIEW CREATOR RANKING</Button>
             </ViewTokenRankingModal>
-          </div>
+          </div> */}
           <div className="flex items-start w-[100%] flex-col">
             <div className="flex items-center mt-3">
               <span className="font-OCR text-[#FFF] font-[14px]">Tier Progression</span>

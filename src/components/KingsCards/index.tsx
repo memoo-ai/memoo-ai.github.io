@@ -11,6 +11,8 @@ import { useNavigate } from 'react-router-dom';
 import Empty from '@/components/Empty';
 import { formatNumberToFixed, formatTs, formatRatioToPercentage } from '@/utils';
 import Sample from '../Sample';
+import useFunctions from '@/hooks/useFunctions';
+import IPopover from '@/components/IPopover';
 interface KingsCardsProps {
   btnText?: string;
   btnType?: string;
@@ -21,6 +23,7 @@ interface KingsCardsProps {
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data, type = 'IMO' }: KingsCardsProps) => {
   const navigate = useNavigate();
+  const { collection } = useFunctions();
   // const data = new Array(3).fill(undefined).map((_, i) => ({
   //   id: i,
   //   address: 'Rg7GG...kf9Lj7' + i,
@@ -65,8 +68,14 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data,
                     <img className="w-[87px] h-[84px] rounded-[50%] mr-[12px]" src={item.icon} alt="" />
                     <div>
                       <div className="flex gap-x-[12px] mb-[16px]">
-                        <IconCollect className="" color="#6D4F71" />
-                        <img className="w-[28px] h-[23px]" src="/create/topupicon.png" />
+                        <IconCollect
+                          className=""
+                          color="#6D4F71"
+                          onClick={() => collection(item.ticker, item.isCollect ?? false)}
+                        />
+                        <IPopover trigger="hover">
+                          <img className="w-[28px] h-[23px]" src="/create/topupicon.png" />
+                        </IPopover>
                       </div>
                       <h5 className="font-OCR text-[18px] text-[#fff]">{item.tokenName}</h5>
                       <h5 className="font-OCR text-[12px] text-green">{item.ticker}</h5>

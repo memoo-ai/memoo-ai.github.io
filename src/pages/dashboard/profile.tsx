@@ -49,7 +49,7 @@ export const ProfileContext = createContext<ProfileContext>({
     ticker: 'Tick',
   },
 });
-export const Profile = () => {
+const Profile = ({ showEdit = false }) => {
   const navigate = useNavigate();
   const [profileDetail, setProfileDetail] = useState<ProfileDetail>();
   const iconRefs = useRef<any>({});
@@ -88,19 +88,22 @@ export const Profile = () => {
 
   return (
     <div className="dashboard_items">
-      <div className="dashboard_top">
-        <div />
-        <div>
-          <EditProfileModal ticker="ticker" onSaveSuccess={triggerRefresh}>
-            <Button type="link" className="flex items-center h-[40px] gap-x-[11px]">
-              <span className="text-bluish-purple-light font-OCR leading-5 text-sm">Edit Profile</span>
-              <IconEdit className="" color="#07E993" hoverColor="#B53BFF" bgColor="#B53BFF" hoverBgColor="#07E993" />
-            </Button>
-          </EditProfileModal>
+      {showEdit && (
+        <div className="dashboard_top mb-[30px]">
+          <div />
+          <div>
+            <EditProfileModal ticker="ticker" onSaveSuccess={triggerRefresh}>
+              <Button type="link" className="flex items-center h-[40px] gap-x-[11px]">
+                <span className="text-bluish-purple-light font-OCR leading-5 text-sm">Edit Profile</span>
+                <IconEdit className="" color="#07E993" hoverColor="#B53BFF" bgColor="#B53BFF" hoverBgColor="#07E993" />
+              </Button>
+            </EditProfileModal>
+          </div>
         </div>
-      </div>
+      )}
+
       <Spin spinning={loading} fullscreen />
-      <div className="profile-layout mt-[30px]">
+      <div className="profile-layout ">
         <div className="profile-layout-left">
           <CreatorRanking />
           <TopPerformingToken />
@@ -115,3 +118,4 @@ export const Profile = () => {
     </div>
   );
 };
+export default Profile;

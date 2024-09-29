@@ -16,3 +16,9 @@ export const getCrossDirection = () => {
 export const getCrowdSourcing = () => {
   return http.get<CrowdSourcing[]>(`${prefix}/web-unauthorized/crowdsourcing`);
 };
+export const Collection = (ticker: string) => {
+  return http.post(`${prefix}/web-oriented/collection`, { ticker });
+};
+export const CancelCollect = (ticker: string) => {
+  return http.put(`${prefix}/web-oriented/collection`, { ticker });
+};

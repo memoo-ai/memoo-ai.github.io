@@ -3,12 +3,14 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import { ArrowUp, ArrowDown } from 'lucide-react';
 import IProgress from '@/components/IProgress';
+import useFunctions from '@/hooks/useFunctions';
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
 import { TrendingTokens } from '@/types';
 import { formatDecimals, formatRatioToPercentage } from '@/utils';
 
+const { collection } = useFunctions();
 export const columnsOld: ColumnDef<TrendingTokens>[] = [
   {
     accessorKey: 'name',
@@ -72,6 +74,17 @@ export const columns = [
     ),
     fixed: true,
   },
+  // {
+  //   title: '',
+  //   dataIndex: 'endsIn',
+  //   key: 'endsIn',
+  //   sorter: false,
+  //   render: (record: TrendingTokens) => (
+  //     <div onClick={() => collection(record.ticker, record.isCollect)}>
+  //       <IconCollect color="#3D255B" />
+  //     </div>
+  //   ),
+  // },
   {
     title: 'Price',
     dataIndex: 'price',

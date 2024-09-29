@@ -4,7 +4,8 @@ import { formatTs, formatRatioToPercentage } from '@/utils';
 import IProgress from '@/components/IProgress';
 import Countdown from '@/pages/airdrop/countdown';
 import { IconCollect } from '@/components/icons';
-import Sample from '@/components/Sample';
+import useFunctions from '@/hooks/useFunctions';
+import IPopover from '@/components/IPopover';
 
 export enum IDOStatus {
   active = 'active',
@@ -12,6 +13,8 @@ export enum IDOStatus {
   completed = 'completed',
 }
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
+
+const { collection } = useFunctions();
 export const columns = (navigate: (path: string) => void) => [
   {
     title: 'Token',
@@ -35,9 +38,9 @@ export const columns = (navigate: (path: string) => void) => [
   //   key: 'endsIn',
   //   sorter: false,
   //   render: (endsIn: number) => (
-  //     <div>
+  //     <IPopover trigger="hover">
   //       <img className="w-[28px] h-[23px]" src="/create/topupicon.png" />
-  //     </div>
+  //     </IPopover>
   //   ),
   // },
   // {
@@ -45,8 +48,8 @@ export const columns = (navigate: (path: string) => void) => [
   //   dataIndex: 'endsIn',
   //   key: 'endsIn',
   //   sorter: false,
-  //   render: (endsIn: number) => (
-  //     <div>
+  //   render: (record: LaunchpadIMO) => (
+  //     <div onClick={() => collection(record.ticker, record.isCollect)}>
   //       <IconCollect color="#3D255B" />
   //     </div>
   //   ),
@@ -143,7 +146,7 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
     dataIndex: 'tokenName',
     key: 'tokenName',
     width: '387px',
-    render: (tokenName: string, record: LaunchpadIMO) => (
+    render: (tokenName: string, record: LaunchpadAirdrop) => (
       <div className="flex items-center">
         <img src={record.icon} alt="" className="w-[84px] h-[84px] rounded-full mr-5" />
         <span className="font-OCR font-normal text-lg mr-2 text-[#ffffff] h-[84px] flex items-center relative">
@@ -156,22 +159,22 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
   },
   // {
   //   title: '',
-  //   dataIndex: 'endsIn',
-  //   key: 'endsIn',
+  //   dataIndex: 'topUp',
+  //   key: 'topUp',
   //   sorter: false,
   //   render: (endsIn: number) => (
-  //     <div>
+  //     <IPopover trigger="hover">
   //       <img className="w-[28px] h-[23px]" src="/create/topupicon.png" />
-  //     </div>
+  //     </IPopover>
   //   ),
   // },
   // {
   //   title: '',
-  //   dataIndex: 'collect',
-  //   key: 'collect',
+  //   dataIndex: 'endsIn',
+  //   key: 'endsIn',
   //   sorter: false,
-  //   render: (endsIn: number) => (
-  //     <div>
+  //   render: (record: LaunchpadAirdrop) => (
+  //     <div onClick={() => collection(record.ticker, record.isCollect)}>
   //       <IconCollect color="#3D255B" />
   //     </div>
   //   ),

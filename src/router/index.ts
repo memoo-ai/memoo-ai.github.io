@@ -34,6 +34,10 @@ const routeConfig: RouteObject[] = [
         path: '/twitter_callback',
         Component: lazy(() => import('../pages/twitter-callback')),
       },
+      {
+        path: '/user_profile',
+        Component: lazy(() => import('../pages/dashboard/user-profile')),
+      },
     ],
   },
   {

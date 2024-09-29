@@ -28,6 +28,3 @@ export const getWatchList = (params: pageParams) => {
 export const deleteToken = (id: string) => {
   return http.delete(`${prefix}/web-oriented/token/${id}`);
 };
-export const cancelCollect = (ticker: string) => {
-  return http.put(`${prefix}/web-oriented/collection`, { ticker });
-};
