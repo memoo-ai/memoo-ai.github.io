@@ -24,11 +24,11 @@ const DashboardContent: FC<{ onChangeType: (type: string) => void }> = ({ onChan
     }
   }, [location.search]);
   const items = [
-    // {
-    //   key: 'Profile',
-    //   label: 'Profile',
-    //   children: <Profile />,
-    // },
+    {
+      key: 'Profile',
+      label: 'Profile',
+      children: <Profile />,
+    },
     {
       key: 'Creator',
       label: 'Creator',

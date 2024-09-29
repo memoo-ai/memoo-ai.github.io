@@ -87,6 +87,7 @@ export const columns = (navigate: (path: string) => void) => [
         symbol=""
       />
     ),
+    // width: '140px',
   },
   {
     title: 'Memoo Score',
@@ -95,7 +96,9 @@ export const columns = (navigate: (path: string) => void) => [
     sorter: false,
     render: (memooScore: number, record: LaunchpadIMO) => (
       <div className="flex flex-col justify-end items-start pt-5">
-        <span className="font-OCR font-norma text-lg">{formatRatioToPercentage(memooScore, record.totalScore)}</span>
+        <span className="font-OCR w-[130px] text-right font-norma text-lg">
+          {formatRatioToPercentage(memooScore, record.totalScore)}
+        </span>
         <IProgress className="w-[130px]" percent={formatRatioToPercentage(memooScore, record.totalScore)} />
       </div>
     ),
@@ -108,7 +111,7 @@ export const columns = (navigate: (path: string) => void) => [
     sorter: false,
     render: (totalRaised: string, record: LaunchpadIMO) => (
       <div className="flex flex-col justify-end items-start pt-5">
-        <span className="font-OCR font-norma text-lg">
+        <span className="font-OCR font-norma text-lg w-[130px] text-right">
           {totalRaised}&nbsp;
           {tokenSymbol}
         </span>

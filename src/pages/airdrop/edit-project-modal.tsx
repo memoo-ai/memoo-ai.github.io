@@ -36,6 +36,7 @@ import { AirdropContext } from '.';
 import EasyCrop from '@/components/ImgCrop/EasyCrop';
 import Cropper from 'react-easy-crop';
 import { ZOOM_STEP, PREFIX } from '@/components/ImgCrop/constants';
+import { PinnedTwitterData } from '@/types';
 
 const FORM_STORAGE_KEY = 'create_token_storage';
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
@@ -57,6 +58,9 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
   const [projectBannerUrl, setProjectBannerUrl] = useState('');
   const [twitter, setTwitter] = useState('');
   const [createTwitter, setCreateTwitter] = useState('');
+  const [telegram, setTelegram] = useState('');
+  const [discord, setDiscord] = useState('');
+  const [website, setWebsite] = useState('');
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [cropLoading, setCropLoading] = useState(false);
   const [projectDetail, setProjectDetail] = useState({});
@@ -74,25 +78,34 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
         setProjectDetail(res.data);
         setProjectBannerUrl(res.data?.banners ? res.data?.banners[0] : '');
         setTwitter(res.data.twitter);
+        setCreateTwitter(res.data.creatorTwitter);
         setTwitterAccessToken(res.data.twitterAccessToken);
-        setPinnedTwitterUrl(res.data?.pinnedTwitterUrl ?? []);
+        let pinnedTwitterUrls = [];
+        if (res.data?.pinnedTwitterData) {
+          pinnedTwitterUrls = res.data?.pinnedTwitterData.map((item: PinnedTwitterData) => item.pinnedTwitterUrl);
+        }
+        setPinnedTwitterUrl(pinnedTwitterUrls ?? ['', '', '', '']);
+        setTelegram(res.data.telegram);
+        setDiscord(res.data.discord);
+        setWebsite(res.data.website);
         // get data from local
         let formData = {
           ...res.data,
           banners: res.data?.oldBanners ? res.data?.oldBanners : [],
           tokenIcon: res.data.icon,
           projectDescription: res.data.description,
+          discord: res.data.discord,
         };
-        try {
-          const data = JSON.parse(localStorage.getItem(EDIT_INFO_STORAGE) ?? '');
-          if (data) {
-            formData.projectDescription = data.projectDescription;
-            formData.website = data.website;
-            if (formData.bannerUrl) {
-              setProjectBannerUrl(formData.bannerUrl);
-            }
-          }
-        } catch (e) {}
+        // try {
+        //   const data = JSON.parse(localStorage.getItem(EDIT_INFO_STORAGE) ?? '');
+        //   if (data) {
+        //     formData.projectDescription = data.projectDescription;
+        //     formData.website = data.website;
+        //     if (formData.bannerUrl) {
+        //       setProjectBannerUrl(formData.bannerUrl);
+        //     }
+        //   }
+        // } catch (e) {}
         form.setFieldsValue(formData);
       }
     });
@@ -324,9 +337,9 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
       data.creatorTwitter = createTwitter || '';
       data.accessToken = twitterAccessToken || '';
       // TODO check ticker if exits
-
+      data.pinnedTwitterUrl = pinnedTwitterUrl || '';
       setConfirmLoading(true);
-      debugger;
+
       const res = await saveEditInfo({ ...data, ticker });
       setOpen(false);
       if (res?.code === 200) {
@@ -517,19 +530,31 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
           )}
           <Form.Item label={<p className="edit-form-label">Website</p>} name="website">
             <div className="reactive">
-              <Input className="custom-input rounded-[7px] px-8" />
+              <Input
+                className="custom-input rounded-[7px] px-8"
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
+              />
               <img className="website-logo" src="/create/icon-website.png" alt="" />
             </div>
           </Form.Item>
           <Form.Item label={<p className="whitespace-pre-wrap">{`Project\nTelegram`}</p>} name="telegram">
             <div className="reactive">
-              <Input className="custom-input rounded-[7px] px-8" />
+              <Input
+                className="custom-input rounded-[7px] px-8"
+                value={telegram}
+                onChange={(e) => setTelegram(e.target.value)}
+              />
               <IconTelegram className="website-logo w-[17px] h-[15px]" hoverColor="#07E993" />
             </div>
           </Form.Item>
           <Form.Item label={<p className="whitespace-pre-wrap">{`Project\nDiscord`}</p>} name="discord">
             <div className="reactive">
-              <Input className="custom-input rounded-[7px] px-8" />
+              <Input
+                className="custom-input rounded-[7px] px-8"
+                value={discord}
+                onChange={(e) => setDiscord(e.target.value)}
+              />
               <IconDiscord className="website-logo w-[17px] h-[15px]" color="#07E993" hoverColor="#07E993" />
             </div>
           </Form.Item>
@@ -544,7 +569,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
               )}
             </div>
           </Form.Item> */}
-          <Form.Item label={<p>Creator’s Twitter</p>}>
+          <Form.Item label={<p className="whitespace-pre-wrap">{`Creator’s\nTwitter`}</p>}>
             <div className="flex items-center">
               <div style={{ width: '15px' }} className="mr-[7px]">
                 <IconTwitter hoverColor="#07E993" className="" />
@@ -560,7 +585,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
               {pinnedTwitterUrl.map((data, index) => (
                 <Input
                   key={index}
-                  className="custom-input rounded-[7px] px-8"
+                  className="custom-input rounded-[7px]"
                   value={data}
                   onChange={(e) => handleInputChange(index, e.target.value)}
                 />

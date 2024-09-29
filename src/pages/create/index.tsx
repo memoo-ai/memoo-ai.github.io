@@ -934,7 +934,7 @@ export default function Create() {
                     </div>
                   </Form.Item>
                   <Form.Item
-                    label={<p className="whitespace-pre-wrap">{`Pinned\nTwitter links`}</p>}
+                    label={<p className="whitespace-pre-wrap">{`Featured\nTweet links`}</p>}
                     name="pinnedTwitterUrl"
                   >
                     <div className="flex flex-col items-center gap-y-[15px]">

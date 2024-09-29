@@ -75,6 +75,8 @@
   border: 1px solid #07E993;
   position: relative;
   width: 339px;
+  z-index: 99999999;
+
 
   .searchResult {
     width: 100%;
@@ -82,6 +84,7 @@
     left: 0;
     top: calc(100% + 26px);
     border: 1px solid #07E993;
+    padding: 20px 10px 23px 10px;
   }
 }
 
@@ -95,7 +98,11 @@
   border: none;
   padding: 0 10px;
   color: #fff !important;
+  background: #1F3B4F;
+  .ant-input:focus {
 
+    box-shadow: none !important;
+  }
 
   &::placeholder {
     color: #fff !important;
@@ -104,6 +111,11 @@
   &:focus {
     outline: none;
     box-shadow: none;
+    background: #1F3B4F !important;
+  }
+
+  &:hover {
+    background: #1F3B4F !important;
   }
 
 
@@ -132,4 +144,10 @@
   bottom: -7px;
   left: 50%;
   transform: translateX(-50%);
+}
+.ant-popover-arrow{
+  display: none !important;
+}
+.ant-popover-inner{
+  padding: 0;
 }

@@ -196,7 +196,8 @@ const Profile: FC = () => {
                 onMouseLeave={() => iconRefs.current['IconTelegram'].setHovered(false)}
               >
                 <a
-                  href={`https://t.me/${idoQueueDetail?.telegram}`}
+                  // href={`https://t.me/${idoQueueDetail?.telegram}`}
+                  href={idoQueueDetail?.telegram}
                   target="_blank"
                   className="flex items-center gap-x-1.5"
                 >
@@ -206,7 +207,7 @@ const Profile: FC = () => {
                     hoverColor="#07E993"
                     className="w-[20px]"
                   />{' '}
-                  {idoQueueDetail?.telegram ?? ''}
+                  {extractDomainName(idoQueueDetail?.telegram ?? '')}
                 </a>
               </li>
             )}
@@ -216,11 +217,7 @@ const Profile: FC = () => {
                 onMouseOver={() => iconRefs.current['IconDiscord'].setHovered(true)}
                 onMouseLeave={() => iconRefs.current['IconDiscord'].setHovered(false)}
               >
-                <a
-                  href={`https://t.me/${idoQueueDetail?.discord}`}
-                  target="_blank"
-                  className="flex items-center gap-x-1.5"
-                >
+                <a href={idoQueueDetail?.discord} target="_blank" className="flex items-center gap-x-1.5">
                   <IconDiscord
                     ref={(ref) => (iconRefs.current['IconDiscord'] = ref)}
                     color="#FFF"

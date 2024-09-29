@@ -57,6 +57,7 @@ export const columns = [
     key: 'index',
     width: 20,
     render: (_: any, __: any, index: number) => <div className="flex items-center text-[#fff]">{index + 1}</div>,
+    fixed: true,
   },
   {
     title: 'Token',
@@ -69,6 +70,7 @@ export const columns = [
         <span className="font-normal text-sm text-[#07E993] uppercase">{record.ticker}</span>
       </div>
     ),
+    fixed: true,
   },
   {
     title: 'Price',
@@ -77,6 +79,20 @@ export const columns = [
     sorter: false,
     render: (price: number) => <div className="font-normal text-lg ">${formatDecimals(price)}</div>,
   },
+  // {
+  //   title: 'Created',
+  //   dataIndex: 'created',
+  //   key: 'created',
+  //   sorter: false,
+  //   render: (price: number) => <div className="font-normal text-lg ">196d</div>,
+  // },
+  // {
+  //   title: 'Liquidity',
+  //   dataIndex: 'liquidity',
+  //   key: 'liquidity',
+  //   sorter: false,
+  //   render: (price: number) => <div className="font-normal text-lg ">196d</div>,
+  // },
   {
     title: '1h',
     dataIndex: 'increase1H',
@@ -128,6 +144,39 @@ export const columns = [
       </div>
     ),
   },
+  // {
+  //   title: 'Holders',
+  //   dataIndex: 'holders',
+  //   key: 'holders',
+  //   sorter: false,
+  //   render: (price: number) => <div className="font-normal text-lg ">196d</div>,
+  // },
+  // {
+  //   title: 'Token Audit',
+  //   dataIndex: 'tokenAudit',
+  //   key: 'tokenAudit',
+  //   sorter: false,
+  //   render: (price: number, record: TrendingTokens) => (
+  //     <div className="flex items-center">
+  //       <div>
+  //         <p>{record.top10Hold}</p>
+  //         <h5>Top10 Hold</h5>
+  //       </div>
+  //       <div>
+  //         <p>{record.top10Hold}</p>
+  //         <h5>No Mint</h5>
+  //       </div>
+  //       <div>
+  //         <p>{record.top10Hold}</p>
+  //         <h5>Blacklist</h5>
+  //       </div>
+  //       <div>
+  //         <p>{record.top10Hold} </p>
+  //         <h5>Burnt</h5>
+  //       </div>
+  //     </div>
+  //   ),
+  // },
 ];
 export const tokenSelectOptions = [
   // {
