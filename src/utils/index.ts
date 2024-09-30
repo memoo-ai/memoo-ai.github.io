@@ -13,13 +13,13 @@ import message from '@/components/IMessage';
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
-export function handleCopy(str: string) {
+export function handleCopy(str: string, className?: string) {
   if (!str) return;
   navigator.clipboard
     .writeText(str)
     .then(() => {
       console.log('Text copied to clipboard');
-      toast.success('Copied', { duration: 2000 });
+      message.success('Copied', { className });
     })
     .catch((err) => {
       console.error('Failed to copy text: ', err);
@@ -297,4 +297,12 @@ export function getBase64FromImageUrl(url: string, callback: Function) {
     callback(null);
   };
   img.src = url;
+}
+export function formatAddress(address: string, startLength = 4, endLength = 4): string {
+  if (address.length <= startLength + endLength) {
+    return address;
+  }
+  const start = address.slice(0, startLength);
+  const end = address.slice(-endLength);
+  return `${start}...${end}`;
 }
