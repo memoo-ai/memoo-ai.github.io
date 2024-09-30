@@ -42,13 +42,14 @@ const Header = () => {
 
   const menusTop = useMemo(() => {
     return [
+      { name: 'SCOREBOARD', path: '/join', isActive: location.pathname === '/join' },
       { name: 'ABOUT', path: '/home', isActive: location.pathname === '/home' },
-      { name: 'APP', path: '/', isActive: location.pathname !== '/home' },
+      { name: 'APP', path: '/', isActive: location.pathname !== '/home' && location.pathname !== '/join' },
     ];
   }, [location.pathname]);
 
   const showSwipe = useMemo(() => {
-    return location.pathname === '/' || location.pathname === '/gecko';
+    return location.pathname === '/' || location.pathname === '/gecko' || location.pathname === '/join';
   }, [location.pathname]);
   useEffect(() => {
     const headerElement = document.querySelector('.header');
@@ -59,7 +60,7 @@ const Header = () => {
 
   return (
     <header className={`${styles.header} z-[9999]`}>
-      <div className={`${styles.headerTop} flex justify-end items-center`}>
+      <div className={`${styles.headerTop} flex justify-between items-center`}>
         <div className="flex items-center gap-x-[25px] mr-[80px]">
           {/* <img src="./SVG/icon-twitter.svg" className="w-8 cursor-pointer" alt="" /> */}
           <IconVector color="#131522" hoverColor="#131522" className="cursor-pointer w-[16px] h-[10px]" />
