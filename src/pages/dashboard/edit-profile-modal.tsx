@@ -12,6 +12,7 @@ import { useSearchParams } from 'react-router-dom';
 import { authorizeTwitter } from '@/utils';
 import { IconCopy } from '@/components/icons';
 import { handleCopy } from '@/utils';
+import Cropper from 'react-easy-crop';
 
 const FORM_STORAGE_KEY = 'create_token_storage';
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
@@ -31,6 +32,12 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [projectDetail, setProjectDetail] = useState({});
   const [searchParams] = useSearchParams();
+  const [website, setWebsite] = useState('');
+  const [image, setImage] = useState(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [cropLoading, setCropLoading] = useState(false);
 
   useEffect(() => {
     getTokenDetail(ticker).then((res) => {
@@ -177,6 +184,75 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
     }
   }, [open]);
 
+  const handleImageChange = (file: File) => {
+    // const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImage(reader.result as any);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  const onCropComplete = (croppedArea: any, croppedAreaPixels: any) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  };
+
+  const handleCrop = async () => {
+    try {
+      setCropLoading(true);
+      const croppedImage = await getCroppedImg(image, croppedAreaPixels);
+      console.log('croppedImage:', croppedImage);
+      if (croppedImage) {
+        // const file = new File([croppedImage], 'croppedImage.jpg', { type: croppedImage.type });
+        uploadFile(croppedImage).then((res) => {
+          form.setFieldValue('banners', [res.data.file]);
+          setProjectBannerUrl(res.data.fileUrl);
+          setImage(null);
+          setCropLoading(false);
+        });
+        return false;
+      }
+    } catch (e) {
+      console.error('Error cropping image:', e);
+      setCropLoading(false);
+    }
+  };
+  const getCroppedImg = (
+    imageSrc: string | null,
+    crop: { width: number; height: number; x: number; y: number } | null,
+  ) => {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.src = imageSrc as string;
+      image.crossOrigin = 'anonymous';
+
+      image.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          reject(new Error('Canvas context is not available'));
+          return;
+        }
+        if (!crop) {
+          reject(new Error('Crop context is not available'));
+          return;
+        }
+        canvas.width = crop.width;
+        canvas.height = crop.height;
+        ctx.drawImage(image, crop.x, crop.y, crop.width, crop.height, 0, 0, crop.width, crop.height);
+
+        canvas.toBlob((blob) => {
+          resolve(blob);
+        }, 'image/jpeg');
+      };
+
+      image.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
   return (
     <>
       <Modal
@@ -207,11 +283,10 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
             label={
               <p className="flex items-end">
                 <span className="w-[113px] whitespace-normal">Username </span>
-                <span>*</span>
               </p>
             }
-            name="projectDescription"
-            rules={[{ required: true, message: 'Please input Project Description!' }]}
+            name="username"
+            // rules={[{ required: true, message: 'Please input Username!' }]}
           >
             <Input
               placeholder=""
@@ -223,7 +298,6 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
             label={
               <p className="flex items-end">
                 <span className="w-[113px] whitespace-normal">Bio </span>
-                <span>*</span>
               </p>
             }
             name="projectDescription"
@@ -237,29 +311,44 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
               className="text-[#fff] bg-[#2b526e]"
             />
           </Form.Item>
-          <div className="flex">
+          <div className="flex gap-x-[56px]">
             <Form.Item
-              label={<p>Profile Image</p>}
+              label={<p className="whitespace-pre-wrap">{`Profile\nImage`}</p>}
               valuePropName="bannerList"
               getValueFromEvent={normFile}
               name="banners"
             >
               {projectBannerUrl ? (
-                <div className="project-url-container w-[125px]">
+                <div className="project-url-container">
                   <img src={projectBannerUrl} alt="" />
                   <span className="icon-url-actions">
                     <Trash size={16} onClick={handleRemove} />
                   </span>
+                </div>
+              ) : image ? (
+                <div className="flex flex-col">
+                  <div className="w-full h-[40vh] ">
+                    <Cropper
+                      image={image}
+                      crop={crop}
+                      zoom={zoom}
+                      aspect={16 / 6}
+                      showGrid={false}
+                      onCropChange={setCrop}
+                      onZoomChange={setZoom}
+                      onCropComplete={onCropComplete}
+                    />
+                  </div>
                 </div>
               ) : (
                 <Upload
                   listType="picture-card"
                   accept="image/*"
                   maxCount={1}
-                  beforeUpload={(file) => handleUpload(file)}
+                  beforeUpload={(file) => handleImageChange(file)}
                   showUploadList={{ showPreviewIcon: true, showRemoveIcon: false }}
-                  style={{ width: '125px', height: 140 }}
-                  className="edit-upload-banner"
+                  style={{ width: '100%', height: 140 }}
+                  className="edit-upload-banner w-[125px]"
                   previewFile={(file) => {
                     return new Promise((resolve) => {
                       const reader = new FileReader();
@@ -281,106 +370,68 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
                 </Upload>
               )}
             </Form.Item>
-            <Form.Item
-              label={<p>Profile Banner</p>}
-              valuePropName="bannerList"
-              getValueFromEvent={normFile}
-              name="banners"
-            >
-              {projectBannerUrl ? (
-                <div className="project-url-container">
-                  <img src={projectBannerUrl} alt="" />
-                  <span className="icon-url-actions">
-                    <Trash size={16} onClick={handleRemove} />
-                  </span>
-                </div>
-              ) : (
-                <Upload
-                  listType="picture-card"
-                  accept="image/*"
-                  maxCount={1}
-                  beforeUpload={(file) => handleUpload(file)}
-                  showUploadList={{ showPreviewIcon: true, showRemoveIcon: false }}
-                  style={{ width: '267px', height: 140 }}
-                  className="edit-upload-banner"
-                  previewFile={(file) => {
-                    return new Promise((resolve) => {
-                      const reader = new FileReader();
-                      reader.readAsDataURL(file);
-                      reader.onload = () => {
-                        resolve(reader.result as string);
-                      };
-                    });
-                  }}
-                >
-                  <button style={{ border: 0, background: 'none' }} type="button">
-                    <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
-                      <IconUpload className="" />
-                      <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px] mt-[10px]">
-                        Recommended 790px X 307px Max size: 50MB
-                      </p>
-                    </div>
-                  </button>
-                </Upload>
-              )}
-            </Form.Item>
+            <div className="flex gap-x-[13px] h-[125px]">
+              <p className="whitespace-pre-wrap text-white font-OCR text-[14px] font-normal">{`Profile\nBanner`}</p>
+              <div className="flex-1">
+                {projectBannerUrl ? (
+                  <div className="project-url-container w-full">
+                    <img src={projectBannerUrl} alt="" />
+                    <span className="icon-url-actions">
+                      <Trash size={16} onClick={handleRemove} />
+                    </span>
+                  </div>
+                ) : (
+                  <Upload
+                    listType="picture-card"
+                    accept="image/*"
+                    maxCount={1}
+                    beforeUpload={(file) => handleUpload(file)}
+                    showUploadList={{ showPreviewIcon: true, showRemoveIcon: false }}
+                    style={{ width: '267px', height: 140 }}
+                    className="edit-upload-banner w-[267px]"
+                    previewFile={(file) => {
+                      return new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onload = () => {
+                          resolve(reader.result as string);
+                        };
+                      });
+                    }}
+                  >
+                    <button style={{ border: 0, background: 'none' }} type="button">
+                      <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
+                        <IconUpload className="" />
+                        <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px] mt-[10px]">
+                          Recommended 790px X 307px Max size: 10MB
+                        </p>
+                      </div>
+                    </button>
+                  </Upload>
+                )}
+              </div>
+            </div>
           </div>
           <Form.Item label={<p>Twitter</p>}>
             <div className="flex items-center">
               <div style={{ width: '15px' }} className="mr-[7px]">
                 <IconTwitter hoverColor="#07E993" className="" />
               </div>
-              {twitter && <img src="/create/icon-authed.svg" />}
+              {twitter && <img className="mr-[7px]" src="/create/icon-authed.svg" />}
               <ConnectButton variant="secondary" className="w-[136px] h-[32px]" onClick={connectTwitter}>
                 {!twitter ? 'CONNECT' : 'CHANGE'}
               </ConnectButton>
             </div>
           </Form.Item>
-          <Form.Item
-            label={<p>Project Banner</p>}
-            valuePropName="bannerList"
-            getValueFromEvent={normFile}
-            name="banners"
-          >
-            {projectBannerUrl ? (
-              <div className="project-url-container">
-                <img src={projectBannerUrl} alt="" />
-                <span className="icon-url-actions">
-                  <Trash size={16} onClick={handleRemove} />
-                </span>
-              </div>
-            ) : (
-              <Upload
-                listType="picture-card"
-                accept="image/*"
-                maxCount={1}
-                beforeUpload={(file) => handleUpload(file)}
-                showUploadList={{ showPreviewIcon: true, showRemoveIcon: false }}
-                style={{ width: '100%', height: 140 }}
-                className="edit-upload-banner"
-                previewFile={(file) => {
-                  return new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = () => {
-                      resolve(reader.result as string);
-                    };
-                  });
-                }}
-              >
-                <button style={{ border: 0, background: 'none' }} type="button">
-                  <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
-                    <IconUpload className="" />
-                    <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px] mt-[10px]">
-                      Recommended 790px X 307px Max size: 50MB
-                    </p>
-                  </div>
-                </button>
-              </Upload>
-            )}
-          </Form.Item>
           <Form.Item label={<p className="edit-form-label">Website</p>} name="website">
-            <Input maxLength={20} className="custom-input" />
+            <div className="reactive">
+              <Input
+                className="custom-input rounded-[7px] px-8"
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
+              />
+              <img className="website-logo" src="/create/icon-website.png" alt="" />
+            </div>
           </Form.Item>
           <Form.Item label={<p className="edit-form-label">ID</p>} name="id">
             <span>{form.getFieldValue('id')}</span>{' '}

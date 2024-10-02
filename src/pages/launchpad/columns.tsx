@@ -6,6 +6,8 @@ import Countdown from '@/pages/airdrop/countdown';
 import { IconCollect } from '@/components/icons';
 import useFunctions from '@/hooks/useFunctions';
 import IPopover from '@/components/IPopover';
+// import { useAccount } from '@/hooks/useWeb3';
+// import message from '@/components/IMessage';
 
 export enum IDOStatus {
   active = 'active',
@@ -15,6 +17,7 @@ export enum IDOStatus {
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 
 const { collection } = useFunctions();
+// const { address } = useAccount();
 export const columns = (navigate: (path: string) => void) => [
   {
     title: 'Token',
@@ -32,28 +35,36 @@ export const columns = (navigate: (path: string) => void) => [
       </div>
     ),
   },
-  // {
-  //   title: '',
-  //   dataIndex: 'endsIn',
-  //   key: 'endsIn',
-  //   sorter: false,
-  //   render: (endsIn: number) => (
-  //     <IPopover trigger="hover">
-  //       <img className="w-[28px] h-[23px]" src="/create/topupicon.png" />
-  //     </IPopover>
-  //   ),
-  // },
-  // {
-  //   title: '',
-  //   dataIndex: 'endsIn',
-  //   key: 'endsIn',
-  //   sorter: false,
-  //   render: (record: LaunchpadIMO) => (
-  //     <div onClick={() => collection(record.ticker, record.isCollect)}>
-  //       <IconCollect color="#3D255B" />
-  //     </div>
-  //   ),
-  // },
+  {
+    title: '',
+    dataIndex: 'creatorTotalRaisedNumerator',
+    key: 'creatorTotalRaisedNumerator',
+    sorter: false,
+    render: (record: LaunchpadIMO) => (
+      <IPopover trigger="hover">
+        <img className="w-[28px] h-[23px]" src="/create/topupicon.png" />
+      </IPopover>
+    ),
+  },
+  {
+    title: '',
+    dataIndex: 'collectionFlag',
+    key: 'collectionFlag',
+    sorter: false,
+    render: (record: LaunchpadIMO) => (
+      <div
+        onClick={() => {
+          // if (!address) {
+          //   message.info('Please connect wallet first.', { key: 'Please connect wallet first.' });
+          //   return;
+          // }
+          collection(record.ticker, record.collectionFlag);
+        }}
+      >
+        <IconCollect color="#3D255B" />
+      </div>
+    ),
+  },
   {
     title: 'Ends In',
     dataIndex: 'endsIn',

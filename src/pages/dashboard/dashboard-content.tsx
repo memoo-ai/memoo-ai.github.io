@@ -27,7 +27,7 @@ const DashboardContent: FC<{ onChangeType: (type: string) => void }> = ({ onChan
     {
       key: 'Profile',
       label: 'Profile',
-      children: <Profile showEdit={true} />,
+      children: <Profile mine={true} />,
     },
     {
       key: 'Creator',

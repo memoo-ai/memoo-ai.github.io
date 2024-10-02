@@ -84,7 +84,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
         if (res.data?.pinnedTwitterData) {
           pinnedTwitterUrls = res.data?.pinnedTwitterData.map((item: PinnedTwitterData) => item.pinnedTwitterUrl);
         }
-        setPinnedTwitterUrl(pinnedTwitterUrls ?? ['', '', '', '']);
+        setPinnedTwitterUrl(pinnedTwitterUrls.length > 0 ? pinnedTwitterUrls : ['', '', '', '']);
         setTelegram(res.data.telegram);
         setDiscord(res.data.discord);
         setWebsite(res.data.website);

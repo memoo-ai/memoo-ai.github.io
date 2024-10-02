@@ -25,6 +25,7 @@ import { useProportion } from '@/hooks/useProportion';
 import { getMemeConfigId } from '@/api/base';
 import { BN } from '@coral-xyz/anchor';
 import { PublicKey, RpcResponseAndContext, SignatureResult } from '@solana/web3.js';
+import GoCreateCard from './go-create-card';
 
 interface CreatorContext {
   memooConfig?: MemooConfig;
@@ -373,16 +374,7 @@ export const Creator = () => {
         </div>
       </div>
       <div className="dashboard_items_items">
-        <div
-          className="dashboard_item_create"
-          onClick={() => {
-            navigate('/create_token');
-          }}
-        >
-          <IconAdd className="dashboard_item_create_add" />
-
-          <p>Create Token</p>
-        </div>
+        <GoCreateCard />
         <Spin spinning={loading} fullscreen />
         <CreatorContext.Provider value={context}>
           {list.map((item, index) => {

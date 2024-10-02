@@ -11,7 +11,7 @@ export default function CreatorRanking() {
 
   return (
     // <div className="creator_ranking w-full flex flex-col min-h-[400px] max-h-[592px]">
-    <div className="creator_ranking w-full flex flex-col min-h-[400px]">
+    <div className="creator_ranking w-full flex flex-col min-h-[400px] mb-[15px]">
       <div className="creator_ranking_head flex items-center">
         <span>CREATOR RANKING</span> <IconTip color="#FFF" bgColor="#4A5082" className="ml-[4px]" />
       </div>

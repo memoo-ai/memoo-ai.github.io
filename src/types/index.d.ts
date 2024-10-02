@@ -263,6 +263,7 @@ declare interface pageParams {
   pageNumber: number;
   pageSize: number;
   status?: string;
+  keyword?: string;
 }
 
 declare interface LaunchpadIMO {
@@ -276,6 +277,9 @@ declare interface LaunchpadIMO {
   totalRaisedDenominator: string;
   totalRaisedNumerator: string;
   totalScore: number;
+  collectionFlag: boolean;
+  creatorTotalRaisedDenominator: string;
+  creatorTotalRaisedNumerator: string;
 }
 declare interface LaunchpadAirdrop {
   icon: string;
@@ -290,6 +294,9 @@ declare interface LaunchpadAirdrop {
   totalRaised: string;
   totalRaisedDenominator: string;
   totalRaisedNumerator: string;
+  collectionFlag: boolean;
+  creatorTotalRaisedDenominator: string;
+  creatorTotalRaisedNumerator: string;
 }
 declare interface LaunchpadIDOCompeted {
   athRoi: string;

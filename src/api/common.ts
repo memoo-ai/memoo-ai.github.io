@@ -1,6 +1,6 @@
 import http from '@/utils/http';
 import { prefix } from '.';
-import { getMeMeme, CrossDirection, CrowdSourcing } from '@/types';
+import { getMeMeme, CrossDirection, CrowdSourcing, pageParams } from '@/types';
 
 export const getMeMemo = (ticker: string) => {
   return http.get<getMeMeme[]>(`${prefix}/web-oriented/get-me-meme`, { params: { ticker } });
@@ -21,4 +21,8 @@ export const Collection = (ticker: string) => {
 };
 export const CancelCollect = (ticker: string) => {
   return http.put(`${prefix}/web-oriented/collection`, { ticker });
+};
+
+export const SearchTokenCreator = (params: string) => {
+  return http.get(`${prefix}/web-unauthorized/search-token-creator`, { params });
 };

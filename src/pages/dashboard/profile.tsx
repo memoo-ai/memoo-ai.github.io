@@ -10,6 +10,8 @@ import ProfileBanner from './profile-banner';
 import CreatorRanking from './creator-ranking';
 import EditProfileModal from './edit-profile-modal';
 import TopPerformingToken from './top-performing-token';
+import NotCreated from './not-created';
+import GoCreateCard from './go-create-card';
 interface ProfileDetail {
   icon: string;
   banners: Array<string>;
@@ -49,7 +51,7 @@ export const ProfileContext = createContext<ProfileContext>({
     ticker: 'Tick',
   },
 });
-const Profile = ({ showEdit = false }) => {
+const Profile = ({ mine = false }) => {
   const navigate = useNavigate();
   const [profileDetail, setProfileDetail] = useState<ProfileDetail>();
   const iconRefs = useRef<any>({});
@@ -88,7 +90,7 @@ const Profile = ({ showEdit = false }) => {
 
   return (
     <div className="dashboard_items">
-      {showEdit && (
+      {mine && (
         <div className="dashboard_top mb-[30px]">
           <div />
           <div>
@@ -107,6 +109,8 @@ const Profile = ({ showEdit = false }) => {
         <div className="profile-layout-left">
           <CreatorRanking />
           <TopPerformingToken />
+          <NotCreated />
+          <GoCreateCard showTitle />
         </div>
         <div className="profile-layout-right">
           {/* <ProfileContext.Provider value={context}> */}
