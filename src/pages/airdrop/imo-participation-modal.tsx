@@ -21,6 +21,7 @@ import { formatDecimals } from '@/utils';
 import { DEFAULT_IDO_LIMIT, zeroBN } from '@/constants';
 import ITooltip from '@/components/ITooltip';
 import { BN } from '@coral-xyz/anchor';
+import { useProportion } from '@/hooks/useProportion';
 
 const grades = [1 / 4, 1 / 2, 1];
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
@@ -31,6 +32,7 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
   const [accepted, setAccepted] = useState(false);
   const [confirming, setConfirming] = useState(false);
   const [selectedGrade, setSelectedGrade] = useState(grades[0]);
+  const { platformFeeRateDenominatorIdo, platformFeeRateIdo } = useProportion();
 
   const totalSupplyBN = useMemo(() => {
     if (!memooConfig) return zeroBN;
@@ -47,6 +49,13 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
     const result = totalSupplyBN.multipliedBy(idoPriceBN);
     return result;
   }, [memooConfig, totalSupplyBN]);
+
+  const totalImoRaise = useMemo(() => {
+    if (!memooConfig || !capped) return 0;
+    const tokenAllocationIdo = memooConfig.tokenAllocationIdo / 10000;
+    const result = Number(capped) * tokenAllocationIdo;
+    return result;
+  }, [memooConfig, capped]);
 
   const idoUserBuyLimitBN = useMemo(() => {
     if (!memooConfig) return zeroBN;
@@ -131,17 +140,18 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
               <ITooltip
                 className="h-[12px] "
                 placement="bottom"
-                title={`${((Number(formatDecimals(capped)) / 7) * 6).toFixed(
-                  2,
-                )} ${tokenSymbol} will be used to create liquidity pair while ${Number(
-                  Number(formatDecimals(capped)) / 7,
+                title={`${(
+                  (Number(formatDecimals(totalImoRaise)) / platformFeeRateDenominatorIdo) *
+                  (platformFeeRateDenominatorIdo - platformFeeRateIdo)
+                ).toFixed(2)} ${tokenSymbol} will be used to create liquidity pair while ${Number(
+                  Number(formatDecimals(totalImoRaise)) / platformFeeRateDenominatorIdo,
                 ).toFixed(2)} ${tokenSymbol} is collected as IMO platform fee.`}
                 color="#fff"
                 bgColor="#396D93"
               />
             </div>
             <p className="whitespace-pre font-OCR text-white text-base leading-[18px]">{`Total IMO raise is always\ncapped at ${formatDecimals(
-              capped,
+              totalImoRaise,
             )} ${tokenSymbol}`}</p>
           </div>
           <Radio.Group

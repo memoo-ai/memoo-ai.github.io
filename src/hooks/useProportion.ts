@@ -117,6 +117,15 @@ export const useProportion = () => {
     return Number(result);
   }, [memooConfig]);
 
+  const platformFeeRateDenominatorIdo = useMemo(() => {
+    if (!memooConfig) return 0;
+    return memooConfig?.platformFeeRateDenominatorIdo;
+  }, [memooConfig]);
+  const platformFeeRateIdo = useMemo(() => {
+    if (!memooConfig) return 0;
+    return memooConfig?.platformFeeRateIdo;
+  }, [memooConfig]);
+
   return {
     firstProportion,
     maxProportion,
@@ -133,5 +142,7 @@ export const useProportion = () => {
     tokenAllocationIdo,
     tokenAllocationAirdrop,
     platformFeeCreateMemeSol,
+    platformFeeRateDenominatorIdo,
+    platformFeeRateIdo,
   };
 };
