@@ -92,6 +92,8 @@ export default function Create() {
     totalCap,
     creatorAllocation,
     platformFeeCreateMemeSol,
+    idoUserBuyLimit,
+    totalImoRaise,
   } = useProportion();
   // const [memeConfigId, setmemeConfigId] = useState<memeConfigId>({});
   // const { switchChain } = useSwitchChain();
@@ -681,7 +683,7 @@ export default function Create() {
                     <ITooltip
                       placement="bottom"
                       toolClassName="create-tooltip"
-                      title={`Choose a preparation period for community building and airdrop tasks before your Initial Memecoin Offering (IMO) begins. During the sale, participants can buy up to 0.2% of the token supply per wallet. The IMO concludes either when fully subscribed (66.6 SOL) or when the 24-hour window expires.`}
+                      title={`Choose a preparation period for community building and airdrop tasks before your Initial Memecoin Offering (IMO) begins. During the sale, participants can buy up to ${idoUserBuyLimit * 100}% of the token supply per wallet. The IMO concludes either when fully subscribed (${totalImoRaise} SOL) or when the 24-hour window expires.`}
                       color="#fff"
                       bgColor="#4A5082"
                     />

@@ -126,6 +126,16 @@ export const useProportion = () => {
     return memooConfig?.platformFeeRateIdo;
   }, [memooConfig]);
 
+  const totalImoRaise = useMemo(() => {
+    if (!memooConfig) return 0;
+    const idoQuotaBN = new BigNumber(Number(memooConfig.tokenAllocationIdo)).dividedBy(10000);
+    // const idoPriceBN = new BigNumber(defaultConfig.idoPrice).dividedBy(10 ** defaultConfig.defaultDecimals);
+    const idoPriceBN = new BigNumber(Number(memooConfig.idoPrice)).dividedBy(10 ** 10);
+    const totalSupplyBN = new BigNumber(Number(memooConfig.totalSupply)).dividedBy(10 ** 9);
+    const result = totalSupplyBN.multipliedBy(idoQuotaBN).multipliedBy(idoPriceBN);
+    return result;
+  }, [memooConfig]);
+
   return {
     firstProportion,
     maxProportion,
@@ -144,5 +154,6 @@ export const useProportion = () => {
     platformFeeCreateMemeSol,
     platformFeeRateDenominatorIdo,
     platformFeeRateIdo,
+    totalImoRaise,
   };
 };
