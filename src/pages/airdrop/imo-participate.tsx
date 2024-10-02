@@ -108,7 +108,7 @@ const IMOParticipate: FC = () => {
               </label>
               <div>
                 <var className={`text-white ${item.big ? 'text-2xl' : 'text-lg'} font-OCR leading-5`}>{item.value}</var>
-                {item.progress && <IProgress className="other_progress" percent={item.progress} />}
+                {item.progress ? <IProgress className="other_progress" percent={item.progress} /> : null}
               </div>
             </li>
           ))}
