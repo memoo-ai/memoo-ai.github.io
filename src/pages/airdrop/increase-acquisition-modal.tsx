@@ -23,6 +23,7 @@ import { useAccount } from '@/hooks/useWeb3';
 import { getMemeConfigId } from '@/api/base';
 import { BN } from '@coral-xyz/anchor';
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
+const termAndConditions = import.meta.env.VITE_LINK_TERMS_AND_CONDITIONS;
 const IncreaseAcquisitionModal: FC<{
   children: ReactNode;
   maxIncrease: number;
@@ -193,7 +194,10 @@ const IncreaseAcquisitionModal: FC<{
             className="font-OCR text-[12px] text-[#4889B7] my-[24px]"
             onChange={(e) => setAccepted(e.target.checked)}
           >
-            I accept MeMoo’s <a className="contents text-green">Terms & Conditions.</a>
+            I accept MeMoo’s{' '}
+            <a href={termAndConditions} target="_blank" className="contents text-green hover:text-[#B53BFF]">
+              Terms & Conditions.
+            </a>
           </Checkbox>
           <Button
             disabled={!accepted || result === 0}

@@ -25,6 +25,7 @@ import { useProportion } from '@/hooks/useProportion';
 
 const grades = [1 / 4, 1 / 2, 1];
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
+const termAndConditions = import.meta.env.VITE_LINK_TERMS_AND_CONDITIONS;
 const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(0);
@@ -170,7 +171,10 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
             className="font-OCR text-[12px] text-[#4889B7] my-[24px]"
             onChange={(e) => setAccepted(e.target.checked)}
           >
-            I accept MeMoo’s <a className="contents text-green">Terms & Conditions.</a>
+            I accept MeMoo’s{' '}
+            <a href={termAndConditions} target="_blank" className="contents text-green hover:text-[#B53BFF]">
+              Terms & Conditions.
+            </a>
           </Checkbox>
           <Button disabled={!accepted} className="memoo_button mt-4 h-[50px]" loading={confirming} onClick={onConfirm}>
             Confirm

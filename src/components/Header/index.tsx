@@ -3,7 +3,7 @@ import WalletConnect from './WalletConnect';
 import ConnectWallet from './connectWallet';
 import styles from './index.module.scss';
 import NavMenu from '@/components/NavMenu';
-import { IconMemoo, IconSearch, IconClear, IconVector, IconTwitter, IconTelegram, IconTriangle } from '../icons';
+import { IconMemoo, IconSearch, IconClear, IconBook, IconTwitter, IconTelegram, IconTriangle } from '../icons';
 import { Button } from '@radix-ui/themes';
 import { useLogin } from '@/hooks/useLogin';
 import { useState, useCallback, useMemo, useEffect } from 'react';
@@ -24,7 +24,7 @@ export const menus: MenuItem[] = [
   { name: 'Create', path: '/create_token' },
   // { name: 'Dashboard', path: '/dashboard' },
 ];
-
+const gitBook = import.meta.env.VITE_LINK_GIT_BOOK;
 const Header = () => {
   const { loginMeme } = useLogin();
   // const [showSearch, setShowSearch] = useState(false);
@@ -62,7 +62,14 @@ const Header = () => {
       <div className={`${styles.headerTop} flex justify-end items-center`}>
         <div className="flex items-center gap-x-[25px] mr-[80px]">
           {/* <img src="./SVG/icon-twitter.svg" className="w-8 cursor-pointer" alt="" /> */}
-          <IconVector color="#131522" hoverColor="#131522" className="cursor-pointer w-[16px] h-[10px]" />
+          <IconBook
+            color="#131522"
+            hoverColor="#131522"
+            className="cursor-pointer w-[16px] h-[10px]"
+            // onClick={() => {
+            //   window.open(gitBook, '_blank');
+            // }}
+          />
           <IconTelegram
             className="cursor-pointer w-[12px] h-[10px]"
             color="#131522"

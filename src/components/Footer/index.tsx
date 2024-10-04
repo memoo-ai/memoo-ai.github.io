@@ -1,12 +1,12 @@
 import type { ReactNode } from 'react';
 import React from 'react';
 import './index.scss';
-import { IconTwitter, IconTelegram, IconVector, IconMemoo, IconCoin } from '@/components/icons';
+import { IconTwitter, IconTelegram, IconBook, IconMemoo, IconCoin } from '@/components/icons';
 
 interface FooterProps {
   children?: ReactNode;
 }
-
+const gitBook = import.meta.env.VITE_LINK_GIT_BOOK;
 const Footer: React.FC<FooterProps> = ({ children }) => {
   return (
     <footer className="footer hidden md:flex">
@@ -18,7 +18,12 @@ const Footer: React.FC<FooterProps> = ({ children }) => {
           </a>
         </div>
         <div className="flex items-center gap-6 mt-6">
-          <IconVector className="cursor-pointer w-[47.24px] h-[34px]" />
+          <IconBook
+            className="cursor-pointer w-[47.24px] h-[34px]"
+            // onClick={() => {
+            //   window.open(gitBook, '_blank');
+            // }}
+          />
           <IconTelegram
             className="cursor-pointer w-[36.06px] h-[33.75px]"
             onClick={() => {

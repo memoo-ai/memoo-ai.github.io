@@ -1,6 +1,7 @@
-import { IconTwitter, IconTelegram, IconVector, IconCoin } from '@/components/icons';
+import { IconTwitter, IconTelegram, IconBook, IconCoin } from '@/components/icons';
 import MobileBg from '@/assets/imgs/kings-bg.png';
 import './mobile.scss';
+const gitBook = import.meta.env.VITE_LINK_GIT_BOOK;
 const Mobile = () => {
   return (
     <div className="w-[100vw] h-[100vh] bg-[#090A10] flex flex-col items-center md:hidden ml-[-1.5rem] mobile-bg pt-8 relative z-10">
@@ -27,7 +28,13 @@ const Mobile = () => {
         </p>
       </div>
       <div className="flex items-center gap-6 mt-16">
-        <IconVector className="cursor-pointer w-[47.24px] h-[34px]" color="#B53BFF" />
+        <IconBook
+          className="cursor-pointer w-[47.24px] h-[34px]"
+          color="#B53BFF"
+          // onClick={() => {
+          //   window.open(gitBook, '_blank');
+          // }}
+        />
         <IconTelegram
           className="cursor-pointer w-[36.06px] h-[33.75px]"
           color="#B53BFF"
