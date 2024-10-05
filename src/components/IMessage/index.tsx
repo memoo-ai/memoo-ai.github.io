@@ -17,7 +17,7 @@ const message = () => {
 message.success = (
   content: string,
   options: Omit<ConfigOptions, 'content'> = {
-    duration: 2,
+    duration: 3,
   },
 ) => {
   antdMessage.success({

@@ -100,7 +100,7 @@ const IncreaseAcquisitionModal: FC<{
       console.log('result-idoBuy:', parseFloat(result.toString()));
       console.log('amount-idoBuy:', Number(new BigNumber(parseFloat(result.toString())).multipliedBy(10 ** 9)));
 
-      const tx = await idoBuy(solanaMemeConfig.memeConfigId, new BigNumber(result), mine, proportion);
+      const tx = await idoBuy(solanaMemeConfig.memeConfigId, new BigNumber(result), result);
       // const tx = await idoBuy(config.memeConfigId, new BN(Math.floor(result * 1_000_000_000)));
       if (tx) {
         console.log('idoBuy-tx:', tx);

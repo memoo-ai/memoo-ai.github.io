@@ -57,7 +57,7 @@ interface AirdropContext {
   memooConfig?: MemooConfig;
   // defaultConfig?: DefaultMemooConfig;
   // idoBuy?: (project: `0x${string}`, amount: BigNumber) => Promise<TransactionReceipt | undefined>;
-  idoBuy?: (memeId: string, amount: BigNumber, isCreate: boolean, proportion: number) => Promise<string | undefined>;
+  idoBuy?: (memeId: string, amount: BigNumber, paySol: number) => Promise<string | undefined>;
   unlockMeme?: (project: `0x${string}`, index: number) => Promise<TransactionReceipt | undefined>;
   // idoClaim?: (project: `0x${string}`) => Promise<TransactionReceipt | undefined>;
   idoClaim?: (memeId: string, mintAPublicKey: string) => Promise<string | undefined>;

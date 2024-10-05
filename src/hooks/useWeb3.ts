@@ -3,7 +3,14 @@
 import { useWallet, useConnection, useAnchorWallet } from '@solana/wallet-adapter-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Provider, BN, Idl } from '@coral-xyz/anchor';
-import { clusterApiUrl, PublicKey, Connection, Transaction, sendAndConfirmTransaction } from '@solana/web3.js';
+import {
+  clusterApiUrl,
+  PublicKey,
+  Connection,
+  Transaction,
+  sendAndConfirmTransaction,
+  LAMPORTS_PER_SOL,
+} from '@solana/web3.js';
 import {
   createAssociatedTokenAccountInstruction,
   NATIVE_MINT,
@@ -17,6 +24,7 @@ import { useAnchorProgram } from './useProgram';
 import { useSolana } from '@/hooks/useSolana';
 import { AirdropTxns } from '@/utils/airdropTxns';
 import { BigNumber } from 'bignumber.js';
+import message from '@/components/IMessage';
 
 // import { memooConfig } from '@/types';
 export interface MemooConfig {
@@ -74,9 +82,21 @@ export interface MemeUserIdoData {
 
 export const useAccount = () => {
   const { publicKey, signTransaction, signAllTransactions } = useWallet();
+  const [balance, setBalance] = useState(0);
   // const RPC_URL = 'https://api.devnet.solana.com';
   const RPC_URL = import.meta.env.VITE_RPC_URL;
   const connection = new Connection(RPC_URL);
+
+  useEffect(() => {
+    if (!publicKey || !connection) return;
+
+    (async () => {
+      // Query balance
+      const balance = await connection.getBalance(publicKey);
+      const result = new BigNumber(balance).dividedBy(LAMPORTS_PER_SOL);
+      setBalance(Number(result ?? 0));
+    })();
+  }, [publicKey, connection]);
   // const network = import.meta.env.VITE_WALLET_ADAPTER_NETWORK;
   // const connection = new Connection(clusterApiUrl(network));
   const programId = new PublicKey(import.meta.env.VITE_PROGRAM_ID);
@@ -126,7 +146,7 @@ export const useAccount = () => {
   // }, [memooConfigPda, program, connection]);
 
   const registerTokenMint = useCallback(
-    async (memeId: string, totalPay: string) => {
+    async (memeId: string, totalPay: string, paySol: number) => {
       if (!solanaConfig || !publicKey || !signTransaction || !program || !memooConfig) return;
       // console.log('totalPay', Number(new BN(totalPay).add(memooConfig?.platformFeeCreateMemeSol)));
       try {
@@ -134,6 +154,12 @@ export const useAccount = () => {
         // const config = await program.account.globalMemooConfig.fetch(memooConfigPda);
         // console.log('globalMemooConfig:', config);
         // const memeConfigId = Keypair.generate().publicKey;
+        if (balance < paySol + 0.00001) {
+          message.warning(`Insufficient balance in the wallet`, {
+            key: 'Insufficient balance in the wallet to create',
+          });
+          return 'error';
+        }
         console.log('memooConfigPda:', memooConfigPda);
         const memeConfigId = new PublicKey(memeId);
         const memeConfigPda = PublicKey.findProgramAddressSync(
@@ -246,10 +272,16 @@ export const useAccount = () => {
 
   const idoBuy = useCallback(
     // eslint-disable-next-line max-params
-    async (memeId: string, amount: BigNumber, isCreate?: boolean, proportion?: number) => {
+    async (memeId: string, amount: BigNumber, paySol: number) => {
       if (!memooConfig || !program || !publicKey) return;
       try {
         console.log('memeId:', memeId);
+        if (balance < paySol + 0.00001) {
+          message.warning(`Insufficient balance in the wallet`, {
+            key: 'Insufficient balance in the wallet to idoBuy',
+          });
+          return 'error';
+        }
         const memeConfigId = new PublicKey(memeId);
         // debugger;
         const memeConfigPda = PublicKey.findProgramAddressSync(
@@ -357,6 +389,12 @@ export const useAccount = () => {
       // debugger;
       if (!memooConfig || !program || !publicKey) return;
       try {
+        if (balance < 0.00001) {
+          message.warning(`Insufficient balance in the wallet`, {
+            key: 'Insufficient balance in the wallet to creatorClaim',
+          });
+          return 'error';
+        }
         const memeConfigId = new PublicKey(memeId);
         const mintAPublicKey = new PublicKey(mintPublicKey);
         // const memeUserDataPda_idoBuy = PublicKey.findProgramAddressSync(
@@ -406,6 +444,12 @@ export const useAccount = () => {
     async (memeId: string, mintaPublicKey: string) => {
       if (!memooConfig || !program || !publicKey) return;
       try {
+        if (balance < 0.00001) {
+          message.warning(`Insufficient balance in the wallet`, {
+            key: 'Insufficient balance in the wallet to idoClaim',
+          });
+          return 'error';
+        }
         const memeConfigId = new PublicKey(memeId);
         const mintAPublicKey = new PublicKey(mintaPublicKey);
         const memeUserDataPda_idoBuy = PublicKey.findProgramAddressSync(
@@ -442,6 +486,12 @@ export const useAccount = () => {
     async (memeId: string, mintaPublicKey: string, userCanClaimCount: number) => {
       if (!memooConfig || !program || !publicKey || !signTransaction) return;
       try {
+        if (balance < 0.00001) {
+          message.warning(`Insufficient balance in the wallet`, {
+            key: 'Insufficient balance in the wallet to creatorClaimAll',
+          });
+          return 'error';
+        }
         const memeConfigId = new PublicKey(memeId);
         const mintAPublicKey = new PublicKey(mintaPublicKey);
         const memeUserDataPda = PublicKey.findProgramAddressSync(

@@ -388,8 +388,8 @@ export default function Create() {
       console.log('value1:', Number(value).toString());
       // const value = parseEther(String(preValue)) + memooConfig!.platformFeeCreateMeme;
       // const res = await createMeme(data.tokenName, data.ticker, preLaunchSecond, value);
-
-      const res = await registerTokenMint(memeConfigId!, Number(value).toString());
+      const paySol = platformFeeCreateMemeSol + preValue;
+      const res = await registerTokenMint(memeConfigId!, Number(value).toString(), paySol ?? 0);
       console.log('res: ', res);
       return res;
     },
@@ -445,12 +445,12 @@ export default function Create() {
             message.info('Please connect project twitter first.', { key: 'Please connect project twitter first.' });
             return;
           }
-          if (Number(balance) < platformFeeCreateMemeSol + 0.0001) {
-            message.warning(`Insufficient balance in the wallet to create`, {
-              key: 'Insufficient balance in the wallet to create',
-            });
-            return;
-          }
+          // if (Number(balance) < platformFeeCreateMemeSol + 0.0001) {
+          //   message.warning(`Insufficient balance in the wallet to create`, {
+          //     key: 'Insufficient balance in the wallet to create',
+          //   });
+          //   return;
+          // }
           setConfirmLoading(true);
           // data.ticker = data.ticker.toUpperCase();
           const res = await confirmTokenCreate(data);
@@ -461,7 +461,9 @@ export default function Create() {
           console.log('sonalaConfigMemeId:', config);
 
           const feeRes = await payFee(config.memeConfigId);
-          if (feeRes) {
+          if (feeRes === 'error') {
+            return;
+          } else if (feeRes) {
             await payConfirm({
               ticker: data.ticker,
               txHash: feeRes,
@@ -512,6 +514,7 @@ export default function Create() {
       twitterAccessToken,
       payFee,
       navigate,
+      balance,
     ],
   );
 
