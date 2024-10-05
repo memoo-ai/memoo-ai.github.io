@@ -938,7 +938,7 @@ export default function Create() {
                 ‘fair conditions’
               </a>{' '}
               are met.{' '}
-              <a href={gitBook} target="_blank" className="text-[#07E993] hover:text-[#B53BFF]">
+              <a href={tokenomics} target="_blank" className="text-[#07E993] hover:text-[#B53BFF]">
                 Click here{' '}
               </a>
               for the tokenomics disclosures.

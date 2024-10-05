@@ -20,9 +20,9 @@ const Footer: React.FC<FooterProps> = ({ children }) => {
         <div className="flex items-center gap-6 mt-6">
           <IconBook
             className="cursor-pointer w-[47.24px] h-[34px]"
-            // onClick={() => {
-            //   window.open(gitBook, '_blank');
-            // }}
+            onClick={() => {
+              window.open(gitBook, '_blank');
+            }}
           />
           <IconTelegram
             className="cursor-pointer w-[36.06px] h-[33.75px]"

@@ -114,9 +114,9 @@ const Home = () => {
               {/* <img src="./SVG/icon-twitter.svg" className="w-8 cursor-pointer" alt="" /> */}
               <IconBook
                 className="cursor-pointer w-[47.24px] h-[34px]"
-                // onClick={() => {
-                //   window.open(gitBook, '_blank');
-                // }}
+                onClick={() => {
+                  window.open(gitBook, '_blank');
+                }}
               />
               <IconTelegram
                 className="cursor-pointer w-[36.06px] h-[33.75px]"
