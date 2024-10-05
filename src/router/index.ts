@@ -27,6 +27,10 @@ const routeConfig: RouteObject[] = [
         Component: lazy(() => import('../pages/create')),
       },
       {
+        path: '/join',
+        Component: lazy(() => import('../pages/join')),
+      },
+      {
         path: '/airdrop/:ticker',
         Component: lazy(() => import('../pages/airdrop')),
       },
