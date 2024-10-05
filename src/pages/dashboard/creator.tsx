@@ -32,7 +32,7 @@ interface CreatorContext {
   // defaultConfig?: DefaultMemooConfig;
   idoQueueDetail?: IDOQueueDetail;
   idoLaunchedDetail?: IDOLaunchedDetail;
-  idoBuy?: (memeId: string, amount: BigNumber, isCreate: boolean, proportion: number) => Promise<string | undefined>;
+  idoBuy?: (memeId: string, amount: BigNumber, paySol: number) => Promise<string | undefined>;
   // idoBuy?: (project: `0x${string}`, amount: BigNumber) => Promise<TransactionReceipt | undefined>;
   // unlockMeme?: (project: `0x${string}`, index: number) => Promise<TransactionReceipt | undefined>;
   airdropClaim?: (

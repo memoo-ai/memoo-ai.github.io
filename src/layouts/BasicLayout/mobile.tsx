@@ -2,6 +2,8 @@ import { IconTwitter, IconTelegram, IconBook, IconCoin } from '@/components/icon
 import MobileBg from '@/assets/imgs/kings-bg.png';
 import './mobile.scss';
 const gitBook = import.meta.env.VITE_LINK_GIT_BOOK;
+const twitter = import.meta.env.VITE_LINK_TWITTER;
+const telegram = import.meta.env.VITE_LINK_TELEGRAM;
 const Mobile = () => {
   return (
     <div className="w-[100vw] h-[100vh] bg-[#090A10] flex flex-col items-center md:hidden ml-[-1.5rem] mobile-bg pt-8 relative z-10">
@@ -39,14 +41,14 @@ const Mobile = () => {
           className="cursor-pointer w-[36.06px] h-[33.75px]"
           color="#B53BFF"
           onClick={() => {
-            window.open('https://t.me/memooai_official', '_blank');
+            window.open(telegram, '_blank');
           }}
         />
         <IconTwitter
           className="cursor-pointer w-[40.24px] h-[33.92px]"
           color="#B53BFF"
           onClick={() => {
-            window.open('https://x.com/MemooAI', '_blank');
+            window.open(twitter, '_blank');
           }}
         />
       </div>

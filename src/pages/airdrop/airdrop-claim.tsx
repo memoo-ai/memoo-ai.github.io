@@ -243,7 +243,12 @@ export default function AirdropClaim() {
           <span className="endsin font-OCR text-white">Ends in</span>
         ) : (
           <span className="endsin font-404px text-white">
-            {idoQueueDetail?.platformTwitterBind && idoQueueDetail?.projectTwitterBind ? 'COMPLETED' : 'WITHOUT'}
+            {idoQueueDetail?.platformTwitterBind && idoQueueDetail?.projectTwitterBind
+              ? 'COMPLETED'
+              : (idoQueueDetail?.platformTwitterBind || idoQueueDetail?.projectTwitterBind) &&
+                  !(idoQueueDetail?.platformTwitterBind && idoQueueDetail?.projectTwitterBind)
+                ? 'INCOMPLETE'
+                : 'WITHOUT'}
           </span>
         )}
       </div>
