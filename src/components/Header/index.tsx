@@ -131,9 +131,9 @@ const Header = () => {
             color="#131522"
             hoverColor="#131522"
             className="cursor-pointer w-[16px] h-[10px]"
-            // onClick={() => {
-            //   window.open(gitBook, '_blank');
-            // }}
+            onClick={() => {
+              window.open(gitBook, '_blank');
+            }}
           />
           <IconTelegram
             className="cursor-pointer w-[12px] h-[10px]"
