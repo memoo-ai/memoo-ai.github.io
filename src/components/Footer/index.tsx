@@ -7,6 +7,8 @@ interface FooterProps {
   children?: ReactNode;
 }
 const gitBook = import.meta.env.VITE_LINK_GIT_BOOK;
+const twitter = import.meta.env.VITE_LINK_TWITTER;
+const telegram = import.meta.env.VITE_LINK_TELEGRAM;
 const Footer: React.FC<FooterProps> = ({ children }) => {
   return (
     <footer className="footer hidden md:flex">
@@ -27,13 +29,13 @@ const Footer: React.FC<FooterProps> = ({ children }) => {
           <IconTelegram
             className="cursor-pointer w-[36.06px] h-[33.75px]"
             onClick={() => {
-              window.open('https://t.me/memooai_official', '_blank');
+              window.open(telegram, '_blank');
             }}
           />
           <IconTwitter
             className="cursor-pointer w-[40.24px] h-[33.92px]"
             onClick={() => {
-              window.open('https://x.com/MemooAI', '_blank');
+              window.open(twitter, '_blank');
             }}
           />
         </div>
