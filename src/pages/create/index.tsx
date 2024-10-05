@@ -70,12 +70,41 @@ const PreLaunchDurationOptions = [
   // { label: '1 day', value: PreLaunchDurationEnum['1DAY'] },
   // { label: '3 days', value: PreLaunchDurationEnum['3DAYS'] },
 ];
+// const CurrentProductDescriptions = [
+//   'Tokenomics for Meme Tokens',
+//   'Standardize Smart Contract Rails',
+//   'Simplified IMO & LP Management',
+//   'Fair Launch Policy',
+//   'Fair Launch Smart Vesting',
+// ];
+const tokenomics = import.meta.env.VITE_LINK_TOKENOMICS;
+const fairLaunchPolicy = import.meta.env.VITE_LINK_FAIR_LAUNCH_POLICY;
+const fairConditions = import.meta.env.VITE_LINK_FAIR_LAUNCH_SMART_VESTING;
+const termAndConditions = import.meta.env.VITE_LINK_TERMS_AND_CONDITIONS;
+const gitBook = import.meta.env.VITE_LINK_GIT_BOOK;
+
 const CurrentProductDescriptions = [
-  'Tokenomics for Meme Tokens',
-  'Standardize Smart Contract Rails',
-  'Simplified IMO & LP Management',
-  'Fair Launch Policy',
-  'Fair Launch Smart Vesting',
+  {
+    label: 'Tokenomics for Meme Tokens',
+    link: tokenomics,
+  },
+
+  // {
+  //   label: 'Standardize Smart Contract Rails',
+  //   link: '',
+  // },
+  // {
+  //   label: 'Simplified IMO & LP Management',
+  //   link: '',
+  // },
+  {
+    label: 'Fair Launch Policy',
+    link: fairLaunchPolicy,
+  },
+  {
+    label: 'Fair Launch Smart Vesting',
+    link: fairConditions,
+  },
 ];
 
 interface CreatedTokenCompleteConnectedModalRef {
@@ -93,6 +122,8 @@ export default function Create() {
     totalCap,
     creatorAllocation,
     platformFeeCreateMemeSol,
+    idoUserBuyLimit,
+    totalImoRaise,
   } = useProportion();
   // const [memeConfigId, setmemeConfigId] = useState<memeConfigId>({});
   // const { switchChain } = useSwitchChain();
@@ -729,7 +760,7 @@ export default function Create() {
                     <ITooltip
                       placement="bottom"
                       toolClassName="create-tooltip"
-                      title={`Choose a preparation period for community building and airdrop tasks before your Initial Memecoin Offering (IMO) begins. During the sale, participants can buy up to 0.2% of the token supply per wallet. The IMO concludes either when fully subscribed (66.6 SOL) or when the 24-hour window expires.`}
+                      title={`Choose a preparation period for community building and airdrop tasks before your Initial Memecoin Offering (IMO) begins. During the sale, participants can buy up to ${idoUserBuyLimit * 100}% of the token supply per wallet. The IMO concludes either when fully subscribed (${totalImoRaise} SOL) or when the 24-hour window expires.`}
                       color="#fff"
                       bgColor="#4A5082"
                     />
@@ -957,8 +988,14 @@ export default function Create() {
             <p className="create_fee_desc">
               A platform Fee of {totalCap} {tokenSymbol} is applicable to facilitate your meme token creation. You will{' '}
               <br /> be entitled to {firstProportion * 100}% supply of your meme token. The token will be distributed
-              post <br /> TGE after <span className="text-[#07E993]">‘fair conditions’</span> are met.{' '}
-              <span className="text-[#07E993]">Click here </span>
+              post <br /> TGE after{' '}
+              <a href={fairConditions} target="_blank" className="text-[#07E993] hover:text-[#B53BFF]">
+                ‘fair conditions’
+              </a>{' '}
+              are met.{' '}
+              <a href={gitBook} target="_blank" className="text-[#07E993] hover:text-[#B53BFF]">
+                Click here{' '}
+              </a>
               for the tokenomics disclosures.
             </p>
           </div>
@@ -971,7 +1008,10 @@ export default function Create() {
               }}
               className="create_terms mt-[24px] text-[#ffffff] border-[red]"
             >
-              I accept MeMoo’s <span className="text-[#07E993]">terms & conditions.</span>
+              I accept MeMoo’s{' '}
+              <a href={termAndConditions} target="_blank" className="text-[#07E993] hover:text-[#B53BFF]">
+                terms & conditions.
+              </a>
             </Checkbox>
           </div>
           <div className="flex items-center mt-[48px]">
@@ -1000,12 +1040,17 @@ export default function Create() {
         </div>
         <img src="./create/img-create-bg.png" alt="" className="create_token_bg" />
       </div>
-      <div className="flex items-center mt-[76px] w-[100%] justify-center gap-[30px]">
+      <div className="flex items-center mt-[76px] w-[100%] gap-[30px]">
         {CurrentProductDescriptions.map((item) => {
           return (
-            <span className="text-[12px] text-[#07E993] font-OCR hover:text-[#B53BFF]" key={item}>
-              {item}
-            </span>
+            <a
+              href={item.link}
+              target="_blank"
+              className="text-[12px] text-[#07E993] font-OCR hover:text-[#B53BFF]"
+              key={item.label}
+            >
+              {item.label}
+            </a>
           );
         })}
       </div>

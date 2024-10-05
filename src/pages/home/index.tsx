@@ -1,6 +1,6 @@
 import './index.scss';
 import { Button } from '@/components/ui/button';
-import { IconTwitter, IconTelegram, IconVector } from '@/components/icons';
+import { IconTwitter, IconTelegram, IconBook } from '@/components/icons';
 import { useNavigate } from 'react-router-dom';
 import { IconCoin } from '@/components/icons';
 const Revolutions = [
@@ -67,6 +67,7 @@ const Revolutions = [
     width: 280,
   },
 ];
+const gitBook = import.meta.env.VITE_LINK_GIT_BOOK;
 const Home = () => {
   const navigate = useNavigate();
 
@@ -111,7 +112,12 @@ const Home = () => {
             </div>
             <div className="flex items-center gap-12 mt-[50px]">
               {/* <img src="./SVG/icon-twitter.svg" className="w-8 cursor-pointer" alt="" /> */}
-              <IconVector className="cursor-pointer w-[47.24px] h-[34px]" />
+              <IconBook
+                className="cursor-pointer w-[47.24px] h-[34px]"
+                // onClick={() => {
+                //   window.open(gitBook, '_blank');
+                // }}
+              />
               <IconTelegram
                 className="cursor-pointer w-[36.06px] h-[33.75px]"
                 onClick={() => {
