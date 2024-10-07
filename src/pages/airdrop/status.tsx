@@ -89,7 +89,7 @@ export default function Status() {
         <img className="bot" src="/create/icon-bot.png" />
         <div className="status_process_detail flex flex-col items-start">
           <h3 className="flex items-center gap-x-1">
-            memo score{' '}
+            MEMOO SCORE{' '}
             <ITooltip
               className="h-[12px]"
               placement="bottom"
