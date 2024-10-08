@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { IconAdd } from '@/components/icons';
 import './go-create-card.scss';
-const GoCreateCard = ({ showTitle = false }) => {
+const GoCreateCard = ({ showTitle = false, className = '' }) => {
   const navigate = useNavigate();
 
   return (
     <div
-      className={`go-create-card flex flex-col items-center gap-y-[35px] ${showTitle ? 'h-[386px]' : 'justify-center'}`}
+      className={`${className} go-create-card flex flex-col items-center gap-y-[35px] ${showTitle ? 'h-[386px]' : 'justify-center'}`}
       onClick={() => {
         navigate('/create_token');
       }}

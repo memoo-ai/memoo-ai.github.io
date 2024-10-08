@@ -526,3 +526,16 @@ declare interface memooConfig {
   tokenAllocationPlatform: number;
   totalSupply: string;
 }
+declare interface searchList {
+  address: string;
+  icon: string;
+  profileImage: string;
+  status: string;
+  ticker: string;
+  tokenName: string;
+  userName: string;
+}
+declare interface InvitationList {
+  address: string;
+  points: string;
+}

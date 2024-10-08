@@ -110,7 +110,7 @@ const Profile = ({ mine = false }) => {
           <CreatorRanking />
           <TopPerformingToken />
           <NotCreated />
-          <GoCreateCard showTitle />
+          <GoCreateCard showTitle className="h-[383px]" />
         </div>
         <div className="profile-layout-right">
           {/* <ProfileContext.Provider value={context}> */}

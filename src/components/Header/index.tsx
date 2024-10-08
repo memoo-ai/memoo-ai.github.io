@@ -12,6 +12,8 @@ import './index.module.scss';
 import { useLocation } from 'react-router-dom';
 import debounce from 'lodash.debounce';
 import Swipe from '@/components/Swipe';
+import { SearchTokenCreator } from '@/api/common';
+import { searchList } from '@/types';
 
 import DefaultAvatar from '@/assets/imgs/default-avatar.png';
 export interface MenuItem {
@@ -33,8 +35,8 @@ const Header = () => {
   const { loginMeme } = useLogin();
   const [showSearch, setShowSearch] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [keywords, setKeywords] = useState('');
-  const [list, setList] = useState([{}, {}, {}]);
+  const [keyword, setKeywords] = useState('');
+  const [list, setList] = useState<searchList[]>([]);
 
   const searchRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
@@ -71,56 +73,71 @@ const Header = () => {
   const search = debounce(async () => {
     setLoading(true);
     // TODO
-    console.log('search');
+    const { data } = await SearchTokenCreator({ pageNumber: 1, pageSize: 3, keyword: keyword });
+    console.log('search', data.records);
+    setList(data.records ?? []);
     setLoading(false);
   }, 1000);
   useEffect(() => {
-    if (keywords) {
+    if (keyword) {
       search();
     }
     return () => {
       search.cancel();
     };
-  }, [keywords]);
+  }, [keyword]);
 
   const memeTokens = useMemo(() => {
     return (
-      <div>
-        <h3 className="font-404px text-[16px] text-green mb-[7px] leading-[20px]">Meme Tokens</h3>
-        <div className="flex flex-col">
-          {list.map((item, index) => (
-            <div
-              className="flex items-center gap-x-[12px] rounded-[7px] px-[9px] py-[6px] cursor-pointer group hover:bg-[#2B526E]"
-              key={index}
-            >
-              <img className="w-[25px] h-[25px] rounded-[50%]" src={DefaultAvatar} alt="" />
-              <span className="font-OCR text-[14px] leading-[12px] text-white group-hover:text-green">Token Name</span>
-              <span className="font-OCR text-[10px] leading-[12px] text-white group-hover:text-green">ticker</span>
-            </div>
-          ))}
+      list.length > 0 && (
+        <div>
+          <h3 className="font-404px text-[16px] text-green mb-[7px] leading-[20px]">Meme Tokens</h3>
+          <div className="flex flex-col">
+            {list.map((item, index) => (
+              <div
+                className="flex items-center gap-x-[12px] rounded-[7px] px-[9px] py-[6px] cursor-pointer group hover:bg-[#2B526E]"
+                key={index}
+              >
+                <img className="w-[25px] h-[25px] rounded-[50%]" src={item.icon} alt="" />
+                <span className="font-OCR text-[14px] leading-[12px] text-white group-hover:text-green">
+                  {item.tokenName}
+                </span>
+                <span className="font-OCR text-[10px] leading-[12px] text-white group-hover:text-green">
+                  {item.ticker}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )
     );
   }, [list]);
   const creators = useMemo(() => {
     return (
-      <div>
-        <h3 className="font-404px text-[16px] text-green mb-[7px] leading-[20px] mt-[23px] cursor-pointer ">
-          CREATORS
-        </h3>
-        <div className="flex flex-col">
-          {list.map((item, index) => (
-            <div
-              className="flex items-center gap-x-[12px] rounded-[7px] px-[9px] py-[6px] group hover:bg-[#2B526E]"
-              key={index}
-            >
-              <img className="w-[25px] h-[25px] rounded-[50%]" src={DefaultAvatar} alt="" />
-              <span className="font-OCR text-[14px] leading-[12px] text-white group-hover:text-green">Token Name</span>
-              <span className="font-OCR text-[10px] leading-[12px] text-white group-hover:text-green">ticker</span>
-            </div>
-          ))}
+      list.length > 0 && (
+        <div>
+          <h3 className="font-404px text-[16px] text-green mb-[7px] leading-[20px] mt-[23px] cursor-pointer ">
+            CREATORS
+          </h3>
+          <div className="flex flex-col">
+            {list.map(
+              (item, index) =>
+                list.length > 0 && (
+                  <div
+                    className="flex items-center gap-x-[12px] rounded-[7px] px-[9px] py-[6px] group hover:bg-[#2B526E]"
+                    key={index}
+                  >
+                    <img className="w-[25px] h-[25px] rounded-[50%]" src={item.profileImage} alt="" />
+                    <span className="font-OCR text-[14px] leading-[12px] text-white group-hover:text-green">
+                      {item.userName}
+                    </span>
+                    {/* <span className="font-OCR text-[10px] leading-[12px] text-white group-hover:text-green">ticker</span> */}
+                  </div>
+                ),
+            )}
+          </div>
         </div>
-      </div>
+      )
     );
   }, [list]);
 
@@ -208,7 +225,7 @@ const Header = () => {
                 <Input
                   className={`border text-[14px] font-OCR pl-[10px] ${styles.searchInput}`}
                   placeholder="Search Meme Tokens, Creators"
-                  value={keywords}
+                  value={keyword}
                   onChange={(e) => {
                     setKeywords(e.currentTarget.value);
                   }}
@@ -221,7 +238,7 @@ const Header = () => {
                   {list.length >= 0 && creators}
                   {!list.length && (
                     <div
-                      className={`${styles.noData} w-[100%] font-OCR px-[19px] text-[14px] text-[#fff]`}
+                      className={`${styles.noData} w-full font-OCR text-center text-[14px] text-[#fff]`}
                     >{`Your search didn't match any records`}</div>
                   )}
                 </div>

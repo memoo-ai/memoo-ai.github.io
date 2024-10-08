@@ -703,6 +703,17 @@ export const useAccount = () => {
     [connection, publicKey, program, signTransaction],
   );
 
+  const useAddress = useCallback(
+    (className = '', key = 'connect wallet') => {
+      if (!publicKey) {
+        message.info('Please connect wallet first', { key, className });
+        return;
+      }
+      return true;
+    },
+    [publicKey],
+  );
+
   return {
     address: publicKey,
     registerTokenMint,
@@ -715,5 +726,6 @@ export const useAccount = () => {
     getMemeUserData,
     getMemeCreatorData,
     airdropClaim,
+    useAddress,
   };
 };
