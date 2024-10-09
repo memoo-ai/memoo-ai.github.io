@@ -85,6 +85,7 @@ const Join = () => {
   const search = useCallback(async () => {
     // TODO
     console.log('keyword:', keyword);
+    // message.error('address not found', { className: '!mt-[130px]' });
     return true;
   }, [keyword]);
   const shareUrl = `I've joined Memoo. Join the Memevolution with us. Use my referral code for a 100 point bonus! https://${import.meta.env.VITE_SHARE_URI}join?ref=${invitationCode}`;

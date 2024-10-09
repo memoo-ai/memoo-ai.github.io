@@ -125,7 +125,7 @@ export const columns = (navigate: (path: string) => void) => [
     sorter: false,
     render: (totalRaised: string, record: LaunchpadIMO) => (
       <div className="flex flex-col justify-end items-start pt-5">
-        <span className="font-OCR font-norma text-lg w-[130px] text-right">
+        <span className="font-OCR font-normal text-lg w-[130px] text-right text-nowrap">
           {totalRaised}&nbsp;
           {tokenSymbol}
         </span>
