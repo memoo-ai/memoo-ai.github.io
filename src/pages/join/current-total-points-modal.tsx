@@ -15,53 +15,55 @@ import {
 } from 'react';
 import { formatAddress, isEven } from '@/utils';
 import { IconJoin } from '@/components/icons';
+import { SearchUserRanking } from '@/types';
 
 type ChildWithOnClick = ReactElement<{ onClick?: (e: React.MouseEvent) => void }>;
 const CurrentTotalPointsModal: FC<{
   children: ReactNode;
   onResult?: (isSuccess: boolean) => void;
+  data: SearchUserRanking[];
   keyword: string;
-}> = ({ children, keyword, onResult }) => {
+}> = ({ children, keyword, onResult, data }) => {
   const [open, setOpen] = useState(false);
   const [confirming, setConfirming] = useState(false);
 
-  const [data, setData] = useState([
-    {
-      address: '0x0000000000000000000000000000000000000001',
-      icon: '/join/icon.png',
-      totalPoints: '23256461531',
-    },
-    {
-      address: '0x0000000000000000000000000000000000000002',
-      icon: '/join/icon.png',
-      totalPoints: '23256461531',
-    },
-    {
-      address: '0x0000000000000000000000000000000000000003',
-      icon: '/join/icon.png',
-      totalPoints: '23256461531',
-    },
-    {
-      address: '0x0000000000000000000000000000000000000004',
-      icon: '/join/icon.png',
-      totalPoints: '23256461531',
-    },
-    {
-      address: '0x0000000000000000000000000000000000000005',
-      icon: '/join/icon.png',
-      totalPoints: '23256461531',
-    },
-    {
-      address: '0x0000000000000000000000000000000000000006',
-      icon: '/join/icon.png',
-      totalPoints: '23256461531',
-    },
-    {
-      address: '0x0000000000000000000000000000000000000007',
-      icon: '/join/icon.png',
-      totalPoints: '23256461531',
-    },
-  ]);
+  // const [data, setData] = useState([
+  //   {
+  //     address: '0x0000000000000000000000000000000000000001',
+  //     icon: '/join/icon.png',
+  //     totalPoints: '23256461531',
+  //   },
+  //   {
+  //     address: '0x0000000000000000000000000000000000000002',
+  //     icon: '/join/icon.png',
+  //     totalPoints: '23256461531',
+  //   },
+  //   {
+  //     address: '0x0000000000000000000000000000000000000003',
+  //     icon: '/join/icon.png',
+  //     totalPoints: '23256461531',
+  //   },
+  //   {
+  //     address: '0x0000000000000000000000000000000000000004',
+  //     icon: '/join/icon.png',
+  //     totalPoints: '23256461531',
+  //   },
+  //   {
+  //     address: '0x0000000000000000000000000000000000000005',
+  //     icon: '/join/icon.png',
+  //     totalPoints: '23256461531',
+  //   },
+  //   {
+  //     address: '0x0000000000000000000000000000000000000006',
+  //     icon: '/join/icon.png',
+  //     totalPoints: '23256461531',
+  //   },
+  //   {
+  //     address: '0x0000000000000000000000000000000000000007',
+  //     icon: '/join/icon.png',
+  //     totalPoints: '23256461531',
+  //   },
+  // ]);
 
   const onConfirm = useCallback(async () => {
     try {
@@ -116,19 +118,19 @@ const CurrentTotalPointsModal: FC<{
                     key={index}
                     className={`flex items-center justify-between py-[9px] px-[44px] bg-[#2B526E] rounded-[7px] ${keyword === item.address ? 'search-active' : ''}`}
                   >
-                    <tr className="font-OCR text-white text-[18px] leading-[20px]">{index + 1}</tr>
+                    <tr className="font-OCR text-white text-[18px] leading-[20px]">{item.rank}</tr>
                     <tr className="w-[40px]">
                       {keyword === item.address ? <img src="/join/arrow.png" alt="" /> : <th className="w-[40px]" />}
                     </tr>
                     <tr className="flex items-center gap-x-[18px] font-OCR text-white text-[18px] leading-[20px] w-[168px]">
-                      <img className="w-[30px] h-[30px] rounded-[50%]" src={item.icon} />
+                      <img className="w-[30px] h-[30px] rounded-[50%]" src={item.profileImage} />
                       {formatAddress(item.address)}
                     </tr>
                     <tr>
                       <div className="flex items-center justify-center gap-x-[7px] bg-[#2C1844] px-[10px] h-[42px] rounded-[50px] join-border w-[196px]">
                         <IconJoin />
                         <span className="text-[18px] text-[#EBCDFE] leading-[20px] font-OCR">
-                          {Number(item.totalPoints).toLocaleString()}
+                          {Number(item.score).toLocaleString()}
                         </span>
                       </div>
                     </tr>

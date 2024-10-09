@@ -23,6 +23,6 @@ export const CancelCollect = (ticker: string) => {
   return http.put(`${prefix}/web-oriented/collection`, { ticker });
 };
 
-export const SearchTokenCreator = (params: pageParams) => {
-  return http.get(`${prefix}/web-unauthorized/search-token-creator`, { params });
+export const SearchTokenCreator = (keyword: string) => {
+  return http.get(`${prefix}/web-unauthorized/search-token-creator`, { params: { keyword } });
 };

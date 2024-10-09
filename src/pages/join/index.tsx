@@ -13,9 +13,10 @@ import { useAccount } from '@/hooks/useWeb3';
 import message from '@/components/IMessage';
 import EnterReferralCodeModal from './enter-referral-code-modal';
 import ResultModal, { ResultRef } from './result-modal';
-import { InvitationList } from '@/types';
+import { InvitationList, SearchUserRanking } from '@/types';
 import { formatAddress, isEven } from '@/utils';
 import CurrentTotalPointsModal from './current-total-points-modal';
+import { searchUserRanking } from '@/api/join';
 const Join = () => {
   const [keyword, setKeyword] = useState('');
   const [invitationCode, setInvitationCode] = useState('');
@@ -68,6 +69,7 @@ const Join = () => {
       points: '2531',
     },
   ]);
+  const [searchList, setSearchList] = useState<SearchUserRanking[]>([]);
 
   const [searchParams] = useSearchParams();
 
@@ -84,9 +86,29 @@ const Join = () => {
   }, [address]);
   const search = useCallback(async () => {
     // TODO
-    console.log('keyword:', keyword);
-    // message.error('address not found', { className: '!mt-[130px]' });
-    return true;
+    try {
+      console.log('keyword:', keyword);
+      if (!keyword) {
+        message.error('Please input address!', { className: '!mt-[130px]' });
+        return;
+      }
+      setLoading(true);
+      const { data } = await searchUserRanking(keyword);
+      console.log('searchUserRanking:', data);
+      if (data && data.length > 0) {
+        setLoading(false);
+        setSearchList(data);
+        return true;
+      } else {
+        setLoading(false);
+        message.error('address not found', { className: '!mt-[130px]' });
+        return false;
+      }
+    } catch (e) {
+      console.log('searchUserRanking:', e);
+    } finally {
+      setLoading(false);
+    }
   }, [keyword]);
   const shareUrl = `I've joined Memoo. Join the Memevolution with us. Use my referral code for a 100 point bonus! https://${import.meta.env.VITE_SHARE_URI}join?ref=${invitationCode}`;
   const points = [
@@ -118,7 +140,7 @@ const Join = () => {
         <h5 className="mt-[25px] font-OCR text-[14px] leading-[14px] text-white">Check your points</h5>
         <div className="join-search flex items-center mt-[8px] bg-[#1F3B4F] rounded-[7px] ">
           <Input placeholder="Search by address" onChange={(e) => setKeyword(e.currentTarget.value)} />
-          <CurrentTotalPointsModal keyword={keyword}>
+          <CurrentTotalPointsModal keyword={keyword} data={searchList}>
             <div
               className="w-[54px] flex items-center justify-center icon h-full cursor-pointer hover:bg-[#07E993]"
               onClick={search}

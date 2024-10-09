@@ -13,7 +13,7 @@ import { useLocation } from 'react-router-dom';
 import debounce from 'lodash.debounce';
 import Swipe from '@/components/Swipe';
 import { SearchTokenCreator } from '@/api/common';
-import { searchList } from '@/types';
+import { SearchList } from '@/types';
 
 import DefaultAvatar from '@/assets/imgs/default-avatar.png';
 export interface MenuItem {
@@ -36,7 +36,7 @@ const Header = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [loading, setLoading] = useState(false);
   const [keyword, setKeywords] = useState('');
-  const [list, setList] = useState<searchList[]>([]);
+  const [searchList, setSearchList] = useState<SearchList>();
 
   const searchRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
@@ -73,9 +73,11 @@ const Header = () => {
   const search = debounce(async () => {
     setLoading(true);
     // TODO
-    const { data } = await SearchTokenCreator({ pageNumber: 1, pageSize: 3, keyword: keyword });
+    const { data } = await SearchTokenCreator(keyword);
     console.log('search', data.records);
-    setList(data.records ?? []);
+    if (data) {
+      setSearchList(data);
+    }
     setLoading(false);
   }, 1000);
   useEffect(() => {
@@ -88,12 +90,13 @@ const Header = () => {
   }, [keyword]);
 
   const memeTokens = useMemo(() => {
+    const tokenList = searchList?.seachTokenData ?? [];
     return (
-      list.length > 0 && (
+      tokenList.length > 0 && (
         <div>
           <h3 className="font-404px text-[16px] text-green mb-[7px] leading-[20px]">Meme Tokens</h3>
           <div className="flex flex-col">
-            {list.map((item, index) => (
+            {tokenList.slice(0, 3).map((item, index) => (
               <div
                 className="flex items-center gap-x-[12px] rounded-[7px] px-[9px] py-[6px] cursor-pointer group hover:bg-[#2B526E]"
                 key={index}
@@ -111,18 +114,19 @@ const Header = () => {
         </div>
       )
     );
-  }, [list]);
+  }, [searchList]);
   const creators = useMemo(() => {
+    const creatorList = searchList?.seachCreatorData ?? [];
     return (
-      list.length > 0 && (
+      creatorList.length > 0 && (
         <div>
           <h3 className="font-404px text-[16px] text-green mb-[7px] leading-[20px] mt-[23px] cursor-pointer ">
             CREATORS
           </h3>
           <div className="flex flex-col">
-            {list.map(
+            {creatorList.slice(0, 3).map(
               (item, index) =>
-                list.length > 0 && (
+                creatorList.length > 0 && (
                   <div
                     className="flex items-center gap-x-[12px] rounded-[7px] px-[9px] py-[6px] group hover:bg-[#2B526E]"
                     key={index}
@@ -139,7 +143,7 @@ const Header = () => {
         </div>
       )
     );
-  }, [list]);
+  }, [searchList]);
 
   return (
     <header className={`${styles.header} z-[9999]`}>
@@ -234,9 +238,9 @@ const Header = () => {
                   <IconClear />
                 </div>
                 <div className={`${styles.searchResult} rounded-[15px] bg-[#1f3b4f]`}>
-                  {list.length >= 0 && memeTokens}
-                  {list.length >= 0 && creators}
-                  {!list.length && (
+                  {memeTokens}
+                  {creators}
+                  {!searchList && (
                     <div
                       className={`${styles.noData} w-full font-OCR text-center text-[14px] text-[#fff]`}
                     >{`Your search didn't match any records`}</div>
