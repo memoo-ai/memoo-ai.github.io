@@ -81,8 +81,13 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
         setCreateTwitter(res.data.creatorTwitter);
         setTwitterAccessToken(res.data.twitterAccessToken);
         let pinnedTwitterUrls = [];
+
         if (res.data?.pinnedTwitterData) {
-          pinnedTwitterUrls = res.data?.pinnedTwitterData.map((item: PinnedTwitterData) => item.pinnedTwitterUrl);
+          pinnedTwitterUrls = res.data.pinnedTwitterData.map((item: PinnedTwitterData) => item.pinnedTwitterUrl);
+
+          while (pinnedTwitterUrls.length < 4) {
+            pinnedTwitterUrls.push('');
+          }
         }
         setPinnedTwitterUrl(pinnedTwitterUrls.length > 0 ? pinnedTwitterUrls : ['', '', '', '']);
         setTelegram(res.data.telegram);
