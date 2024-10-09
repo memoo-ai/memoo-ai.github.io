@@ -34,6 +34,7 @@ const telegram = import.meta.env.VITE_LINK_TELEGRAM;
 const Header = () => {
   const { loginMeme } = useLogin();
   const [showSearch, setShowSearch] = useState(false);
+  const [showSearchResult, setShowSearchResult] = useState(false);
   const [loading, setLoading] = useState(false);
   const [keyword, setKeywords] = useState('');
   const [searchList, setSearchList] = useState<SearchList>();
@@ -43,8 +44,8 @@ const Header = () => {
 
   const menusTop = useMemo(() => {
     return [
-      { name: 'SCOREBOARD', path: '/join', isActive: location.pathname === '/join' },
       { name: 'ABOUT', path: '/home', isActive: location.pathname === '/home' },
+      { name: 'SCOREBOARD', path: '/join', isActive: location.pathname === '/join' },
       { name: 'APP', path: '/', isActive: location.pathname !== '/home' && location.pathname !== '/join' },
     ];
   }, [location.pathname]);
@@ -78,9 +79,13 @@ const Header = () => {
     if (data) {
       setSearchList(data);
     }
+    setShowSearchResult(true);
     setLoading(false);
   }, 1000);
   useEffect(() => {
+    if (!keyword) {
+      setShowSearchResult(false);
+    }
     if (keyword) {
       search();
     }
@@ -234,18 +239,26 @@ const Header = () => {
                     setKeywords(e.currentTarget.value);
                   }}
                 />
-                <div className="cursor-pointer" onClick={() => setKeywords('')}>
+                <div
+                  className="cursor-pointer"
+                  onClick={() => {
+                    setKeywords('');
+                    setShowSearchResult(true);
+                  }}
+                >
                   <IconClear />
                 </div>
-                <div className={`${styles.searchResult} rounded-[15px] bg-[#1f3b4f]`}>
-                  {memeTokens}
-                  {creators}
-                  {!searchList && (
-                    <div
-                      className={`${styles.noData} w-full font-OCR text-center text-[14px] text-[#fff]`}
-                    >{`Your search didn't match any records`}</div>
-                  )}
-                </div>
+                {showSearchResult && (
+                  <div className={`${styles.searchResult} rounded-[15px] bg-[#1f3b4f]`}>
+                    {memeTokens}
+                    {creators}
+                    {!searchList && (
+                      <div
+                        className={`${styles.noData} w-full font-OCR text-center text-[14px] text-[#fff]`}
+                      >{`Your search didn't match any records`}</div>
+                    )}
+                  </div>
+                )}
               </div>
             ) : (
               <div
