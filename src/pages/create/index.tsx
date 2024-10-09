@@ -612,7 +612,7 @@ export default function Create() {
               name="tokenName"
               rules={[{ required: true, message: 'Please input token name!' }]}
             >
-              <Input className="rounded-[7px]" showCount maxLength={20} />
+              <Input className="rounded-[7px]" showCount maxLength={30} />
             </Form.Item>
             <Form.Item
               label={

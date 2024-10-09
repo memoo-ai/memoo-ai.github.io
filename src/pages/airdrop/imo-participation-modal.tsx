@@ -82,7 +82,7 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
           </span>
           <span>
             ~{Number(formatDecimals(totalSupplyBN.multipliedBy(g).multipliedBy(idoUserBuyLimitBN))).toLocaleString()}{' '}
-            TOKEN
+            TOKENS
           </span>
         </div>
       ),
@@ -151,24 +151,24 @@ const ImoParticipationModal: FC<{ children: ReactNode }> = ({ children }) => {
                 bgColor="#396D93"
               />
             </div>
-            <p className="whitespace-pre font-OCR text-white text-base leading-[18px]">{`Total IMO raise is always\ncapped at ${formatDecimals(
-              totalImoRaise,
-            )} ${tokenSymbol}`}</p>
           </div>
+          <p className="whitespace-pre font-OCR text-white text-base leading-[18px] text-center mt-[16px]">{`Total IMO raise is always capped at ${formatDecimals(
+            totalImoRaise,
+          )} ${tokenSymbol}`}</p>
           <Radio.Group
-            className="memoo_radio_group mt-[28px] mb-[28px] grid grid-cols-3"
+            className="memoo_radio_group mt-[10px] mb-[28px] grid grid-cols-3"
             options={options}
             onChange={handleChange}
             value={selected}
             optionType="button"
           />
-          <p className="whitespace-pre font-OCR text-[#4889B7] text-[10px] leading-[14px]">{`Contribution capped at ${formatDecimals(
+          <p className="whitespace-pre font-OCR text-[#4889B7] text-[10px] leading-[14px] text-center">{`Contribution capped at ${formatDecimals(
             maxContributed,
           )} ${tokenSymbol} per wallet: To counteract potential centralization,\nindividual wallet holding limits will be established, ensuring that every purchasing\nentity's holding is limited to maximum of ${idoUserBuyLimitBN
             .multipliedBy(100)
             .toString()}% percentage of the total supply.`}</p>
           <Checkbox
-            className="font-OCR text-[12px] text-[#4889B7] my-[24px]"
+            className="font-OCR text-[12px] text-[#4889B7] my-[24px] flex justify-center"
             onChange={(e) => setAccepted(e.target.checked)}
           >
             I accept MeMoo’s{' '}

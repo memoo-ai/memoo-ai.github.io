@@ -248,7 +248,7 @@ export default function AirdropClaim() {
               : (idoQueueDetail?.platformTwitterBind || idoQueueDetail?.projectTwitterBind) &&
                   !(idoQueueDetail?.platformTwitterBind && idoQueueDetail?.projectTwitterBind)
                 ? 'INCOMPLETE'
-                : 'WITHOUT'}
+                : ''}
           </span>
         )}
       </div>
