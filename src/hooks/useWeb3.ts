@@ -97,6 +97,13 @@ export const useAccount = () => {
       setBalance(Number(result ?? 0));
     })();
   }, [publicKey, connection]);
+
+  const getBalance = async () => {
+    if (!connection || !publicKey) return 0;
+    const balance = await connection.getBalance(publicKey);
+    const result = new BigNumber(balance).dividedBy(LAMPORTS_PER_SOL);
+    return Number(result ?? 0);
+  };
   // const network = import.meta.env.VITE_WALLET_ADAPTER_NETWORK;
   // const connection = new Connection(clusterApiUrl(network));
   const programId = new PublicKey(import.meta.env.VITE_PROGRAM_ID);
@@ -154,7 +161,8 @@ export const useAccount = () => {
         // const config = await program.account.globalMemooConfig.fetch(memooConfigPda);
         // console.log('globalMemooConfig:', config);
         // const memeConfigId = Keypair.generate().publicKey;
-        if (balance < paySol + 0.00001) {
+        const nowBalance = await getBalance();
+        if (nowBalance < paySol + 0.00001) {
           message.warning(`Insufficient balance in the wallet`, {
             key: 'Insufficient balance in the wallet to create',
           });
@@ -276,11 +284,13 @@ export const useAccount = () => {
       if (!memooConfig || !program || !publicKey) return;
       try {
         console.log('memeId:', memeId);
-        if (balance < paySol + 0.00001) {
+        const nowBalance = await getBalance();
+        console.log('nowBalance', nowBalance);
+        if (nowBalance < paySol + 0.000001) {
           message.warning(`Insufficient balance in the wallet`, {
             key: 'Insufficient balance in the wallet to idoBuy',
           });
-          return 'error';
+          return;
         }
         const memeConfigId = new PublicKey(memeId);
         // debugger;
@@ -389,11 +399,12 @@ export const useAccount = () => {
       // debugger;
       if (!memooConfig || !program || !publicKey) return;
       try {
-        if (balance < 0.00001) {
+        const nowBalance = await getBalance();
+        if (nowBalance < 0.000001) {
           message.warning(`Insufficient balance in the wallet`, {
-            key: 'Insufficient balance in the wallet to creatorClaim',
+            key: 'Insufficient balance in the wallet to creatorClaimAll',
           });
-          return 'error';
+          return;
         }
         const memeConfigId = new PublicKey(memeId);
         const mintAPublicKey = new PublicKey(mintPublicKey);
@@ -444,11 +455,12 @@ export const useAccount = () => {
     async (memeId: string, mintaPublicKey: string) => {
       if (!memooConfig || !program || !publicKey) return;
       try {
-        if (balance < 0.00001) {
+        const nowBalance = await getBalance();
+        if (nowBalance < 0.000001) {
           message.warning(`Insufficient balance in the wallet`, {
-            key: 'Insufficient balance in the wallet to idoClaim',
+            key: 'Insufficient balance in the wallet to creatorClaimAll',
           });
-          return 'error';
+          return;
         }
         const memeConfigId = new PublicKey(memeId);
         const mintAPublicKey = new PublicKey(mintaPublicKey);
@@ -486,11 +498,12 @@ export const useAccount = () => {
     async (memeId: string, mintaPublicKey: string, userCanClaimCount: number) => {
       if (!memooConfig || !program || !publicKey || !signTransaction) return;
       try {
-        if (balance < 0.00001) {
+        const nowBalance = await getBalance();
+        if (nowBalance < 0.000001) {
           message.warning(`Insufficient balance in the wallet`, {
             key: 'Insufficient balance in the wallet to creatorClaimAll',
           });
-          return 'error';
+          return;
         }
         const memeConfigId = new PublicKey(memeId);
         const mintAPublicKey = new PublicKey(mintaPublicKey);
@@ -624,6 +637,13 @@ export const useAccount = () => {
     async (memeId: string, mintaPublicKey: string, msg: any, signature: Uint8Array, signerPublicKey: PublicKey) => {
       if (!memooConfig || !program || !publicKey || !signTransaction) return;
       try {
+        const nowBalance = await getBalance();
+        if (nowBalance < 0.000001) {
+          message.warning(`Insufficient balance in the wallet`, {
+            key: 'Insufficient balance in the wallet to creatorClaimAll',
+          });
+          return;
+        }
         const memeConfigId = new PublicKey(memeId);
         const mintAPublicKey = new PublicKey(mintaPublicKey);
         const memeConfigPda = PublicKey.findProgramAddressSync(
