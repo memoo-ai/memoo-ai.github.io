@@ -3,7 +3,7 @@ import { MEMOO_TOKEN_STORAGE } from '@/constants';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { SolanaPortalWalletTop, SolanaPortalWalletBottom } from '@/components/SolanaPortal';
 import WalletLogo from '@/assets/imgs/wallet-logo.png';
-const termAndConditions = import.meta.env.VITE_LINK_TERMS_AND_CONDITIONS;
+
 const Wallet: FC<{ children: ReactNode }> = ({ children }) => {
   const [updatePortal, setUpdatePortal] = useState(0);
   const [openModal, setOpenModal] = useState(false);
@@ -15,7 +15,7 @@ const Wallet: FC<{ children: ReactNode }> = ({ children }) => {
         setUpdatePortal((count) => count + 1);
       }}
     >
-      <WalletMultiButton>
+      <WalletMultiButton className="!h-[46px] box-border">
         {children}{' '}
         {openModal && (
           <div>
@@ -27,13 +27,10 @@ const Wallet: FC<{ children: ReactNode }> = ({ children }) => {
             </SolanaPortalWalletTop>
             <SolanaPortalWalletBottom update={updatePortal}>
               <div className="flex w-[366px] justify-between mt-[10px]">
-                <p className="w-full font-OCR text-[#ffffff] text-[10px] leading-[16px] text-center whitespace-pre-wrap">
-                  {`By connecting your wallet and using MeMoo,\nyou agree to our `}
-                  <a href={termAndConditions} target="_blank" className="text-[#07E993] cursor-pointer text-center">
-                    Terms of Service.
-                  </a>
-                  {/* and{' '} */}
-                  {/* <span className="text-[#07E993]">Privacy Policy.</span> */}
+                <p className=" font-OCR text-[#ffffff] text-[10px] text-left">
+                  By connecting your wallet and using MeMoo, you <br /> agree to our{' '}
+                  <span className="text-[#07E993]">Terms of Service</span> and{' '}
+                  <span className="text-[#07E993]">Privacy Policy.</span>
                 </p>
               </div>
             </SolanaPortalWalletBottom>
