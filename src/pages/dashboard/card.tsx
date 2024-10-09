@@ -98,7 +98,7 @@ export const Card = ({ data, children, participated = false }: CardProps) => {
           <div className="dashboard_item_info_img" />
         )}
         <div className="dashboard_item_info_title">
-          <h3>{data.tokenName}</h3>
+          <h3 className="truncate">{data.tokenName}</h3>
           <p>{data.ticker}</p>
         </div>
       </div>
