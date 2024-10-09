@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { IconCopy, IconSearch, IconTwitter } from '@/components/icons';
+import { IconCopy, IconSearch, IconTwitter, IconJoin } from '@/components/icons';
 import './index.scss';
 import { Input, Button, Table, Spin } from 'antd';
 import type { PaginationProps } from 'antd';
@@ -14,7 +14,8 @@ import message from '@/components/IMessage';
 import EnterReferralCodeModal from './enter-referral-code-modal';
 import ResultModal, { ResultRef } from './result-modal';
 import { InvitationList } from '@/types';
-import { formatAddress } from '@/utils';
+import { formatAddress, isEven } from '@/utils';
+import CurrentTotalPointsModal from './current-total-points-modal';
 const Join = () => {
   const [keyword, setKeyword] = useState('');
   const [invitationCode, setInvitationCode] = useState('');
@@ -29,6 +30,16 @@ const Join = () => {
   const { address, useAddress } = useAccount();
   const resultRef = useRef<ResultRef>(null);
   const [data, setData] = useState([
+    {
+      address: '0x0000000000000000000000000000000000000000',
+      icon: '/join/icon.png',
+      totalPoints: '23256461531',
+    },
+    {
+      address: '0x0000000000000000000000000000000000000000',
+      icon: '/join/icon.png',
+      totalPoints: '23256461531',
+    },
     {
       address: '0x0000000000000000000000000000000000000000',
       icon: '/join/icon.png',
@@ -65,13 +76,16 @@ const Join = () => {
     setRefInvitationCode(ticker ?? '');
   }, [searchParams]);
   const generateCode = useCallback(async () => {
-    await useAddress('!mt-[130px]');
+    const result = await useAddress('!mt-[130px]');
     // TODO
-    setInvitationCode('123');
+    if (result) {
+      setInvitationCode('123');
+    }
   }, [address]);
   const search = useCallback(async () => {
     // TODO
     console.log('keyword:', keyword);
+    return true;
   }, [keyword]);
   const shareUrl = `I've joined Memoo. Join the Memevolution with us. Use my referral code for a 100 point bonus! https://${import.meta.env.VITE_SHARE_URI}join?ref=${invitationCode}`;
   const points = [
@@ -103,14 +117,16 @@ const Join = () => {
         <h5 className="mt-[25px] font-OCR text-[14px] leading-[14px] text-white">Check your points</h5>
         <div className="join-search flex items-center mt-[8px] bg-[#1F3B4F] rounded-[7px] ">
           <Input placeholder="Search by address" onChange={(e) => setKeyword(e.currentTarget.value)} />
-          <div
-            className="w-[54px] flex items-center justify-center icon h-full cursor-pointer hover:bg-[#07E993]"
-            onClick={search}
-            onMouseOver={() => iconRefs.current[`IconSearch`].setHovered(true)}
-            onMouseLeave={() => iconRefs.current[`IconSearch`].setHovered(false)}
-          >
-            <IconSearch color="#07E993" hoverColor="#B53BFF" ref={(ref) => (iconRefs.current[`IconSearch`] = ref)} />
-          </div>
+          <CurrentTotalPointsModal keyword={keyword}>
+            <div
+              className="w-[54px] flex items-center justify-center icon h-full cursor-pointer hover:bg-[#07E993]"
+              onClick={search}
+              onMouseOver={() => iconRefs.current[`IconSearch`].setHovered(true)}
+              onMouseLeave={() => iconRefs.current[`IconSearch`].setHovered(false)}
+            >
+              <IconSearch color="#07E993" hoverColor="#B53BFF" ref={(ref) => (iconRefs.current[`IconSearch`] = ref)} />
+            </div>
+          </CurrentTotalPointsModal>
         </div>
         <div className="join-cards flex gap-x-[10px] mt-[30px]">
           <div className="join-cards-item flex flex-col items-center">
@@ -242,8 +258,37 @@ const Join = () => {
             </div>
           </div>
         </div>
-        <div className="join-table mt-[30px]">
-          <Table
+        <div className="join-table mt-[30px] py-[31px] ">
+          <div className="flex items-center justify-between px-[44px] mb-[10px]">
+            <th className="font-OCR text-[#7D83B5] text-[12px] leading-[20px] text-left flex-1">Rank</th>
+            <th className="font-OCR text-[#7D83B5] text-[12px] leading-[20px] text-left flex-1">Address</th>
+            <th className="font-OCR text-[#7D83B5] text-[12px] leading-[20px] text-center flex-1">Total Points</th>
+          </div>
+          {data && data.length > 0 ? (
+            data.map((item, index) => (
+              <th
+                key={index}
+                className={`flex items-center justify-between py-[9px] px-[44px] ${isEven(index) ? 'bg-[#181A2B]' : 'bg-[#1D2034]'}`}
+              >
+                <tr className="font-OCR text-white text-[18px] leading-[20px]">{index + 1}</tr>
+                <tr className="flex items-center gap-x-[18px] font-OCR text-white text-[18px] leading-[20px]">
+                  <img className="w-[30px] h-[30px] rounded-[50%]" src={item.icon} />
+                  {formatAddress(item.address)}
+                </tr>
+                <tr>
+                  <div className="flex items-center justify-center gap-x-[7px] bg-[#2C1844] px-[10px] py-[11px] rounded-[50px] join-border w-[196px]">
+                    <IconJoin />
+                    <span className="text-[18px] text-[#EBCDFE] leading-[20px] font-OCR">
+                      {Number(item.totalPoints).toLocaleString()}
+                    </span>
+                  </div>
+                </tr>
+              </th>
+            ))
+          ) : (
+            <Empty showBorder={false} />
+          )}
+          {/* <Table
             className="common-table mb-10"
             columns={columns}
             dataSource={data}
@@ -260,8 +305,8 @@ const Join = () => {
             locale={{
               emptyText: <Empty showBorder={false} />,
             }}
-          />
-          <div className="px-[44px] mb-[44px]">
+          /> */}
+          <div className="px-[44px] my-[44px]">
             <IPagination
               currentPage={pagination.current ?? 0}
               total={pagination.total ?? 0}

@@ -727,7 +727,7 @@ export const useAccount = () => {
     (className = '', key = 'connect wallet') => {
       if (!publicKey) {
         message.info('Please connect wallet first', { key, className });
-        return;
+        return false;
       }
       return true;
     },

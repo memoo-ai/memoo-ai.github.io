@@ -306,3 +306,6 @@ export function formatAddress(address: string, startLength = 4, endLength = 4): 
   const end = address.slice(-endLength);
   return `${start}...${end}`;
 }
+export function isEven(number: number) {
+  return number % 2 === 0;
+}
