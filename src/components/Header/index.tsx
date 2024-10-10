@@ -271,7 +271,7 @@ const Header = () => {
                     setShowSearchResult(false);
                   }}
                 >
-                  {keyword ? <IconClose className="w-[10px] h-[10px]" /> : <IconClear />}
+                  {keyword ? <IconClose className="w-[10px] h-[10px] mr-[10px]" /> : <IconClear />}
                 </div>
                 {showSearchResult && (
                   <div className={`${styles.searchResult} rounded-[15px] bg-[#1f3b4f]`}>
