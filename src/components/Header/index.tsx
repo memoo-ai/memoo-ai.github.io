@@ -68,6 +68,12 @@ const Header = () => {
   const handleClickOutside = (event: MouseEvent) => {
     if (searchRef.current && !searchRef.current?.contains(event.target as Node)) {
       setShowSearch(false);
+      setShowSearchResult(false);
+      setKeywords('');
+      setSearchList({
+        seachCreatorData: [],
+        seachTokenData: [],
+      });
     }
   };
 
@@ -245,7 +251,7 @@ const Header = () => {
                   className="cursor-pointer"
                   onClick={() => {
                     setKeywords('');
-                    setShowSearchResult(true);
+                    setShowSearchResult(false);
                   }}
                 >
                   <IconClear />
