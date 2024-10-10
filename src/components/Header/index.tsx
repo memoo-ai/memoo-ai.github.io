@@ -213,11 +213,13 @@ const Header = () => {
             </NavLink>
           ))}
         </div>
-        <div className="">
-          <div className="flex items-center ml-[50px] ">
-            <span className={`${styles.betaBtn}`}>BETA</span>
+        {!showSearch && (
+          <div className="">
+            <div className="flex items-center ml-[50px] ">
+              <span className={`${styles.betaBtn}`}>BETA</span>
+            </div>
           </div>
-        </div>
+        )}
         <div className="flex items-center gap-x-[12px] flex-1 justify-end">
           {/* <Button onclick={loginMeme}> login</Button> */}
           {/* <Wallet /> */}
