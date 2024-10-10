@@ -218,12 +218,12 @@ const Header = () => {
             <span className={`${styles.betaBtn}`}>BETA</span>
           </div>
         </div>
-        <div className="flex items-center gap-[1rem] flex-1 justify-end">
+        <div className="flex items-center gap-x-[12px] flex-1 justify-end">
           {/* <Button onclick={loginMeme}> login</Button> */}
           {/* <Wallet /> */}
           {/* <WalletConnect /> */}
           {/* <div className="mr-[12px]" onMouseLeave={() => setShowSearch(false)}> */}
-          <div ref={searchRef} className="flex-1 pl-[1rem]">
+          <div ref={searchRef} className="flex-1 flex justify-end">
             {showSearch ? (
               <div
                 className={`bg-[#1f3b4f] flex items-center justify-center p-[10px] ${
