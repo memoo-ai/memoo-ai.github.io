@@ -3,7 +3,16 @@ import WalletConnect from './WalletConnect';
 import ConnectWallet from './connectWallet';
 import styles from './index.module.scss';
 import NavMenu from '@/components/NavMenu';
-import { IconMemoo, IconSearch, IconClear, IconBook, IconTwitter, IconTelegram, IconTriangle } from '../icons';
+import {
+  IconMemoo,
+  IconSearch,
+  IconClear,
+  IconBook,
+  IconTwitter,
+  IconTelegram,
+  IconTriangle,
+  IconClose,
+} from '../icons';
 import { Button } from '@radix-ui/themes';
 import { useLogin } from '@/hooks/useLogin';
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
@@ -231,7 +240,15 @@ const Header = () => {
           {/* <Wallet /> */}
           {/* <WalletConnect /> */}
           {/* <div className="mr-[12px]" onMouseLeave={() => setShowSearch(false)}> */}
-          <div ref={searchRef} className="flex-1 flex justify-end">
+          <div
+            ref={searchRef}
+            className="flex-1 flex justify-end"
+            onMouseLeave={() => {
+              if (!keyword) {
+                setShowSearch(false);
+              }
+            }}
+          >
             {showSearch ? (
               <div
                 className={`bg-[#1f3b4f] flex items-center justify-center p-[10px] ${
@@ -254,7 +271,7 @@ const Header = () => {
                     setShowSearchResult(false);
                   }}
                 >
-                  <IconClear />
+                  {keyword ? <IconClose /> : <IconClear />}
                 </div>
                 {showSearchResult && (
                   <div className={`${styles.searchResult} rounded-[15px] bg-[#1f3b4f]`}>
