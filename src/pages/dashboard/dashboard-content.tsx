@@ -49,7 +49,7 @@ const DashboardContent: FC<{ onChangeType: (type: string) => void }> = ({ onChan
     items.unshift({
       key: 'Profile',
       label: 'Profile',
-      children: <Profile />,
+      children: <Profile mine={true} />,
     });
     items.push({
       key: 'WatchList',

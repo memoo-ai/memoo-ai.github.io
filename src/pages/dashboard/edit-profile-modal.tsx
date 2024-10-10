@@ -337,7 +337,7 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
               name="profileImage"
             >
               {profileUrl ? (
-                <div className="project-url-container">
+                <div className="project-url-container w-[125px] h-[125px]">
                   <img src={profileUrl} alt="" />
                   <span className="icon-url-actions">
                     <Trash size={16} onClick={() => handleRemove('profile')} />
@@ -388,7 +388,7 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
                     listType="picture-card"
                     accept="image/*"
                     maxCount={1}
-                    beforeUpload={(file) => handleUpload(file)}
+                    beforeUpload={(file) => handleImageChange(file, 'banner')}
                     showUploadList={{ showPreviewIcon: true, showRemoveIcon: false }}
                     style={{ width: '267px', height: 140 }}
                     className="edit-upload-banner w-[267px]"
@@ -417,22 +417,42 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
           </div>
           {(profileImage || profileBannerImage) && (
             <Form.Item label="&nbsp;">
-              <div>
-                <div className="flex flex-col">
-                  <div className="w-full h-[40vh] ">
-                    <Cropper
-                      image={profileImage ? profileImage : profileBannerImage ? profileBannerImage : ''}
-                      crop={crop}
-                      zoom={zoom}
-                      aspect={cropType === 'banner' ? 16 / 6 : 1}
-                      showGrid={false}
-                      onCropChange={setCrop}
-                      onZoomChange={setZoom}
-                      onCropComplete={onCropComplete}
-                    />
+              {profileImage && (
+                <div>
+                  <div className="flex flex-col">
+                    <div className="w-full h-[40vh] ">
+                      <Cropper
+                        image={profileImage}
+                        crop={crop}
+                        zoom={zoom}
+                        aspect={cropType === 'banner' ? 16 / 6 : 1}
+                        showGrid={false}
+                        onCropChange={setCrop}
+                        onZoomChange={setZoom}
+                        onCropComplete={onCropComplete}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
+              {profileBannerImage && (
+                <div>
+                  <div className="flex flex-col">
+                    <div className="w-full h-[40vh] ">
+                      <Cropper
+                        image={profileBannerImage}
+                        crop={crop}
+                        zoom={zoom}
+                        aspect={cropType === 'banner' ? 16 / 6 : 1}
+                        showGrid={false}
+                        onCropChange={setCrop}
+                        onZoomChange={setZoom}
+                        onCropComplete={onCropComplete}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
               <div className="flex items-center justify-center gap-x-[10px] mt-[-20px]">
                 <section className="flex w-[60%] items-center">
                   <button

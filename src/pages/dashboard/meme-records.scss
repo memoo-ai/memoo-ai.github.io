@@ -1,0 +1,23 @@
+@import url('@/assets/styles/button.scss');
+.meme-records{
+  width: 1262px;
+  height: 785px;
+  margin: 0 auto;
+  margin-bottom: -128px;
+  background: url('/dashboard/memoo-records-bg.png') no-repeat center center;
+  background-size: cover;
+  position: relative;
+
+
+  .meme-records-title{
+    position: absolute;
+    top: 161px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .meme-records-content{
+    position: absolute;
+    top: 196px;
+  }
+}

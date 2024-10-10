@@ -281,8 +281,9 @@ const Join = () => {
             </div>
           </div>
         </div>
-        <div className="join-table mt-[30px] py-[31px] ">
-          <div className="flex items-center justify-between px-[44px] mb-[10px]">
+        {/* <div className="join-table mt-[30px] py-[31px] "> */}
+        <div className="join-table mt-[30px]">
+          {/* <div className="flex items-center justify-between px-[44px] mb-[10px]">
             <th className="font-OCR text-[#7D83B5] text-[12px] leading-[20px] text-left flex-1">Rank</th>
             <th className="font-OCR text-[#7D83B5] text-[12px] leading-[20px] text-left flex-1">Address</th>
             <th className="font-OCR text-[#7D83B5] text-[12px] leading-[20px] text-center flex-1">Total Points</th>
@@ -310,8 +311,8 @@ const Join = () => {
             ))
           ) : (
             <Empty showBorder={false} />
-          )}
-          {/* <Table
+          )} */}
+          <Table
             className="common-table mb-10"
             columns={columns}
             dataSource={data}
@@ -328,7 +329,7 @@ const Join = () => {
             locale={{
               emptyText: <Empty showBorder={false} />,
             }}
-          /> */}
+          />
           <div className="px-[44px] my-[44px]">
             <IPagination
               currentPage={pagination.current ?? 0}
