@@ -242,7 +242,7 @@ const Header = () => {
           {/* <div className="mr-[12px]" onMouseLeave={() => setShowSearch(false)}> */}
           <div
             ref={searchRef}
-            className="flex-1 flex justify-end"
+            className="flex-1 flex justify-end h-[46px]"
             onMouseLeave={() => {
               if (!keyword) {
                 setShowSearch(false);
@@ -271,7 +271,7 @@ const Header = () => {
                     setShowSearchResult(false);
                   }}
                 >
-                  {keyword ? <IconClose /> : <IconClear />}
+                  {keyword ? <IconClose className="w-[10px] h-[10px]" /> : <IconClear />}
                 </div>
                 {showSearchResult && (
                   <div className={`${styles.searchResult} rounded-[15px] bg-[#1f3b4f]`}>
