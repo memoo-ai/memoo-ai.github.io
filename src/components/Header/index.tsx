@@ -205,7 +205,7 @@ const Header = () => {
         </div>
       </div>
       <div className={`${styles.headerContent} flex justify-between items-center`}>
-        <Spin spinning={loading} />
+        {/* <Spin spinning={loading} /> */}
         <div className="flex items-center  gap-[3rem]">
           <a href="/home" className="flex items-center justify-center">
             <img src="/logo.svg" alt="Logo" className="w-[60px] h-[60px] mr-[8px]" />
