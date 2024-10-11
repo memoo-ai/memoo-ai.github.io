@@ -133,7 +133,7 @@ const Profile: FC = () => {
   const handleExternalLink = (url: string) => {
     if (!url) return;
     const formattedUrl = url.startsWith('http') ? url : `https://${url}`;
-    window.location.href = formattedUrl;
+    window.open(formattedUrl);
   };
 
   const socails = useMemo(() => {

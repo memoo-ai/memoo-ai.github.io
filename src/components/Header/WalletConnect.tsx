@@ -18,6 +18,7 @@ import ConnectModalPortal from './connectModalPortal';
 import ConnectModalPortalTop from './connectModalPortalTop';
 import { MEMOO_TOKEN_STORAGE } from '@/constants';
 import WalletLogo from '@/assets/imgs/wallet-logo.png';
+const termAndConditions = import.meta.env.VITE_LINK_TERMS_AND_CONDITIONS;
 // const explorerURL = import.meta.env.VITE_EXPLORER_URL;
 const opts = [
   // {
@@ -130,10 +131,17 @@ const WalletConnect = () => {
                         }}
                       >
                         <div>
-                          <p className="w-[320px] font-OCR text-[#ffffff]">
-                            By connecting your wallet and using MeMoo, you agree to our{' '}
-                            <span className="text-[#07E993]">Terms of Service</span> and{' '}
-                            <span className="text-[#07E993]">Privacy Policy.</span>
+                          <p className="w-full font-OCR text-[#ffffff] text-[10px] leading-[16px] text-center whitespace-pre-wrap">
+                            {`By connecting your wallet and using MeMoo,\nyou agree to our `}
+                            <a
+                              href={termAndConditions}
+                              target="_blank"
+                              className="text-[#07E993] cursor-pointer text-center"
+                            >
+                              Terms of Service.
+                            </a>
+                            {/* and{' '} */}
+                            {/* <span className="text-[#07E993]">Privacy Policy.</span> */}
                           </p>
                         </div>
                       </ConnectModalPortal>
