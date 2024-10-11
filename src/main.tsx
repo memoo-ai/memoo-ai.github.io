@@ -11,6 +11,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Theme } from '@radix-ui/themes';
 import { ConfigProvider } from 'antd';
 import routeConfig from './router';
+import mobileRouteConfig from './router/mobile';
 import Loading from './components/Loading';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider, WalletDisconnectButton, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
@@ -22,11 +23,12 @@ import {
   TorusWalletAdapter,
   LedgerWalletAdapter,
 } from '@solana/wallet-adapter-wallets';
+import isMobile from 'is-mobile';
 
 // const { network, endpoint, wallets } = solanaNetwork();
 const App = () => {
   const basename = '/';
-  const router = createBrowserRouter(routeConfig, {
+  const router = createBrowserRouter(isMobile() ? mobileRouteConfig : routeConfig, {
     basename,
   });
   const root = createRoot(document.querySelector('#app')!);

@@ -1,0 +1,137 @@
+.header {
+  position: sticky;
+  top: 0;
+  background-color: $headerBgColor;
+  z-index: 999999 !important;
+}
+.header-top{
+  background: linear-gradient(90deg, #B53BFF 0%, #07E993 100%);
+  height: 1.6875rem;
+  padding:0 5rem;
+  z-index: 999999;
+}
+.header-content{
+  height: 50px;
+  padding: 10px 16px 10px 18px;
+  z-index: 999999;
+  max-width: 100vw;
+}
+.navItem {
+
+  // color: #7e7e7e;
+  color: #07E993;
+  font-family: '404px';
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.375rem;
+  /* 137.5% */
+  letter-spacing: -0.03125rem;
+
+  box-sizing: border-box;
+  border-radius: 7px;
+
+  &:hover {
+    color: #8c31c8;
+  }
+
+  // &:hover,
+  // &.active {
+  //   color: #fff;
+  // }
+}
+
+.active {
+  // color: #07E993;
+  color: #8c31c8;
+  ;
+  font-weight: 700;
+  // background: #1F3B4F;
+  // border: 1px solid #07E993;
+
+  &:hover {
+    // background: #07E993;
+    // color: #8c31c8;
+    // color: #07E993;
+    cursor: default;
+  }
+}
+
+.Create {
+  color: #07E993;
+  font-weight: 400;
+  background: #1F3B4F;
+  border: 1px solid #07E993;
+  padding: 14px 28px;
+  line-height: 18px;
+  padding-bottom: 12px;
+
+  &:hover {
+    background: #07E993;
+    color: #1f3b4f;
+  }
+}
+
+.search {
+  border: 1px solid #07E993;
+  position: relative;
+  width: 339px;
+
+  .searchResult {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: calc(100% + 26px);
+    border: 1px solid #07E993;
+  }
+}
+
+.searchIcon {
+  border: 1px solid #07E993;
+  width: 46px !important;
+}
+
+.searchInput {
+
+  border: none;
+  padding: 0 10px;
+  color: #fff !important;
+
+
+  &::placeholder {
+    color: #fff !important;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+
+}
+
+.noData {
+  padding: 23px 15px !important;
+  text-wrap: nowrap;
+  line-height: 20px;
+}
+.beta-btn{
+  background: linear-gradient(90deg, #07E993 0%, #B53BFF 100%);
+  color: #fff;
+  border: 1px solid #FFFFFF;
+  width: 21px;
+  height: 10px;
+  border-radius: 2px;
+  text-align: center;
+  font-family: '404px';
+  font-size: 6px;
+  font-weight: 400;
+  line-height: 10px;
+  padding: 2px auto;
+}
+.triangle{
+  position: absolute;
+  bottom: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+}

@@ -4,6 +4,7 @@ import { motion, useAnimationFrame } from 'framer-motion';
 import SwipeX from './swipeX';
 import SwipeY from './swipeY';
 import { getCrossDirection, getCrowdSourcing } from '@/api/common';
+import isMobile from 'is-mobile';
 
 interface SwipeProps {
   speed?: number;
@@ -91,7 +92,7 @@ const Swipe: React.FC<SwipeProps> = React.memo(({ children, speed = 50, directio
       ...(isVertical
         ? { height: '220px', width: '100%' }
         : {
-            height: '40px',
+            height: isMobile() ? '30px' : '40px',
             width: '100vw',
             background: '#312145',
             display: 'flex',

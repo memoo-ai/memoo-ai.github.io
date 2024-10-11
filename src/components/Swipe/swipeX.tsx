@@ -12,7 +12,7 @@ const SwipeX = ({ item }: SwipeXProps) => {
       key={item.ticker}
       onClick={() => navigate(`/airdrop/${item.ticker !== '' ? item?.ticker : 'default'}`)}
     >
-      <span className=" font-REV text-[12px]">
+      <span className=" font-REV text-[12px] max-lg:text-[10px]">
         {' '}
         <span style={{ color: getRandomColor() }}>
           {item.address.slice(0, 6)}...{item.address.slice(-4)}
@@ -22,7 +22,7 @@ const SwipeX = ({ item }: SwipeXProps) => {
           {item.ticker}
         </span>
       </span>
-      <img className="w-[30px] h-[30px]  rounded-[50%]" src={item.icon} alt="" />
+      <img className="w-[30px] h-[30px] rounded-[50%] max-lg:w-[22px] max-lg:h-[22px]" src={item.icon} alt="" />
     </div>
   );
 };

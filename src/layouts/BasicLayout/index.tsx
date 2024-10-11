@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styles from './index.module.scss';
 import Header from '@/components/Header';
+import MobileHeader from '@/components/Header/mobile';
 import Toast from '@/components/Toast';
 import Footer from '@/components/Footer';
 import MobilePage from './mobile';
@@ -75,7 +76,17 @@ const BasicLayout: React.FC = () => {
 
   return (
     <div>
-      {isMobile() && <MobilePage />}
+      {isMobile() && (
+        // <MobilePage />
+        <>
+          <MobileHeader />
+          <Toast />
+          <div className={styles.content}>
+            <Outlet />
+          </div>
+          <Footer />
+        </>
+      )}
       {!isMobile() && (
         <>
           <Header />
