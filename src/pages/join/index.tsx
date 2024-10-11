@@ -132,7 +132,7 @@ const Join = () => {
         <h5 className="mt-[25px] font-OCR text-[14px] leading-[14px] text-white">Check your points</h5>
         <div className="join-search flex items-center mt-[8px] bg-[#1F3B4F] rounded-[7px] ">
           <Input placeholder="Search by address" value={keyword} onChange={(e) => setKeyword(e.currentTarget.value)} />
-          {keyword && <IconClose className="mr-[10px] cursor-pointer" onClick={() => setKeyword('')} />}
+          {keyword && <IconClose className="mr-[20px] cursor-pointer" onClick={() => setKeyword('')} />}
           <CurrentTotalPointsModal keyword={keyword} data={searchList}>
             <div
               className="w-[54px] flex items-center justify-center icon h-full cursor-pointer hover:bg-[#07E993]"
