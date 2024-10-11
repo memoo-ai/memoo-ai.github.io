@@ -11,7 +11,7 @@ import {
   IconWalletContentProfile,
   IconClose,
 } from '@/components/icons';
-import './connectWallet.scss';
+// import './connectWallet.scss';
 import { useRef, useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MEMOO_TOKEN_STORAGE } from '@/constants';
