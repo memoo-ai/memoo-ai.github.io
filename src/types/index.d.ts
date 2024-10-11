@@ -528,7 +528,15 @@ declare interface memooConfig {
 }
 declare interface InvitationList {
   address: string;
-  points: string;
+  score: string;
+  createdAt: string;
+  profileBanner: string[];
+  profileImage: string;
+  telegram: string;
+  twitter: string;
+  userBio: string;
+  userName: string;
+  website: string;
 }
 declare interface SearchUserRanking {
   address: string;
@@ -548,6 +556,10 @@ declare interface SearchTokenData {
   tokenName: string;
 }
 declare interface SearchList {
+  seachCreatorData: SearchCreatorData[];
+  seachTokenData: SearchTokenData[];
+}
+declare interface UserInfo {
   seachCreatorData: SearchCreatorData[];
   seachTokenData: SearchTokenData[];
 }

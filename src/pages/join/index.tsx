@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { IconCopy, IconSearch, IconTwitter, IconJoin } from '@/components/icons';
+import { IconCopy, IconSearch, IconTwitter, IconJoin, IconClose } from '@/components/icons';
 import './index.scss';
 import { Input, Button, Table, Spin } from 'antd';
 import type { PaginationProps } from 'antd';
@@ -16,62 +16,52 @@ import ResultModal, { ResultRef } from './result-modal';
 import { InvitationList, SearchUserRanking } from '@/types';
 import { formatAddress, isEven } from '@/utils';
 import CurrentTotalPointsModal from './current-total-points-modal';
-import { searchUserRanking } from '@/api/join';
+import { searchUserRanking, getInvitationCode, getInvitation, getUserRankingList, getInvitationTop } from '@/api/join';
 const Join = () => {
   const [keyword, setKeyword] = useState('');
   const [invitationCode, setInvitationCode] = useState('');
   const [refInvitationCode, setRefInvitationCode] = useState('12');
   const [loading, setLoading] = useState(false);
+  const [isInvited, setIsInvited] = useState(false);
   const iconRefs = useRef<any>({});
+  const [refresh, setRefresh] = useState(0);
   const [pagination, setPagination] = useState<PaginationProps>({
     current: 1,
-    pageSize: 10,
-    total: 30,
+    pageSize: 20,
+    total: 1,
   });
   const { address, useAddress } = useAccount();
   const resultRef = useRef<ResultRef>(null);
-  const [data, setData] = useState([
-    {
-      address: '0x0000000000000000000000000000000000000000',
-      icon: '/join/icon.png',
-      totalPoints: '23256461531',
-    },
-    {
-      address: '0x0000000000000000000000000000000000000000',
-      icon: '/join/icon.png',
-      totalPoints: '23256461531',
-    },
-    {
-      address: '0x0000000000000000000000000000000000000000',
-      icon: '/join/icon.png',
-      totalPoints: '23256461531',
-    },
-  ]);
-  const [invitationList, setInvitationList] = useState<InvitationList[]>([
-    {
-      address: '0x0000000000000000000000000000000000000000',
-      points: '2531',
-    },
-    {
-      address: '0x0000000000000000000000000000000000000000',
-      points: '2531',
-    },
-    {
-      address: '0x0000000000000000000000000000000000000000',
-      points: '2531',
-    },
-    {
-      address: '0x0000000000000000000000000000000000000000',
-      points: '2531',
-    },
-    {
-      address: '0x0000000000000000000000000000000000000000',
-      points: '2531',
-    },
-  ]);
+  const [data, setData] = useState<SearchUserRanking[]>([]);
+  const [invitationList, setInvitationList] = useState<InvitationList[]>([]);
   const [searchList, setSearchList] = useState<SearchUserRanking[]>([]);
 
   const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoading(true);
+        const { data } = await getUserRankingList({
+          pageNumber: pagination.current ?? 1,
+          pageSize: pagination.pageSize ?? 20,
+        });
+
+        setData(data?.records ?? []);
+        setPagination(data?.total ?? 0);
+
+        const { data: result } = await getInvitationTop(address?.toBase58() ?? '');
+        setInvitationList(result);
+        setLoading(false);
+        const { data: invitation } = await getInvitation();
+        setIsInvited(invitation ?? false);
+      } catch (e) {
+        console.log('getInvitationTop:', e);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [address, refresh]);
 
   useEffect(() => {
     const ticker = searchParams.get('ref');
@@ -81,9 +71,11 @@ const Join = () => {
     const result = await useAddress('!mt-[130px]');
     // TODO
     if (result) {
-      setInvitationCode('123');
+      const { data } = await getInvitationCode();
+      setInvitationCode(data);
     }
   }, [address]);
+
   const search = useCallback(async () => {
     // TODO
     try {
@@ -139,7 +131,8 @@ const Join = () => {
         <h3 className="font-404px text-[16px] leading-[10px] text-green">SEASON 1</h3>
         <h5 className="mt-[25px] font-OCR text-[14px] leading-[14px] text-white">Check your points</h5>
         <div className="join-search flex items-center mt-[8px] bg-[#1F3B4F] rounded-[7px] ">
-          <Input placeholder="Search by address" onChange={(e) => setKeyword(e.currentTarget.value)} />
+          <Input placeholder="Search by address" value={keyword} onChange={(e) => setKeyword(e.currentTarget.value)} />
+          {keyword && <IconClose className="mr-[10px] cursor-pointer" onClick={() => setKeyword('')} />}
           <CurrentTotalPointsModal keyword={keyword} data={searchList}>
             <div
               className="w-[54px] flex items-center justify-center icon h-full cursor-pointer hover:bg-[#07E993]"
@@ -181,13 +174,13 @@ const Join = () => {
               <div className="w-[183px] h-[139px] bg-[#2C1843] rounded-[7px] flex flex-col items-center">
                 {invitationCode && invitationList && invitationList.length > 0 ? (
                   <div>
-                    <div className="flex flex-col items-center top5-bonus p-[6px] mt-[5px]">
+                    <div className="flex flex-col items-center top5-bonus p-[6px] mt-[5px] h-[79px]">
                       <h3 className="font-404px text-[10px] leading-[10px] text-white">TOP 5 BONUS CONTRIBUTORS</h3>
                       {invitationList.map((item, index) => (
                         <div className="w-full flex items-center gap-x-[5px] justify-between" key={item.address}>
                           <span className=" text-green font-OCR text-[8px] leading-[11px] text-nowrap">{`${index + 1}. ${formatAddress(item.address)}`}</span>
                           <span className=" text-green font-OCR text-[8px] leading-[11px] text-nowrap">
-                            {item.points} pts
+                            {item.score} pts
                           </span>
                         </div>
                       ))}
@@ -261,15 +254,27 @@ const Join = () => {
                 <EnterReferralCodeModal
                   code={refInvitationCode}
                   onResult={(result) => {
+                    setRefresh((v) => v + 1);
                     resultRef.current?.open(result);
                   }}
                 >
-                  <Button
-                    className="memoo_button rounded-[4px] w-[153px] h-[30px] mt-[5px]"
-                    onClick={() => useAddress('!mt-[130px]')}
-                  >
-                    ENTER REFERRAL CODE
-                  </Button>
+                  {isInvited ? (
+                    <div
+                      className="rounded-[4px] w-[153px] h-[30px] mt-[5px] bg-[#452669] text-green font-404px text-[11px] leading-[16px] text-center flex items-center justify-center"
+                      onClick={() => {
+                        return;
+                      }}
+                    >
+                      {formatAddress(address?.toBase58() ?? '')}
+                    </div>
+                  ) : (
+                    <Button
+                      className="memoo_button rounded-[4px] w-[153px] h-[30px] mt-[5px]"
+                      onClick={() => useAddress('!mt-[130px]')}
+                    >
+                      ENTER REFERRAL CODE
+                    </Button>
+                  )}
                 </EnterReferralCodeModal>
               </div>
             </div>
@@ -281,9 +286,9 @@ const Join = () => {
             </div>
           </div>
         </div>
-        {/* <div className="join-table mt-[30px] py-[31px] "> */}
-        <div className="join-table mt-[30px]">
-          {/* <div className="flex items-center justify-between px-[44px] mb-[10px]">
+        <div className="join-table mt-[30px] py-[31px] ">
+          {/* <div className="join-table mt-[30px]"> */}
+          <div className="flex items-center justify-between px-[44px] mb-[10px]">
             <th className="font-OCR text-[#7D83B5] text-[12px] leading-[20px] text-left flex-1">Rank</th>
             <th className="font-OCR text-[#7D83B5] text-[12px] leading-[20px] text-left flex-1">Address</th>
             <th className="font-OCR text-[#7D83B5] text-[12px] leading-[20px] text-center flex-1">Total Points</th>
@@ -294,16 +299,16 @@ const Join = () => {
                 key={index}
                 className={`flex items-center justify-between py-[9px] px-[44px] ${isEven(index) ? 'bg-[#181A2B]' : 'bg-[#1D2034]'}`}
               >
-                <tr className="font-OCR text-white text-[18px] leading-[20px]">{index + 1}</tr>
+                <tr className="font-OCR text-white text-[18px] leading-[20px]">{item.rank}</tr>
                 <tr className="flex items-center gap-x-[18px] font-OCR text-white text-[18px] leading-[20px]">
-                  <img className="w-[30px] h-[30px] rounded-[50%]" src={item.icon} />
+                  <img className="w-[30px] h-[30px] rounded-[50%]" src={item.profileImage} />
                   {formatAddress(item.address)}
                 </tr>
                 <tr>
-                  <div className="flex items-center justify-center gap-x-[7px] bg-[#2C1844] px-[10px] py-[11px] rounded-[50px] join-border w-[196px]">
+                  <div className="flex items-center justify-start gap-x-[7px] bg-[#2C1844] px-[10px] py-[11px] rounded-[50px] join-border w-[196px]">
                     <IconJoin />
                     <span className="text-[18px] text-[#EBCDFE] leading-[20px] font-OCR">
-                      {Number(item.totalPoints).toLocaleString()}
+                      {Number(item.score).toLocaleString()}
                     </span>
                   </div>
                 </tr>
@@ -311,8 +316,8 @@ const Join = () => {
             ))
           ) : (
             <Empty showBorder={false} />
-          )} */}
-          <Table
+          )}
+          {/* <Table
             className="common-table mb-10"
             columns={columns}
             dataSource={data}
@@ -329,7 +334,7 @@ const Join = () => {
             locale={{
               emptyText: <Empty showBorder={false} />,
             }}
-          />
+          /> */}
           <div className="px-[44px] my-[44px]">
             <IPagination
               currentPage={pagination.current ?? 0}

@@ -11,7 +11,9 @@ import {
   useState,
   useCallback,
   useMemo,
+  useEffect,
 } from 'react';
+import { invitationJoin } from '@/api/join';
 type ChildWithOnClick = ReactElement<{ onClick?: (e: React.MouseEvent) => void }>;
 const EnterReferralCodeModal: FC<{ children: ReactNode; onResult?: (isSuccess: boolean) => void; code: string }> = ({
   children,
@@ -20,20 +22,31 @@ const EnterReferralCodeModal: FC<{ children: ReactNode; onResult?: (isSuccess: b
 }) => {
   const [open, setOpen] = useState(false);
   const [confirming, setConfirming] = useState(false);
+  const [codeValue, setCodeValue] = useState(code);
+
+  useEffect(() => {
+    setCodeValue(code);
+  }, [code]);
 
   const onConfirm = useCallback(async () => {
     try {
       setConfirming(true);
+      const { data } = await invitationJoin(codeValue);
       // await message.success('Congratulations! You have successfully claimed your bonus points.');
-      onResult?.(true);
-      setConfirming(false);
-      setOpen(false);
+      if (data) {
+        onResult?.(true);
+        setConfirming(false);
+        setOpen(false);
+      } else {
+        message.error(data.msg);
+      }
     } catch (error) {
       console.log(error);
+      message.error('Failed to claim bonus points');
     } finally {
       setConfirming(false);
     }
-  }, []);
+  }, [codeValue]);
   const handleChildClick = async (e: React.MouseEvent, existingOnClick?: (e: React.MouseEvent) => any) => {
     if (existingOnClick) {
       const result = await existingOnClick(e);
@@ -64,7 +77,10 @@ const EnterReferralCodeModal: FC<{ children: ReactNode; onResult?: (isSuccess: b
             <Input
               className="flex-1 w-[214.6px]  h-[50px] code-input font-404px text-[16px] leading-[16px]"
               placeholder="REFERRAL CODE..."
-              value={code ?? ''}
+              value={codeValue ?? ''}
+              onChange={(e) => {
+                setCodeValue(e.target.value);
+              }}
             />
             <Button className="memoo_button h-[50px] w-[214.6px] " onClick={onConfirm} loading={confirming}>
               <span className="!text-[16px]">ENTER REFERRAL CODE</span>

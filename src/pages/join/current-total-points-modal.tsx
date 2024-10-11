@@ -127,7 +127,7 @@ const CurrentTotalPointsModal: FC<{
                       {formatAddress(item.address)}
                     </tr>
                     <tr>
-                      <div className="flex items-center justify-center gap-x-[7px] bg-[#2C1844] px-[10px] h-[42px] rounded-[50px] join-border w-[196px]">
+                      <div className="flex items-center justify-start gap-x-[7px] bg-[#2C1844] px-[10px] h-[42px] rounded-[50px] join-border w-[196px]">
                         <IconJoin />
                         <span className="text-[18px] text-[#EBCDFE] leading-[20px] font-OCR">
                           {Number(item.score).toLocaleString()}
