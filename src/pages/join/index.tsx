@@ -22,7 +22,7 @@ const Join = () => {
   const [invitationCode, setInvitationCode] = useState('');
   const [refInvitationCode, setRefInvitationCode] = useState('12');
   const [loading, setLoading] = useState(false);
-  const [isInvited, setIsInvited] = useState(false);
+  const [invitedAddress, setInvitedAddress] = useState('');
   const iconRefs = useRef<any>({});
   const [refresh, setRefresh] = useState(0);
   const [pagination, setPagination] = useState<PaginationProps>({
@@ -54,7 +54,7 @@ const Join = () => {
         setInvitationList(result);
         setLoading(false);
         const { data: invitation } = await getInvitation();
-        setIsInvited(invitation ?? false);
+        setInvitedAddress(invitation ?? '');
       } catch (e) {
         console.log('getInvitationTop:', e);
       } finally {
@@ -258,14 +258,14 @@ const Join = () => {
                     resultRef.current?.open(result);
                   }}
                 >
-                  {isInvited ? (
+                  {invitedAddress ? (
                     <div
                       className="rounded-[4px] w-[153px] h-[30px] mt-[5px] bg-[#452669] text-green font-404px text-[11px] leading-[16px] text-center flex items-center justify-center"
                       onClick={() => {
                         return;
                       }}
                     >
-                      {formatAddress(address?.toBase58() ?? '')}
+                      {formatAddress(invitedAddress)}
                     </div>
                   ) : (
                     <Button
