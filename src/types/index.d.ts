@@ -183,6 +183,7 @@ declare interface memooScore {
 }
 
 declare interface PinnedTwitterData {
+  id: number;
   bookmarkCount: number;
   impressionCount: number;
   likeCount: number;

@@ -141,7 +141,24 @@ export default function Create() {
   const [createTwitter, setCreateTwitter] = useState('');
   const [twitterAccessToken, setTwitterAccessToken] = useState('');
   const [clientId, setClientId] = useState('');
-  const [pinnedTwitterUrl, setPinnedTwitterUrl] = useState<string[]>(['', '', '', '']);
+  const [pinnedTwitterUrl, setPinnedTwitterUrl] = useState([
+    {
+      id: 0,
+      pinnedTwitterUrl: '',
+    },
+    {
+      id: 0,
+      pinnedTwitterUrl: '',
+    },
+    {
+      id: 0,
+      pinnedTwitterUrl: '',
+    },
+    {
+      id: 0,
+      pinnedTwitterUrl: '',
+    },
+  ]);
   const [preMarketAcquisition, setPreMarketAcquisition] = useState(0);
   const { getMemeAddressWithSymbol } = useMemeFactoryContract();
   const navigate = useNavigate();
@@ -476,7 +493,8 @@ export default function Create() {
         data.twitter = twitter;
         data.creatorTwitter = createTwitter;
         data.accessToken = twitterAccessToken;
-        data.pinnedTwitterUrl = pinnedTwitterUrl;
+        // data.pinnedTwitterUrl = pinnedTwitterUrl;
+        data.pinnedTwitterData = pinnedTwitterUrl;
         if (!data.preMarketAcquisition) data.preMarketAcquisition = 0;
         // data.twitter = 'twitter';
         // data.accessToken = 'twitterAccessToken';
@@ -568,7 +586,7 @@ export default function Create() {
 
   const handleInputChange = (index: number, value: string) => {
     const updatedData = [...pinnedTwitterUrl];
-    updatedData[index] = value;
+    updatedData[index].pinnedTwitterUrl = value;
     setPinnedTwitterUrl(updatedData);
     form.setFieldsValue({ pinnedTwitterUrl: updatedData });
   };
@@ -976,7 +994,7 @@ export default function Create() {
                         <Input
                           key={index}
                           className="custom-input rounded-[7px] px-8"
-                          value={data}
+                          value={data.pinnedTwitterUrl}
                           onChange={(e) => handleInputChange(index, e.target.value)}
                         />
                       ))}

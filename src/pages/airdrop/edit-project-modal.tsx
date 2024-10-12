@@ -70,7 +70,24 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-  const [pinnedTwitterUrl, setPinnedTwitterUrl] = useState<string[]>(['', '', '', '']);
+  const [pinnedTwitterUrl, setPinnedTwitterUrl] = useState([
+    {
+      id: 0,
+      pinnedTwitterUrl: '',
+    },
+    {
+      id: 0,
+      pinnedTwitterUrl: '',
+    },
+    {
+      id: 0,
+      pinnedTwitterUrl: '',
+    },
+    {
+      id: 0,
+      pinnedTwitterUrl: '',
+    },
+  ]);
   useEffect(() => {
     getTokenDetail(ticker).then((res) => {
       if (res?.data) {
@@ -83,10 +100,18 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
         let pinnedTwitterUrls = [];
 
         if (res.data?.pinnedTwitterData) {
-          pinnedTwitterUrls = res.data.pinnedTwitterData.map((item: PinnedTwitterData) => item.pinnedTwitterUrl);
+          pinnedTwitterUrls = res.data.pinnedTwitterData.map((item: PinnedTwitterData) => {
+            return {
+              id: item.id ?? 0,
+              pinnedTwitterUrl: item.pinnedTwitterUrl,
+            };
+          });
 
           while (pinnedTwitterUrls.length < 4) {
-            pinnedTwitterUrls.push('');
+            pinnedTwitterUrls.push({
+              id: 0,
+              pinnedTwitterUrl: '',
+            });
           }
         }
         setPinnedTwitterUrl(pinnedTwitterUrls.length > 0 ? pinnedTwitterUrls : ['', '', '', '']);
@@ -179,7 +204,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
 
   const handleInputChange = (index: number, value: string) => {
     const updatedData = [...pinnedTwitterUrl];
-    updatedData[index] = value;
+    updatedData[index].pinnedTwitterUrl = value;
     setPinnedTwitterUrl(updatedData);
     form.setFieldsValue({ pinnedTwitterUrl: updatedData });
   };
@@ -345,14 +370,16 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
       data.discord = discord || '';
       data.telegram = telegram || '';
       // TODO check ticker if exits
-      data.pinnedTwitterUrl = pinnedTwitterUrl || '';
+      data.pinnedTwitterData = pinnedTwitterUrl;
       setConfirmLoading(true);
 
       const res = await saveEditInfo({ ...data, ticker });
       setOpen(false);
       if (res?.code === 200) {
         message.success('Edit successful!');
-        onSaveSuccess();
+        setTimeout(() => {
+          onSaveSuccess();
+        }, 1000);
         setOpen(false);
       } else {
         message.warning('Edit failed');
@@ -594,7 +621,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
                 <Input
                   key={index}
                   className="custom-input rounded-[7px]"
-                  value={data}
+                  value={data.pinnedTwitterUrl}
                   onChange={(e) => handleInputChange(index, e.target.value)}
                 />
               ))}
