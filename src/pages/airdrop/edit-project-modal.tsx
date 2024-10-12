@@ -341,6 +341,9 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
       data.twitter = twitter || '';
       data.creatorTwitter = createTwitter || '';
       data.accessToken = twitterAccessToken || '';
+      data.website = website || '';
+      data.discord = discord || '';
+      data.telegram = telegram || '';
       // TODO check ticker if exits
       data.pinnedTwitterUrl = pinnedTwitterUrl || '';
       setConfirmLoading(true);
