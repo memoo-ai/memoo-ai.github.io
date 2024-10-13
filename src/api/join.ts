@@ -17,6 +17,10 @@ export const getInvitationTop = (address: string) => {
 export const getInvitation = () => {
   return http.get(`${prefix}/web-oriented/invitation`, {});
 };
+
 export const getUserRankingList = (params: pageParams) => {
   return http.get(`${prefix}/web-unauthorized/search-user-ranking-list`, { params });
+};
+export const getInvitationQuery = () => {
+  return http.get(`${prefix}/web-oriented/invitation-code-query`, {});
 };

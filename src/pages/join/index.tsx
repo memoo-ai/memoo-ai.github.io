@@ -16,7 +16,14 @@ import ResultModal, { ResultRef } from './result-modal';
 import { InvitationList, SearchUserRanking } from '@/types';
 import { formatAddress, isEven } from '@/utils';
 import CurrentTotalPointsModal from './current-total-points-modal';
-import { searchUserRanking, getInvitationCode, getInvitation, getUserRankingList, getInvitationTop } from '@/api/join';
+import {
+  searchUserRanking,
+  getInvitationCode,
+  getInvitation,
+  getUserRankingList,
+  getInvitationTop,
+  getInvitationQuery,
+} from '@/api/join';
 const Join = () => {
   const [keyword, setKeyword] = useState('');
   const [invitationCode, setInvitationCode] = useState('');
@@ -55,6 +62,9 @@ const Join = () => {
         setLoading(false);
         const { data: invitation } = await getInvitation();
         setInvitedAddress(invitation ?? '');
+
+        const { data: query } = await getInvitationQuery();
+        setInvitationCode(query);
       } catch (e) {
         console.log('getInvitationTop:', e);
       } finally {
@@ -171,7 +181,7 @@ const Join = () => {
               Invite your friends to join and receive 30% of their points.
             </p>
             <div className="flex items-center justify-center gap-x-[10px] mt-[10px]">
-              <div className="w-[183px] h-[139px] bg-[#2C1843] rounded-[7px] flex flex-col items-center">
+              <div className="w-[183px] h-[142px] bg-[#2C1843] rounded-[7px] flex flex-col items-center">
                 {invitationCode && invitationList && invitationList.length > 0 ? (
                   <div>
                     <div className="flex flex-col items-center top5-bonus p-[6px] mt-[5px] h-[79px]">
@@ -185,18 +195,20 @@ const Join = () => {
                         </div>
                       ))}
                     </div>
-                    <p className="font-OCR text-[10px] leading-[14px] text-[#B53BFF] text-center">Invite now</p>
+                    <p className="font-OCR text-[10px] leading-[14px] text-[#B53BFF] text-center mt-[3px] mb-[2px]">
+                      Invite now
+                    </p>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center">
                     <img className="mt-[-11px]" src="/join/30starburst.png" alt="" />
                     <h5 className="font-404px text-[12px] leading-[12px] text-white whitespace-pre-wrap">{`EARN 30% FROM\nYOUR FRIENDS!`}</h5>
-                    <p className="font-OCR text-[10px] leading-[14px] text-[#B53BFF]">Invite now</p>
+                    <p className="font-OCR text-[10px] leading-[14px] text-[#B53BFF] mt-[8px] mb-[5px]">Invite now</p>
                   </div>
                 )}
                 {invitationCode ? (
-                  <div className="flex items-center justify-center gap-x-[6px] mt-[5px]">
-                    <div className="invitation-box flex items-center gap-x-[4px] text-white">
+                  <div className="flex items-center justify-center gap-x-[6px] mt-[5px] w-full px-[15px]">
+                    <div className="invitation-box flex flex-1 items-center justify-center gap-x-[4px] text-white">
                       {invitationCode}
                       <IconCopy
                         className="w-[10px] h-[11px]"
@@ -207,7 +219,7 @@ const Join = () => {
                       />
                     </div>
                     <Button
-                      className="memoo_button rounded-[4px] w-[80px] h-[30px] flex items-center gap-x-[4px]"
+                      className="memoo_button rounded-[4px] w-[70px] h-[30px] flex items-center gap-x-[4px] p-0"
                       onMouseOver={() => iconRefs.current[`IconTwitter`].setHovered(true)}
                       onMouseLeave={() => iconRefs.current[`IconTwitter`].setHovered(false)}
                       onClick={() => popupSharing(`https://twitter.com/intent/tweet?url=${shareUrl}`)}
@@ -216,6 +228,7 @@ const Join = () => {
                       <IconTwitter
                         color="#B53BFF"
                         hoverColor="#07E993"
+                        className="!w-[11px] !h-[11px]"
                         ref={(ref) => (iconRefs.current[`IconTwitter`] = ref)}
                       />
                     </Button>
@@ -226,10 +239,10 @@ const Join = () => {
                   </Button>
                 )}
               </div>
-              <div className="w-[183px] h-[139px] bg-[#2C1843] rounded-[7px] flex flex-col items-center">
+              <div className="w-[183px] h-[142px] bg-[#2C1843] rounded-[7px] flex flex-col items-center">
                 {invitationCode && invitationList && invitationList.length > 0 ? (
                   <div>
-                    <div className="flex gap-x-[18px]">
+                    <div className="flex gap-x-[18px] h-[78px]">
                       <div className="flex flex-col items-start">
                         <img className="mt-[-11px]" src="/join/30starburst.png" alt="" />
                         <h5 className="font-404px text-[10px] leading-[10px] text-left text-white whitespace-pre-wrap">{`EARN 30%\nFROM YOUR\nFRIENDS!`}</h5>
@@ -239,15 +252,17 @@ const Join = () => {
                         <h5 className="font-404px text-[10px] leading-[10px] text-left text-white whitespace-pre-wrap mt-[7.47px]">{`USE CODE and\nGET 100 POINTS\nbonus.`}</h5>
                       </div>
                     </div>
-                    <p className="font-OCR text-[10px] leading-[14px] text-[#B53BFF] text-center mt-[3px]">
+                    <p className="font-OCR text-[10px] leading-[14px] text-[#B53BFF] text-center mt-[9px] mb-[2px]">
                       Invited by a friend?
                     </p>
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center">
+                  <div className="flex flex-col items-center ">
                     <img className="mt-[-6px]" src="/join/coupon.png" alt="" />
                     <h5 className="font-404px text-[12px] leading-[12px] text-white whitespace-pre-wrap mt-[7.47px]">{`USE CODE and GET\n100 POINTS bonus.`}</h5>
-                    <p className="font-OCR text-[10px] leading-[14px] text-[#B53BFF]">Invited by a friend?</p>
+                    <p className="font-OCR text-[10px] leading-[14px] text-[#B53BFF] mt-[8px] mb-[5px]">
+                      Invited by a friend?
+                    </p>
                   </div>
                 )}
 
