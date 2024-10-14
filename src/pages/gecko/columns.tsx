@@ -11,46 +11,6 @@ import { TrendingTokens } from '@/types';
 import { formatDecimals, formatRatioToPercentage } from '@/utils';
 
 const { collection } = useFunctions();
-export const columnsOld: ColumnDef<TrendingTokens>[] = [
-  {
-    accessorKey: 'name',
-    header: 'Name',
-  },
-  {
-    accessorKey: 'price',
-    header: ({ column }) => {
-      return (
-        <div
-          className="cursor-pointer flex items-center"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Price
-          {column.getIsSorted() === 'asc' ? (
-            <ArrowUp className="ml-2 h-4 w-4" />
-          ) : (
-            <ArrowDown className="ml-2 h-4 w-4" />
-          )}
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: 'priceChangeHourly',
-    header: 'priceChangeHourly',
-  },
-  {
-    accessorKey: 'priceChangeDaily',
-    header: 'priceChangeDaily',
-  },
-  {
-    accessorKey: 'volumeDaily',
-    header: 'volumeDaily',
-  },
-  {
-    accessorKey: 'marketCap',
-    header: 'marketCap',
-  },
-];
 
 export const columns = [
   {

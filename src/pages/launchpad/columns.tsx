@@ -18,7 +18,7 @@ const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 
 const { collection } = useFunctions();
 // const { address } = useAccount();
-export const columns = (navigate: (path: string) => void) => [
+export const columns = (navigate: (path: string) => void, triggerRefresh: Function) => [
   {
     title: 'Token',
     dataIndex: 'tokenName',
@@ -41,9 +41,16 @@ export const columns = (navigate: (path: string) => void) => [
     key: 'creatorTotalRaisedNumerator',
     sorter: false,
     render: (record: LaunchpadIMO) => (
-      <IPopover trigger="hover">
-        <img className="w-[28px] h-[23px]" src="/create/topupicon.png" />
-      </IPopover>
+      <div className="w-[28px]">
+        {Number(record.creatorTotalRaisedNumerator ?? 0) > 0 && (
+          <IPopover
+            trigger="hover"
+            content={`${formatRatioToPercentage(record.creatorTotalRaisedNumerator, record.creatorTotalRaisedDenominator)}% Increased acquisition`}
+          >
+            <img className="w-[28px] h-[23px]" src="/create/topupicon.png" />
+          </IPopover>
+        )}
+      </div>
     ),
   },
   {
@@ -51,17 +58,20 @@ export const columns = (navigate: (path: string) => void) => [
     dataIndex: 'collectionFlag',
     key: 'collectionFlag',
     sorter: false,
-    render: (record: LaunchpadIMO) => (
+    render: (collectionFlag: boolean, record: LaunchpadIMO) => (
       <div
-        onClick={() => {
+        onClick={async () => {
           // if (!address) {
           //   message.info('Please connect wallet first.', { key: 'Please connect wallet first.' });
           //   return;
           // }
-          collection(record.ticker, record.collectionFlag);
+          await collection(record.ticker, collectionFlag, triggerRefresh?.(), 135);
         }}
       >
-        <IconCollect color="#3D255B" />
+        <IconCollect
+          color={collectionFlag ? '#B53BFF ' : '#3D255B'}
+          hoverColor={collectionFlag ? '#3D255B' : '#B53BFF'}
+        />
       </div>
     ),
   },
@@ -151,7 +161,7 @@ export const columns = (navigate: (path: string) => void) => [
     ),
   },
 ];
-export const columnsAirdrop = (navigate: (path: string) => void) => [
+export const columnsAirdrop = (navigate: (path: string) => void, triggerRefresh: Function) => [
   {
     title: 'Token',
     dataIndex: 'tokenName',
@@ -168,28 +178,38 @@ export const columnsAirdrop = (navigate: (path: string) => void) => [
       </div>
     ),
   },
-  // {
-  //   title: '',
-  //   dataIndex: 'topUp',
-  //   key: 'topUp',
-  //   sorter: false,
-  //   render: (endsIn: number) => (
-  //     <IPopover trigger="hover">
-  //       <img className="w-[28px] h-[23px]" src="/create/topupicon.png" />
-  //     </IPopover>
-  //   ),
-  // },
-  // {
-  //   title: '',
-  //   dataIndex: 'endsIn',
-  //   key: 'endsIn',
-  //   sorter: false,
-  //   render: (record: LaunchpadAirdrop) => (
-  //     <div onClick={() => collection(record.ticker, record.isCollect)}>
-  //       <IconCollect color="#3D255B" />
-  //     </div>
-  //   ),
-  // },
+  {
+    title: '',
+    dataIndex: 'creatorTotalRaisedNumerator',
+    key: 'creatorTotalRaisedNumerator',
+    sorter: false,
+    render: (record: LaunchpadAirdrop) => (
+      <div className="w-[28px]">
+        {Number(record.creatorTotalRaisedNumerator ?? 0) > 0 && (
+          <IPopover
+            trigger="hover"
+            content={`${formatRatioToPercentage(record.creatorTotalRaisedNumerator, record.creatorTotalRaisedDenominator)}% Increased acquisition`}
+          >
+            <img className="w-[28px] h-[23px]" src="/create/topupicon.png" />
+          </IPopover>
+        )}
+      </div>
+    ),
+  },
+  {
+    title: '',
+    dataIndex: 'collectionFlag',
+    key: 'collectionFlag',
+    sorter: false,
+    render: (collectionFlag: boolean, record: LaunchpadAirdrop) => (
+      <div onClick={async () => await collection(record.ticker, collectionFlag, triggerRefresh?.(), 135)}>
+        <IconCollect
+          color={collectionFlag ? '#B53BFF ' : '#3D255B'}
+          hoverColor={collectionFlag ? '#3D255B' : '#B53BFF'}
+        />
+      </div>
+    ),
+  },
   {
     title: 'IMO Date',
     dataIndex: 'idoDate',

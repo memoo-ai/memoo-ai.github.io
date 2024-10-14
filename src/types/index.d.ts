@@ -302,12 +302,24 @@ declare interface LaunchpadAirdrop {
 }
 declare interface LaunchpadIDOCompeted {
   athRoi: string;
+  chain: string;
+  collectionFlag: boolean;
+  creatorTotalRaisedDenominator: string;
+  creatorTotalRaisedNumerator: string;
+  creatorTotalRaisedSol: string;
+  endsIn: number;
   icon: string;
+  launchDate: number;
   memooScore: number;
+  payTxHash: string;
+  status: string;
   ticker: string;
   tokenName: string;
   totalRaised: string;
+  totalRaisedDenominator: string;
+  totalRaisedNumerator: string;
   totalScore: number;
+  totalSupply: number;
 }
 
 declare interface DashboardCreator {

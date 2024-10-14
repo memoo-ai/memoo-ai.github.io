@@ -1,5 +1,5 @@
 import './launchpad-airdrop.scss';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { PaginationProps } from 'antd';
 import Empty from '@/components/Empty';
 import { Table, Spin } from 'antd';
@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { getLaunchpadAirdrop, getAirdropCard } from '@/api/launchpad';
 import { LaunchpadAirdrop, AirdropCard } from '@/types';
 import ISelect from '@/components/ISelect';
+import { useAccount } from '@/hooks/useWeb3';
 const LaunchPadAirdrop = () => {
   const navigate = useNavigate();
   const [activeKey, setActiveKey] = useState('');
@@ -22,8 +23,15 @@ const LaunchPadAirdrop = () => {
   const [data, setData] = useState<LaunchpadAirdrop[]>([]);
   const [cardData, setCardData] = useState<AirdropCard[]>([]);
   const [loading, setLoading] = useState(false);
+  const { address } = useAccount();
+  const [refresh, setRefresh] = useState(0);
 
-  const fetchData = async () => {
+  const triggerRefresh = useCallback(async () => {
+    await setRefresh((v) => v + 1);
+    await fetchData();
+  }, []);
+
+  const fetchData = useCallback(async () => {
     try {
       setLoading(true);
       let params = {
@@ -31,6 +39,7 @@ const LaunchPadAirdrop = () => {
         pageSize: pagination.pageSize ?? 10,
         sortField: activeKey,
         sortDirection: orderBy,
+        address: address?.toBase58() ?? '',
       };
       const { data } = await getLaunchpadAirdrop(params);
       // console.log(data);
@@ -47,7 +56,7 @@ const LaunchPadAirdrop = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [address, refresh]);
 
   useEffect(() => {
     fetchData();
@@ -55,15 +64,15 @@ const LaunchPadAirdrop = () => {
 
   useEffect(() => {
     (async () => {
-      const { data } = await getAirdropCard();
+      const { data } = await getAirdropCard(address?.toBase58() ?? '');
       setCardData(data);
     })();
-  }, []);
+  }, [address, refresh]);
 
   return (
     <div className="w-[100%] launchpad-airdrop">
       <Spin spinning={loading} fullscreen />
-      <KingsCards btnText="AIRDROP" btnType="" data={cardData} type="Airdrop" />
+      <KingsCards btnText="AIRDROP" btnType="" data={cardData} type="Airdrop" triggerRefresh={triggerRefresh} />
       <div className="flex justify-between items-end">
         <div className="flex items-center my-[42px]">
           <span className="font-404px text-green text-[24px] mr-[20px]">HUNT FOR AIDROPS</span>
@@ -80,7 +89,7 @@ const LaunchPadAirdrop = () => {
       </div>
       <div className={data.length === 0 ? 'table-no-data' : ''}>
         <Table
-          columns={columnsAirdrop(navigate)}
+          columns={columnsAirdrop(navigate, triggerRefresh)}
           dataSource={data as LaunchpadAirdrop[]}
           pagination={false}
           // loading={loading}

@@ -20,9 +20,17 @@ interface KingsCardsProps {
   path?: string;
   type?: 'Airdrop' | 'IMO';
   data: AirdropCard[] | ImoPvCard[];
+  triggerRefresh?: Function;
 }
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
-const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data, type = 'IMO' }: KingsCardsProps) => {
+const KingsCards = ({
+  btnText = 'Airdrop',
+  btnType = '',
+  path = 'airdrop',
+  data,
+  type = 'IMO',
+  triggerRefresh,
+}: KingsCardsProps) => {
   const navigate = useNavigate();
   const { collection } = useFunctions();
   // const data = new Array(3).fill(undefined).map((_, i) => ({
@@ -71,8 +79,11 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data,
                       <div className="flex gap-x-[12px] mb-[16px]">
                         <IconCollect
                           className=""
-                          color="#6D4F71"
-                          onClick={() => collection(item.ticker, item.collectionFlag ?? false)}
+                          color={item.collectionFlag ? '#B53BFF' : '#6D4F71'}
+                          hoverColor={item.collectionFlag ? '#6D4F71' : '#B53BFF'}
+                          onClick={async () => {
+                            await collection(item.ticker, item.collectionFlag, triggerRefresh?.(), 135);
+                          }}
                         />
                         {Number(item.creatorTotalRaisedNumerator ?? 0) > 0 && (
                           <IPopover

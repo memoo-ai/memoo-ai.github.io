@@ -1,7 +1,7 @@
 import './index.scss';
 import CommonBanner from '@/components/Banner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { SetStateAction, useEffect, useState } from 'react';
+import { SetStateAction, useCallback, useEffect, useState } from 'react';
 import { columns, tokenSelectOptions } from './columns';
 import IPagination from '@/components/IPagination';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +20,7 @@ import LaunchpadAirdropBg from '@/assets/imgs/launchpad-airdrop-bg.png';
 import memooGeckoIcon from '@/assets/imgs/memoogecko.png';
 import createRankIcon from '@/assets/imgs/creatorrankcup .png';
 import { IconHorn } from '@/components/icons';
+import { useAccount } from '@/hooks/useWeb3';
 
 export type GeckoType = 'trending' | 'top';
 const Gecko = () => {
@@ -34,8 +35,9 @@ const Gecko = () => {
     pageSize: 10,
     total: 30,
   });
+  const { address } = useAccount();
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       setLoading(true);
       let params = {
@@ -43,6 +45,7 @@ const Gecko = () => {
         pageSize: pagination.pageSize ?? 10,
         sortField: activeKey,
         sortDirection: orderBy,
+        address: address?.toBase58() ?? '',
       };
       const { data } = tab === 'trending' ? await getTrendingTokens(params) : await getTopTokens(params);
       // console.log(data);
@@ -59,7 +62,7 @@ const Gecko = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [address]);
 
   useEffect(() => {
     fetchData();
