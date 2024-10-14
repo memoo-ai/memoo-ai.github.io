@@ -13,12 +13,13 @@ import { formatNumberToFixed, formatTs, formatRatioToPercentage } from '@/utils'
 import Sample from '../Sample';
 import useFunctions from '@/hooks/useFunctions';
 import IPopover from '@/components/IPopover';
+import { ImoPvCard, AirdropCard } from '@/types';
 interface KingsCardsProps {
   btnText?: string;
   btnType?: string;
   path?: string;
   type?: 'Airdrop' | 'IMO';
-  data: any[];
+  data: AirdropCard[] | ImoPvCard[];
 }
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data, type = 'IMO' }: KingsCardsProps) => {
@@ -55,7 +56,7 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data,
                 style={{ background: `url(${CardBg}) no-repeat`, backgroundSize: 'cover' }}
                 key={item.ticker}
               >
-                <Sample className="absolute left-[25px] top-[8px]" />
+                {/* <Sample className="absolute left-[25px] top-[8px]" /> */}
                 <div className="kings-cards-item-banner">
                   <img
                     className="w-[100%] h-[158px] rounded-tl-[15px] rounded-tr-[15px] "
@@ -71,11 +72,16 @@ const KingsCards = ({ btnText = 'Airdrop', btnType = '', path = 'airdrop', data,
                         <IconCollect
                           className=""
                           color="#6D4F71"
-                          onClick={() => collection(item.ticker, item.isCollect ?? false)}
+                          onClick={() => collection(item.ticker, item.collectionFlag ?? false)}
                         />
-                        <IPopover trigger="hover">
-                          <img className="w-[28px] h-[23px]" src="/create/topupicon.png" />
-                        </IPopover>
+                        {Number(item.creatorTotalRaisedNumerator ?? 0) > 0 && (
+                          <IPopover
+                            trigger="hover"
+                            content={`${formatRatioToPercentage(item.creatorTotalRaisedNumerator, item.creatorTotalRaisedDenominator)}% Increased acquisition`}
+                          >
+                            <img className="w-[28px] h-[23px]" src="/create/topupicon.png" />
+                          </IPopover>
+                        )}
                       </div>
                       <h5 className="font-OCR text-[18px] text-[#fff]">{item.tokenName}</h5>
                       <h5 className="font-OCR text-[12px] text-green">{item.ticker}</h5>

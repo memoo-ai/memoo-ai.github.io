@@ -236,7 +236,7 @@ const Profile: FC = () => {
                     hoverColor="#07E993"
                     className="w-[20px]"
                   />{' '}
-                  {idoQueueDetail?.discord ?? ''}
+                  {extractDomainName(idoQueueDetail?.discord ?? '')}
                 </a>
               </li>
             )}

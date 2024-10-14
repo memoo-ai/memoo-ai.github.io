@@ -156,7 +156,7 @@ const Join = () => {
         </div>
         <div className="join-cards flex gap-x-[10px] mt-[30px]">
           <div className="join-cards-item flex flex-col items-center">
-            <h3 className="font-404px text-[16px] text-green leading-[14px] mt-[16px]">MEMOO REWARDS SCOREBOARD</h3>
+            <h3 className="font-404px text-[16px] text-green leading-[14px] mt-[16px]">CLIMB THE SCOREBOARD</h3>
             <p className="font-OCR text-[10px] leading-[12px] text-white whitespace-pre-wrap">
               {`Complete these tasks daily to earn Early\nAccess Points and unlock future rewards.`}
             </p>
@@ -171,7 +171,7 @@ const Join = () => {
                 </div>
               ))}
             </div>
-            <p className="font-OCR text-[10px] leading-[12px] text-white whitespace-pre-wrap mt-[13px] mb-[10px]">
+            <p className="font-OCR text-[10px] leading-[12px] text-white text-center whitespace-pre-wrap mt-[13px] mb-[10px]">
               {`Keep an eye out for updates on our twitter\nand telegram as the rewards continues.`}
             </p>
           </div>

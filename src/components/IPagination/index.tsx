@@ -7,9 +7,10 @@ interface PaginationProps {
   currentPage: number;
   pageSize?: number;
   onChangePageNumber: (page: number) => void;
+  top?: number;
 }
 
-const MyPagination = ({ total, currentPage, pageSize = 11, onChangePageNumber }: PaginationProps) => {
+const MyPagination = ({ total, currentPage, pageSize = 11, onChangePageNumber, top = 500 }: PaginationProps) => {
   const [localPage, setLocalPage] = useState(currentPage);
   const [inputValue, setInputValue] = useState<number | undefined>(undefined);
   const totalPages = Math.ceil(total / pageSize);
@@ -20,7 +21,7 @@ const MyPagination = ({ total, currentPage, pageSize = 11, onChangePageNumber }:
   const handlePageChange = useCallback(
     (page: number) => {
       onChangePageNumber(page);
-      window.scrollTo({ top: 500, behavior: 'smooth' });
+      window.scrollTo({ top, behavior: 'smooth' });
     },
     [onChangePageNumber],
   );

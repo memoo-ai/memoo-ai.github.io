@@ -8,7 +8,7 @@ interface IPopoverProps {
   trigger?: 'hover' | 'focus' | 'click' | 'contextMenu';
 }
 
-const IPopover: FC<IPopoverProps> = ({ children, trigger = 'click', content = 'X% Increased acquisition' }) => {
+const IPopover: FC<IPopoverProps> = ({ children, trigger = 'click', content = '' }) => {
   return (
     <Popover className="i-popover cursor-pointer" content={content} trigger={trigger}>
       {children}

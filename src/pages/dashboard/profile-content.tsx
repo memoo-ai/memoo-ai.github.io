@@ -12,17 +12,17 @@ const ProfileContent: FC = () => {
     return [
       {
         key: 'ID',
-        value: profileDetail?.id,
+        value: profileDetail?.address,
         formatValue: (value: string) => (
           <ul
             className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1 cursor-pointer"
             onClick={() => {
-              handleCopy(profileDetail?.id ? profileDetail?.id : '');
+              handleCopy(profileDetail?.address ? profileDetail?.address : '');
             }}
           >
-            {profileDetail?.id && (
+            {profileDetail?.address && (
               <li className="token_list flex flex-wrap col-span-6 gap-y-1.5 gap-x-1">
-                {profileDetail?.id ?? ''} <IconCopy className="w-[20px]" />
+                {clipAddress(profileDetail?.address ?? '')} <IconCopy className="w-[20px]" />
               </li>
             )}
           </ul>
@@ -37,7 +37,7 @@ const ProfileContent: FC = () => {
             onMouseOver={() => iconRefs.current['IconTwitter'].setHovered(true)}
             onMouseLeave={() => iconRefs.current['IconTwitter'].setHovered(false)}
           >
-            {profileDetail?.twitter && (
+            {profileDetail?.twitter ? (
               <li className="h-8 token_list_hover">
                 <a
                   href={`https://x.com/${profileDetail?.twitter}`}
@@ -53,6 +53,8 @@ const ProfileContent: FC = () => {
                   {profileDetail?.twitter ?? ''}
                 </a>
               </li>
+            ) : (
+              <var className="col-span-6 text-white text-lg font-OCR ">NA</var>
             )}
           </ul>
         ),
@@ -148,11 +150,9 @@ const ProfileContent: FC = () => {
         </li>
       </ul>
       <div className="head">
-        <h1 className="font-404px text-white leading-7 text-3xl">
-          tokenName <span className="text-green text-base ml-1">profileDetail?.ticker</span>
-        </h1>
-        <time className="mt-2 block font-OCR text-bluish-purple-light text-sm">Joined {0}</time>
-        <p className="mt-2 font-OCR text-white text-sm leading-5 max-w-2xl">profileDetail?.description</p>
+        <h1 className="font-404px text-white leading-7 text-3xl">{profileDetail?.userName ?? 'UNNAMED'} </h1>
+        <time className="mt-2 block font-OCR text-bluish-purple-light text-sm">{profileDetail?.createdAt}</time>
+        <p className="mt-2 font-OCR text-white text-sm leading-5 max-w-2xl">{profileDetail?.userBio}</p>
       </div>
       <div className="content">
         <ul className="basic_list mt-14 flex flex-col gap-y-6">
@@ -169,7 +169,7 @@ const ProfileContent: FC = () => {
                 {item.key}
               </label>
               {item.formatValue ? (
-                item.formatValue(item.value)
+                item.formatValue(item.value ?? '')
               ) : (
                 <var className="col-span-6 text-white text-lg font-OCR leading-5">{item.value}</var>
               )}

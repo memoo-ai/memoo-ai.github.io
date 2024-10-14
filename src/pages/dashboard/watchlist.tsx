@@ -57,8 +57,8 @@ export const WatchList = () => {
               <div className="flex justify-between items-center mt-[15px]">
                 <IconCollect
                   className="watchList_collect"
-                  onClick={() => {
-                    cancelCollectTicker(item.ticker);
+                  onClick={async () => {
+                    await cancelCollectTicker(item.ticker);
                     setTimeout(() => setUpdate((count) => count + 1), 200);
                   }}
                 />

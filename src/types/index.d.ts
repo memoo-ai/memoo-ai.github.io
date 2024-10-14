@@ -265,6 +265,7 @@ declare interface pageParams {
   pageSize: number;
   status?: string;
   keyword?: string;
+  address?: string;
 }
 
 declare interface LaunchpadIMO {
@@ -469,21 +470,39 @@ declare interface AirdropDetail {
 }
 declare interface ImoPvCard {
   banners: [];
+  chain: string;
+  collectionFlag: boolean;
   contributed: number;
+  creatorTotalRaisedDenominator: string;
+  creatorTotalRaisedNumerator: string;
   description: string;
   endsIn: number;
+  airdropEndsIn: number;
   icon: string;
   idoPrice: number;
   maxContributed: number;
+  memooScore: number;
   projectId: number;
   ticker: string;
   tokenName: string;
+  totalScore: number;
 }
 declare interface AirdropCard {
-  address: string;
+  airdropEndsIn: number;
+  endsIn: number;
+  banners: string[];
+  chain: string;
+  collectionFlag: boolean;
+  contributed: number;
+  creatorTotalRaisedDenominator: string;
+  creatorTotalRaisedNumerator: string;
+  description: string;
   icon: string;
+  maxContributed: number;
+  memooScore: number;
   ticker: string;
   tokenName: string;
+  totalScore: number;
 }
 declare interface CrossDirection {
   address: string;
@@ -560,7 +579,29 @@ declare interface SearchList {
   seachCreatorData: SearchCreatorData[];
   seachTokenData: SearchTokenData[];
 }
-declare interface UserInfo {
-  seachCreatorData: SearchCreatorData[];
-  seachTokenData: SearchTokenData[];
+declare interface ProfileDetail {
+  address: string;
+  createdAt: string;
+  profileBanner: string[];
+  profileImage: string;
+  telegram: string;
+  website: string;
+  twitter: string;
+  userBio: string;
+  userName: string;
+  tokensCreated: string;
+  collectiveMCap: string;
+  collectiveATHMCap: string;
+  totalHolders: string;
+  totalHoldersGrowth: string;
+}
+declare interface MemeTop {
+  athMarketCap: string;
+  holders: number;
+  holdersGrowth: number;
+  icon: string;
+  marketCap: string;
+  status: string;
+  ticker: string;
+  tokenName: string;
 }
