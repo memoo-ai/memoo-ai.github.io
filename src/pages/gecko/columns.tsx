@@ -9,10 +9,11 @@ import useFunctions from '@/hooks/useFunctions';
 
 import { TrendingTokens } from '@/types';
 import { formatDecimals, formatRatioToPercentage } from '@/utils';
+import { IconCollect } from '@/components/icons';
 
 const { collection } = useFunctions();
 
-export const columns = [
+export const columns = (triggerRefresh: Function) => [
   {
     title: '#',
     dataIndex: 'index',
@@ -34,16 +35,47 @@ export const columns = [
     ),
     fixed: true,
   },
+  {
+    title: '',
+    dataIndex: 'collectionFlag',
+    key: 'collectionFlag',
+    sorter: false,
+    render: (collectionFlag: boolean, record: TrendingTokens) => (
+      <div
+        onClick={async () => {
+          // if (!address) {
+          //   message.info('Please connect wallet first.', { key: 'Please connect wallet first.' });
+          //   return;
+          // }
+          await collection(record.ticker, collectionFlag, triggerRefresh?.(), 135);
+        }}
+      >
+        <IconCollect
+          color={collectionFlag ? '#B53BFF ' : '#3D255B'}
+          hoverColor={collectionFlag ? '#3D255B' : '#B53BFF'}
+        />
+      </div>
+    ),
+  },
   // {
-  //   title: '',
-  //   dataIndex: 'endsIn',
-  //   key: 'endsIn',
+  //   title: 'Created',
+  //   dataIndex: 'created',
+  //   key: 'created',
   //   sorter: false,
-  //   render: (record: TrendingTokens) => (
-  //     <div onClick={() => collection(record.ticker, record.isCollect)}>
-  //       <IconCollect color="#3D255B" />
-  //     </div>
-  //   ),
+  //   render: (price: number) => <div className="font-normal text-lg ">196d</div>,
+  // },
+  {
+    title: 'Market Cap',
+    dataIndex: 'marketCap',
+    key: 'marketCap',
+    render: (marketCap: number) => <div className="font-normal text-lg ">${formatDecimals(marketCap)}</div>,
+  },
+  // {
+  //   title: 'Liquidity',
+  //   dataIndex: 'liquidity',
+  //   key: 'liquidity',
+  //   sorter: false,
+  //   render: (price: number) => <div className="font-normal text-lg ">196d</div>,
   // },
   {
     title: 'Price',
@@ -53,19 +85,24 @@ export const columns = [
     render: (price: number) => <div className="font-normal text-lg ">${formatDecimals(price)}</div>,
   },
   // {
-  //   title: 'Created',
-  //   dataIndex: 'created',
-  //   key: 'created',
+  //   title: 'Holders',
+  //   dataIndex: 'holders',
+  //   key: 'holders',
   //   sorter: false,
   //   render: (price: number) => <div className="font-normal text-lg ">196d</div>,
   // },
-  // {
-  //   title: 'Liquidity',
-  //   dataIndex: 'liquidity',
-  //   key: 'liquidity',
-  //   sorter: false,
-  //   render: (price: number) => <div className="font-normal text-lg ">196d</div>,
-  // },
+  {
+    title: 'Memoo Score',
+    dataIndex: 'memooScore',
+    key: 'memooScore',
+    sorter: false,
+    render: (memooScore: number, record: TrendingTokens) => (
+      <div className="flex flex-col justify-end items-end pt-5">
+        <span>{formatRatioToPercentage(memooScore, record.totalScore)}</span>
+        <IProgress percent={formatRatioToPercentage(memooScore, record.totalScore)} />
+      </div>
+    ),
+  },
   {
     title: '1h',
     dataIndex: 'increase1H',
@@ -99,57 +136,33 @@ export const columns = [
     sorter: false,
     render: (volume24H: number) => <div className="font-normal text-lg ">${volume24H}</div>,
   },
+
   {
-    title: 'Market Cap',
-    dataIndex: 'marketCap',
-    key: 'marketCap',
-    render: (marketCap: number) => <div className="font-normal text-lg ">${formatDecimals(marketCap)}</div>,
-  },
-  {
-    title: 'Memoo Score',
-    dataIndex: 'memooScore',
-    key: 'memooScore',
+    title: 'Token Audit',
+    dataIndex: 'tokenAudit',
+    key: 'tokenAudit',
     sorter: false,
-    render: (memooScore: number, record: TrendingTokens) => (
-      <div className="flex flex-col justify-end items-end pt-5">
-        <span>{formatRatioToPercentage(memooScore, record.totalScore)}</span>
-        <IProgress percent={formatRatioToPercentage(memooScore, record.totalScore)} />
+    render: (price: number, record: TrendingTokens) => (
+      <div className="flex items-center">
+        <div>
+          <p className="font-OCR text-[18px] leading-[20px] text-[#FE6D6D]">30.6%</p>
+          <h5>Top10 Hold</h5>
+        </div>
+        <div>
+          <p>Yes</p>
+          <h5>No Mint</h5>
+        </div>
+        <div>
+          <p>No</p>
+          <h5>Blacklist</h5>
+        </div>
+        <div>
+          <p>Yes</p>
+          <h5>Burnt</h5>
+        </div>
       </div>
     ),
   },
-  // {
-  //   title: 'Holders',
-  //   dataIndex: 'holders',
-  //   key: 'holders',
-  //   sorter: false,
-  //   render: (price: number) => <div className="font-normal text-lg ">196d</div>,
-  // },
-  // {
-  //   title: 'Token Audit',
-  //   dataIndex: 'tokenAudit',
-  //   key: 'tokenAudit',
-  //   sorter: false,
-  //   render: (price: number, record: TrendingTokens) => (
-  //     <div className="flex items-center">
-  //       <div>
-  //         <p>{record.top10Hold}</p>
-  //         <h5>Top10 Hold</h5>
-  //       </div>
-  //       <div>
-  //         <p>{record.top10Hold}</p>
-  //         <h5>No Mint</h5>
-  //       </div>
-  //       <div>
-  //         <p>{record.top10Hold}</p>
-  //         <h5>Blacklist</h5>
-  //       </div>
-  //       <div>
-  //         <p>{record.top10Hold} </p>
-  //         <h5>Burnt</h5>
-  //       </div>
-  //     </div>
-  //   ),
-  // },
 ];
 export const tokenSelectOptions = [
   // {

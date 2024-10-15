@@ -36,6 +36,7 @@ const Gecko = () => {
     total: 30,
   });
   const { address } = useAccount();
+  const [refresh, setRefresh] = useState(0);
 
   const fetchData = useCallback(async () => {
     try {
@@ -62,7 +63,11 @@ const Gecko = () => {
     } finally {
       setLoading(false);
     }
-  }, [address]);
+  }, [address, refresh]);
+  const triggerRefresh = useCallback(async () => {
+    await setRefresh((v) => v + 1);
+    await fetchData();
+  }, []);
 
   useEffect(() => {
     fetchData();
@@ -167,19 +172,25 @@ const Gecko = () => {
       </div>
       <div className="flex justify-between">
         <div />
-        <ISelect
-          options={tokenSelectOptions}
-          onSelectChange={(key, orderBy) => {
-            setPagination({ ...pagination, current: 1 });
-            setActiveKey(key);
-            setOrderBy(orderBy);
-          }}
-        />
+        <div className="flex  gap-x-[40px]">
+          <div className="flex items-center justify-center gap-x-[11px] scroll-more w-[231px] h-[46px]">
+            <img className="w-[37px] h-[14.82px]" src="/gecko/scroll-more.png" alt="" />{' '}
+            <span className="font-OCR text-[12px] leading-[20px] text-green">Scroll right for more</span>
+          </div>
+          <ISelect
+            options={tokenSelectOptions}
+            onSelectChange={(key, orderBy) => {
+              setPagination({ ...pagination, current: 1 });
+              setActiveKey(key);
+              setOrderBy(orderBy);
+            }}
+          />
+        </div>
       </div>
       <div className={data.length === 0 ? 'table-no-data' : ''}>
         <Table
           className="common-table mb-10"
-          columns={columns}
+          columns={columns(triggerRefresh)}
           dataSource={data}
           pagination={false}
           // loading={loading}

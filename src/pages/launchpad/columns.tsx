@@ -40,12 +40,12 @@ export const columns = (navigate: (path: string) => void, triggerRefresh: Functi
     dataIndex: 'creatorTotalRaisedNumerator',
     key: 'creatorTotalRaisedNumerator',
     sorter: false,
-    render: (record: LaunchpadIMO) => (
+    render: (creatorTotalRaisedNumerator: string, record: LaunchpadIMO) => (
       <div className="w-[28px]">
-        {Number(record.creatorTotalRaisedNumerator ?? 0) > 0 && (
+        {Number(creatorTotalRaisedNumerator ?? 0) > 0 && (
           <IPopover
             trigger="hover"
-            content={`${formatRatioToPercentage(record.creatorTotalRaisedNumerator, record.creatorTotalRaisedDenominator)}% Increased acquisition`}
+            content={`${formatRatioToPercentage(creatorTotalRaisedNumerator, record.creatorTotalRaisedDenominator)}% Increased acquisition`}
           >
             <img className="w-[28px] h-[23px]" src="/create/topupicon.png" />
           </IPopover>
@@ -183,12 +183,12 @@ export const columnsAirdrop = (navigate: (path: string) => void, triggerRefresh:
     dataIndex: 'creatorTotalRaisedNumerator',
     key: 'creatorTotalRaisedNumerator',
     sorter: false,
-    render: (record: LaunchpadAirdrop) => (
+    render: (creatorTotalRaisedNumerator: string, record: LaunchpadAirdrop) => (
       <div className="w-[28px]">
-        {Number(record.creatorTotalRaisedNumerator ?? 0) > 0 && (
+        {Number(creatorTotalRaisedNumerator ?? 0) > 0 && (
           <IPopover
             trigger="hover"
-            content={`${formatRatioToPercentage(record.creatorTotalRaisedNumerator, record.creatorTotalRaisedDenominator)}% Increased acquisition`}
+            content={`${formatRatioToPercentage(creatorTotalRaisedNumerator, record.creatorTotalRaisedDenominator)}% Increased acquisition`}
           >
             <img className="w-[28px] h-[23px]" src="/create/topupicon.png" />
           </IPopover>
