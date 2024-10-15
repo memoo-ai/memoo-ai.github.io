@@ -26,10 +26,10 @@ const routeConfig: RouteObject[] = [
         path: '/create_token',
         Component: lazy(() => import('../pages/create')),
       },
-      {
-        path: '/join',
-        Component: lazy(() => import('../pages/join')),
-      },
+      // {
+      //   path: '/join',
+      //   Component: lazy(() => import('../pages/join')),
+      // },
       {
         path: '/airdrop/:ticker',
         Component: lazy(() => import('../pages/airdrop')),

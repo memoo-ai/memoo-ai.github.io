@@ -33,6 +33,7 @@ const KingsCards = ({
 }: KingsCardsProps) => {
   const navigate = useNavigate();
   const { collection } = useFunctions();
+  const isDev = import.meta.env.MODE === 'development';
   // const data = new Array(3).fill(undefined).map((_, i) => ({
   //   id: i,
   //   address: 'Rg7GG...kf9Lj7' + i,
@@ -76,7 +77,7 @@ const KingsCards = ({
                   <div className="flex items-center  box-border">
                     <img className="w-[87px] h-[84px] rounded-[50%] mr-[12px]" src={item.icon} alt="" />
                     <div>
-                      <div className="flex gap-x-[12px] mb-[16px]">
+                      {/* <div className="flex gap-x-[12px] mb-[16px]">
                         <IconCollect
                           className=""
                           color={item.collectionFlag ? '#B53BFF' : '#6D4F71'}
@@ -93,7 +94,7 @@ const KingsCards = ({
                             <img className="w-[28px] h-[23px]" src="/create/topupicon.png" />
                           </IPopover>
                         )}
-                      </div>
+                      </div> */}
                       <h5 className="font-OCR text-[18px] text-[#fff]">{item.tokenName}</h5>
                       <h5 className="font-OCR text-[12px] text-green">{item.ticker}</h5>
                     </div>

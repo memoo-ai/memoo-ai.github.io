@@ -3,52 +3,15 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import { ArrowUp, ArrowDown } from 'lucide-react';
 import IProgress from '@/components/IProgress';
+import useFunctions from '@/hooks/useFunctions';
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
 import { TrendingTokens } from '@/types';
 import { formatDecimals, formatRatioToPercentage } from '@/utils';
+import { IconCollect } from '@/components/icons';
 
-export const columnsOld: ColumnDef<TrendingTokens>[] = [
-  {
-    accessorKey: 'name',
-    header: 'Name',
-  },
-  {
-    accessorKey: 'price',
-    header: ({ column }) => {
-      return (
-        <div
-          className="cursor-pointer flex items-center"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Price
-          {column.getIsSorted() === 'asc' ? (
-            <ArrowUp className="ml-2 h-4 w-4" />
-          ) : (
-            <ArrowDown className="ml-2 h-4 w-4" />
-          )}
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: 'priceChangeHourly',
-    header: 'priceChangeHourly',
-  },
-  {
-    accessorKey: 'priceChangeDaily',
-    header: 'priceChangeDaily',
-  },
-  {
-    accessorKey: 'volumeDaily',
-    header: 'volumeDaily',
-  },
-  {
-    accessorKey: 'marketCap',
-    header: 'marketCap',
-  },
-];
+const { collection } = useFunctions();
 
 export const columns = (triggerRefresh: Function) => [
   {
@@ -57,6 +20,7 @@ export const columns = (triggerRefresh: Function) => [
     key: 'index',
     width: 20,
     render: (_: any, __: any, index: number) => <div className="flex items-center text-[#fff]">{index + 1}</div>,
+    fixed: true,
   },
   {
     title: 'Token',
@@ -69,13 +33,75 @@ export const columns = (triggerRefresh: Function) => [
         <span className="font-normal text-sm text-[#07E993] uppercase">{record.ticker}</span>
       </div>
     ),
+    fixed: true,
   },
+  {
+    title: '',
+    dataIndex: 'collectionFlag',
+    key: 'collectionFlag',
+    sorter: false,
+    render: (collectionFlag: boolean, record: TrendingTokens) => (
+      <div
+        onClick={async () => {
+          // if (!address) {
+          //   message.info('Please connect wallet first.', { key: 'Please connect wallet first.' });
+          //   return;
+          // }
+          await collection(record.ticker, collectionFlag, triggerRefresh?.(), 135);
+        }}
+      >
+        <IconCollect
+          color={collectionFlag ? '#B53BFF ' : '#3D255B'}
+          hoverColor={collectionFlag ? '#3D255B' : '#B53BFF'}
+        />
+      </div>
+    ),
+  },
+  // {
+  //   title: 'Created',
+  //   dataIndex: 'created',
+  //   key: 'created',
+  //   sorter: false,
+  //   render: (price: number) => <div className="font-normal text-lg ">196d</div>,
+  // },
+  {
+    title: 'Market Cap',
+    dataIndex: 'marketCap',
+    key: 'marketCap',
+    render: (marketCap: number) => <div className="font-normal text-lg ">${formatDecimals(marketCap)}</div>,
+  },
+  // {
+  //   title: 'Liquidity',
+  //   dataIndex: 'liquidity',
+  //   key: 'liquidity',
+  //   sorter: false,
+  //   render: (price: number) => <div className="font-normal text-lg ">196d</div>,
+  // },
   {
     title: 'Price',
     dataIndex: 'price',
     key: 'price',
     sorter: false,
     render: (price: number) => <div className="font-normal text-lg ">${formatDecimals(price)}</div>,
+  },
+  // {
+  //   title: 'Holders',
+  //   dataIndex: 'holders',
+  //   key: 'holders',
+  //   sorter: false,
+  //   render: (price: number) => <div className="font-normal text-lg ">196d</div>,
+  // },
+  {
+    title: 'Memoo Score',
+    dataIndex: 'memooScore',
+    key: 'memooScore',
+    sorter: false,
+    render: (memooScore: number, record: TrendingTokens) => (
+      <div className="flex flex-col justify-end items-end pt-5">
+        <span>{formatRatioToPercentage(memooScore, record.totalScore)}</span>
+        <IProgress percent={formatRatioToPercentage(memooScore, record.totalScore)} />
+      </div>
+    ),
   },
   {
     title: '1h',
@@ -110,21 +136,30 @@ export const columns = (triggerRefresh: Function) => [
     sorter: false,
     render: (volume24H: number) => <div className="font-normal text-lg ">${volume24H}</div>,
   },
+
   {
-    title: 'Market Cap',
-    dataIndex: 'marketCap',
-    key: 'marketCap',
-    render: (marketCap: number) => <div className="font-normal text-lg ">${formatDecimals(marketCap)}</div>,
-  },
-  {
-    title: 'Memoo Score',
-    dataIndex: 'memooScore',
-    key: 'memooScore',
+    title: 'Token Audit',
+    dataIndex: 'tokenAudit',
+    key: 'tokenAudit',
     sorter: false,
-    render: (memooScore: number, record: TrendingTokens) => (
-      <div className="flex flex-col justify-end items-end pt-5">
-        <span>{formatRatioToPercentage(memooScore, record.totalScore)}</span>
-        <IProgress percent={formatRatioToPercentage(memooScore, record.totalScore)} />
+    render: (price: number, record: TrendingTokens) => (
+      <div className="flex items-center">
+        <div>
+          <p className="font-OCR text-[18px] leading-[20px] text-[#FE6D6D]">30.6%</p>
+          <h5>Top10 Hold</h5>
+        </div>
+        <div>
+          <p>Yes</p>
+          <h5>No Mint</h5>
+        </div>
+        <div>
+          <p>No</p>
+          <h5>Blacklist</h5>
+        </div>
+        <div>
+          <p>Yes</p>
+          <h5>Burnt</h5>
+        </div>
       </div>
     ),
   },

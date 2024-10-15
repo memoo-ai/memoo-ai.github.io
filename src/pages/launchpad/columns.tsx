@@ -35,46 +35,46 @@ export const columns = (navigate: (path: string) => void, triggerRefresh: Functi
       </div>
     ),
   },
-  {
-    title: '',
-    dataIndex: 'creatorTotalRaisedNumerator',
-    key: 'creatorTotalRaisedNumerator',
-    sorter: false,
-    render: (creatorTotalRaisedNumerator: string, record: LaunchpadIMO) => (
-      <div className="w-[28px]">
-        {Number(creatorTotalRaisedNumerator ?? 0) > 0 && (
-          <IPopover
-            trigger="hover"
-            content={`${formatRatioToPercentage(creatorTotalRaisedNumerator, record.creatorTotalRaisedDenominator)}% Increased acquisition`}
-          >
-            <img className="w-[28px] h-[23px]" src="/create/topupicon.png" />
-          </IPopover>
-        )}
-      </div>
-    ),
-  },
-  {
-    title: '',
-    dataIndex: 'collectionFlag',
-    key: 'collectionFlag',
-    sorter: false,
-    render: (collectionFlag: boolean, record: LaunchpadIMO) => (
-      <div
-        onClick={async () => {
-          // if (!address) {
-          //   message.info('Please connect wallet first.', { key: 'Please connect wallet first.' });
-          //   return;
-          // }
-          await collection(record.ticker, collectionFlag, triggerRefresh?.(), 135);
-        }}
-      >
-        <IconCollect
-          color={collectionFlag ? '#B53BFF ' : '#3D255B'}
-          hoverColor={collectionFlag ? '#3D255B' : '#B53BFF'}
-        />
-      </div>
-    ),
-  },
+  // {
+  //   title: '',
+  //   dataIndex: 'creatorTotalRaisedNumerator',
+  //   key: 'creatorTotalRaisedNumerator',
+  //   sorter: false,
+  //   render: (creatorTotalRaisedNumerator: string, record: LaunchpadIMO) => (
+  //     <div className="w-[28px]">
+  //       {Number(creatorTotalRaisedNumerator ?? 0) > 0 && (
+  //         <IPopover
+  //           trigger="hover"
+  //           content={`${formatRatioToPercentage(creatorTotalRaisedNumerator, record.creatorTotalRaisedDenominator)}% Increased acquisition`}
+  //         >
+  //           <img className="w-[28px] h-[23px]" src="/create/topupicon.png" />
+  //         </IPopover>
+  //       )}
+  //     </div>
+  //   ),
+  // },
+  // {
+  //   title: '',
+  //   dataIndex: 'collectionFlag',
+  //   key: 'collectionFlag',
+  //   sorter: false,
+  //   render: (collectionFlag: boolean, record: LaunchpadIMO) => (
+  //     <div
+  //       onClick={async () => {
+  //         // if (!address) {
+  //         //   message.info('Please connect wallet first.', { key: 'Please connect wallet first.' });
+  //         //   return;
+  //         // }
+  //         await collection(record.ticker, collectionFlag, triggerRefresh?.(), 135);
+  //       }}
+  //     >
+  //       <IconCollect
+  //         color={collectionFlag ? '#B53BFF ' : '#3D255B'}
+  //         hoverColor={collectionFlag ? '#3D255B' : '#B53BFF'}
+  //       />
+  //     </div>
+  //   ),
+  // },
   {
     title: 'Ends In',
     dataIndex: 'endsIn',
@@ -178,38 +178,38 @@ export const columnsAirdrop = (navigate: (path: string) => void, triggerRefresh:
       </div>
     ),
   },
-  {
-    title: '',
-    dataIndex: 'creatorTotalRaisedNumerator',
-    key: 'creatorTotalRaisedNumerator',
-    sorter: false,
-    render: (creatorTotalRaisedNumerator: string, record: LaunchpadAirdrop) => (
-      <div className="w-[28px]">
-        {Number(creatorTotalRaisedNumerator ?? 0) > 0 && (
-          <IPopover
-            trigger="hover"
-            content={`${formatRatioToPercentage(creatorTotalRaisedNumerator, record.creatorTotalRaisedDenominator)}% Increased acquisition`}
-          >
-            <img className="w-[28px] h-[23px]" src="/create/topupicon.png" />
-          </IPopover>
-        )}
-      </div>
-    ),
-  },
-  {
-    title: '',
-    dataIndex: 'collectionFlag',
-    key: 'collectionFlag',
-    sorter: false,
-    render: (collectionFlag: boolean, record: LaunchpadAirdrop) => (
-      <div onClick={async () => await collection(record.ticker, collectionFlag, triggerRefresh?.(), 135)}>
-        <IconCollect
-          color={collectionFlag ? '#B53BFF ' : '#3D255B'}
-          hoverColor={collectionFlag ? '#3D255B' : '#B53BFF'}
-        />
-      </div>
-    ),
-  },
+  // {
+  //   title: '',
+  //   dataIndex: 'creatorTotalRaisedNumerator',
+  //   key: 'creatorTotalRaisedNumerator',
+  //   sorter: false,
+  //   render: (creatorTotalRaisedNumerator: string, record: LaunchpadAirdrop) => (
+  //     <div className="w-[28px]">
+  //       {Number(creatorTotalRaisedNumerator ?? 0) > 0 && (
+  //         <IPopover
+  //           trigger="hover"
+  //           content={`${formatRatioToPercentage(creatorTotalRaisedNumerator, record.creatorTotalRaisedDenominator)}% Increased acquisition`}
+  //         >
+  //           <img className="w-[28px] h-[23px]" src="/create/topupicon.png" />
+  //         </IPopover>
+  //       )}
+  //     </div>
+  //   ),
+  // },
+  // {
+  //   title: '',
+  //   dataIndex: 'collectionFlag',
+  //   key: 'collectionFlag',
+  //   sorter: false,
+  //   render: (collectionFlag: boolean, record: LaunchpadAirdrop) => (
+  //     <div onClick={async () => await collection(record.ticker, collectionFlag, triggerRefresh?.(), 135)}>
+  //       <IconCollect
+  //         color={collectionFlag ? '#B53BFF ' : '#3D255B'}
+  //         hoverColor={collectionFlag ? '#3D255B' : '#B53BFF'}
+  //       />
+  //     </div>
+  //   ),
+  // },
   {
     title: 'IMO Date',
     dataIndex: 'idoDate',
