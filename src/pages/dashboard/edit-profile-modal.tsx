@@ -12,11 +12,16 @@ import { useSearchParams } from 'react-router-dom';
 import { authorizeTwitter } from '@/utils';
 import { IconCopy } from '@/components/icons';
 import { handleCopy } from '@/utils';
+import Cropper from 'react-easy-crop';
+import { ZOOM_STEP, PREFIX } from '@/components/ImgCrop/constants';
 
 const FORM_STORAGE_KEY = 'create_token_storage';
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
+const minZoom = 1;
+const maxZoom = 3;
 
+type CropType = 'profile' | 'banner';
 const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess: () => void }> = ({
   children,
   ticker,
@@ -26,18 +31,27 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
   const [form] = Form.useForm();
   const [connectTwitterLoading, setConnectTwitterLoading] = useState(false);
   const [twitterAccessToken, setTwitterAccessToken] = useState('');
-  const [projectBannerUrl, setProjectBannerUrl] = useState('');
+  const [profileBannerUrl, setProfileBannerUrl] = useState('');
+  const [profileUrl, setProfileUrl] = useState('');
   const [twitter, setTwitter] = useState('');
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [projectDetail, setProjectDetail] = useState({});
   const [searchParams] = useSearchParams();
+  const [website, setWebsite] = useState('');
+  const [profileImage, setProfileImage] = useState(null);
+  const [profileBannerImage, setProfileBannerImage] = useState(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [cropLoading, setCropLoading] = useState(false);
+  const [cropType, setCropType] = useState<CropType>('profile');
 
   useEffect(() => {
     getTokenDetail(ticker).then((res) => {
       if (res?.data) {
         console.log('TokenDetail: ', res?.data);
         setProjectDetail(res.data);
-        setProjectBannerUrl(res.data?.banners ? res.data?.banners[0] : '');
+        setProfileBannerUrl(res.data?.banners ? res.data?.banners[0] : '');
         setTwitter(res.data.twitter);
         setTwitterAccessToken(res.data.twitterAccessToken);
         // get data from local
@@ -53,7 +67,7 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
             formData.projectDescription = data.projectDescription;
             formData.website = data.website;
             if (formData.bannerUrl) {
-              setProjectBannerUrl(formData.bannerUrl);
+              setProfileBannerUrl(formData.bannerUrl);
             }
           }
         } catch (e) {}
@@ -81,27 +95,22 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
     if (file) {
       uploadFile(file).then((res) => {
         form.setFieldValue('banners', [res.data.file]);
-        setProjectBannerUrl(res.data.fileUrl);
+        setProfileBannerUrl(res.data.fileUrl);
       });
       return false;
     }
   };
 
   useEffect(() => {
-    (async () => {
-      const code = searchParams.get('code');
-      const state = searchParams.get('state');
-      const edit = searchParams.get('edit');
-      let updateParams = null;
-      try {
-        updateParams = JSON.parse(localStorage.getItem(UPDATE_PROJECT_TWITTER_STORAGE) ?? '');
-      } catch (e) {}
-      if (!updateParams) {
-        return;
-      }
-      if (state === 'twitter' && code && updateParams && edit && updateParams.ticker === ticker) {
+    const handleMessage = (event: MessageEvent) => {
+      console.log('handleMessage-event:', event);
+      const data = event.data;
+      console.log('Received data from child window:', data);
+      console.log('twitter-code', data.code);
+      if (data.code && data.state === 'twitter' && data.type === 'twitter_bind') {
+        const updateParams = JSON.parse(localStorage.getItem(UPDATE_PROJECT_TWITTER_STORAGE) ?? '');
         const params = {
-          code,
+          code: data.code ?? '',
           grantType: 'authorization_code',
           // clientd: twitterClientId,
           redirectUri: twitterRedirectUri,
@@ -114,18 +123,23 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
           setTwitterAccessToken(access_token);
           setTwitter(twitter);
         });
-        setOpen(true);
       }
-    })();
-  }, [searchParams]);
+    };
 
-  const handleRemove = () => {
-    setProjectBannerUrl('');
+    window.addEventListener('message', handleMessage);
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
+
+  const handleRemove = (type: string) => {
+    type === 'profile' ? setProfileUrl('') : setProfileBannerUrl('');
   };
   const connectTwitter = async () => {
     const formData = form.getFieldsValue();
     console.log('formData: ', formData);
-    formData.bannerUrl = projectBannerUrl;
+    formData.bannerUrl = profileBannerUrl;
     localStorage.setItem(EDIT_INFO_STORAGE, JSON.stringify(formData));
     const res = await getTwitterClientId();
     let clientId = res.data;
@@ -177,6 +191,86 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
     }
   }, [open]);
 
+  const handleImageChange = (file: File, type: CropType) => {
+    // const file = e.target.files[0];
+    if (file) {
+      setCropType(type);
+      const reader = new FileReader();
+      reader.onload = () => {
+        type === 'profile' ? setProfileImage(reader.result as any) : setProfileBannerImage(reader.result as any);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  const onCropComplete = (croppedArea: any, croppedAreaPixels: any) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  };
+
+  const handleCrop = async (type: string) => {
+    try {
+      setCropLoading(true);
+      const croppedImage = await getCroppedImg(
+        type === 'profile' ? profileImage : profileBannerImage,
+        croppedAreaPixels,
+      );
+      console.log('croppedImage:', croppedImage);
+      if (croppedImage) {
+        // const file = new File([croppedImage], 'croppedImage.jpg', { type: croppedImage.type });
+        uploadFile(croppedImage).then((res) => {
+          if (type === 'profile') {
+            form.setFieldValue('profile', [res.data.file]);
+            setProfileUrl(res.data.fileUrl);
+            setProfileImage(null);
+            setCropLoading(false);
+          } else {
+            form.setFieldValue('banners', [res.data.file]);
+            setProfileBannerUrl(res.data.fileUrl);
+            setProfileBannerImage(null);
+            setCropLoading(false);
+          }
+        });
+        return false;
+      }
+    } catch (e) {
+      console.error('Error cropping image:', e);
+      setCropLoading(false);
+    }
+  };
+  const getCroppedImg = (
+    imageSrc: string | null,
+    crop: { width: number; height: number; x: number; y: number } | null,
+  ) => {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.src = imageSrc as string;
+      image.crossOrigin = 'anonymous';
+
+      image.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          reject(new Error('Canvas context is not available'));
+          return;
+        }
+        if (!crop) {
+          reject(new Error('Crop context is not available'));
+          return;
+        }
+        canvas.width = crop.width;
+        canvas.height = crop.height;
+        ctx.drawImage(image, crop.x, crop.y, crop.width, crop.height, 0, 0, crop.width, crop.height);
+
+        canvas.toBlob((blob) => {
+          resolve(blob);
+        }, 'image/jpeg');
+      };
+
+      image.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
   return (
     <>
       <Modal
@@ -207,11 +301,10 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
             label={
               <p className="flex items-end">
                 <span className="w-[113px] whitespace-normal">Username </span>
-                <span>*</span>
               </p>
             }
-            name="projectDescription"
-            rules={[{ required: true, message: 'Please input Project Description!' }]}
+            name="username"
+            // rules={[{ required: true, message: 'Please input Username!' }]}
           >
             <Input
               placeholder=""
@@ -223,7 +316,6 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
             label={
               <p className="flex items-end">
                 <span className="w-[113px] whitespace-normal">Bio </span>
-                <span>*</span>
               </p>
             }
             name="projectDescription"
@@ -237,18 +329,18 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
               className="text-[#fff] bg-[#2b526e]"
             />
           </Form.Item>
-          <div className="flex">
+          <div className="flex gap-x-[56px]">
             <Form.Item
-              label={<p>Profile Image</p>}
+              label={<p className="whitespace-pre-wrap">{`Profile\nImage`}</p>}
               valuePropName="bannerList"
               getValueFromEvent={normFile}
-              name="banners"
+              name="profileImage"
             >
-              {projectBannerUrl ? (
-                <div className="project-url-container w-[125px]">
-                  <img src={projectBannerUrl} alt="" />
+              {profileUrl ? (
+                <div className="project-url-container w-[125px] h-[125px]">
+                  <img src={profileUrl} alt="" />
                   <span className="icon-url-actions">
-                    <Trash size={16} onClick={handleRemove} />
+                    <Trash size={16} onClick={() => handleRemove('profile')} />
                   </span>
                 </div>
               ) : (
@@ -256,10 +348,10 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
                   listType="picture-card"
                   accept="image/*"
                   maxCount={1}
-                  beforeUpload={(file) => handleUpload(file)}
+                  beforeUpload={(file) => handleImageChange(file, 'profile')}
                   showUploadList={{ showPreviewIcon: true, showRemoveIcon: false }}
-                  style={{ width: '125px', height: 140 }}
-                  className="edit-upload-banner"
+                  style={{ width: '100%', height: 140 }}
+                  className="edit-upload-banner w-[125px]"
                   previewFile={(file) => {
                     return new Promise((resolve) => {
                       const reader = new FileReader();
@@ -271,7 +363,7 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
                   }}
                 >
                   <button style={{ border: 0, background: 'none' }} type="button">
-                    <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
+                    <div style={{ marginTop: 8 }} className="flex flex-col justify-center items-center">
                       <IconUpload className="" />
                       <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px] mt-[10px]">
                         Upload Image
@@ -281,106 +373,153 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
                 </Upload>
               )}
             </Form.Item>
-            <Form.Item
-              label={<p>Profile Banner</p>}
-              valuePropName="bannerList"
-              getValueFromEvent={normFile}
-              name="banners"
-            >
-              {projectBannerUrl ? (
-                <div className="project-url-container">
-                  <img src={projectBannerUrl} alt="" />
-                  <span className="icon-url-actions">
-                    <Trash size={16} onClick={handleRemove} />
-                  </span>
-                </div>
-              ) : (
-                <Upload
-                  listType="picture-card"
-                  accept="image/*"
-                  maxCount={1}
-                  beforeUpload={(file) => handleUpload(file)}
-                  showUploadList={{ showPreviewIcon: true, showRemoveIcon: false }}
-                  style={{ width: '267px', height: 140 }}
-                  className="edit-upload-banner"
-                  previewFile={(file) => {
-                    return new Promise((resolve) => {
-                      const reader = new FileReader();
-                      reader.readAsDataURL(file);
-                      reader.onload = () => {
-                        resolve(reader.result as string);
-                      };
-                    });
-                  }}
-                >
-                  <button style={{ border: 0, background: 'none' }} type="button">
-                    <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
-                      <IconUpload className="" />
-                      <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px] mt-[10px]">
-                        Recommended 790px X 307px Max size: 50MB
-                      </p>
-                    </div>
-                  </button>
-                </Upload>
-              )}
-            </Form.Item>
+            <div className="flex gap-x-[13px] h-[125px]">
+              <p className="whitespace-pre-wrap text-white font-OCR text-[14px] font-normal">{`Profile\nBanner`}</p>
+              <div className="flex-1">
+                {profileBannerUrl ? (
+                  <div className="project-url-container w-full">
+                    <img src={profileBannerUrl} alt="" />
+                    <span className="icon-url-actions">
+                      <Trash size={16} onClick={() => handleRemove('banner')} />
+                    </span>
+                  </div>
+                ) : (
+                  <Upload
+                    listType="picture-card"
+                    accept="image/*"
+                    maxCount={1}
+                    beforeUpload={(file) => handleImageChange(file, 'banner')}
+                    showUploadList={{ showPreviewIcon: true, showRemoveIcon: false }}
+                    style={{ width: '267px', height: 140 }}
+                    className="edit-upload-banner w-[267px]"
+                    previewFile={(file) => {
+                      return new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onload = () => {
+                          resolve(reader.result as string);
+                        };
+                      });
+                    }}
+                  >
+                    <button style={{ border: 0, background: 'none' }} type="button">
+                      <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
+                        <IconUpload className="" />
+                        <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px] mt-[10px]">
+                          Recommended 790px X 307px Max size: 10MB
+                        </p>
+                      </div>
+                    </button>
+                  </Upload>
+                )}
+              </div>
+            </div>
           </div>
+          {(profileImage || profileBannerImage) && (
+            <Form.Item label="&nbsp;">
+              {profileImage && (
+                <div>
+                  <div className="flex flex-col">
+                    <div className="w-full h-[40vh] ">
+                      <Cropper
+                        image={profileImage}
+                        crop={crop}
+                        zoom={zoom}
+                        aspect={cropType === 'banner' ? 16 / 6 : 1}
+                        showGrid={false}
+                        onCropChange={setCrop}
+                        onZoomChange={setZoom}
+                        onCropComplete={onCropComplete}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+              {profileBannerImage && (
+                <div>
+                  <div className="flex flex-col">
+                    <div className="w-full h-[40vh] ">
+                      <Cropper
+                        image={profileBannerImage}
+                        crop={crop}
+                        zoom={zoom}
+                        aspect={cropType === 'banner' ? 16 / 6 : 1}
+                        showGrid={false}
+                        onCropChange={setCrop}
+                        onZoomChange={setZoom}
+                        onCropComplete={onCropComplete}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+              <div className="flex items-center justify-center gap-x-[10px] mt-[-20px]">
+                <section className="flex w-[60%] items-center">
+                  <button
+                    className="text-[18px] text-[#07E993] disabled:text-[#1a5e5c]"
+                    onClick={() => setZoom(Number((zoom - ZOOM_STEP).toFixed(1)))}
+                    disabled={zoom - ZOOM_STEP < minZoom}
+                  >
+                    －
+                  </button>
+                  <Slider
+                    className="flex1 w-full memoo_slider"
+                    min={minZoom}
+                    max={maxZoom}
+                    step={ZOOM_STEP}
+                    value={zoom}
+                    onChange={setZoom}
+                    tooltipVisible={false}
+                  />
+                  <button
+                    className="text-[18px] text-[#07E993] disabled:text-[#1a5e5c]"
+                    onClick={() => setZoom(Number((zoom + ZOOM_STEP).toFixed(1)))}
+                    disabled={zoom + ZOOM_STEP > maxZoom}
+                  >
+                    ＋
+                  </button>
+                </section>
+                <div className="flex justify-center items-center gap-x-[10px]">
+                  <Button
+                    className="memoo_button w-[115px] reverse"
+                    onClick={() => {
+                      setProfileImage(null);
+                      setProfileBannerImage(null);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    className="memoo_button w-[115px] reverse"
+                    onClick={() => handleCrop(cropType)}
+                    loading={cropLoading}
+                  >
+                    Save
+                  </Button>
+                </div>
+              </div>
+            </Form.Item>
+          )}
           <Form.Item label={<p>Twitter</p>}>
             <div className="flex items-center">
               <div style={{ width: '15px' }} className="mr-[7px]">
                 <IconTwitter hoverColor="#07E993" className="" />
               </div>
-              {twitter && <img src="/create/icon-authed.svg" />}
+              {twitter && <img className="mr-[7px]" src="/create/icon-authed.svg" />}
               <ConnectButton variant="secondary" className="w-[136px] h-[32px]" onClick={connectTwitter}>
                 {!twitter ? 'CONNECT' : 'CHANGE'}
               </ConnectButton>
             </div>
           </Form.Item>
-          <Form.Item
-            label={<p>Project Banner</p>}
-            valuePropName="bannerList"
-            getValueFromEvent={normFile}
-            name="banners"
-          >
-            {projectBannerUrl ? (
-              <div className="project-url-container">
-                <img src={projectBannerUrl} alt="" />
-                <span className="icon-url-actions">
-                  <Trash size={16} onClick={handleRemove} />
-                </span>
-              </div>
-            ) : (
-              <Upload
-                listType="picture-card"
-                accept="image/*"
-                maxCount={1}
-                beforeUpload={(file) => handleUpload(file)}
-                showUploadList={{ showPreviewIcon: true, showRemoveIcon: false }}
-                style={{ width: '100%', height: 140 }}
-                className="edit-upload-banner"
-                previewFile={(file) => {
-                  return new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = () => {
-                      resolve(reader.result as string);
-                    };
-                  });
-                }}
-              >
-                <button style={{ border: 0, background: 'none' }} type="button">
-                  <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
-                    <IconUpload className="" />
-                    <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px] mt-[10px]">
-                      Recommended 790px X 307px Max size: 50MB
-                    </p>
-                  </div>
-                </button>
-              </Upload>
-            )}
-          </Form.Item>
           <Form.Item label={<p className="edit-form-label">Website</p>} name="website">
-            <Input maxLength={20} className="custom-input" />
+            <div className="reactive">
+              <Input
+                className="custom-input rounded-[7px] px-8"
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
+              />
+              <img className="website-logo" src="/create/icon-website.png" alt="" />
+            </div>
           </Form.Item>
           <Form.Item label={<p className="edit-form-label">ID</p>} name="id">
             <span>{form.getFieldValue('id')}</span>{' '}

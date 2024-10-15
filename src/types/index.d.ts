@@ -87,7 +87,7 @@ declare interface IDOActiveDetail extends IDOClaimStage {
   liquidity: string;
   lpContractAddress: string;
   marketCap: string;
-  meMooScore: string;
+  memooScore: string;
   memeTwitterBind: boolean;
   participants: number;
   pinnedTwitter: string;
@@ -135,7 +135,7 @@ declare interface IDOLaunchedDetail extends IDOClaimStage {
   lpLock: boolean;
   marketCap: string;
   maxSupply: string;
-  meMooScore: string;
+  memooScore: string;
   memeTwitterBind: boolean;
   participants: number;
   pinnedTwitter: string;
@@ -180,6 +180,25 @@ declare interface memooScore {
   scoreField: string;
   scoreValue: number;
   totalScore: number;
+}
+
+declare interface PinnedTwitterData {
+  id: number;
+  bookmarkCount: number;
+  impressionCount: number;
+  likeCount: number;
+  name: string;
+  pinnedTwitterUrl: string;
+  profileImageUrl: string;
+  replyCount: number;
+  repostCount: number;
+  text: string;
+  ticker: string;
+  timeStampVal: number;
+  twitterMsgCreatedAt: string;
+  url: string;
+  username: string;
+  verified: boolean;
 }
 declare interface IDOQueueDetail extends IDOClaimStage {
   commitment: string;
@@ -235,6 +254,8 @@ declare interface IDOQueueDetail extends IDOClaimStage {
   unlockTime: string;
   totalRaisedNumerator: string;
   totalRaisedDenominator: string;
+  discord: string;
+  pinnedTwitterData: PinnedTwitterData[];
 }
 
 declare type IDOStatus = 'Draft' | 'Waiting_for_pay' | 'QUEUE' | 'IDO' | 'Launched' | 'IDOEND';
@@ -243,12 +264,14 @@ declare interface pageParams {
   pageNumber: number;
   pageSize: number;
   status?: string;
+  keyword?: string;
+  address?: string;
 }
 
 declare interface LaunchpadIMO {
   endsIn: string;
   icon: string;
-  meMooScore: number;
+  memooScore: number;
   status: string;
   ticker: string;
   tokenName: string;
@@ -256,6 +279,9 @@ declare interface LaunchpadIMO {
   totalRaisedDenominator: string;
   totalRaisedNumerator: string;
   totalScore: number;
+  collectionFlag: boolean;
+  creatorTotalRaisedDenominator: string;
+  creatorTotalRaisedNumerator: string;
 }
 declare interface LaunchpadAirdrop {
   icon: string;
@@ -266,15 +292,34 @@ declare interface LaunchpadAirdrop {
   ticker: string;
   tokenName: string;
   totalScore: number;
+  endsIn: string;
+  totalRaised: string;
+  totalRaisedDenominator: string;
+  totalRaisedNumerator: string;
+  collectionFlag: boolean;
+  creatorTotalRaisedDenominator: string;
+  creatorTotalRaisedNumerator: string;
 }
 declare interface LaunchpadIDOCompeted {
   athRoi: string;
+  chain: string;
+  collectionFlag: boolean;
+  creatorTotalRaisedDenominator: string;
+  creatorTotalRaisedNumerator: string;
+  creatorTotalRaisedSol: string;
+  endsIn: number;
   icon: string;
+  launchDate: number;
   memooScore: number;
+  payTxHash: string;
+  status: string;
   ticker: string;
   tokenName: string;
   totalRaised: string;
+  totalRaisedDenominator: string;
+  totalRaisedNumerator: string;
   totalScore: number;
+  totalSupply: number;
 }
 
 declare interface DashboardCreator {
@@ -324,7 +369,7 @@ declare interface DashboardWatchList {
   endsIn: number;
   icon: string;
   launchDate: number;
-  meMooScore: string;
+  memooScore: string;
   status: string;
   ticker: string;
   tokenName: string;
@@ -437,21 +482,39 @@ declare interface AirdropDetail {
 }
 declare interface ImoPvCard {
   banners: [];
+  chain: string;
+  collectionFlag: boolean;
   contributed: number;
+  creatorTotalRaisedDenominator: string;
+  creatorTotalRaisedNumerator: string;
   description: string;
   endsIn: number;
+  airdropEndsIn: number;
   icon: string;
   idoPrice: number;
   maxContributed: number;
+  memooScore: number;
   projectId: number;
   ticker: string;
   tokenName: string;
+  totalScore: number;
 }
 declare interface AirdropCard {
-  address: string;
+  airdropEndsIn: number;
+  endsIn: number;
+  banners: string[];
+  chain: string;
+  collectionFlag: boolean;
+  contributed: number;
+  creatorTotalRaisedDenominator: string;
+  creatorTotalRaisedNumerator: string;
+  description: string;
   icon: string;
+  maxContributed: number;
+  memooScore: number;
   ticker: string;
   tokenName: string;
+  totalScore: number;
 }
 declare interface CrossDirection {
   address: string;
@@ -494,4 +557,63 @@ declare interface memooConfig {
   tokenAllocationLp: number;
   tokenAllocationPlatform: number;
   totalSupply: string;
+}
+declare interface InvitationList {
+  address: string;
+  score: string;
+  createdAt: string;
+  profileBanner: string[];
+  profileImage: string;
+  telegram: string;
+  twitter: string;
+  userBio: string;
+  userName: string;
+  website: string;
+}
+declare interface SearchUserRanking {
+  address: string;
+  profileImage: string;
+  rank: number;
+  score: number;
+}
+declare interface SearchCreatorData {
+  address: string;
+  profileImage: string;
+  userName: string;
+}
+declare interface SearchTokenData {
+  icon: string;
+  status: string;
+  ticker: string;
+  tokenName: string;
+}
+declare interface SearchList {
+  seachCreatorData: SearchCreatorData[];
+  seachTokenData: SearchTokenData[];
+}
+declare interface ProfileDetail {
+  address: string;
+  createdAt: string;
+  profileBanner: string[];
+  profileImage: string;
+  telegram: string;
+  website: string;
+  twitter: string;
+  userBio: string;
+  userName: string;
+  tokensCreated: string;
+  collectiveMCap: string;
+  collectiveATHMCap: string;
+  totalHolders: string;
+  totalHoldersGrowth: string;
+}
+declare interface MemeTop {
+  athMarketCap: string;
+  holders: number;
+  holdersGrowth: number;
+  icon: string;
+  marketCap: string;
+  status: string;
+  ticker: string;
+  tokenName: string;
 }

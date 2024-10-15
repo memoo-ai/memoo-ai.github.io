@@ -96,14 +96,14 @@
 
   }
 
-  // .ant-input-textarea-affix-wrapper.ant-input-affix-wrapper>textarea.ant-input {
-  //   background: #2B526E !important;
-  //   border-radius: 7px !important;
-  // }
+  .ant-input-textarea-affix-wrapper.ant-input-affix-wrapper>textarea.ant-input {
+    background: #2B526E;
+    border-radius: 7px;
+  }
 
   .ant-form-item .ant-form-item-label {
     width: 126px !important;
-    font-family: 'OCR A Extended' !important;
+    font-family: 'OCR A Extended';
     font-size: 16px;
     margin-right: 22px;
     text-align: left;
@@ -113,12 +113,12 @@
     content: '' !important;
   }
 
-  // .ant-input-outlined {
-  //   background: #2B526E !important;
-  //   border: 1px solid #07E993;
-  //   border-radius: 7px;
-  //   color: #ffffff;
-  // }
+  .ant-input-outlined {
+    background: #2B526E !important;
+    border: 1px solid #07E993;
+    border-radius: 7px;
+    color: #ffffff;
+  }
 
 }
 
@@ -129,4 +129,7 @@
   .ant-upload {
     background: #2B526E !important;
   }
+}
+.ant-form-item .ant-form-item-label >label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before{
+  display: none;
 }

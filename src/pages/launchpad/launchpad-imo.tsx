@@ -1,5 +1,5 @@
 import './launchpad-imo.scss';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { PaginationProps } from 'antd';
 import Empty from '@/components/Empty';
 import { Table, Spin } from 'antd';
@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { getLaunchpadImo, getImoPvCard } from '@/api/launchpad';
 import { LaunchpadIMO, ImoPvCard } from '@/types';
 import ISelect from '@/components/ISelect';
+import { useAccount } from '@/hooks/useWeb3';
 
 const LaunchPadImo = () => {
   const navigate = useNavigate();
@@ -23,8 +24,17 @@ const LaunchPadImo = () => {
   const [data, setData] = useState<LaunchpadIMO[]>([]);
   const [cardData, setCardData] = useState<ImoPvCard[]>([]);
   const [loading, setLoading] = useState(false);
+  const { address } = useAccount();
+  const [refresh, setRefresh] = useState(0);
 
-  const fetchData = async () => {
+  const triggerRefresh = useCallback(async () => {
+    await setRefresh((v) => v + 1);
+    setTimeout(() => {
+      fetchData();
+    }, 1000);
+  }, []);
+
+  const fetchData = useCallback(async () => {
     try {
       setLoading(true);
       let params = {
@@ -32,6 +42,7 @@ const LaunchPadImo = () => {
         pageSize: pagination.pageSize ?? 10,
         sortField: activeKey,
         sortDirection: orderBy,
+        address: address?.toBase58() ?? '',
       };
       const { data } = await getLaunchpadImo(params);
       // console.log(data);
@@ -49,7 +60,7 @@ const LaunchPadImo = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [address, refresh]);
 
   useEffect(() => {
     fetchData();
@@ -57,15 +68,15 @@ const LaunchPadImo = () => {
 
   useEffect(() => {
     (async () => {
-      const { data } = await getImoPvCard();
+      const { data } = await getImoPvCard(address?.toBase58() ?? '');
       setCardData(data);
     })();
-  }, []);
+  }, [address, refresh]);
 
   return (
     <div className="launchpad-imo">
       <Spin spinning={loading} fullscreen />
-      <KingsCards btnText="PARTICIPATE" btnType="reverse" data={cardData} type="IMO" />
+      <KingsCards btnText="PARTICIPATE" btnType="reverse" data={cardData} type="IMO" triggerRefresh={triggerRefresh} />
       <div className="flex justify-between items-end">
         {/* <div /> */}
         <div className="flex items-center my-[42px]">
@@ -83,7 +94,7 @@ const LaunchPadImo = () => {
       </div>
       <div className={data.length === 0 ? 'table-no-data' : ''}>
         <Table
-          columns={columns(navigate)}
+          columns={columns(navigate, triggerRefresh)}
           dataSource={data as LaunchpadIMO[]}
           pagination={false}
           // loading={loading}

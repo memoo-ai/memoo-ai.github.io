@@ -3,13 +3,22 @@ import { LaunchpadIMO, LaunchpadAirdrop } from '@/types';
 import { formatTs, formatRatioToPercentage } from '@/utils';
 import IProgress from '@/components/IProgress';
 import Countdown from '@/pages/airdrop/countdown';
+import { IconCollect } from '@/components/icons';
+import useFunctions from '@/hooks/useFunctions';
+import IPopover from '@/components/IPopover';
+// import { useAccount } from '@/hooks/useWeb3';
+// import message from '@/components/IMessage';
+
 export enum IDOStatus {
   active = 'active',
   upcoming = 'upcoming',
   completed = 'completed',
 }
 const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
-export const columns = (navigate: (path: string) => void) => [
+
+const { collection } = useFunctions();
+// const { address } = useAccount();
+export const columns = (navigate: (path: string) => void, triggerRefresh: Function) => [
   {
     title: 'Token',
     dataIndex: 'tokenName',
@@ -18,11 +27,54 @@ export const columns = (navigate: (path: string) => void) => [
     render: (tokenName: string, record: LaunchpadIMO) => (
       <div className="flex items-center">
         <img src={record.icon} alt="" className="w-[84px] h-[84px] rounded-full mr-5" />
-        <span className="font-OCR font-normal text-lg mr-2 text-[#ffffff]">{tokenName}</span>
+        <span className="font-OCR font-normal text-lg mr-2 text-[#ffffff] h-[84px] flex items-center relative">
+          {/* <Sample className="absolute left-0 top-0" /> */}
+          {tokenName}
+        </span>
         <span className="font-OCR font-normal text-[12px] text-[#07E993] mt-2">{record.ticker}</span>
       </div>
     ),
   },
+  // {
+  //   title: '',
+  //   dataIndex: 'creatorTotalRaisedNumerator',
+  //   key: 'creatorTotalRaisedNumerator',
+  //   sorter: false,
+  //   render: (creatorTotalRaisedNumerator: string, record: LaunchpadIMO) => (
+  //     <div className="w-[28px]">
+  //       {Number(creatorTotalRaisedNumerator ?? 0) > 0 && (
+  //         <IPopover
+  //           trigger="hover"
+  //           content={`${formatRatioToPercentage(creatorTotalRaisedNumerator, record.creatorTotalRaisedDenominator)}% Increased acquisition`}
+  //         >
+  //           <img className="w-[28px] h-[23px]" src="/create/topupicon.png" />
+  //         </IPopover>
+  //       )}
+  //     </div>
+  //   ),
+  // },
+  // {
+  //   title: '',
+  //   dataIndex: 'collectionFlag',
+  //   key: 'collectionFlag',
+  //   sorter: false,
+  //   render: (collectionFlag: boolean, record: LaunchpadIMO) => (
+  //     <div
+  //       onClick={async () => {
+  //         // if (!address) {
+  //         //   message.info('Please connect wallet first.', { key: 'Please connect wallet first.' });
+  //         //   return;
+  //         // }
+  //         await collection(record.ticker, collectionFlag, triggerRefresh?.(), 135);
+  //       }}
+  //     >
+  //       <IconCollect
+  //         color={collectionFlag ? '#B53BFF ' : '#3D255B'}
+  //         hoverColor={collectionFlag ? '#3D255B' : '#B53BFF'}
+  //       />
+  //     </div>
+  //   ),
+  // },
   {
     title: 'Ends In',
     dataIndex: 'endsIn',
@@ -31,7 +83,7 @@ export const columns = (navigate: (path: string) => void) => [
     render: (endsIn: number) => (
       // <div className="font-OCR font-normal text-lg ">{endsIn ? formatTs(endsIn ?? 0) : ''}</div>
       <Countdown
-        className=" flex gap-x-2 mt-5 font-OCR text-[17px] text-[#fff] line-[13px]"
+        className=" flex gap-x-2 font-OCR text-[17px] text-[#fff] line-[13px]"
         timefragments="timefragments-kings"
         format={([days, hours, minutes, seconds]) => [
           // <div key="days">
@@ -59,6 +111,7 @@ export const columns = (navigate: (path: string) => void) => [
         symbol=""
       />
     ),
+    // width: '140px',
   },
   {
     title: 'Memoo Score',
@@ -82,7 +135,7 @@ export const columns = (navigate: (path: string) => void) => [
     sorter: false,
     render: (totalRaised: string, record: LaunchpadIMO) => (
       <div className="flex flex-col justify-end items-start pt-5">
-        <span className="font-OCR font-norma text-lg w-[130px] text-right">
+        <span className="font-OCR font-normal text-lg w-[130px] text-right text-nowrap">
           {totalRaised}&nbsp;
           {tokenSymbol}
         </span>
@@ -108,19 +161,55 @@ export const columns = (navigate: (path: string) => void) => [
     ),
   },
 ];
-export const columnsAirdrop = (navigate: (path: string) => void) => [
+export const columnsAirdrop = (navigate: (path: string) => void, triggerRefresh: Function) => [
   {
     title: 'Token',
     dataIndex: 'tokenName',
     key: 'tokenName',
+    width: '387px',
     render: (tokenName: string, record: LaunchpadAirdrop) => (
       <div className="flex items-center">
         <img src={record.icon} alt="" className="w-[84px] h-[84px] rounded-full mr-5" />
-        <span className="font-OCR font-bold text-lg mr-2">{tokenName}</span>
+        <span className="font-OCR font-normal text-lg mr-2 text-[#ffffff] h-[84px] flex items-center relative">
+          {/* <Sample className="absolute left-0 top-0" /> */}
+          {tokenName}
+        </span>
         <span className="font-OCR font-normal text-[12px] text-[#07E993] mt-2">{record.ticker}</span>
       </div>
     ),
   },
+  // {
+  //   title: '',
+  //   dataIndex: 'creatorTotalRaisedNumerator',
+  //   key: 'creatorTotalRaisedNumerator',
+  //   sorter: false,
+  //   render: (creatorTotalRaisedNumerator: string, record: LaunchpadAirdrop) => (
+  //     <div className="w-[28px]">
+  //       {Number(creatorTotalRaisedNumerator ?? 0) > 0 && (
+  //         <IPopover
+  //           trigger="hover"
+  //           content={`${formatRatioToPercentage(creatorTotalRaisedNumerator, record.creatorTotalRaisedDenominator)}% Increased acquisition`}
+  //         >
+  //           <img className="w-[28px] h-[23px]" src="/create/topupicon.png" />
+  //         </IPopover>
+  //       )}
+  //     </div>
+  //   ),
+  // },
+  // {
+  //   title: '',
+  //   dataIndex: 'collectionFlag',
+  //   key: 'collectionFlag',
+  //   sorter: false,
+  //   render: (collectionFlag: boolean, record: LaunchpadAirdrop) => (
+  //     <div onClick={async () => await collection(record.ticker, collectionFlag, triggerRefresh?.(), 135)}>
+  //       <IconCollect
+  //         color={collectionFlag ? '#B53BFF ' : '#3D255B'}
+  //         hoverColor={collectionFlag ? '#3D255B' : '#B53BFF'}
+  //       />
+  //     </div>
+  //   ),
+  // },
   {
     title: 'IMO Date',
     dataIndex: 'idoDate',

@@ -4,8 +4,8 @@ import { useCallback, useState, FC, useEffect } from 'react';
 import { Creator } from './creator';
 import { Collector } from './collector';
 import { WatchList } from './watchlist';
-import { Profile } from './profile';
 import { BrowserRouter as Router, useLocation } from 'react-router-dom';
+import MyProfile from './my-profile';
 
 const DashboardContent: FC<{ onChangeType: (type: string) => void }> = ({ onChangeType, ...rest }) => {
   const [activeKey, setActiveKey] = useState('Creator');
@@ -27,7 +27,7 @@ const DashboardContent: FC<{ onChangeType: (type: string) => void }> = ({ onChan
     // {
     //   key: 'Profile',
     //   label: 'Profile',
-    //   children: <Profile />,
+    //   children: <Profile mine={true} />,
     // },
     {
       key: 'Creator',
@@ -46,11 +46,11 @@ const DashboardContent: FC<{ onChangeType: (type: string) => void }> = ({ onChan
     // },
   ];
   if (import.meta.env.MODE === 'development') {
-    // items.unshift({
-    //   key: 'Profile',
-    //   label: 'Profile',
-    //   children: <Profile />,
-    // });
+    items.unshift({
+      key: 'Profile',
+      label: 'Profile',
+      children: <MyProfile />,
+    });
     items.push({
       key: 'WatchList',
       label: 'WatchList',

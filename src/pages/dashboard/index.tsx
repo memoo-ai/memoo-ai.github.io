@@ -142,23 +142,7 @@ const Dashboard = () => {
         img={commonBanner.rightImg}
         tabType={tabType}
       />
-      {/* <div
-        className="dashboard-header-banner-bg"
-        style={{ background: `url(${commonBanner.bg}) no-repeat`, backgroundSize: 'cover' }}
-      >
-        <div className="dashboard-header-banner-content">
-          <div className="dashboard-header-banner-left flex  flex-col">
-            <p className="dashboard-left-text">{commonBanner.title}</p>
-            <p className="dashboard-left-sub-text">{commonBanner.desc}</p>
-          </div>
-          <div>
-            <img className={`img-right-${tabType} img-pointer-events`} src={commonBanner.rightImg} alt="" />
-          </div>
-        </div>
-      </div> */}
-      {/* <div className="header_banner_bg" style={{ backgroundImage: `url(${dashboardBannerImg})` }}>
-      </div> */}
-      {/* <MemeRecords /> */}
+      {import.meta.env.MODE === 'development' && <MemeRecords />}
       <div className="dashboard">
         <div className="dashboard_content">
           <DashboardContent

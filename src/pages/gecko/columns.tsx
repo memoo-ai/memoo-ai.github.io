@@ -50,7 +50,7 @@ export const columnsOld: ColumnDef<TrendingTokens>[] = [
   },
 ];
 
-export const columns = [
+export const columns = (triggerRefresh: Function) => [
   {
     title: '#',
     dataIndex: 'index',

@@ -1,7 +1,7 @@
 import { getRandomColor } from '@/utils';
 import { useNavigate } from 'react-router-dom';
 import { CrowdSourcing } from '@/types';
-import DefaultAvatar from '@/assets/imgs/default-avatar.png';
+
 import { motion } from 'framer-motion';
 interface SwipeXProps {
   item: CrowdSourcing;

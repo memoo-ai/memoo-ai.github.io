@@ -3,15 +3,27 @@ import { FC, useContext, useMemo, useRef, useEffect, useState } from 'react';
 import './profile.scss';
 import { AirdropContext } from '.';
 import { clipAddress, extractDomainName, formatTs, handleCopy, popupSharing } from '@/utils';
-import { IconCopy, IconTwitter, IconTelegram, IconSolana, IconFacebook } from '@/components/icons';
+import {
+  IconCopy,
+  IconTwitter,
+  IconTelegram,
+  IconSolana,
+  IconFacebook,
+  IconDiscord,
+  IconCollect,
+  IconMore,
+} from '@/components/icons';
 import { getToolsUrls } from '@/api/common';
+import useFunctions from '@/hooks/useFunctions';
 
 const Profile: FC = () => {
   const { idoQueueDetail } = useContext(AirdropContext);
   const iconRefs = useRef<any>({});
   const [showShare, setShowShare] = useState(false);
+  const [showMore, setShowMore] = useState(false);
   const [tools, setTools] = useState<any>([]);
   const shareText = 'Discover this meme token on Memoo.';
+  const { collection } = useFunctions();
 
   const shareUrl = useMemo(() => {
     return `${import.meta.env.VITE_SHARE_URI}airdrop/${idoQueueDetail?.ticker}`;
@@ -42,7 +54,7 @@ const Profile: FC = () => {
         key: 'Contract Address',
         value: idoQueueDetail?.contractAddress || 'NA',
         formatKey: (key: string) => (
-          <label className="col-span-3 text-bluish-purple-light text-sm font-OCR leading-4 flex gap-x-1.5 h-8 flex items-center">
+          <label className="col-span-3 text-bluish-purple-light text-sm font-OCR leading-4 flex gap-x-1.5 h-8 items-center">
             {key}
           </label>
         ),
@@ -133,7 +145,7 @@ const Profile: FC = () => {
   const handleExternalLink = (url: string) => {
     if (!url) return;
     const formattedUrl = url.startsWith('http') ? url : `https://${url}`;
-    window.open(formattedUrl);
+    window.open(formattedUrl, '_blank');
   };
 
   const socails = useMemo(() => {
@@ -196,7 +208,8 @@ const Profile: FC = () => {
                 onMouseLeave={() => iconRefs.current['IconTelegram'].setHovered(false)}
               >
                 <a
-                  href={`https://t.me/${idoQueueDetail?.telegram}`}
+                  // href={`https://t.me/${idoQueueDetail?.telegram}`}
+                  href={idoQueueDetail?.telegram}
                   target="_blank"
                   className="flex items-center gap-x-1.5"
                 >
@@ -206,7 +219,24 @@ const Profile: FC = () => {
                     hoverColor="#07E993"
                     className="w-[20px]"
                   />{' '}
-                  {idoQueueDetail?.telegram ?? ''}
+                  {extractDomainName(idoQueueDetail?.telegram ?? '')}
+                </a>
+              </li>
+            )}
+            {idoQueueDetail?.discord && (
+              <li
+                className="h-8 token_list_hover"
+                onMouseOver={() => iconRefs.current['IconDiscord'].setHovered(true)}
+                onMouseLeave={() => iconRefs.current['IconDiscord'].setHovered(false)}
+              >
+                <a href={idoQueueDetail?.discord} target="_blank" className="flex items-center gap-x-1.5">
+                  <IconDiscord
+                    ref={(ref) => (iconRefs.current['IconDiscord'] = ref)}
+                    color="#FFF"
+                    hoverColor="#07E993"
+                    className="w-[20px]"
+                  />{' '}
+                  {extractDomainName(idoQueueDetail?.discord ?? '')}
                 </a>
               </li>
             )}
@@ -282,8 +312,18 @@ const Profile: FC = () => {
   return (
     <div className="profile relative pt-20 pb-[67px]">
       <ul className="relationship_fracture absolute flex gap-x-2.5 top-5 right-5">
-        {/* <li>
-          <img className="w-10 h-10 object-cover" src="/create/icon-collect.png" />
+        {/* <li className="profile-share w-[40px] h-[40px] bg-[#252841] rounded-[7px] flex items-center justify-center">
+          <div
+            onMouseOver={() => iconRefs.current[`IconCollect`].setHovered(true)}
+            onMouseLeave={() => iconRefs.current[`IconCollect`].setHovered(false)}
+          >
+            <IconCollect
+              ref={(ref: any) => (iconRefs.current[`IconCollect`] = ref)}
+              className="profile-share"
+              color="#5D64A2"
+              onClick={() => collection(idoQueueDetail?.ticker ?? '', idoQueueDetail?.collectionFlag ?? false)}
+            />
+          </div>
         </li> */}
         <li className="profile-share" onMouseMove={() => setShowShare(true)} onMouseLeave={() => setShowShare(false)}>
           <img className="w-10 h-10 object-cover" src="/create/icon-share.png" />
@@ -351,8 +391,23 @@ const Profile: FC = () => {
             </div>
           )}
         </li>
-        {/* <li>
-          <img className="w-10 h-10 object-cover" src="/create/icon-more.png" />
+        {/* <li className="profile-share" onMouseMove={() => setShowMore(true)} onMouseLeave={() => setShowMore(false)}>
+          <li
+            className="w-[40px] h-[40px] bg-[#252841] rounded-[7px] flex items-center justify-center"
+            onMouseOver={() => iconRefs.current[`IconMore`].setHovered(true)}
+            onMouseLeave={() => iconRefs.current[`IconMore`].setHovered(false)}
+          >
+            <IconMore color="#5D64A2" ref={(ref: any) => (iconRefs.current[`IconMore`] = ref)} />
+          </li>
+
+          {showMore && (
+            <div className="profile-share-content pt-2">
+              <ul className="content flex items-center justify-center gap-[11px] w-[119px] cursor-pointer">
+                <img className="w-[24px] h-[28px]" src="/create/report.png" alt="" />{' '}
+                <span className="font-OCR text-[14px] leading-[17px] text-green">Report</span>
+              </ul>
+            </div>
+          )}
         </li> */}
       </ul>
       <div className="head pl-[20px]">

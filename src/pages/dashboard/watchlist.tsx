@@ -8,7 +8,7 @@ import GoLaunchPadACard from './go-launchpad-card';
 import { getWatchList } from '@/api/dashboard';
 import { DashboardWatchList } from '@/types';
 import { Spin } from 'antd';
-import { cancelCollect } from '@/api/dashboard';
+import useFunctions from '@/hooks/useFunctions';
 export const WatchList = () => {
   const navigate = useNavigate();
   const [total, setTotal] = useState(0);
@@ -17,6 +17,8 @@ export const WatchList = () => {
   const [list, setList] = useState<DashboardWatchList[]>([]);
   const iconRefs = useRef<any>({});
   const [loading, setLoading] = useState(false);
+  const { collection } = useFunctions();
+
   useEffect(() => {
     (async () => {
       try {
@@ -37,7 +39,7 @@ export const WatchList = () => {
   }, [currentPage, update]);
 
   const cancelCollectTicker = async (ticker: string) => {
-    await cancelCollect(ticker);
+    await collection(ticker, true);
   };
 
   return (
@@ -55,8 +57,8 @@ export const WatchList = () => {
               <div className="flex justify-between items-center mt-[15px]">
                 <IconCollect
                   className="watchList_collect"
-                  onClick={() => {
-                    cancelCollectTicker(item.ticker);
+                  onClick={async () => {
+                    await cancelCollectTicker(item.ticker);
                     setTimeout(() => setUpdate((count) => count + 1), 200);
                   }}
                 />

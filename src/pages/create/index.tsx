@@ -58,6 +58,7 @@ import useSolanaWallet from '@/utils/solanaWeb3/solanaWallet';
 
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
+const twitterCreatorRedirectUri = import.meta.env.VITE_TWITTER_CREATOR_REDIRECT_URI;
 console.log('twitterRedirectUri: ', twitterRedirectUri);
 const FORM_STORAGE_KEY = 'create_token_storage';
 const TWITTER_CLIENT_ID_KEY = 'twitter_client_id';
@@ -140,6 +141,24 @@ export default function Create() {
   const [createTwitter, setCreateTwitter] = useState('');
   const [twitterAccessToken, setTwitterAccessToken] = useState('');
   const [clientId, setClientId] = useState('');
+  const [pinnedTwitterUrl, setPinnedTwitterUrl] = useState([
+    {
+      id: 0,
+      pinnedTwitterUrl: '',
+    },
+    {
+      id: 0,
+      pinnedTwitterUrl: '',
+    },
+    {
+      id: 0,
+      pinnedTwitterUrl: '',
+    },
+    {
+      id: 0,
+      pinnedTwitterUrl: '',
+    },
+  ]);
   const [preMarketAcquisition, setPreMarketAcquisition] = useState(0);
   const { getMemeAddressWithSymbol } = useMemeFactoryContract();
   const navigate = useNavigate();
@@ -224,6 +243,26 @@ export default function Create() {
     console.log('twitterRedirectUri: ', twitterRedirectUri);
     authorizeTwitter(clientId, twitterRedirectUri);
   }, [form, iconUrl, bannerUrl]);
+  const connectCreatorTwitter = useCallback(async () => {
+    // TODO: save form data to local; when callback from twitter, the form data will be lost.
+    if (!address) {
+      message.info('Please connect wallet first.');
+      return;
+    }
+    const res = await getTwitterClientId();
+    const formData = form.getFieldsValue();
+    console.log('formData: ', formData);
+    formData.iconUrl = iconUrl;
+    formData.bannerUrl = bannerUrl;
+    localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(formData));
+
+    setConnectTwitterLoading(true);
+
+    let clientId = res.data;
+    localStorage.setItem(TWITTER_CLIENT_ID_KEY, clientId);
+    console.log('twitterRedirectUri: ', twitterCreatorRedirectUri);
+    authorizeTwitter(clientId, twitterCreatorRedirectUri);
+  }, [form, iconUrl, bannerUrl]);
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       console.log('handleMessage-event:', event);
@@ -247,13 +286,13 @@ export default function Create() {
           setTwitterAccessToken(access_token);
           setTwitter(twitter);
         });
-      } else if (data.code && data.state === 'twitter' && data.type === 'twitter_create') {
+      } else if (data.code && data.state === 'twitter' && data.type === 'create') {
         const clientId = localStorage.getItem(TWITTER_CLIENT_ID_KEY);
         const params = {
           code: data.code ?? '',
           grantType: 'authorization_code',
           // clientd: twitterClientId,
-          redirectUri: twitterRedirectUri,
+          redirectUri: twitterCreatorRedirectUri,
           codeVerifier: 'challenge',
           refreshToken: '',
           appClientId: clientId ?? '',
@@ -272,6 +311,23 @@ export default function Create() {
       window.removeEventListener('message', handleMessage);
     };
   }, []);
+
+  useEffect(() => {
+    const code = searchParams.get('code');
+    const state = searchParams.get('state');
+
+    if (state === 'twitter' && code) {
+      const params = {
+        code,
+        state,
+        type: 'create',
+      };
+      if (window.opener) {
+        window.opener.postMessage(params, '*');
+      }
+      window.close();
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const ticker = searchParams.get('ticker');
@@ -435,7 +491,10 @@ export default function Create() {
         // }
 
         data.twitter = twitter;
+        data.creatorTwitter = createTwitter;
         data.accessToken = twitterAccessToken;
+        // data.pinnedTwitterUrl = pinnedTwitterUrl;
+        data.pinnedTwitterData = pinnedTwitterUrl;
         if (!data.preMarketAcquisition) data.preMarketAcquisition = 0;
         // data.twitter = 'twitter';
         // data.accessToken = 'twitterAccessToken';
@@ -523,6 +582,13 @@ export default function Create() {
   };
   const handleRemoveBanner = () => {
     setBannerUrl('');
+  };
+
+  const handleInputChange = (index: number, value: string) => {
+    const updatedData = [...pinnedTwitterUrl];
+    updatedData[index].pinnedTwitterUrl = value;
+    setPinnedTwitterUrl(updatedData);
+    form.setFieldsValue({ pinnedTwitterUrl: updatedData });
   };
   const handleNoWallet = () => {
     message.info('Please connect wallet first!', { key: 'icon-upload-no-wallet' });
@@ -896,7 +962,7 @@ export default function Create() {
                       <img className="website-logo" src="/create/icon-website.png" alt="" />
                     </div>
                   </Form.Item>
-                  {/* <Form.Item label={<p className="whitespace-pre-wrap">{`Project\nTelegram`}</p>} name="telegram">
+                  <Form.Item label={<p className="whitespace-pre-wrap">{`Project\nTelegram`}</p>} name="telegram">
                     <div className="reactive">
                       <Input className="custom-input rounded-[7px] px-8" />
                       <IconTelegram className="website-logo w-[17px] h-[15px]" hoverColor="#07E993" />
@@ -908,25 +974,32 @@ export default function Create() {
                       <IconDiscord className="website-logo w-[17px] h-[15px]" color="#07E993" hoverColor="#07E993" />
                     </div>
                   </Form.Item>
-                  <Form.Item label={<p>Creator’s Twitter</p>}>
+                  <Form.Item label={<p>Creator’s Twitter</p>} name="creatorTwitter">
                     <div className="flex items-center">
                       <img src="./token/icon-twitter.svg" className="w-4 h-4 mr-4" />
                       {createTwitter && <img src="./create/icon-authed.svg" />}
                       {!createTwitter && (
-                        <Button variant="secondary" className="w-[136px] h-[32px]" onClick={connectTwitter}>
+                        <Button variant="secondary" className="w-[136px] h-[32px]" onClick={connectCreatorTwitter}>
                           CONNECT
                         </Button>
                       )}
                     </div>
                   </Form.Item>
-                  <Form.Item label={<p className="whitespace-pre-wrap">{`Pinned\nTwitter links`}</p>} name="discord">
+                  <Form.Item
+                    label={<p className="whitespace-pre-wrap">{`Featured\nTweet links`}</p>}
+                    name="pinnedTwitterUrl"
+                  >
                     <div className="flex flex-col items-center gap-y-[15px]">
-                      <Input className="custom-input rounded-[7px] px-8" />
-                      <Input className="custom-input rounded-[7px] px-8" />
-                      <Input className="custom-input rounded-[7px] px-8" />
-                      <Input className="custom-input rounded-[7px] px-8" />
+                      {pinnedTwitterUrl.map((data, index) => (
+                        <Input
+                          key={index}
+                          className="custom-input rounded-[7px] px-8"
+                          value={data.pinnedTwitterUrl}
+                          onChange={(e) => handleInputChange(index, e.target.value)}
+                        />
+                      ))}
                     </div>
-                  </Form.Item> */}
+                  </Form.Item>
                 </div>
               )}
             </div>

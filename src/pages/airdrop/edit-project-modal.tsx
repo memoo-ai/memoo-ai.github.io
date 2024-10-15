@@ -27,7 +27,7 @@ import {
 } from '@/api/token';
 import qs from 'qs';
 import { Button as ConnectButton } from '@/components/ui/button';
-import { IconTwitter, IconUpload, IconWebsite } from '@/components/icons';
+import { IconTwitter, IconUpload, IconWebsite, IconTelegram, IconDiscord } from '@/components/icons';
 import { Trash } from 'lucide-react';
 import { REQUEST_FOLLOWING_STORAGE, UPDATE_PROJECT_TWITTER_STORAGE, EDIT_INFO_STORAGE } from '@/constants';
 import { useSearchParams } from 'react-router-dom';
@@ -36,10 +36,12 @@ import { AirdropContext } from '.';
 import EasyCrop from '@/components/ImgCrop/EasyCrop';
 import Cropper from 'react-easy-crop';
 import { ZOOM_STEP, PREFIX } from '@/components/ImgCrop/constants';
+import { PinnedTwitterData } from '@/types';
 
 const FORM_STORAGE_KEY = 'create_token_storage';
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_FOLLOW_REDIRECT_URI;
+const twitterCreatorRedirectUri = import.meta.env.VITE_TWITTER_CREATOR_REDIRECT_URI;
 
 const minZoom = 1;
 const maxZoom = 3;
@@ -55,6 +57,10 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
   const [twitterAccessToken, setTwitterAccessToken] = useState('');
   const [projectBannerUrl, setProjectBannerUrl] = useState('');
   const [twitter, setTwitter] = useState('');
+  const [createTwitter, setCreateTwitter] = useState('');
+  const [telegram, setTelegram] = useState('');
+  const [discord, setDiscord] = useState('');
+  const [website, setWebsite] = useState('');
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [cropLoading, setCropLoading] = useState(false);
   const [projectDetail, setProjectDetail] = useState({});
@@ -64,6 +70,24 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [pinnedTwitterUrl, setPinnedTwitterUrl] = useState([
+    {
+      id: 0,
+      pinnedTwitterUrl: '',
+    },
+    {
+      id: 0,
+      pinnedTwitterUrl: '',
+    },
+    {
+      id: 0,
+      pinnedTwitterUrl: '',
+    },
+    {
+      id: 0,
+      pinnedTwitterUrl: '',
+    },
+  ]);
   useEffect(() => {
     getTokenDetail(ticker).then((res) => {
       if (res?.data) {
@@ -71,24 +95,47 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
         setProjectDetail(res.data);
         setProjectBannerUrl(res.data?.banners ? res.data?.banners[0] : '');
         setTwitter(res.data.twitter);
+        setCreateTwitter(res.data.creatorTwitter);
         setTwitterAccessToken(res.data.twitterAccessToken);
+        let pinnedTwitterUrls = [];
+
+        if (res.data?.pinnedTwitterData) {
+          pinnedTwitterUrls = res.data.pinnedTwitterData.map((item: PinnedTwitterData) => {
+            return {
+              id: item.id ?? 0,
+              pinnedTwitterUrl: item.pinnedTwitterUrl,
+            };
+          });
+
+          while (pinnedTwitterUrls.length < 4) {
+            pinnedTwitterUrls.push({
+              id: 0,
+              pinnedTwitterUrl: '',
+            });
+          }
+        }
+        setPinnedTwitterUrl(pinnedTwitterUrls.length > 0 ? pinnedTwitterUrls : ['', '', '', '']);
+        setTelegram(res.data.telegram);
+        setDiscord(res.data.discord);
+        setWebsite(res.data.website);
         // get data from local
         let formData = {
           ...res.data,
           banners: res.data?.oldBanners ? res.data?.oldBanners : [],
           tokenIcon: res.data.icon,
           projectDescription: res.data.description,
+          discord: res.data.discord,
         };
-        try {
-          const data = JSON.parse(localStorage.getItem(EDIT_INFO_STORAGE) ?? '');
-          if (data) {
-            formData.projectDescription = data.projectDescription;
-            formData.website = data.website;
-            if (formData.bannerUrl) {
-              setProjectBannerUrl(formData.bannerUrl);
-            }
-          }
-        } catch (e) {}
+        // try {
+        //   const data = JSON.parse(localStorage.getItem(EDIT_INFO_STORAGE) ?? '');
+        //   if (data) {
+        //     formData.projectDescription = data.projectDescription;
+        //     formData.website = data.website;
+        //     if (formData.bannerUrl) {
+        //       setProjectBannerUrl(formData.bannerUrl);
+        //     }
+        //   }
+        // } catch (e) {}
         form.setFieldsValue(formData);
       }
     });
@@ -115,6 +162,22 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
           setTwitterAccessToken(access_token);
           setTwitter(twitter);
         });
+      } else if (data.code && data.state === 'twitter' && data.type === 'create') {
+        const updateParams = JSON.parse(localStorage.getItem(UPDATE_PROJECT_TWITTER_STORAGE) ?? '');
+        const params = {
+          code: data.code ?? '',
+          grantType: 'authorization_code',
+          // clientd: twitterClientId,
+          redirectUri: twitterCreatorRedirectUri,
+          codeVerifier: 'challenge',
+          refreshToken: '',
+          appClientId: updateParams.clientId ?? '',
+        };
+        getTwitterAccessToken(params).then((res) => {
+          const { access_token, twitter } = res.data;
+          setTwitterAccessToken(access_token);
+          setCreateTwitter(twitter);
+        });
       }
     };
 
@@ -137,6 +200,13 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
       return e;
     }
     return e?.fileList;
+  };
+
+  const handleInputChange = (index: number, value: string) => {
+    const updatedData = [...pinnedTwitterUrl];
+    updatedData[index].pinnedTwitterUrl = value;
+    setPinnedTwitterUrl(updatedData);
+    form.setFieldsValue({ pinnedTwitterUrl: updatedData });
   };
 
   const handleUpload = (file: File) => {
@@ -262,9 +332,26 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
       ticker,
       twitter,
       clientId,
+      createTwitter,
     };
     localStorage.setItem(UPDATE_PROJECT_TWITTER_STORAGE, JSON.stringify(updategParams));
     authorizeTwitter(clientId, twitterRedirectUri);
+  };
+  const connectCreateTwitter = async () => {
+    const formData = form.getFieldsValue();
+    console.log('formData: ', formData);
+    formData.bannerUrl = projectBannerUrl;
+    localStorage.setItem(EDIT_INFO_STORAGE, JSON.stringify(formData));
+    const res = await getTwitterClientId();
+    let clientId = res.data;
+    const updategParams = {
+      ticker,
+      twitter,
+      clientId,
+      createTwitter,
+    };
+    localStorage.setItem(UPDATE_PROJECT_TWITTER_STORAGE, JSON.stringify(updategParams));
+    authorizeTwitter(clientId, twitterCreatorRedirectUri);
   };
 
   const handleSave = async (isConfirm: boolean) => {
@@ -277,15 +364,22 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
       // }
       const data = form.getFieldsValue();
       data.twitter = twitter || '';
+      data.creatorTwitter = createTwitter || '';
       data.accessToken = twitterAccessToken || '';
+      data.website = website || '';
+      data.discord = discord || '';
+      data.telegram = telegram || '';
       // TODO check ticker if exits
-
+      data.pinnedTwitterData = pinnedTwitterUrl;
       setConfirmLoading(true);
+
       const res = await saveEditInfo({ ...data, ticker });
       setOpen(false);
       if (res?.code === 200) {
         message.success('Edit successful!');
-        onSaveSuccess();
+        setTimeout(() => {
+          onSaveSuccess();
+        }, 1000);
         setOpen(false);
       } else {
         message.warning('Edit failed');
@@ -471,30 +565,68 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
           )}
           <Form.Item label={<p className="edit-form-label">Website</p>} name="website">
             <div className="reactive">
-              <Input className="custom-input rounded-[7px] px-8" />
+              <Input
+                className="custom-input rounded-[7px] px-8"
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
+              />
               <img className="website-logo" src="/create/icon-website.png" alt="" />
             </div>
           </Form.Item>
-          {/* <Form.Item label={<p className="w-[113px] whitespace-normal edit-form-label">Creator’s Twitter</p>}>
+          <Form.Item label={<p className="whitespace-pre-wrap">{`Project\nTelegram`}</p>} name="telegram">
+            <div className="reactive">
+              <Input
+                className="custom-input rounded-[7px] px-8"
+                value={telegram}
+                onChange={(e) => setTelegram(e.target.value)}
+              />
+              <IconTelegram className="website-logo w-[17px] h-[15px]" hoverColor="#07E993" />
+            </div>
+          </Form.Item>
+          <Form.Item label={<p className="whitespace-pre-wrap">{`Project\nDiscord`}</p>} name="discord">
+            <div className="reactive">
+              <Input
+                className="custom-input rounded-[7px] px-8"
+                value={discord}
+                onChange={(e) => setDiscord(e.target.value)}
+              />
+              <IconDiscord className="website-logo w-[17px] h-[15px]" color="#07E993" hoverColor="#07E993" />
+            </div>
+          </Form.Item>
+          {/* <Form.Item label={<p>Creator’s Twitter</p>}>
+            <div className="flex items-center">
+              <img src="./token/icon-twitter.svg" className="w-4 h-4 mr-4" />
+              {createTwitter && <img src="./create/icon-authed.svg" />}
+              {!createTwitter && (
+                <Button variant="secondary" className="w-[136px] h-[32px]" onClick={connectTwitter}>
+                  CONNECT
+                </Button>
+              )}
+            </div>
+          </Form.Item> */}
+          <Form.Item label={<p className="whitespace-pre-wrap">{`Creator’s\nTwitter`}</p>}>
             <div className="flex items-center">
               <div style={{ width: '15px' }} className="mr-[7px]">
                 <IconTwitter hoverColor="#07E993" className="" />
               </div>
-              {twitterAccessToken && <img src="./create/icon-authed.svg" />}
-              {!twitterAccessToken && (
-                <ConnectButton variant="secondary" className="w-[136px] h-[32px]" onClick={connectTwitter}>
-                  CONNECT
-                </ConnectButton>
-              )}
+              {createTwitter && <img className="mr-[7px]" src="/create/icon-authed.svg" />}
+              <ConnectButton variant="secondary" className="w-[136px] h-[32px]" onClick={connectCreateTwitter}>
+                {!createTwitter ? 'CONNECT' : 'CHANGE'}
+              </ConnectButton>
             </div>
-          </Form.Item> */}
-          {/* <Form.Item
-            label={<p className="w-[113px] whitespace-normal edit-form-label">Pinned Twitter links</p>}
-            name="links"
-          >
-            <Input maxLength={20} className="custom-input" />
-            <Input maxLength={20} className="custom-input mt-[15px]" />
-          </Form.Item> */}
+          </Form.Item>
+          <Form.Item label={<p className="whitespace-pre-wrap">{`Pinned\nTwitter links`}</p>} name="pinnedTwitterUrl">
+            <div className="flex flex-col items-center gap-y-[15px]">
+              {pinnedTwitterUrl.map((data, index) => (
+                <Input
+                  key={index}
+                  className="custom-input rounded-[7px]"
+                  value={data.pinnedTwitterUrl}
+                  onChange={(e) => handleInputChange(index, e.target.value)}
+                />
+              ))}
+            </div>
+          </Form.Item>
         </Form>
         <div className="edit_project flex flex-col">
           <Button className="memoo_button mt-4 h-[50px]" onClick={() => handleSave(true)} loading={confirmLoading}>

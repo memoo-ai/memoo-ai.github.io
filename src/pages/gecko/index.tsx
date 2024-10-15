@@ -1,7 +1,7 @@
 import './index.scss';
 import CommonBanner from '@/components/Banner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { SetStateAction, useEffect, useState } from 'react';
+import { SetStateAction, useCallback, useEffect, useState } from 'react';
 import { columns, tokenSelectOptions } from './columns';
 import IPagination from '@/components/IPagination';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +20,7 @@ import LaunchpadAirdropBg from '@/assets/imgs/launchpad-airdrop-bg.png';
 import memooGeckoIcon from '@/assets/imgs/memoogecko.png';
 import createRankIcon from '@/assets/imgs/creatorrankcup .png';
 import { IconHorn } from '@/components/icons';
+import { useAccount } from '@/hooks/useWeb3';
 
 export type GeckoType = 'trending' | 'top';
 const Gecko = () => {
@@ -34,8 +35,10 @@ const Gecko = () => {
     pageSize: 10,
     total: 30,
   });
+  const { address } = useAccount();
+  const [refresh, setRefresh] = useState(0);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       setLoading(true);
       let params = {
@@ -43,6 +46,7 @@ const Gecko = () => {
         pageSize: pagination.pageSize ?? 10,
         sortField: activeKey,
         sortDirection: orderBy,
+        address: address?.toBase58() ?? '',
       };
       const { data } = tab === 'trending' ? await getTrendingTokens(params) : await getTopTokens(params);
       // console.log(data);
@@ -59,7 +63,11 @@ const Gecko = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [address, refresh]);
+  const triggerRefresh = useCallback(async () => {
+    await setRefresh((v) => v + 1);
+    await fetchData();
+  }, []);
 
   useEffect(() => {
     fetchData();
@@ -164,19 +172,25 @@ const Gecko = () => {
       </div>
       <div className="flex justify-between">
         <div />
-        <ISelect
-          options={tokenSelectOptions}
-          onSelectChange={(key, orderBy) => {
-            setPagination({ ...pagination, current: 1 });
-            setActiveKey(key);
-            setOrderBy(orderBy);
-          }}
-        />
+        <div className="flex  gap-x-[40px]">
+          <div className="flex items-center justify-center gap-x-[11px] scroll-more w-[231px] h-[46px]">
+            <img className="w-[37px] h-[14.82px]" src="/gecko/scroll-more.png" alt="" />{' '}
+            <span className="font-OCR text-[12px] leading-[20px] text-green">Scroll right for more</span>
+          </div>
+          <ISelect
+            options={tokenSelectOptions}
+            onSelectChange={(key, orderBy) => {
+              setPagination({ ...pagination, current: 1 });
+              setActiveKey(key);
+              setOrderBy(orderBy);
+            }}
+          />
+        </div>
       </div>
       <div className={data.length === 0 ? 'table-no-data' : ''}>
         <Table
           className="common-table mb-10"
-          columns={columns}
+          columns={columns(triggerRefresh)}
           dataSource={data}
           pagination={false}
           // loading={loading}

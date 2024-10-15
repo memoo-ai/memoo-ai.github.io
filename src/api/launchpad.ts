@@ -19,9 +19,9 @@ export const getLaunchpadAirdrop = (params: pageParams) => {
 export const getImoCompleted = (params: pageParams) => {
   return http.get<PageWrapper<LaunchpadIDOCompeted>>(`${prefix}/web-unauthorized/ido-completed`, { params });
 };
-export const getImoPvCard = () => {
-  return http.get<ImoPvCard[]>(`${prefix}/web-unauthorized/pv-card`);
+export const getImoPvCard = (address: string) => {
+  return http.get<ImoPvCard[]>(`${prefix}/web-unauthorized/pv-card`, { params: { address } });
 };
-export const getAirdropCard = () => {
-  return http.get<AirdropCard[]>(`${prefix}/web-unauthorized/airdrop-card`);
+export const getAirdropCard = (address: string) => {
+  return http.get<AirdropCard[]>(`${prefix}/web-unauthorized/airdrop-card`, { params: { address } });
 };

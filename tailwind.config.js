@@ -1,3 +1,6 @@
+const BASE = 16; // base size
+const rem = (px, key = px) => ({ [`\[${key}\px]`]: `${px / BASE}rem` });
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ['class'],
@@ -12,6 +15,12 @@ module.exports = {
       },
     },
     extend: {
+      fontSize: {
+        ...new Array(100) // will parse for the scope text-[1px] - text[100px]
+          .fill('')
+          .map((_item, index) => rem(index + 1))
+          .reduce((acc, obj) => ({ ...acc, ...obj })),
+      },
       fontFamily: {
         Montserrat: ['Montserrat Bold'],
         OpenSans: ['OpenSans Semibold'],

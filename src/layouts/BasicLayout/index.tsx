@@ -32,8 +32,8 @@ const BasicLayout: React.FC = () => {
   //     window.location.reload();
   //   },
   // });
-  const { balance } = useSPLToken(new PublicKey(SOL_DEMO_SPL_USDC));
-  console.log('USDC balance on testnet', balance?.toNumber());
+  // const { balance } = useSPLToken(new PublicKey(SOL_DEMO_SPL_USDC));
+  // console.log('USDC balance on testnet', balance?.toNumber());
 
   useEffect(() => {
     const isChangePublickey = publicKey?.toBase58() === pubKey;

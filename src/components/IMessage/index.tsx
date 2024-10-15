@@ -23,7 +23,7 @@ message.success = (
   antdMessage.success({
     ...options,
     content,
-    className: `${options?.className || ''} custom-success-message`,
+    className: `custom-success-message ${options?.className || ''} `,
     icon: <IconSuccess />,
   });
 };
