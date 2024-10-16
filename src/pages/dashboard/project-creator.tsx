@@ -8,7 +8,7 @@ import { getMemeList } from '@/api/profile';
 const pageSize = 12;
 interface IProps {
   userAddress: string;
-  refresh: number;
+  refresh?: number;
 }
 const ProjectCreator = ({ userAddress, refresh }: IProps) => {
   const [list, setList] = useState([]);

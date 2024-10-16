@@ -35,6 +35,7 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
   const [connectTwitterLoading, setConnectTwitterLoading] = useState(false);
   const [twitterAccessToken, setTwitterAccessToken] = useState('');
   const [profileBannerUrl, setProfileBannerUrl] = useState('');
+  const [profileBanner, setProfileBanner] = useState<any>([]);
   const [profileUrl, setProfileUrl] = useState('');
   const [twitter, setTwitter] = useState('');
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -51,8 +52,7 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
   const { address } = useAccount();
 
   useEffect(() => {
-    if (!address) return;
-    getUserProfile(address.toBase58()).then((res) => {
+    getUserProfile(address?.toBase58() ?? '').then((res) => {
       if (res?.data) {
         console.log('TokenDetail: ', res?.data);
         setProjectDetail(res.data);
@@ -64,12 +64,14 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
         // get data from local
         let formData = {
           ...res.data,
-          profileBanner: res.data?.oldBanners ? res.data?.oldBanners : [],
+          // profileBanner: res.data?.oldProfileBanner ? res.data?.oldProfileBanner : [],
+          profileImage: res.data?.oldProfileImage ? res.data?.oldProfileImage : '',
         };
+        setProfileBanner(res.data?.oldProfileBanner ? res.data?.oldProfileBanner : []);
         form.setFieldsValue(formData);
       }
     });
-  }, [address]);
+  }, []);
 
   const onFinish = (values: any) => {
     console.log('Received values of form: ', values);
@@ -158,10 +160,11 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
       const data = form.getFieldsValue();
       data.twitter = twitter || '';
       // data.accessToken = twitterAccessToken || '';
-
+      data.profileBanner = profileBanner;
       console.log(data);
+
       // TODO check ticker if exits
-      debugger;
+
       setConfirmLoading(true);
       const res = await editProfile({ ...data });
       setOpen(false);
@@ -215,12 +218,13 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
         // const file = new File([croppedImage], 'croppedImage.jpg', { type: croppedImage.type });
         uploadFile(croppedImage).then((res) => {
           if (type === 'profile') {
-            form.setFieldValue('profileImage', [res.data.file]);
+            form.setFieldValue('profileImage', res.data.file);
             setProfileUrl(res.data.fileUrl);
             setProfileImage(null);
             setCropLoading(false);
           } else {
-            form.setFieldValue('profileBanner', [res.data.file]);
+            // debugger;
+            setProfileBanner([res.data.file]);
             setProfileBannerUrl(res.data.fileUrl);
             setProfileBannerImage(null);
             setCropLoading(false);

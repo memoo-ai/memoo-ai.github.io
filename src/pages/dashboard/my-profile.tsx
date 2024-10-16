@@ -5,26 +5,26 @@ import { useAccount } from '@/hooks/useWeb3';
 import { getUserProfile, getMemeTop } from '@/api/profile';
 import { MemeTop, ProfileDetail } from '@/types';
 const MyProfile = () => {
-  const { address } = useAccount();
-  const [profile, setProfile] = useState<ProfileDetail>();
-  const [refresh, setRefresh] = useState(0);
-  const [memeTop, setMemeTop] = useState<MemeTop>();
+  // const { address } = useAccount();
+  // const [profile, setProfile] = useState<ProfileDetail>();
+  // const [refresh, setRefresh] = useState(0);
+  // const [memeTop, setMemeTop] = useState<MemeTop>();
 
-  useEffect(() => {
-    (async () => {
-      const { data } = await getUserProfile(address?.toBase58() ?? '');
-      console.log('profile data:', data);
-      setProfile(data);
+  // useEffect(() => {
+  //   (async () => {
+  //     const { data } = await getUserProfile(address?.toBase58() ?? '');
+  //     console.log('profile data:', data);
+  //     setProfile(data);
 
-      const { data: memeTop } = await getMemeTop(address?.toBase58() ?? '');
-      setMemeTop(memeTop ?? []);
-    })();
-  }, [address, refresh]);
+  //     const { data: memeTop } = await getMemeTop(address?.toBase58() ?? '');
+  //     setMemeTop(memeTop ?? []);
+  //   })();
+  // }, [address, refresh]);
 
-  const triggerRefresh = useCallback(() => {
-    setRefresh((v) => v + 1);
-  }, []);
-  return <Profile mine={true} profile={profile} triggerRefresh={triggerRefresh} memeTop={memeTop} />;
+  // const triggerRefresh = useCallback(() => {
+  //   setRefresh((v) => v + 1);
+  // }, []);
+  return <Profile mine={true} />;
 };
 
 export default MyProfile;

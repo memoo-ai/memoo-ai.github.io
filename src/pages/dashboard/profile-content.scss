@@ -28,3 +28,26 @@
     }
   }
 }
+.profile-share {
+  position: relative;
+
+  .profile-share-content {
+    // width: 168px;
+    position: absolute;
+    top: 99%;
+    left: 50%;
+    transform: translateX(-50%);
+
+    .content {
+      background: #2E5875;
+      border: 1px solid #07E993;
+      border-radius: 7px;
+      padding: 9px 13px;
+    }
+  }
+}
+.link-hover{
+  &:hover{
+    background: #B53BFF;
+  }
+}

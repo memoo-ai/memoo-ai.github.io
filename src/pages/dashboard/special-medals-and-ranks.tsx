@@ -75,7 +75,7 @@ const SpecialMedalsAndRanks = () => {
             {special.map((item, index) => (
               <th
                 key={index}
-                className="flex items-center justify-between px-[10px] bg-[#2C1843] rounded-[7px] h-[40px]"
+                className="flex items-center justify-between px-[10px] bg-[#2C1843] rounded-[7px] h-[40px] ranks-item"
               >
                 <tr className="font-OCR text-white text-[14px] leading-[16px] whitespace-pre-wrap w-[180px] text-left">
                   {item.category}

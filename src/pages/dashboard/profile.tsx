@@ -12,37 +12,59 @@ import EditProfileModal from './edit-profile-modal';
 import TopPerformingToken from './top-performing-token';
 import NotCreated from './not-created';
 import GoCreateCard from './go-create-card';
-import { getUserProfile } from '@/api/profile';
+import { getUserProfile, getMemeTop } from '@/api/profile';
 import { useAccount } from '@/hooks/useWeb3';
 import { ProfileDetail, MemeTop } from '@/types';
 import SpecialMedalsAndRanks from './special-medals-and-ranks';
+import { useParams } from 'react-router-dom';
 interface ProfileContext {
   profileDetail?: ProfileDetail;
   triggerRefresh?: Function;
   memeTop?: MemeTop;
+  address?: string;
+  mine?: boolean;
 }
 export const ProfileContext = createContext<ProfileContext>({});
 interface ProfileProps {
   mine?: boolean;
-  profile?: ProfileDetail;
-  triggerRefresh?: Function;
-  memeTop?: MemeTop;
 }
-const Profile = ({ mine = false, profile, triggerRefresh, memeTop }: ProfileProps) => {
+const Profile = ({ mine = false }: ProfileProps) => {
   const navigate = useNavigate();
   // const [profileDetail, setProfileDetail] = useState<UserProfile>();
   const iconRefs = useRef<any>({});
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(0);
-
+  // const [searchParams] = useSearchParams();
+  // const [paramAddress, setparamAddress] = useState<string>('');
+  const [profile, setProfile] = useState<ProfileDetail>();
+  const [memeTop, setMemeTop] = useState<MemeTop>();
+  const { address: paramAddress } = useParams<{ address: string }>();
   const { address } = useAccount();
+
+  useEffect(() => {
+    (async () => {
+      const myAddress = address?.toBase58() ?? '';
+      const userAddress = paramAddress ?? '';
+      const { data } = await getUserProfile(mine ? myAddress : userAddress);
+      console.log('profile data:', data);
+      setProfile(data);
+      const { data: memeTop } = await getMemeTop(mine ? myAddress : userAddress);
+      setMemeTop(memeTop);
+    })();
+  }, [paramAddress, refresh, address]);
+  const triggerRefresh = useCallback(() => {
+    setRefresh((v) => v + 1);
+  }, []);
+
   const context: ProfileContext = useMemo(
     () => ({
       profileDetail: profile,
       triggerRefresh,
       memeTop,
+      address: mine ? address?.toBase58() : paramAddress,
+      mine,
     }),
-    [profile],
+    [profile, triggerRefresh, memeTop, mine, address, paramAddress],
   );
 
   return (
@@ -74,6 +96,7 @@ const Profile = ({ mine = false, profile, triggerRefresh, memeTop }: ProfileProp
             ) : (
               <NotCreated />
             )}  */}
+            {/* <GoCreateCard showTitle className="h-[383px]" /> */}
           </ProfileContext.Provider>
         </div>
         <div>
@@ -83,7 +106,13 @@ const Profile = ({ mine = false, profile, triggerRefresh, memeTop }: ProfileProp
               <ProfileContent />
             </ProfileContext.Provider>
           </div>
-          <ProfileContext.Provider value={context}>{memeTop && <TopPerformingToken />}</ProfileContext.Provider>
+          <ProfileContext.Provider value={context}>
+            <div className="mt-[22px]">
+              {memeTop ? <TopPerformingToken /> : mine ? <GoCreateCard showTitle /> : <NotCreated />}
+            </div>
+          </ProfileContext.Provider>
+          {/* <NotCreated /> */}
+          {/* <GoCreateCard showTitle showBg /> */}
         </div>
       </div>
     </div>

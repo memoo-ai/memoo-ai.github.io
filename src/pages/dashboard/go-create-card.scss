@@ -1,5 +1,11 @@
 .go-create-card{
-  border: 1px solid #07E993;
+  border: 1px solid #07e993;
   border-radius: 15px;
   background-color: #1F3B4F;
+
+}
+.create-card-bg{
+  border: 1px solid #5D64A2;
+  background: url('/dashboard/go-create-card-bg.png') no-repeat center center;
+  background-size: cover;
 }

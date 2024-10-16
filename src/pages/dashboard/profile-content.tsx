@@ -1,14 +1,30 @@
 /* eslint-disable react/no-unstable-nested-components */
 import { FC, useState, useMemo, useContext, useRef } from 'react';
 import './profile-content.scss';
-import { clipAddress, extractDomainName, formatTs, handleCopy } from '@/utils';
-import { IconCopy, IconTwitter, IconTip, IconMore } from '@/components/icons';
+import { clipAddress, extractDomainName, formatTs, handleCopy, popupSharing } from '@/utils';
+import {
+  IconCopy,
+  IconTwitter,
+  IconTelegram,
+  IconSolana,
+  IconFacebook,
+  IconDiscord,
+  IconCollect,
+  IconMore,
+} from '@/components/icons';
 import { ProfileContext } from './profile';
 import ITooltip from '@/components/ITooltip';
 
+const shareText = 'Discover this meme token on Memoo.';
 const ProfileContent: FC = () => {
-  const { profileDetail } = useContext(ProfileContext);
+  const { profileDetail, address } = useContext(ProfileContext);
   const iconRefs = useRef<any>({});
+  const [showShare, setShowShare] = useState(false);
+  const [showMore, setShowMore] = useState(false);
+
+  const shareUrl = useMemo(() => {
+    return `https://${import.meta.env.VITE_SHARE_URI}profile/${address}`;
+  }, [address]);
   const params = useMemo(() => {
     return [
       {
@@ -68,7 +84,7 @@ const ProfileContent: FC = () => {
             {profileDetail?.website && (
               <li className="h-8 cursor-pointer token_list_hover">
                 <a href={profileDetail?.website} target="_blank" className="flex items-center gap-x-1.5">
-                  {profileDetail?.website}
+                  {extractDomainName(profileDetail?.website)}
                 </a>
               </li>
             )}
@@ -140,15 +156,104 @@ const ProfileContent: FC = () => {
   return (
     <div className="profile-content relative pt-20 pb-[70px]">
       <ul className="relationship_fracture absolute flex gap-x-2.5 top-5 right-5">
-        {/* <li>
-          <img className="w-10 h-10 object-cover" src="/create/icon-collect.png" />
+        {/* <li className="profile-share w-[40px] h-[40px] bg-[#252841] rounded-[7px] flex items-center justify-center">
+          <div
+            onMouseOver={() => iconRefs.current[`IconCollect`].setHovered(true)}
+            onMouseLeave={() => iconRefs.current[`IconCollect`].setHovered(false)}
+          >
+            <IconCollect
+              ref={(ref: any) => (iconRefs.current[`IconCollect`] = ref)}
+              className="profile-share"
+              color="#5D64A2"
+              hoverColor="#07E993"
+              onClick={() => collection(idoQueueDetail?.ticker ?? '', idoQueueDetail?.isCollected ?? false)}
+            />
+          </div>
         </li> */}
-        <li>
+        <li className="profile-share" onMouseMove={() => setShowShare(true)} onMouseLeave={() => setShowShare(false)}>
           <img className="w-10 h-10 object-cover" src="/create/icon-share.png" />
+          {showShare && (
+            <div className="profile-share-content pt-2">
+              <ul className="content flex items-center justify-center gap-[11px]">
+                <a
+                  className="rounded-[7px] bg-[#07E993] w-[40px] h-[40px] p-[10px] flex justify-center items-center link-hover"
+                  onMouseOver={() => iconRefs.current[`IconTwitter-share`].setHovered(true)}
+                  onMouseLeave={() => iconRefs.current[`IconTwitter-share`].setHovered(false)}
+                  onClick={() =>
+                    popupSharing(
+                      `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                        shareText,
+                      )}&url=${encodeURIComponent(shareUrl)}`,
+                    )
+                  }
+                >
+                  <IconTwitter
+                    color="#1F3B4F"
+                    hoverColor="#07E993"
+                    ref={(ref) => (iconRefs.current[`IconTwitter-share`] = ref)}
+                    className="cursor-pointer "
+                  />
+                </a>
+                <a
+                  className="rounded-[7px] bg-[#07E993] w-[40px] h-[40px] p-[10px] flex justify-center items-center link-hover"
+                  onMouseOver={() => iconRefs.current[`IconTelegram`].setHovered(true)}
+                  onMouseLeave={() => iconRefs.current[`IconTelegram`].setHovered(false)}
+                  onClick={() =>
+                    popupSharing(
+                      `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(
+                        shareText,
+                      )}`,
+                    )
+                  }
+                >
+                  <IconTelegram
+                    color="#1F3B4F"
+                    hoverColor="#07E993"
+                    ref={(ref) => (iconRefs.current[`IconTelegram`] = ref)}
+                    className="cursor-pointer "
+                  />
+                </a>
+                <a
+                  className="rounded-[7px] bg-[#07E993] w-[40px] h-[40px] p-[10px] flex justify-center items-center link-hover"
+                  onMouseOver={() => iconRefs.current[`IconFacebook`].setHovered(true)}
+                  onMouseLeave={() => iconRefs.current[`IconFacebook`].setHovered(false)}
+                  onClick={() =>
+                    popupSharing(
+                      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                        shareUrl,
+                      )}&quote=${encodeURIComponent(shareText)}`,
+                    )
+                  }
+                >
+                  <IconFacebook
+                    color="#1F3B4F"
+                    hoverColor="#07E993"
+                    ref={(ref) => (iconRefs.current[`IconFacebook`] = ref)}
+                    className="cursor-pointer "
+                  />
+                </a>
+              </ul>
+            </div>
+          )}
         </li>
-        <li className="w-[40px] h-[40px] rounded-[7px] flex items-center justify-center bg-[#252841]">
-          <IconMore color="#5D64A2" />
-        </li>
+        {/* <li className="profile-share" onMouseMove={() => setShowMore(true)} onMouseLeave={() => setShowMore(false)}>
+          <li
+            className="w-[40px] h-[40px] bg-[#252841] rounded-[7px] flex items-center justify-center"
+            onMouseOver={() => iconRefs.current[`IconMore`].setHovered(true)}
+            onMouseLeave={() => iconRefs.current[`IconMore`].setHovered(false)}
+          >
+            <IconMore color="#5D64A2" ref={(ref: any) => (iconRefs.current[`IconMore`] = ref)} />
+          </li>
+
+          {showMore && (
+            <div className="profile-share-content pt-2">
+              <ul className="content flex items-center justify-center gap-[11px] w-[119px] cursor-pointer">
+                <img className="w-[24px] h-[28px]" src="/create/report.png" alt="" />{' '}
+                <span className="font-OCR text-[14px] leading-[17px] text-green">Report</span>
+              </ul>
+            </div>
+          )}
+        </li> */}
       </ul>
       <div className="head">
         <h1 className="font-404px text-white leading-7 text-3xl">

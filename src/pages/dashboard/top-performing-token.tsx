@@ -43,7 +43,7 @@ const TopPerformingToken: FC = () => {
   }, [memeTop]);
 
   return (
-    <div className="top-performing-token flex-auto px-5 pt-9 pb-5 mt-[22px]">
+    <div className="top-performing-token flex-auto px-5 pt-9 pb-5">
       <div className="top-performing-token_head flex items-center font-404px text-[#07E993] font-[18px]">
         <span>TOP PERFORMING TOKEN</span>
       </div>
@@ -61,8 +61,8 @@ const TopPerformingToken: FC = () => {
             <div className="flex items-center py-[18px] pl-[12px]">
               <img className="w-[67px] h-[67px] rounded-[50%] mr-[7px]" src={memeTop?.icon} alt="" />
               <div>
-                <h5 className="font-OCR text-[#fff] font-[18px]">{memeTop?.tokenName} </h5>
-                <span className="font-OCR text-[#07E993] font-[14px]">{memeTop?.ticker}</span>
+                <h5 className="font-OCR text-[#fff] text-[18px] leading-[18px]">{memeTop?.tokenName} </h5>
+                <span className="font-OCR text-[#07E993] text-[12px] leading-[18px]">{memeTop?.ticker}</span>
               </div>
             </div>
             <span className="view-token-button py-[5.5px] px-[15px] absolute bottom-[7px] right-[7px] text-[#AEB1D1] text-[10px] leading-[10px] font-OCR">

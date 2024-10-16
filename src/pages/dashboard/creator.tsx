@@ -374,7 +374,7 @@ export const Creator = () => {
         </div>
       </div>
       <div className="dashboard_items_items">
-        <GoCreateCard />
+        <GoCreateCard className="h-full" />
         <Spin spinning={loading} fullscreen />
         <CreatorContext.Provider value={context}>
           {list.map((item, index) => {

@@ -117,7 +117,7 @@ const Profile: FC = () => {
         key: 'Tools',
         value: '',
         formatKey: (key: string) => (
-          <label className="col-span-3 text-bluish-purple-light text-sm font-OCR leading-4 flex gap-x-1.5 h-8 flex items-center">
+          <label className="col-span-3 text-bluish-purple-light text-sm font-OCR leading-4 gap-x-1.5 h-8 flex items-center">
             {key}
           </label>
         ),
