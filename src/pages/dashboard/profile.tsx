@@ -12,9 +12,10 @@ import EditProfileModal from './edit-profile-modal';
 import TopPerformingToken from './top-performing-token';
 import NotCreated from './not-created';
 import GoCreateCard from './go-create-card';
-import { getOtherProfile } from '@/api/profile';
+import { getUserProfile } from '@/api/profile';
 import { useAccount } from '@/hooks/useWeb3';
 import { ProfileDetail, MemeTop } from '@/types';
+import SpecialMedalsAndRanks from './special-medals-and-ranks';
 interface ProfileContext {
   profileDetail?: ProfileDetail;
   triggerRefresh?: Function;
@@ -39,7 +40,7 @@ const Profile = ({ mine = false, profile, triggerRefresh, memeTop }: ProfileProp
     () => ({
       profileDetail: profile,
       triggerRefresh,
-      memeTop: memeTop ?? undefined,
+      memeTop,
     }),
     [profile],
   );
@@ -62,23 +63,27 @@ const Profile = ({ mine = false, profile, triggerRefresh, memeTop }: ProfileProp
 
       <Spin spinning={loading} fullscreen />
       <div className="profile-layout ">
-        <div className="profile-layout-left">
+        <div className="profile-layout-left flex flex-col">
           <ProfileContext.Provider value={context}>
             <CreatorRanking />
-            {memeTop ? (
-              <TopPerformingToken />
+            <SpecialMedalsAndRanks />
+            {/* {memeTop ? (
+
             ) : mine ? (
               <GoCreateCard showTitle className="h-[383px]" />
             ) : (
               <NotCreated />
-            )}
+            )}  */}
           </ProfileContext.Provider>
         </div>
-        <div className="profile-layout-right">
-          <ProfileContext.Provider value={context}>
-            <ProfileBanner />
-            <ProfileContent />
-          </ProfileContext.Provider>
+        <div>
+          <div className="profile-layout-right">
+            <ProfileContext.Provider value={context}>
+              <ProfileBanner />
+              <ProfileContent />
+            </ProfileContext.Provider>
+          </div>
+          <ProfileContext.Provider value={context}>{memeTop && <TopPerformingToken />}</ProfileContext.Provider>
         </div>
       </div>
     </div>

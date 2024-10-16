@@ -1,8 +1,9 @@
+/* eslint-disable no-debugger */
 import { Button, Checkbox, Input, Modal, Slider, Form, Upload } from 'antd';
 import message from '@/components/IMessage';
 import { Children, FC, Fragment, ReactNode, cloneElement, isValidElement, useEffect, useState } from 'react';
 import './edit-profile-modal.scss';
-import { getTokenDetail, getTwitterAccessToken, uploadFile, saveEditInfo, getTwitterClientId } from '@/api/token';
+import { getTokenDetail, getTwitterAccessToken, uploadFile, getTwitterClientId } from '@/api/token';
 import qs from 'qs';
 import { Button as ConnectButton } from '@/components/ui/button';
 import { IconTwitter, IconUpload, IconWebsite } from '@/components/icons';
@@ -11,9 +12,11 @@ import { REQUEST_FOLLOWING_STORAGE, UPDATE_PROJECT_TWITTER_STORAGE, EDIT_INFO_ST
 import { useSearchParams } from 'react-router-dom';
 import { authorizeTwitter } from '@/utils';
 import { IconCopy } from '@/components/icons';
-import { handleCopy } from '@/utils';
+import { handleCopy, clipAddress } from '@/utils';
 import Cropper from 'react-easy-crop';
 import { ZOOM_STEP, PREFIX } from '@/components/ImgCrop/constants';
+import { editProfile, getUserProfile } from '@/api/profile';
+import { useAccount } from '@/hooks/useWeb3';
 
 const FORM_STORAGE_KEY = 'create_token_storage';
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
@@ -45,36 +48,28 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [cropLoading, setCropLoading] = useState(false);
   const [cropType, setCropType] = useState<CropType>('profile');
+  const { address } = useAccount();
 
   useEffect(() => {
-    getTokenDetail(ticker).then((res) => {
+    if (!address) return;
+    getUserProfile(address.toBase58()).then((res) => {
       if (res?.data) {
         console.log('TokenDetail: ', res?.data);
         setProjectDetail(res.data);
-        setProfileBannerUrl(res.data?.banners ? res.data?.banners[0] : '');
+        setProfileBannerUrl(res.data?.profileBanner ? res.data?.profileBanner[0] : '');
+        setProfileUrl(res.data?.profileImage ? res.data?.profileImage : '');
         setTwitter(res.data.twitter);
         setTwitterAccessToken(res.data.twitterAccessToken);
+        setWebsite(res.data.website);
         // get data from local
         let formData = {
           ...res.data,
-          banners: res.data?.oldBanners ? res.data?.oldBanners : [],
-          tokenIcon: res.data.icon,
-          projectDescription: res.data.description,
+          profileBanner: res.data?.oldBanners ? res.data?.oldBanners : [],
         };
-        try {
-          const data = JSON.parse(localStorage.getItem(EDIT_INFO_STORAGE) ?? '');
-          if (data) {
-            formData.projectDescription = data.projectDescription;
-            formData.website = data.website;
-            if (formData.bannerUrl) {
-              setProfileBannerUrl(formData.bannerUrl);
-            }
-          }
-        } catch (e) {}
         form.setFieldsValue(formData);
       }
     });
-  }, [ticker]);
+  }, [address]);
 
   const onFinish = (values: any) => {
     console.log('Received values of form: ', values);
@@ -140,7 +135,7 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
     const formData = form.getFieldsValue();
     console.log('formData: ', formData);
     formData.bannerUrl = profileBannerUrl;
-    localStorage.setItem(EDIT_INFO_STORAGE, JSON.stringify(formData));
+    // localStorage.setItem(EDIT_INFO_STORAGE, JSON.stringify(formData));
     const res = await getTwitterClientId();
     let clientId = res.data;
     const updategParams = {
@@ -162,11 +157,13 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
       // }
       const data = form.getFieldsValue();
       data.twitter = twitter || '';
-      data.accessToken = twitterAccessToken || '';
-      // TODO check ticker if exits
+      // data.accessToken = twitterAccessToken || '';
 
+      console.log(data);
+      // TODO check ticker if exits
+      debugger;
       setConfirmLoading(true);
-      const res = await saveEditInfo({ ...data, ticker });
+      const res = await editProfile({ ...data });
       setOpen(false);
       if (res?.code === 200) {
         message.success('modify successfully!');
@@ -176,7 +173,7 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
         message.warning('fail in keeping');
       }
       localStorage.removeItem(UPDATE_PROJECT_TWITTER_STORAGE);
-      localStorage.removeItem(EDIT_INFO_STORAGE);
+      // localStorage.removeItem(EDIT_INFO_STORAGE);
     } catch (e) {
       console.log(e);
     } finally {
@@ -187,7 +184,7 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
   useEffect(() => {
     if (!open) {
       localStorage.removeItem(UPDATE_PROJECT_TWITTER_STORAGE);
-      localStorage.removeItem(EDIT_INFO_STORAGE);
+      // localStorage.removeItem(EDIT_INFO_STORAGE);
     }
   }, [open]);
 
@@ -218,12 +215,12 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
         // const file = new File([croppedImage], 'croppedImage.jpg', { type: croppedImage.type });
         uploadFile(croppedImage).then((res) => {
           if (type === 'profile') {
-            form.setFieldValue('profile', [res.data.file]);
+            form.setFieldValue('profileImage', [res.data.file]);
             setProfileUrl(res.data.fileUrl);
             setProfileImage(null);
             setCropLoading(false);
           } else {
-            form.setFieldValue('banners', [res.data.file]);
+            form.setFieldValue('profileBanner', [res.data.file]);
             setProfileBannerUrl(res.data.fileUrl);
             setProfileBannerImage(null);
             setCropLoading(false);
@@ -303,7 +300,7 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
                 <span className="w-[113px] whitespace-normal">Username </span>
               </p>
             }
-            name="username"
+            name="userName"
             // rules={[{ required: true, message: 'Please input Username!' }]}
           >
             <Input
@@ -318,8 +315,8 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
                 <span className="w-[113px] whitespace-normal">Bio </span>
               </p>
             }
-            name="projectDescription"
-            rules={[{ required: true, message: 'Please input Project Description!' }]}
+            name="userBio"
+            rules={[{ required: true, message: 'Please input Bio!' }]}
           >
             <Input.TextArea
               showCount
@@ -516,14 +513,21 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
               <Input
                 className="custom-input rounded-[7px] px-8"
                 value={website}
-                onChange={(e) => setWebsite(e.target.value)}
+                onChange={(e) => {
+                  setWebsite(e.target.value);
+                  form.setFieldsValue({ website: e });
+                }}
               />
               <img className="website-logo" src="/create/icon-website.png" alt="" />
             </div>
           </Form.Item>
-          <Form.Item label={<p className="edit-form-label">ID</p>} name="id">
-            <span>{form.getFieldValue('id')}</span>{' '}
-            <IconCopy className="" onClick={() => handleCopy(form.getFieldValue('id'))} />
+          <Form.Item label={<p className="edit-form-label">ID</p>}>
+            <div className="flex items-center gap-x-[4px]">
+              <span className="font-OCR text-white text-[14px]leading-[16px]">
+                {clipAddress(address?.toBase58() ?? '')}
+              </span>{' '}
+              <IconCopy className="" onClick={() => handleCopy(address?.toBase58() ?? '')} />
+            </div>
           </Form.Item>
           {/* <Form.Item label={<p className="w-[113px] whitespace-normal edit-form-label">Creator’s Twitter</p>}>
             <div className="flex items-center">

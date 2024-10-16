@@ -1,9 +1,25 @@
 .top-performing-token{
-  padding: 35px 22px;
+  padding: 35px 0 55px 22px;
   border-radius: 15px;
   border: 1px solid #5d64a2;
 
-  .top-performing-token_view{
-    padding: 17px 10px 9px 12px;
+}
+
+.view-token-button{
+  background: transparent;
+  border: 1px solid #AEB1D1;
+  border-radius: 4px;
+}
+.token_info{
+  &:hover{
+    border: 1px solid #07E993;
+
+    .view-token-button{
+      background: #07E993;
+      color: #1F3B4F;
+      border: none;
+    }
   }
+
+
 }

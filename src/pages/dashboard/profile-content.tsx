@@ -4,6 +4,7 @@ import './profile-content.scss';
 import { clipAddress, extractDomainName, formatTs, handleCopy } from '@/utils';
 import { IconCopy, IconTwitter, IconTip, IconMore } from '@/components/icons';
 import { ProfileContext } from './profile';
+import ITooltip from '@/components/ITooltip';
 
 const ProfileContent: FC = () => {
   const { profileDetail } = useContext(ProfileContext);
@@ -137,7 +138,7 @@ const ProfileContent: FC = () => {
   }, [profileDetail]);
 
   return (
-    <div className="profile-content relative pt-20 ">
+    <div className="profile-content relative pt-20 pb-[70px]">
       <ul className="relationship_fracture absolute flex gap-x-2.5 top-5 right-5">
         {/* <li>
           <img className="w-10 h-10 object-cover" src="/create/icon-collect.png" />
@@ -150,9 +151,11 @@ const ProfileContent: FC = () => {
         </li>
       </ul>
       <div className="head">
-        <h1 className="font-404px text-white leading-7 text-3xl">{profileDetail?.userName ?? 'UNNAMED'} </h1>
+        <h1 className="font-404px text-white leading-7 text-3xl">
+          {profileDetail?.userName ? profileDetail?.userName : 'UNNAMED'}{' '}
+        </h1>
         <time className="mt-2 block font-OCR text-bluish-purple-light text-sm">{profileDetail?.createdAt}</time>
-        <p className="mt-2 font-OCR text-white text-sm leading-5 max-w-2xl">{profileDetail?.userBio}</p>
+        <p className="mt-2 font-OCR text-white text-sm leading-5 max-w-2xl min-h-[54px]">{profileDetail?.userBio}</p>
       </div>
       <div className="content">
         <ul className="basic_list mt-14 flex flex-col gap-y-6">
@@ -177,8 +180,17 @@ const ProfileContent: FC = () => {
           ))}
         </ul>
         <div className="mt-16">
-          <h1 className="font-404px text-lg text-green leading-5 flex">
-            COLLECTIVE STATS <IconTip className="pl-[10px]" />
+          <h1 className="font-404px text-lg text-green leading-5 flex items-center">
+            COLLECTIVE STATS{' '}
+            <ITooltip
+              className="ml-[10px] w-[12px] h-[12px]"
+              placement="right"
+              title={`During the pre launch stages of the meme tokens Nemoo Score tracks Social Info, Community SizeCommunity Activity, Top Up & Creator Activity.
+After the launch of the meme token, Memoo Score additionallv tracks Total Raised- Market Cap Liquidity, Holders, Twitter Score & 24H Trading Volume.
+It is then aggregated to a score out of 100.`}
+              color="#fff"
+              bgColor="#4A5082"
+            />
           </h1>
           <ul className="mt-6 flex flex-col gap-y-1.5">
             {collectiveStats.map((item) => (

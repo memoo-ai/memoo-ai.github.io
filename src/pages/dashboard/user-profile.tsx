@@ -5,7 +5,8 @@ import Profile from './profile';
 import ProjectCreator from './project-creator';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { MemeTop, ProfileDetail } from '@/types';
-import { getMemeTop, getOtherProfile } from '@/api/profile';
+import { getMemeTop, getUserProfile } from '@/api/profile';
+import { useParams } from 'react-router-dom';
 const UserProfile = () => {
   const [searchParams] = useSearchParams();
   const [userAddress, setUserAddress] = useState<string>('');
@@ -18,7 +19,7 @@ const UserProfile = () => {
   }, [searchParams]);
   useEffect(() => {
     (async () => {
-      const { data } = await getOtherProfile(userAddress ?? '');
+      const { data } = await getUserProfile(userAddress ?? '');
       console.log('profile data:', data);
       setProfile(data);
       debugger;

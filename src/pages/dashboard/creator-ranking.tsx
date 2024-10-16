@@ -21,7 +21,7 @@ export default function CreatorRanking() {
         </CreatorRankingShareModal>
         <div className="creator_ranking_process_detail flex flex-col items-center">
           <h3 className="flex items-center gap-x-1 mt-[32px]">YOU’RE A MEME GOD</h3>
-          <img src="./dashboard/level5.png" alt="" />
+          <img src="/level/level5.png" alt="" />
           <div className="creator_ranking_btn flex items-center flex-col mt-[28px]">
             <h5 className="text-[#fff] font-OCR text-center">
               Claim $MOO reward for <br /> unlocking rank tier.

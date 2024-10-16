@@ -2,7 +2,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import Profile from './profile';
 import { useAccount } from '@/hooks/useWeb3';
-import { getOtherProfile, getMemeTop } from '@/api/profile';
+import { getUserProfile, getMemeTop } from '@/api/profile';
 import { MemeTop, ProfileDetail } from '@/types';
 const MyProfile = () => {
   const { address } = useAccount();
@@ -12,7 +12,7 @@ const MyProfile = () => {
 
   useEffect(() => {
     (async () => {
-      const { data } = await getOtherProfile(address?.toBase58() ?? '');
+      const { data } = await getUserProfile(address?.toBase58() ?? '');
       console.log('profile data:', data);
       setProfile(data);
 
