@@ -387,6 +387,10 @@ declare interface TrendingTokens {
   tokenName: string;
   volume24H: number;
   totalScore: number;
+  created: string;
+  liquidity: string;
+  holders: string;
+  vol1h: string;
 }
 declare interface TrendingCreators {
   collectiveHolders: number;

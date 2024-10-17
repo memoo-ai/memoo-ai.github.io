@@ -13,7 +13,8 @@ const NotCreated: FC = () => {
   return (
     <div className="not-created flex flex-col items-center justify-center">
       <p className="whitespace-pre-wrap font-404px text-[18px] leading-[18px] text-green">
-        This account has not created any meme tokens.
+        {/* This account has not created any meme tokens. */}
+        This account has not LAUNCHED any meme tokens
       </p>
       <img className="mt-[31px] mb-[54px]" src="/dashboard/sadfish.png" alt="" />
       <p className="whitespace-pre-wrap font-OCR text-[14px] leading-[18px] text-white">

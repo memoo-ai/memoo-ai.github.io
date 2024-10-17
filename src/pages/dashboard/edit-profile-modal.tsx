@@ -330,58 +330,19 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
               className="text-[#fff] bg-[#2b526e]"
             />
           </Form.Item>
-          <div className="flex gap-x-[56px]">
-            <Form.Item
-              label={<p className="whitespace-pre-wrap">{`Profile\nImage`}</p>}
-              valuePropName="bannerList"
-              getValueFromEvent={normFile}
-              name="profileImage"
-            >
-              {profileUrl ? (
-                <div className="project-url-container w-[125px] h-[125px]">
-                  <img src={profileUrl} alt="" />
-                  <span className="icon-url-actions">
-                    <Trash size={16} onClick={() => handleRemove('profile')} />
-                  </span>
-                </div>
-              ) : (
-                <Upload
-                  listType="picture-card"
-                  accept="image/*"
-                  maxCount={1}
-                  beforeUpload={(file) => handleImageChange(file, 'profile')}
-                  showUploadList={{ showPreviewIcon: true, showRemoveIcon: false }}
-                  style={{ width: '100%', height: 140 }}
-                  className="edit-upload-banner w-[125px]"
-                  previewFile={(file) => {
-                    return new Promise((resolve) => {
-                      const reader = new FileReader();
-                      reader.readAsDataURL(file);
-                      reader.onload = () => {
-                        resolve(reader.result as string);
-                      };
-                    });
-                  }}
-                >
-                  <button style={{ border: 0, background: 'none' }} type="button">
-                    <div style={{ marginTop: 8 }} className="flex flex-col justify-center items-center">
-                      <IconUpload className="" />
-                      <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px] mt-[10px]">
-                        Upload Image
-                      </p>
-                    </div>
-                  </button>
-                </Upload>
-              )}
-            </Form.Item>
-            <div className="flex gap-x-[13px] h-[125px]">
-              <p className="whitespace-pre-wrap text-white font-OCR text-[14px] font-normal">{`Profile\nBanner`}</p>
-              <div className="flex-1">
-                {profileBannerUrl ? (
-                  <div className="project-url-container w-full">
-                    <img src={profileBannerUrl} alt="" />
+          {!profileImage && !profileBannerImage && (
+            <div className="flex gap-x-[56px]">
+              <Form.Item
+                label={<p className="whitespace-pre-wrap">{`Profile\nImage`}</p>}
+                valuePropName="bannerList"
+                getValueFromEvent={normFile}
+                name="profileImage"
+              >
+                {profileUrl ? (
+                  <div className="project-url-container w-[125px] h-[125px]">
+                    <img src={profileUrl} alt="" />
                     <span className="icon-url-actions">
-                      <Trash size={16} onClick={() => handleRemove('banner')} />
+                      <Trash size={16} onClick={() => handleRemove('profile')} />
                     </span>
                   </div>
                 ) : (
@@ -389,10 +350,10 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
                     listType="picture-card"
                     accept="image/*"
                     maxCount={1}
-                    beforeUpload={(file) => handleImageChange(file, 'banner')}
+                    beforeUpload={(file) => handleImageChange(file, 'profile')}
                     showUploadList={{ showPreviewIcon: true, showRemoveIcon: false }}
-                    style={{ width: '267px', height: 140 }}
-                    className="edit-upload-banner w-[267px]"
+                    style={{ width: '100%', height: 140 }}
+                    className="edit-upload-banner w-[125px]"
                     previewFile={(file) => {
                       return new Promise((resolve) => {
                         const reader = new FileReader();
@@ -404,103 +365,143 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
                     }}
                   >
                     <button style={{ border: 0, background: 'none' }} type="button">
-                      <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
+                      <div style={{ marginTop: 8 }} className="flex flex-col justify-center items-center">
                         <IconUpload className="" />
                         <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px] mt-[10px]">
-                          Recommended 790px X 307px Max size: 10MB
+                          Upload Image
                         </p>
                       </div>
                     </button>
                   </Upload>
                 )}
+              </Form.Item>
+              <div className="flex gap-x-[13px] h-[125px]">
+                <p className="whitespace-pre-wrap text-white font-OCR text-[14px] font-normal">{`Profile\nBanner`}</p>
+                <div className="flex-1">
+                  {profileBannerUrl ? (
+                    <div className="project-url-container w-full">
+                      <img src={profileBannerUrl} alt="" />
+                      <span className="icon-url-actions">
+                        <Trash size={16} onClick={() => handleRemove('banner')} />
+                      </span>
+                    </div>
+                  ) : (
+                    <Upload
+                      listType="picture-card"
+                      accept="image/*"
+                      maxCount={1}
+                      beforeUpload={(file) => handleImageChange(file, 'banner')}
+                      showUploadList={{ showPreviewIcon: true, showRemoveIcon: false }}
+                      style={{ width: '267px', height: 140 }}
+                      className="edit-upload-banner w-[267px]"
+                      previewFile={(file) => {
+                        return new Promise((resolve) => {
+                          const reader = new FileReader();
+                          reader.readAsDataURL(file);
+                          reader.onload = () => {
+                            resolve(reader.result as string);
+                          };
+                        });
+                      }}
+                    >
+                      <button style={{ border: 0, background: 'none' }} type="button">
+                        <div style={{ marginTop: 8 }} className="flex flex-col jusity-center items-center">
+                          <IconUpload className="" />
+                          <p className="font-OCR text-[10px] text-green leading-4 text-center w-[158px] mt-[10px]">
+                            Recommended 790px X 307px Max size: 10MB
+                          </p>
+                        </div>
+                      </button>
+                    </Upload>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-          {(profileImage || profileBannerImage) && (
-            <Form.Item label="&nbsp;">
-              {profileImage && (
-                <div>
-                  <div className="flex flex-col">
-                    <div className="w-full h-[40vh] ">
-                      <Cropper
-                        image={profileImage}
-                        crop={crop}
-                        zoom={zoom}
-                        aspect={cropType === 'banner' ? 16 / 6 : 1}
-                        showGrid={false}
-                        onCropChange={setCrop}
-                        onZoomChange={setZoom}
-                        onCropComplete={onCropComplete}
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-              {profileBannerImage && (
-                <div>
-                  <div className="flex flex-col">
-                    <div className="w-full h-[40vh] ">
-                      <Cropper
-                        image={profileBannerImage}
-                        crop={crop}
-                        zoom={zoom}
-                        aspect={cropType === 'banner' ? 16 / 6 : 1}
-                        showGrid={false}
-                        onCropChange={setCrop}
-                        onZoomChange={setZoom}
-                        onCropComplete={onCropComplete}
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-              <div className="flex items-center justify-center gap-x-[10px] mt-[-20px]">
-                <section className="flex w-[60%] items-center">
-                  <button
-                    className="text-[18px] text-[#07E993] disabled:text-[#1a5e5c]"
-                    onClick={() => setZoom(Number((zoom - ZOOM_STEP).toFixed(1)))}
-                    disabled={zoom - ZOOM_STEP < minZoom}
-                  >
-                    －
-                  </button>
-                  <Slider
-                    className="flex1 w-full memoo_slider"
-                    min={minZoom}
-                    max={maxZoom}
-                    step={ZOOM_STEP}
-                    value={zoom}
-                    onChange={setZoom}
-                    tooltipVisible={false}
-                  />
-                  <button
-                    className="text-[18px] text-[#07E993] disabled:text-[#1a5e5c]"
-                    onClick={() => setZoom(Number((zoom + ZOOM_STEP).toFixed(1)))}
-                    disabled={zoom + ZOOM_STEP > maxZoom}
-                  >
-                    ＋
-                  </button>
-                </section>
-                <div className="flex justify-center items-center gap-x-[10px]">
-                  <Button
-                    className="memoo_button w-[115px] reverse"
-                    onClick={() => {
-                      setProfileImage(null);
-                      setProfileBannerImage(null);
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    className="memoo_button w-[115px] reverse"
-                    onClick={() => handleCrop(cropType)}
-                    loading={cropLoading}
-                  >
-                    Save
-                  </Button>
-                </div>
-              </div>
-            </Form.Item>
           )}
+
+          {(profileImage || profileBannerImage) && (
+            <div>
+              {' '}
+              <Form.Item label="&nbsp;" className="flex flex-col gap-y-[20px]">
+                {profileImage && (
+                  <div className="w-full h-[40vh] ">
+                    <Cropper
+                      image={profileImage}
+                      crop={crop}
+                      zoom={zoom}
+                      aspect={cropType === 'banner' ? 16 / 6 : 1}
+                      showGrid={false}
+                      onCropChange={setCrop}
+                      onZoomChange={setZoom}
+                      onCropComplete={onCropComplete}
+                    />
+                  </div>
+                )}
+                {profileBannerImage && (
+                  <div className="w-full h-[40vh] ">
+                    <Cropper
+                      image={profileBannerImage}
+                      crop={crop}
+                      zoom={zoom}
+                      aspect={cropType === 'banner' ? 16 / 6 : 1}
+                      showGrid={false}
+                      onCropChange={setCrop}
+                      onZoomChange={setZoom}
+                      onCropComplete={onCropComplete}
+                    />
+                  </div>
+                )}
+              </Form.Item>
+              <Form.Item label="&nbsp;">
+                <div className="flex items-center justify-center gap-x-[10px]">
+                  <section className="flex w-[60%] items-center">
+                    <button
+                      className="text-[18px] text-[#07E993] disabled:text-[#1a5e5c]"
+                      onClick={() => setZoom(Number((zoom - ZOOM_STEP).toFixed(1)))}
+                      disabled={zoom - ZOOM_STEP < minZoom}
+                    >
+                      －
+                    </button>
+                    <Slider
+                      className="flex1 w-full memoo_slider"
+                      min={minZoom}
+                      max={maxZoom}
+                      step={ZOOM_STEP}
+                      value={zoom}
+                      onChange={setZoom}
+                      tooltipVisible={false}
+                    />
+                    <button
+                      className="text-[18px] text-[#07E993] disabled:text-[#1a5e5c]"
+                      onClick={() => setZoom(Number((zoom + ZOOM_STEP).toFixed(1)))}
+                      disabled={zoom + ZOOM_STEP > maxZoom}
+                    >
+                      ＋
+                    </button>
+                  </section>
+                  <div className="flex justify-center items-center gap-x-[10px]">
+                    <Button
+                      className="memoo_button w-[115px] reverse"
+                      onClick={() => {
+                        setProfileImage(null);
+                        setProfileBannerImage(null);
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      className="memoo_button w-[115px] reverse"
+                      onClick={() => handleCrop(cropType)}
+                      loading={cropLoading}
+                    >
+                      Save
+                    </Button>
+                  </div>
+                </div>
+              </Form.Item>
+            </div>
+          )}
+
           <Form.Item label={<p>Twitter</p>}>
             <div className="flex items-center">
               <div style={{ width: '15px' }} className="mr-[7px]">

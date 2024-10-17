@@ -37,6 +37,7 @@ const Gecko = () => {
   });
   const { address } = useAccount();
   const [refresh, setRefresh] = useState(0);
+  const [reverseScroll, setReverseScroll] = useState(false);
 
   const fetchData = useCallback(async () => {
     try {
@@ -51,7 +52,43 @@ const Gecko = () => {
       const { data } = tab === 'trending' ? await getTrendingTokens(params) : await getTopTokens(params);
       // console.log(data);
       if (data) {
-        setData(data.records ?? []);
+        // setData(data.records ?? []);
+        setData([
+          {
+            icon: 'string',
+            increase1H: 1,
+            increase24H: 1,
+            marketCap: 1,
+            memooScore: 100,
+            price: 1,
+            ticker: '1',
+            tokenName: 'string',
+            volume24H: 1,
+            totalScore: 1,
+            created: '196d',
+            liquidity: '6.5m',
+            holders: '114k',
+
+            vol1h: '235m',
+          },
+          {
+            icon: 'string',
+            increase1H: 1,
+            increase24H: 1,
+            marketCap: 1,
+            memooScore: 100,
+            price: 1,
+            ticker: '1',
+            tokenName: 'string',
+            volume24H: 1,
+            totalScore: 1,
+            created: '196d',
+            liquidity: '6.5m',
+            holders: '114k',
+
+            vol1h: '235m',
+          },
+        ]);
         setPagination({
           ...pagination,
           total: data.total_record ?? 0,
@@ -68,6 +105,19 @@ const Gecko = () => {
     await setRefresh((v) => v + 1);
     await fetchData();
   }, []);
+
+  const handleWheel = (event: {
+    currentTarget: { querySelector: (arg0: string) => any };
+    preventDefault: () => void;
+    deltaY: number;
+  }) => {
+    const tableBody = event.currentTarget.querySelector('.ant-table-body');
+    if (tableBody) {
+      event.preventDefault();
+      const scrollDirection = reverseScroll ? -1 : 1;
+      tableBody.scrollTop += event.deltaY * scrollDirection;
+    }
+  };
 
   useEffect(() => {
     fetchData();
@@ -187,7 +237,12 @@ const Gecko = () => {
           />
         </div>
       </div>
-      <div className={data.length === 0 ? 'table-no-data' : ''}>
+      <div
+        className={data.length === 0 ? 'table-no-data' : ''}
+        onMouseEnter={() => setReverseScroll(true)}
+        onMouseLeave={() => setReverseScroll(false)}
+        onWheel={handleWheel}
+      >
         <Table
           className="common-table mb-10"
           columns={columns(triggerRefresh)}
@@ -202,6 +257,7 @@ const Gecko = () => {
               },
             };
           }}
+          scroll={{ x: '100vw' }}
           locale={{
             emptyText: <Empty showBorder={false} />,
           }}

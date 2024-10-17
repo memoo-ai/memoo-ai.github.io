@@ -1,4 +1,4 @@
-import { useContext, useMemo } from 'react';
+import { useContext, useMemo, useRef } from 'react';
 import './creator-ranking.scss';
 import { Popover, Progress, Button } from 'antd';
 import { IconTip, IconTranspond } from '@/components/icons';
@@ -9,6 +9,7 @@ import ViewTokenRankingModal from './view-token-ranking-modal';
 import { ProfileContext } from './profile';
 export default function CreatorRanking() {
   const { mine } = useContext(ProfileContext);
+  const iconRefs = useRef<any>({});
   const creatorRanks = useMemo(() => {
     return [
       {
@@ -37,7 +38,18 @@ export default function CreatorRanking() {
       </div>
       <div className="creator_ranking_memo_score w-[100%]">
         <CreatorRankingShareModal>
-          <IconTranspond className="bot cursor-pointer" />
+          <div
+            className="bot w-[40px] h-[40px] rounded-[7px] bg-[#1F3B4F] flex items-center justify-center hover:bg-[#07E993] cursor-pointer"
+            onMouseOver={() => iconRefs.current[`IconTranspond`].setHovered(true)}
+            onMouseLeave={() => iconRefs.current[`IconTranspond`].setHovered(false)}
+          >
+            <IconTranspond
+              className=" "
+              color="#07E993"
+              hoverColor="#1F3B4F"
+              ref={(ref) => (iconRefs.current[`IconTranspond`] = ref)}
+            />
+          </div>
         </CreatorRankingShareModal>
         <div className="creator_ranking_process_detail flex flex-col items-center">
           <h3 className="flex items-center gap-x-1 mt-[32px]">MEME SUPERSTAR</h3>

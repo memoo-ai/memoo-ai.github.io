@@ -18,7 +18,7 @@ export const columns = (triggerRefresh: Function) => [
     title: '#',
     dataIndex: 'index',
     key: 'index',
-    width: 20,
+    width: 50,
     render: (_: any, __: any, index: number) => <div className="flex items-center text-[#fff]">{index + 1}</div>,
     fixed: true,
   },
@@ -33,6 +33,7 @@ export const columns = (triggerRefresh: Function) => [
         <span className="font-normal text-sm text-[#07E993] uppercase">{record.ticker}</span>
       </div>
     ),
+    width: 423,
     fixed: true,
   },
   {
@@ -56,41 +57,47 @@ export const columns = (triggerRefresh: Function) => [
         />
       </div>
     ),
+    width: 50,
   },
-  // {
-  //   title: 'Created',
-  //   dataIndex: 'created',
-  //   key: 'created',
-  //   sorter: false,
-  //   render: (price: number) => <div className="font-normal text-lg ">196d</div>,
-  // },
+  {
+    title: 'Created',
+    dataIndex: 'created',
+    key: 'created',
+    sorter: false,
+    render: (price: number) => <div className="font-normal text-lg ">196d</div>,
+    width: 120,
+  },
   {
     title: 'Market Cap',
     dataIndex: 'marketCap',
     key: 'marketCap',
     render: (marketCap: number) => <div className="font-normal text-lg ">${formatDecimals(marketCap)}</div>,
+    width: 120,
   },
-  // {
-  //   title: 'Liquidity',
-  //   dataIndex: 'liquidity',
-  //   key: 'liquidity',
-  //   sorter: false,
-  //   render: (price: number) => <div className="font-normal text-lg ">196d</div>,
-  // },
+  {
+    title: 'Liquidity',
+    dataIndex: 'liquidity',
+    key: 'liquidity',
+    sorter: false,
+    render: (price: number) => <div className="font-normal text-lg ">196d</div>,
+    width: 120,
+  },
   {
     title: 'Price',
     dataIndex: 'price',
     key: 'price',
     sorter: false,
     render: (price: number) => <div className="font-normal text-lg ">${formatDecimals(price)}</div>,
+    width: 120,
   },
-  // {
-  //   title: 'Holders',
-  //   dataIndex: 'holders',
-  //   key: 'holders',
-  //   sorter: false,
-  //   render: (price: number) => <div className="font-normal text-lg ">196d</div>,
-  // },
+  {
+    title: 'Holders',
+    dataIndex: 'holders',
+    key: 'holders',
+    sorter: false,
+    render: (price: number) => <div className="font-normal text-lg ">196d</div>,
+    width: 120,
+  },
   {
     title: 'Memoo Score',
     dataIndex: 'memooScore',
@@ -102,6 +109,22 @@ export const columns = (triggerRefresh: Function) => [
         <IProgress percent={formatRatioToPercentage(memooScore, record.totalScore)} />
       </div>
     ),
+    width: 200,
+  },
+
+  {
+    title: '1h Vol',
+    dataIndex: 'vol1h',
+    key: 'vol1h',
+    sorter: false,
+    render: (vol1h: number) => (
+      <span className={`font-normal text-lg ${vol1h < 0 ? 'text-red' : 'text-green'}`}>
+        {vol1h}
+        {/* {increase24H > 0 ? '+' : ''}
+        {increase24H * 100}% */}
+      </span>
+    ),
+    width: 120,
   },
   {
     title: '1h',
@@ -115,19 +138,7 @@ export const columns = (triggerRefresh: Function) => [
         {increase1H * 100}% */}
       </span>
     ),
-  },
-  {
-    title: '24h',
-    dataIndex: 'increase24H',
-    key: 'increase24H',
-    sorter: false,
-    render: (increase24H: number) => (
-      <span className={`font-normal text-lg ${increase24H < 0 ? 'text-red' : 'text-green'}`}>
-        {increase24H}
-        {/* {increase24H > 0 ? '+' : ''}
-        {increase24H * 100}% */}
-      </span>
-    ),
+    width: 120,
   },
   {
     title: '24h Volume',
@@ -135,6 +146,7 @@ export const columns = (triggerRefresh: Function) => [
     key: 'volume24H',
     sorter: false,
     render: (volume24H: number) => <div className="font-normal text-lg ">${volume24H}</div>,
+    width: 120,
   },
 
   {
@@ -162,6 +174,7 @@ export const columns = (triggerRefresh: Function) => [
         </div>
       </div>
     ),
+    width: 500,
   },
 ];
 export const tokenSelectOptions = [
