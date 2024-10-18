@@ -528,7 +528,7 @@ export default function Create() {
               txHash: feeRes,
             });
           } else if (!feeRes) {
-            message.error(`Payment unsuccessful. Please proceed to the\ndraft in your creator dashboard to resubmit.`, {
+            message.error(`Payment unsuccessful. Proceed to your creator\ndashboard to edit and resubmit your draft.`, {
               key: 'Create failed.',
             });
             return;
