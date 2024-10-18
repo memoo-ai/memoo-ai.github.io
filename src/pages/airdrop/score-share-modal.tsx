@@ -204,11 +204,7 @@ const CreatorRankingShareModal = ({ children, memooScore, meMessage }: any) => {
         <div className="mt-[21px] p-[28px]">
           <Spin spinning={loading} fullscreen />
           <div className="score-share-modal-content  relative" ref={ref}>
-            {/* <img
-              src="/create/score-share-bg.png"
-              className="absolute top-0 left-0 w-full h-full z-[-10] rounded-[15px]"
-              alt=""
-            /> */}
+            <img className="w-[96px] h-[96px] rounded-full" src={base64Image} alt="" />
             <div className=" flex items-end justify-between flex-col absolute top-[28px] right-[28px]">
               <div className="flex items-center ">
                 <img src="/logo.svg" alt="" /> <IconMemoo className="ml-[5px]" />
@@ -216,7 +212,7 @@ const CreatorRankingShareModal = ({ children, memooScore, meMessage }: any) => {
               <p className="text-[#fff] text-[14px] font-OCR">memoo.ai</p>
             </div>
             <div className=" flex  justify-center flex-col">
-              <img className="w-[60px] h-[60px] rounded-full mt-[36px]" src={base64Image} alt="" />
+              {/* <img className="w-[96px] h-[96px] rounded-full mt-[36px]" src={base64Image} alt="" /> */}
               <h3 className="text-[#fff] text-[24px] font-404px text-left">{idoQueueDetail?.tokenName}</h3>
               <h5 className="text-[#fff] text-[14px] font-OCR text-left">{idoQueueDetail?.ticker}</h5>
               <h5 className="text-[#fff] text-[14px] font-OCR text-left mt-[36px]">Check out this meme token at</h5>
