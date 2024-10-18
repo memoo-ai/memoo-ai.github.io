@@ -215,29 +215,22 @@ export const Creator = () => {
         );
         break;
       // case 'Waiting_for_pay':
-      //   button = (
-      //     <IncreaseModal
-      //       maxIncrease={maxIncrease}
-      //       firstProportion={firstProportion}
-      //       maxProportion={maxProportion}
-      //       firstIncrease={firstIncrease}
-      //       purchased={purchased}
-      //     >
-      //       <Button
-      //         className="flex items-center justify-between creator-btn"
-      //         onMouseOver={() => iconRefs.current[`increase${index}`].setHovered(true)}
-      //         onMouseLeave={() => iconRefs.current[`increase${index}`].setHovered(false)}
-      //         onClick={() => {
-      //           getIDOAndPurchased(item.ticker);
-      //         }}
-      //         disabled
-      //       >
-      //         <IconQueueBtn className="QueueBtn" ref={(ref) => (iconRefs.current[`increase${index}`] = ref)} />
-      //         <span className="ml-[9px]">INCREASE</span>
-      //       </Button>
-      //     </IncreaseModal>
-      //   );
-      //   break;
+      case 'Waiting_for_pay':
+        button = (
+          <IconDraftBtn
+            className="Waiting_for_pay"
+            color={item.status === 'Waiting_for_pay' ? '#7D83B5' : '#242842'}
+            hoverColor={item.status === 'Waiting_for_pay' ? '#07E993' : '#242842'}
+            bgColor={item.status === 'Waiting_for_pay' ? '#383C61' : '#242842'}
+            hoverBgColor={item.status === 'Waiting_for_pay' ? '#1F3B4F' : '#242842'}
+            style={{ border: item.status === 'Waiting_for_pay' ? 'none' : '1px solid #07E993' }}
+            onClick={() => {
+              deleteDraft(item.ticker);
+              setTimeout(() => setUpdate((count) => count + 1), 200);
+            }}
+          />
+        );
+        break;
       case 'QUEUE':
         button = (
           <IncreaseModal

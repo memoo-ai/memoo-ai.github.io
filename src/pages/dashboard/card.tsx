@@ -23,7 +23,7 @@ export const Card = ({ data, children, participated = false }: CardProps) => {
         icon = <IconQueue className="Queue" />;
         break;
       case 'Waiting_for_pay':
-        icon = <IconQueue className="Queue" />;
+        icon = <IconDraft className="Draft" />;
         break;
       case 'IDO':
         icon = <IconIMO className="IDO" />;
@@ -49,7 +49,7 @@ export const Card = ({ data, children, participated = false }: CardProps) => {
         statusText = 'Draft';
         break;
       case 'Waiting_for_pay':
-        statusText = 'IN QUEUE';
+        statusText = 'Draft';
         break;
       case 'QUEUE':
         statusText = 'IN QUEUE';
@@ -85,7 +85,10 @@ export const Card = ({ data, children, participated = false }: CardProps) => {
         <div className="dashboard_item_tag_left" />
         {/* <div className="dashboard_item_tag_left">SAMPLE</div> */}
         <div className="dashboard_item_tag_right">
-          <h3 className="mr-[11px]" style={{ color: data.status === 'Draft' ? '#7d83b5' : '#b53bff' }}>
+          <h3
+            className="mr-[11px]"
+            style={{ color: data.status === 'Draft' || data.status === 'Waiting_for_pay' ? '#7d83b5' : '#b53bff' }}
+          >
             {renderStatus(data.status)}
           </h3>
           <div>{renderIcon(data.status)}</div>
