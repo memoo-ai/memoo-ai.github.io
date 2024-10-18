@@ -502,8 +502,19 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
             </div>
           )}
 
-          <Form.Item label={<p>Twitter</p>}>
-            <div className="flex items-center">
+          <Form.Item label={<p>Twitter</p>} name="twitter">
+            <div className="reactive">
+              <Input
+                className="custom-input rounded-[7px] px-8"
+                value={twitter}
+                onChange={(e) => {
+                  setTwitter(e.target.value);
+                  form.setFieldsValue({ twitter: e });
+                }}
+              />
+              <IconTwitter hoverColor="#07E993" className="website-logo w-[15px] h-[15px]" />
+            </div>
+            {/* <div className="flex items-center">
               <div style={{ width: '15px' }} className="mr-[7px]">
                 <IconTwitter hoverColor="#07E993" className="" />
               </div>
@@ -511,7 +522,7 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
               <ConnectButton variant="secondary" className="w-[136px] h-[32px]" onClick={connectTwitter}>
                 {!twitter ? 'CONNECT' : 'CHANGE'}
               </ConnectButton>
-            </div>
+            </div> */}
           </Form.Item>
           <Form.Item label={<p className="edit-form-label">Website</p>} name="website">
             <div className="reactive">
@@ -523,6 +534,7 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
                   form.setFieldsValue({ website: e });
                 }}
               />
+
               <img className="website-logo" src="/create/icon-website.png" alt="" />
             </div>
           </Form.Item>
