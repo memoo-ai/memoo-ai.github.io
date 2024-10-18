@@ -23,7 +23,7 @@ message.success = (
   antdMessage.success({
     ...options,
     content,
-    className: `custom-success-message ${options?.className || ''} `,
+    className: `custom-success-message whitespace-pre ${options?.className || ''} `,
     icon: <IconSuccess />,
   });
 };
@@ -32,7 +32,7 @@ message.error = (content: string, options?: Omit<ConfigOptions, 'content'>) => {
   antdMessage.error({
     ...options,
     content,
-    className: `${options?.className || ''} custom-error-message`,
+    className: `${options?.className || ''} custom-error-message whitespace-pre`,
     icon: <IconError />,
   });
 };
@@ -41,7 +41,7 @@ message.info = (content: string, options?: Omit<ConfigOptions, 'content'>) => {
   antdMessage.info({
     ...options,
     content,
-    className: `${options?.className || ''} custom-info-message`,
+    className: `${options?.className || ''} custom-info-message whitespace-pre`,
     icon: <IconInfo />,
   });
 };
@@ -50,7 +50,7 @@ message.warning = (content: string, options?: Omit<ConfigOptions, 'content'>) =>
   antdMessage.warning({
     ...options,
     content,
-    className: `${options?.className || ''} custom-warning-message`,
+    className: `${options?.className || ''} custom-warning-message whitespace-pre`,
     icon: <IconWarning />,
   });
 };

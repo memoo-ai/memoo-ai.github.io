@@ -528,7 +528,9 @@ export default function Create() {
               txHash: feeRes,
             });
           } else if (!feeRes) {
-            message.error('Token Creation Failed.', { key: 'Create failed.' });
+            message.error(`Payment unsuccessful. Proceed to your creator\ndashboard to edit and resubmit your draft.`, {
+              key: 'Create failed.',
+            });
             return;
           }
           localStorage.removeItem(FORM_STORAGE_KEY);
@@ -641,7 +643,7 @@ export default function Create() {
               name="ticker"
               rules={[{ required: true, message: 'Please input ticker!' }]}
             >
-              <Input className="rounded-[7px]" showCount maxLength={8} onChange={handleTickerChange} />
+              <Input className="rounded-[7px]" showCount maxLength={10} onChange={handleTickerChange} />
             </Form.Item>
 
             <Form.Item
