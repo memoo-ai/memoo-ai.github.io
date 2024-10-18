@@ -50,12 +50,12 @@ export const ActiveIdoCard = () => {
             >
               <img src={ido.icon} alt="" className="w-20 h-20 mb-2 rounded-full" />
               <p className="font-OCR text-white text-lg">{ido.tokenName}</p>
-              <IconCollect
+              {/* <IconCollect
                 className="my-[15px]"
                 color={ido?.collectionFlag ? '#B53BFF' : '#6D4F71'}
                 hoverColor={ido?.collectionFlag ? '#6D4F71' : '#B53BFF'}
                 onClick={() => collection(ido.ticker, ido?.collectionFlag, triggerRefresh, 135)}
-              />
+              /> */}
               <div className="ido-info-item ido-info-item-border">
                 <img src="./dashboard/icon-roi.svg" alt="" className="w-5 h-5 mr-1" />
                 <span>ATH ROI</span>

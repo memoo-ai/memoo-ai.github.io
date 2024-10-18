@@ -202,11 +202,11 @@ export const Creator = () => {
         button = (
           <IconDraftBtn
             className="draft"
-            color={item.status === 'Draft' ? '#7D83B5' : '#242842'}
-            hoverColor={item.status === 'Draft' ? '#07E993' : '#242842'}
-            bgColor={item.status === 'Draft' ? '#383C61' : '#242842'}
-            hoverBgColor={item.status === 'Draft' ? '#1F3B4F' : '#242842'}
-            style={{ border: item.status === 'Draft' ? 'none' : '1px solid #07E993' }}
+            color="#7D83B5"
+            hoverColor="#07E993"
+            bgColor="#383C61"
+            hoverBgColor="#1F3B4F"
+            style={{ border: 'none' }}
             onClick={() => {
               deleteDraft(item.ticker);
               setTimeout(() => setUpdate((count) => count + 1), 200);
@@ -214,16 +214,15 @@ export const Creator = () => {
           />
         );
         break;
-      // case 'Waiting_for_pay':
       case 'Waiting_for_pay':
         button = (
           <IconDraftBtn
-            className="Waiting_for_pay"
-            color={item.status === 'Waiting_for_pay' ? '#7D83B5' : '#242842'}
-            hoverColor={item.status === 'Waiting_for_pay' ? '#07E993' : '#242842'}
-            bgColor={item.status === 'Waiting_for_pay' ? '#383C61' : '#242842'}
-            hoverBgColor={item.status === 'Waiting_for_pay' ? '#1F3B4F' : '#242842'}
-            style={{ border: item.status === 'Waiting_for_pay' ? 'none' : '1px solid #07E993' }}
+            className="draft"
+            color="#7D83B5"
+            hoverColor="#07E993"
+            bgColor="#383C61"
+            hoverBgColor="#1F3B4F"
+            style={{ border: 'none' }}
             onClick={() => {
               deleteDraft(item.ticker);
               setTimeout(() => setUpdate((count) => count + 1), 200);
