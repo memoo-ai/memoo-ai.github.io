@@ -16,7 +16,7 @@ export const ActiveIdoCard = () => {
   const [idos, setIdos] = useState<LaunchpadIDOCompeted[]>([]);
   const navigate = useNavigate();
   const { collection } = useFunctions();
-  const { address } = useAccount();
+  const { address, useAddress } = useAccount();
   const [refresh, setRefresh] = useState(0);
 
   useEffect(() => {
@@ -54,7 +54,12 @@ export const ActiveIdoCard = () => {
                 className="my-[15px]"
                 color={ido?.collectionFlag ? '#B53BFF' : '#6D4F71'}
                 hoverColor={ido?.collectionFlag ? '#6D4F71' : '#B53BFF'}
-                onClick={() => collection(ido.ticker, ido?.collectionFlag, triggerRefresh, 135)}
+                onClick={async () => {
+                  const result = await useAddress('!mt-[130px]');
+                  if (result) {
+                    collection(ido.ticker, ido?.collectionFlag, triggerRefresh, 135);
+                  }
+                }}
               />
               <div className="ido-info-item ido-info-item-border">
                 <img src="./dashboard/icon-roi.svg" alt="" className="w-5 h-5 mr-1" />

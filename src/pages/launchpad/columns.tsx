@@ -18,7 +18,7 @@ const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 
 const { collection } = useFunctions();
 // const { address } = useAccount();
-export const columns = (navigate: (path: string) => void, triggerRefresh: Function) => [
+export const columns = (navigate: (path: string) => void, triggerRefresh: Function, useAddress: Function) => [
   {
     title: 'Token',
     dataIndex: 'tokenName',
@@ -61,11 +61,10 @@ export const columns = (navigate: (path: string) => void, triggerRefresh: Functi
     render: (collectionFlag: boolean, record: LaunchpadIMO) => (
       <div
         onClick={async () => {
-          // if (!address) {
-          //   message.info('Please connect wallet first.', { key: 'Please connect wallet first.' });
-          //   return;
-          // }
-          await collection(record.ticker, collectionFlag, triggerRefresh?.(), 135);
+          const result = await useAddress('!mt-[130px]');
+          if (result) {
+            await collection(record.ticker, collectionFlag, triggerRefresh?.(), 135);
+          }
         }}
       >
         <IconCollect
@@ -161,7 +160,7 @@ export const columns = (navigate: (path: string) => void, triggerRefresh: Functi
     ),
   },
 ];
-export const columnsAirdrop = (navigate: (path: string) => void, triggerRefresh: Function) => [
+export const columnsAirdrop = (navigate: (path: string) => void, triggerRefresh: Function, useAddress: Function) => [
   {
     title: 'Token',
     dataIndex: 'tokenName',
@@ -202,7 +201,14 @@ export const columnsAirdrop = (navigate: (path: string) => void, triggerRefresh:
     key: 'collectionFlag',
     sorter: false,
     render: (collectionFlag: boolean, record: LaunchpadAirdrop) => (
-      <div onClick={async () => await collection(record.ticker, collectionFlag, triggerRefresh?.(), 135)}>
+      <div
+        onClick={async () => {
+          const result = await useAddress('!mt-[130px]');
+          if (result) {
+            await collection(record.ticker, collectionFlag, triggerRefresh?.(), 135);
+          }
+        }}
+      >
         <IconCollect
           color={collectionFlag ? '#B53BFF ' : '#3D255B'}
           hoverColor={collectionFlag ? '#3D255B' : '#B53BFF'}

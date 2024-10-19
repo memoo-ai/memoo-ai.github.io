@@ -14,6 +14,7 @@ import Sample from '../Sample';
 import useFunctions from '@/hooks/useFunctions';
 import IPopover from '@/components/IPopover';
 import { ImoPvCard, AirdropCard } from '@/types';
+import { useAccount } from '@/hooks/useWeb3';
 interface KingsCardsProps {
   btnText?: string;
   btnType?: string;
@@ -34,15 +35,7 @@ const KingsCards = ({
   const navigate = useNavigate();
   const { collection } = useFunctions();
   const isDev = import.meta.env.MODE === 'development';
-  // const data = new Array(3).fill(undefined).map((_, i) => ({
-  //   id: i,
-  //   address: 'Rg7GG...kf9Lj7' + i,
-  //   tokenName: 'tokenName',
-  //   ticker: 'Tick',
-  //   banner: '',
-  //   icon: '',
-  //   description: 'description',
-  // }));
+  const { useAddress } = useAccount();
   const renderInstant = (item: any) => {
     const instant = type === 'IMO' ? item.endsIn : item.airdropEndsIn;
     return instant > 0;
@@ -83,7 +76,10 @@ const KingsCards = ({
                           color={item.collectionFlag ? '#B53BFF' : '#6D4F71'}
                           hoverColor={item.collectionFlag ? '#6D4F71' : '#B53BFF'}
                           onClick={async () => {
-                            await collection(item.ticker, item.collectionFlag, triggerRefresh?.(), 135);
+                            const result = await useAddress('!mt-[130px]');
+                            if (result) {
+                              await collection(item.ticker, item.collectionFlag, triggerRefresh?.(), 135);
+                            }
                           }}
                         />
                         {Number(item.creatorTotalRaisedNumerator ?? 0) > 0 && (

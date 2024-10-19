@@ -23,7 +23,7 @@ const LaunchPadAirdrop = () => {
   const [data, setData] = useState<LaunchpadAirdrop[]>([]);
   const [cardData, setCardData] = useState<AirdropCard[]>([]);
   const [loading, setLoading] = useState(false);
-  const { address } = useAccount();
+  const { address, useAddress } = useAccount();
   const [refresh, setRefresh] = useState(0);
 
   const triggerRefresh = useCallback(async () => {
@@ -89,7 +89,7 @@ const LaunchPadAirdrop = () => {
       </div>
       <div className={data.length === 0 ? 'table-no-data' : ''}>
         <Table
-          columns={columnsAirdrop(navigate, triggerRefresh)}
+          columns={columnsAirdrop(navigate, triggerRefresh, useAddress)}
           dataSource={data as LaunchpadAirdrop[]}
           pagination={false}
           // loading={loading}

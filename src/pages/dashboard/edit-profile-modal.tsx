@@ -279,7 +279,7 @@ const EditProfileModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
         wrapClassName="memoo_modal"
         title={
           <div className="flex items-center gap-x-[13px]">
-            <span className="text-[24px] leading-6 font-404px edit-title">Edit Info</span>
+            <span className="text-[24px] leading-6 font-404px edit-title">Edit Profile</span>
             <img src="/create/icon-edit-project-title.png" />
           </div>
         }

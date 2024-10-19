@@ -24,7 +24,7 @@ const LaunchPadImo = () => {
   const [data, setData] = useState<LaunchpadIMO[]>([]);
   const [cardData, setCardData] = useState<ImoPvCard[]>([]);
   const [loading, setLoading] = useState(false);
-  const { address } = useAccount();
+  const { address, useAddress } = useAccount();
   const [refresh, setRefresh] = useState(0);
 
   const triggerRefresh = useCallback(async () => {
@@ -94,7 +94,7 @@ const LaunchPadImo = () => {
       </div>
       <div className={data.length === 0 ? 'table-no-data' : ''}>
         <Table
-          columns={columns(navigate, triggerRefresh)}
+          columns={columns(navigate, triggerRefresh, useAddress)}
           dataSource={data as LaunchpadIMO[]}
           pagination={false}
           // loading={loading}
