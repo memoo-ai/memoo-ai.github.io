@@ -45,7 +45,7 @@ const DashboardContent: FC<{ onChangeType: (type: string) => void }> = ({ onChan
     //   children: <WatchList />,
     // },
   ];
-  if (import.meta.env.MODE === 'development') {
+  if (import.meta.env.MODE !== 'production') {
     items.unshift({
       key: 'Profile',
       label: 'Profile',

@@ -54,7 +54,7 @@ const Header = () => {
   const menusTop = useMemo(() => {
     return [
       { name: 'ABOUT', path: '/home', isActive: location.pathname === '/home' },
-      // { name: 'SCOREBOARD', path: '/join', isActive: location.pathname === '/join' },
+      { name: 'SCOREBOARD', path: '/join', isActive: location.pathname === '/join' },
       { name: 'APP', path: '/', isActive: location.pathname !== '/home' && location.pathname !== '/join' },
     ];
   }, [location.pathname]);
@@ -167,7 +167,43 @@ const Header = () => {
 
   return (
     <header className={`${styles.header} z-[9999]`}>
-      {/* <div className={`${styles.headerTop} flex justify-between items-center`}>
+      <div className={`${styles.headerTop} flex justify-between items-center`}>
+        <div className="flex items-center gap-x-[25px] mr-[80px]">
+          <IconBook
+            color="#131522"
+            hoverColor="#131522"
+            className="cursor-pointer w-[16px] h-[10px]"
+            onClick={() => {
+              window.open(gitBook, '_blank');
+            }}
+          />
+          <IconTelegram
+            className="cursor-pointer w-[12px] h-[10px]"
+            color="#131522"
+            hoverColor="#131522"
+            onClick={() => {
+              window.open(telegram, '_blank');
+            }}
+          />{' '}
+          <IconTwitter
+            className="cursor-pointer w-[13px] h-[10px]"
+            color="#131522"
+            hoverColor="#131522"
+            onClick={() => {
+              window.open(twitter, '_blank');
+            }}
+          />
+        </div>
+        <div className="flex items-center gap-x-[25px] mr-[15px]">
+          {menusTop.map((item, index) => (
+            <NavLink to={item.path} key={index} className="relative h-100% font-404px text-[10px] text-[#131522]">
+              {item.name}
+              {item.isActive && <IconTriangle className={`${styles.triangle}`} color="#131522" />}
+            </NavLink>
+          ))}
+        </div>
+      </div>
+      {/* <div className={`${styles.headerTop} flex justify-end items-center`}>
         <div className="flex items-center gap-x-[25px] mr-[80px]">
           <IconBook
             color="#131522"
@@ -203,43 +239,6 @@ const Header = () => {
           ))}
         </div>
       </div> */}
-      <div className={`${styles.headerTop} flex justify-end items-center`}>
-        <div className="flex items-center gap-x-[25px] mr-[80px]">
-          {/* <img src="./SVG/icon-twitter.svg" className="w-8 cursor-pointer" alt="" /> */}
-          <IconBook
-            color="#131522"
-            hoverColor="#131522"
-            className="cursor-pointer w-[16px] h-[10px]"
-            onClick={() => {
-              window.open(gitBook, '_blank');
-            }}
-          />
-          <IconTelegram
-            className="cursor-pointer w-[12px] h-[10px]"
-            color="#131522"
-            hoverColor="#131522"
-            onClick={() => {
-              window.open(telegram, '_blank');
-            }}
-          />{' '}
-          <IconTwitter
-            className="cursor-pointer w-[13px] h-[10px]"
-            color="#131522"
-            hoverColor="#131522"
-            onClick={() => {
-              window.open(twitter, '_blank');
-            }}
-          />
-        </div>
-        <div className="flex items-center gap-x-[25px] mr-[15px]">
-          {menusTop.map((item, index) => (
-            <NavLink to={item.path} key={index} className="relative h-100% font-404px text-[10px] text-[#131522]">
-              {item.name}
-              {item.isActive && <IconTriangle className={`${styles.triangle}`} color="#131522" />}
-            </NavLink>
-          ))}
-        </div>
-      </div>
       <div className={`${styles.headerContent} flex justify-between items-center`}>
         {/* <Spin spinning={loading} /> */}
         <div className="flex items-center  gap-[3rem]">
