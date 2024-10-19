@@ -95,7 +95,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
         setProjectDetail(res.data);
         setProjectBannerUrl(res.data?.banners ? res.data?.banners[0] : '');
         setTwitter(res.data.twitter);
-        setCreateTwitter(res.data.creatorTwitter);
+        // setCreateTwitter(res.data.creatorTwitter);
         setTwitterAccessToken(res.data.twitterAccessToken);
         let pinnedTwitterUrls = [];
 
@@ -364,7 +364,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
       // }
       const data = form.getFieldsValue();
       data.twitter = twitter || '';
-      data.creatorTwitter = createTwitter || '';
+      // data.creatorTwitter = createTwitter || '';
       data.accessToken = twitterAccessToken || '';
       data.website = website || '';
       data.discord = discord || '';
@@ -604,7 +604,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
               )}
             </div>
           </Form.Item> */}
-          <Form.Item label={<p className="whitespace-pre-wrap">{`Creator’s\nTwitter`}</p>}>
+          {/* <Form.Item label={<p className="whitespace-pre-wrap">{`Creator’s\nTwitter`}</p>}>
             <div className="flex items-center">
               <div style={{ width: '15px' }} className="mr-[7px]">
                 <IconTwitter hoverColor="#07E993" className="" />
@@ -614,7 +614,7 @@ const EditProjectModal: FC<{ children: ReactNode; ticker: string; onSaveSuccess:
                 {!createTwitter ? 'CONNECT' : 'CHANGE'}
               </ConnectButton>
             </div>
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item label={<p className="whitespace-pre-wrap">{`Pinned\nTwitter links`}</p>} name="pinnedTwitterUrl">
             <div className="flex flex-col items-center gap-y-[15px]">
               {pinnedTwitterUrl.map((data, index) => (

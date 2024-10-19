@@ -491,7 +491,7 @@ export default function Create() {
         // }
 
         data.twitter = twitter;
-        data.creatorTwitter = createTwitter;
+        // data.creatorTwitter = createTwitter;
         data.accessToken = twitterAccessToken;
         // data.pinnedTwitterUrl = pinnedTwitterUrl;
         data.pinnedTwitterData = pinnedTwitterUrl;
@@ -976,7 +976,7 @@ export default function Create() {
                       <IconDiscord className="website-logo w-[17px] h-[15px]" color="#07E993" hoverColor="#07E993" />
                     </div>
                   </Form.Item>
-                  <Form.Item label={<p>Creator’s Twitter</p>} name="creatorTwitter">
+                  {/* <Form.Item label={<p>Creator’s Twitter</p>} name="creatorTwitter">
                     <div className="flex items-center">
                       <img src="./token/icon-twitter.svg" className="w-4 h-4 mr-4" />
                       {createTwitter && <img src="./create/icon-authed.svg" />}
@@ -986,7 +986,7 @@ export default function Create() {
                         </Button>
                       )}
                     </div>
-                  </Form.Item>
+                  </Form.Item> */}
                   <Form.Item
                     label={<p className="whitespace-pre-wrap">{`Featured\nTweet links`}</p>}
                     name="pinnedTwitterUrl"
