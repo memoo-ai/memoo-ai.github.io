@@ -94,7 +94,7 @@ const LaunchPadImo = () => {
       </div>
       <div className={data.length === 0 ? 'table-no-data' : ''}>
         <Table
-          columns={columns(navigate, triggerRefresh, useAddress)}
+          columns={columns(navigate, triggerRefresh)}
           dataSource={data as LaunchpadIMO[]}
           pagination={false}
           // loading={loading}

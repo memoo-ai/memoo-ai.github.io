@@ -312,7 +312,7 @@ const Profile: FC = () => {
   return (
     <div className="profile relative pt-20 pb-[67px]">
       <ul className="relationship_fracture absolute flex gap-x-2.5 top-5 right-5">
-        {/* <li className="profile-share w-[40px] h-[40px] bg-[#252841] rounded-[7px] flex items-center justify-center">
+        <li className="profile-share w-[40px] h-[40px] bg-[#252841] rounded-[7px] flex items-center justify-center">
           <div
             onMouseOver={() => iconRefs.current[`IconCollect`].setHovered(true)}
             onMouseLeave={() => iconRefs.current[`IconCollect`].setHovered(false)}
@@ -324,7 +324,7 @@ const Profile: FC = () => {
               onClick={() => collection(idoQueueDetail?.ticker ?? '', idoQueueDetail?.collectionFlag ?? false)}
             />
           </div>
-        </li> */}
+        </li>
         <li className="profile-share" onMouseMove={() => setShowShare(true)} onMouseLeave={() => setShowShare(false)}>
           <img className="w-10 h-10 object-cover" src="/create/icon-share.png" />
           {showShare && (

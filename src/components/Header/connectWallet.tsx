@@ -11,7 +11,7 @@ import {
   IconWalletContentProfile,
   IconClose,
 } from '@/components/icons';
-import './connectWallet.scss';
+// import './connectWallet.scss';
 import { useRef, useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MEMOO_TOKEN_STORAGE } from '@/constants';
@@ -143,7 +143,11 @@ const ConnectWallet = () => {
         </div>
       ) : (
         <div className="wallet_button_border" onClick={() => setUpdatePortal((count) => count + 1)}>
-          <Wallet>Connect Wallet</Wallet>
+          <Wallet>
+            <div className="font-404px font-normal w-[189px] text-[16px] leading-[20px] flex items-center justify-center rounded-[7px] h-full text-green bg-[#1F3B4F] hover:text-[#1F3B4F] hover:bg-green">
+              Connect Wallet
+            </div>
+          </Wallet>
           {/* <WalletMultiButton className="w-[192px]">
             Connect Wallet
             <SolanaPortalTop updatePortal={updatePortal}>

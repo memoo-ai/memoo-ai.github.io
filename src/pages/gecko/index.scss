@@ -32,3 +32,20 @@
   border-radius: 7px;
   background-color: #1F3B4F;
 }
+.gecko-table{
+  ::-webkit-scrollbar {
+    width: 0px !important;
+    background: transparent !important;
+  }
+
+  ::-webkit-scrollbar-horizontal {
+    height: 0px !important;
+    background: transparent !important;
+  }
+}
+.ant-table-wrapper .ant-table-ping-right:not(.ant-table-has-fix-right) .ant-table-container::after{
+  box-shadow: none;
+}
+.ant-table-wrapper .ant-table-ping-left:not(.ant-table-has-fix-left) .ant-table-container::after{
+  box-shadow: none;
+}

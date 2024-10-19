@@ -256,6 +256,7 @@ declare interface IDOQueueDetail extends IDOClaimStage {
   totalRaisedDenominator: string;
   discord: string;
   pinnedTwitterData: PinnedTwitterData[];
+  collectionFlag: boolean;
 }
 
 declare type IDOStatus = 'Draft' | 'Waiting_for_pay' | 'QUEUE' | 'IDO' | 'Launched' | 'IDOEND';

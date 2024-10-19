@@ -13,8 +13,8 @@
   font-family: "OCR A Extended";
   border: 1px solid #07E993;
   background-color: #1F3B4F !important;
-  border-radius: 4px;
-  // padding: 4px 5px;
+  border-radius: 4px !important;
+
   color: #07E993;
   min-width: 100px;
   min-height: 19px;
@@ -26,8 +26,9 @@
     font-family: "OCR A Extended";
     font-size: 10px;
     line-height: 16px;
-    height: 19px;
+    // height: 19px;
     text-align: center;
+    padding: 0 8px !important;
     // padding: 4px 5px;
     // box-sizing: border-box;
   }

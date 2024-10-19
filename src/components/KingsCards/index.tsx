@@ -15,6 +15,7 @@ import useFunctions from '@/hooks/useFunctions';
 import IPopover from '@/components/IPopover';
 import { ImoPvCard, AirdropCard } from '@/types';
 import { useAccount } from '@/hooks/useWeb3';
+import Wallet from '@/components/SolanaWallet';
 interface KingsCardsProps {
   btnText?: string;
   btnType?: string;
@@ -71,17 +72,19 @@ const KingsCards = ({
                     <img className="w-[87px] h-[84px] rounded-[50%] mr-[12px]" src={item.icon} alt="" />
                     <div>
                       <div className="flex gap-x-[12px] mb-[16px]">
-                        <IconCollect
-                          className=""
-                          color={item.collectionFlag ? '#B53BFF' : '#6D4F71'}
-                          hoverColor={item.collectionFlag ? '#6D4F71' : '#B53BFF'}
-                          onClick={async () => {
-                            const result = await useAddress('!mt-[130px]');
-                            if (result) {
-                              await collection(item.ticker, item.collectionFlag, triggerRefresh?.(), 135);
-                            }
-                          }}
-                        />
+                        <Wallet>
+                          <IconCollect
+                            className=""
+                            color={item.collectionFlag ? '#B53BFF' : '#6D4F71'}
+                            hoverColor={item.collectionFlag ? '#6D4F71' : '#B53BFF'}
+                            onClick={async () => {
+                              const result = await useAddress('!mt-[130px]');
+                              if (result) {
+                                await collection(item.ticker, item.collectionFlag, triggerRefresh?.(), 135);
+                              }
+                            }}
+                          />
+                        </Wallet>
                         {Number(item.creatorTotalRaisedNumerator ?? 0) > 0 && (
                           <IPopover
                             trigger="hover"

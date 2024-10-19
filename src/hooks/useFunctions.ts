@@ -14,12 +14,12 @@ const useFunctions = () => {
     try {
       const result = collection ? await CancelCollect(ticker) : await Collection(ticker);
       if (result) {
-        message.success(collection ? 'Uncollect successfully!' : 'Collection Successful!', {
-          className: `!mt-[${top}px]`,
-        });
+        // message.success(collection ? 'Uncollect successfully!' : 'Collection Successful!', {
+        //   className: `!mt-[${top}px]`,
+        // });
         triggerRefresh?.();
       } else {
-        message.error('Failed to collect!');
+        // message.error('Failed to collect!');
       }
     } catch (error) {
       console.log(error);

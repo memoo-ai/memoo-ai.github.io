@@ -1,0 +1,84 @@
+.memoo_table{
+  .ant-table-wrapper .ant-table {
+    background: transparent;
+  }
+
+  .ant-table-tbody {
+    .ant-table-cell {
+      vertical-align: middle;
+      font-family: OCR A Extended;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 20px;
+      letter-spacing: -0.05em;
+      text-align: left;
+      color: #ffffff;
+      background: #090A10 !important;
+
+      &:hover {
+        background: #131522;
+      }
+    }
+
+    .ant-table .ant-table-tbody>tr>td {
+      background: #090A10 !important;
+
+      &:hover {
+        background: #131522 !important;
+      }
+    }
+
+    .ant-table-cell-row-hover {
+      background: #131522 !important;
+    }
+  }
+
+  .ant-table .ant-table-tbody>tr>td {
+    border-bottom: 1px solid #5D64A2;
+  }
+
+  .ant-table-wrapper .ant-table-thead>tr>th {
+    background: transparent;
+    font-family: OCR A Extended;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.05em;
+    text-align: left;
+    color: #7D83B5;
+    border-bottom: 1px solid #5D64A2;
+  }
+
+  .ant-table-wrapper .ant-table-thead th.ant-table-column-has-sorters:hover {
+    background: transparent;
+  }
+
+  .ant-table-wrapper td.ant-table-column-sort {
+    background: transparent;
+  }
+
+  .ant-table-wrapper .ant-table-thead th.ant-table-column-sort {
+    background: transparent;
+  }
+
+  .ant-table-wrapper .ant-table-thead>tr>th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before,
+  .ant-table-wrapper .ant-table-thead>tr>td:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before {
+    background: transparent !important;
+  }
+  .table-no-data {
+    .ant-table-tbody{
+      .ant-table-cell{
+
+        background: #131522 !important;
+      }
+    }
+    .ant-table-wrapper .ant-table-thead>tr>th {
+      border: none;
+    }
+
+    .ant-table .ant-table-tbody>tr>td {
+      border-radius: 20px !important;
+      border: 1px solid #5D64A2 !important;
+    }
+  }
+}

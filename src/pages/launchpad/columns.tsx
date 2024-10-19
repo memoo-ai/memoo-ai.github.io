@@ -6,6 +6,7 @@ import Countdown from '@/pages/airdrop/countdown';
 import { IconCollect } from '@/components/icons';
 import useFunctions from '@/hooks/useFunctions';
 import IPopover from '@/components/IPopover';
+import Wallet from '@/components/SolanaWallet';
 // import { useAccount } from '@/hooks/useWeb3';
 // import message from '@/components/IMessage';
 
@@ -18,7 +19,7 @@ const tokenSymbol = import.meta.env.VITE_TOKEN_SYMBOL;
 
 const { collection } = useFunctions();
 // const { address } = useAccount();
-export const columns = (navigate: (path: string) => void, triggerRefresh: Function, useAddress: Function) => [
+export const columns = (navigate: (path: string) => void, triggerRefresh: Function) => [
   {
     title: 'Token',
     dataIndex: 'tokenName',
@@ -59,19 +60,18 @@ export const columns = (navigate: (path: string) => void, triggerRefresh: Functi
     key: 'collectionFlag',
     sorter: false,
     render: (collectionFlag: boolean, record: LaunchpadIMO) => (
-      <div
-        onClick={async () => {
-          const result = await useAddress('!mt-[130px]');
-          if (result) {
+      <Wallet>
+        <div
+          onClick={async () => {
             await collection(record.ticker, collectionFlag, triggerRefresh?.(), 135);
-          }
-        }}
-      >
-        <IconCollect
-          color={collectionFlag ? '#B53BFF ' : '#3D255B'}
-          hoverColor={collectionFlag ? '#3D255B' : '#B53BFF'}
-        />
-      </div>
+          }}
+        >
+          <IconCollect
+            color={collectionFlag ? '#B53BFF ' : '#3D255B'}
+            hoverColor={collectionFlag ? '#3D255B' : '#B53BFF'}
+          />
+        </div>
+      </Wallet>
     ),
   },
   {
@@ -160,7 +160,7 @@ export const columns = (navigate: (path: string) => void, triggerRefresh: Functi
     ),
   },
 ];
-export const columnsAirdrop = (navigate: (path: string) => void, triggerRefresh: Function, useAddress: Function) => [
+export const columnsAirdrop = (navigate: (path: string) => void, triggerRefresh: Function) => [
   {
     title: 'Token',
     dataIndex: 'tokenName',
@@ -201,19 +201,18 @@ export const columnsAirdrop = (navigate: (path: string) => void, triggerRefresh:
     key: 'collectionFlag',
     sorter: false,
     render: (collectionFlag: boolean, record: LaunchpadAirdrop) => (
-      <div
-        onClick={async () => {
-          const result = await useAddress('!mt-[130px]');
-          if (result) {
+      <Wallet>
+        <div
+          onClick={async () => {
             await collection(record.ticker, collectionFlag, triggerRefresh?.(), 135);
-          }
-        }}
-      >
-        <IconCollect
-          color={collectionFlag ? '#B53BFF ' : '#3D255B'}
-          hoverColor={collectionFlag ? '#3D255B' : '#B53BFF'}
-        />
-      </div>
+          }}
+        >
+          <IconCollect
+            color={collectionFlag ? '#B53BFF ' : '#3D255B'}
+            hoverColor={collectionFlag ? '#3D255B' : '#B53BFF'}
+          />
+        </div>
+      </Wallet>
     ),
   },
   {

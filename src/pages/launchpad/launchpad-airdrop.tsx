@@ -89,7 +89,7 @@ const LaunchPadAirdrop = () => {
       </div>
       <div className={data.length === 0 ? 'table-no-data' : ''}>
         <Table
-          columns={columnsAirdrop(navigate, triggerRefresh, useAddress)}
+          columns={columnsAirdrop(navigate, triggerRefresh)}
           dataSource={data as LaunchpadAirdrop[]}
           pagination={false}
           // loading={loading}
