@@ -21,7 +21,7 @@ const Wallet: FC<{ children: ReactNode }> = ({ children }) => {
       {address ? (
         <div>{children}</div>
       ) : (
-        <WalletMultiButton className="!h-max box-border">
+        <WalletMultiButton className="!h-max box-border p-0">
           {children}{' '}
           {openModal && (
             <div>

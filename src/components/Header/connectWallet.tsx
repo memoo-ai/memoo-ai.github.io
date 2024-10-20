@@ -142,7 +142,7 @@ const ConnectWallet = () => {
           </DropdownMenu.Root>
         </div>
       ) : (
-        <div className="wallet_button_border" onClick={() => setUpdatePortal((count) => count + 1)}>
+        <div className="wallet_button_border p-0" onClick={() => setUpdatePortal((count) => count + 1)}>
           <Wallet>
             <div className="green-border font-404px font-normal w-[189px] text-[16px] leading-[20px] flex items-center justify-center rounded-[7px] h-full text-green bg-[#1F3B4F] hover:text-[#1F3B4F] hover:bg-green">
               Connect Wallet
