@@ -13,28 +13,15 @@ on:
 
 env:
   AWS_REGION: ap-southeast-2
-  BRANCH: solana1
 
 jobs:
-  build-dev:
+  build-staging:
     if: ${{ github.event.inputs.domain == 'STAGING' }}
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          ref: ${{ env.BRANCH }}
-
-      - name: Prevent wrong version releasing
-        if: ${{ github.event.inputs.domain == 'PROD' && github.ref != 'refs/heads/main' }}
-        run: |
-          echo "Production deployment is possible only from the main branch"
-          exit 1
-
-      - name: Current branch
-        run: |
-          echo "The current branch is ${{ github.ref_name }}"
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
@@ -42,7 +29,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Build (${{ github.event.inputs.domain }})
-        if: github.event.inputs.domain == 'STAGING'
         run: |
           npm install -g pnpm
           pnpm install --no-frozen-lockfile
@@ -56,7 +42,6 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Deploy to S3 (${{ github.event.inputs.domain }})
-        if: github.event.inputs.domain == 'STAGING'
         run: |
           aws s3 sync dist/ s3://memoo-app-staging/
         env:
