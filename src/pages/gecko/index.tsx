@@ -1,7 +1,7 @@
 import './index.scss';
 import CommonBanner from '@/components/Banner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { SetStateAction, useCallback, useEffect, useState } from 'react';
+import { SetStateAction, useCallback, useEffect, useState, useRef } from 'react';
 import { columns, tokenSelectOptions } from './columns';
 import IPagination from '@/components/IPagination';
 import { useNavigate } from 'react-router-dom';
@@ -38,6 +38,7 @@ const Gecko = () => {
   const { address } = useAccount();
   const [refresh, setRefresh] = useState(0);
   const [reverseScroll, setReverseScroll] = useState(false);
+  const tableRef = useRef<HTMLDivElement>(null);
 
   const fetchData = useCallback(async () => {
     try {
@@ -52,43 +53,43 @@ const Gecko = () => {
       const { data } = tab === 'trending' ? await getTrendingTokens(params) : await getTopTokens(params);
       // console.log(data);
       if (data) {
-        setData(data.records ?? []);
-        // setData([
-        //   {
-        //     icon: 'string',
-        //     increase1H: 1,
-        //     increase24H: 1,
-        //     marketCap: 1,
-        //     memooScore: 100,
-        //     price: 1,
-        //     ticker: '1',
-        //     tokenName: 'string',
-        //     volume24H: 1,
-        //     totalScore: 1,
-        //     created: '196d',
-        //     liquidity: '6.5m',
-        //     holders: '114k',
+        // setData(data.records ?? []);
+        setData([
+          {
+            icon: 'string',
+            increase1H: 1,
+            increase24H: 1,
+            marketCap: 1,
+            memooScore: 100,
+            price: 1,
+            ticker: '1',
+            tokenName: 'string',
+            volume24H: 1,
+            totalScore: 1,
+            created: '196d',
+            liquidity: '6.5m',
+            holders: '114k',
 
-        //     vol1h: '235m',
-        //   },
-        //   {
-        //     icon: 'string',
-        //     increase1H: 1,
-        //     increase24H: 1,
-        //     marketCap: 1,
-        //     memooScore: 100,
-        //     price: 1,
-        //     ticker: '1',
-        //     tokenName: 'string',
-        //     volume24H: 1,
-        //     totalScore: 1,
-        //     created: '196d',
-        //     liquidity: '6.5m',
-        //     holders: '114k',
+            vol1h: '235m',
+          },
+          {
+            icon: 'string',
+            increase1H: 1,
+            increase24H: 1,
+            marketCap: 1,
+            memooScore: 100,
+            price: 1,
+            ticker: '1',
+            tokenName: 'string',
+            volume24H: 1,
+            totalScore: 1,
+            created: '196d',
+            liquidity: '6.5m',
+            holders: '114k',
 
-        //     vol1h: '235m',
-        //   },
-        // ]);
+            vol1h: '235m',
+          },
+        ]);
         setPagination({
           ...pagination,
           total: data.total_record ?? 0,
@@ -126,6 +127,42 @@ const Gecko = () => {
   const handleTableChange = (pagination: SetStateAction<PaginationProps>) => {
     setPagination(pagination);
   };
+
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      if (!tableRef.current) return;
+
+      e.preventDefault();
+
+      const tableBody = tableRef.current.querySelector<HTMLDivElement>('.ant-table-body');
+      if (tableBody) {
+        tableBody.scrollTo({
+          left: tableBody.scrollLeft + e.deltaY,
+          behavior: 'smooth',
+        });
+      }
+    };
+
+    const tableContainer = tableRef.current;
+    if (tableContainer) {
+      const enableScroll = () => {
+        tableContainer.addEventListener('wheel', handleWheel, { passive: false });
+      };
+
+      const disableScroll = () => {
+        tableContainer.removeEventListener('wheel', handleWheel);
+      };
+
+      tableContainer.addEventListener('mouseenter', enableScroll);
+      tableContainer.addEventListener('mouseleave', disableScroll);
+
+      return () => {
+        tableContainer.removeEventListener('mouseenter', enableScroll);
+        tableContainer.removeEventListener('mouseleave', disableScroll);
+        disableScroll();
+      };
+    }
+  }, []);
 
   return (
     <div className="page">
@@ -242,9 +279,10 @@ const Gecko = () => {
         onMouseEnter={() => setReverseScroll(true)}
         onMouseLeave={() => setReverseScroll(false)}
         onWheel={handleWheel}
+        // ref={tableRef}
       >
         <Table
-          className="common-table mb-10"
+          className="common-table mb-10 hide-scrollbar"
           columns={columns(triggerRefresh)}
           dataSource={data}
           pagination={false}
@@ -257,7 +295,7 @@ const Gecko = () => {
               },
             };
           }}
-          scroll={{ x: '100vw' }}
+          scroll={data.length !== 0 ? { x: '100vw' } : {}}
           locale={{
             emptyText: <Empty showBorder={false} />,
           }}

@@ -49,3 +49,13 @@
 .ant-table-wrapper .ant-table-ping-left:not(.ant-table-has-fix-left) .ant-table-container::after{
   box-shadow: none;
 }
+.ant-table-wrapper .ant-table-thead >tr>th,.ant-table-wrapper .ant-table-thead >tr>td {
+  white-space: nowrap;
+}
+.ant-table-cell-fix-left::after,
+.ant-table-cell-fix-right::before {
+  box-shadow: none !important;
+}
+.ant-table-wrapper .ant-table-body table {
+  writing-mode: horizontal-tb !important;
+}
