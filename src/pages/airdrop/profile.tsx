@@ -17,7 +17,7 @@ import { getToolsUrls } from '@/api/common';
 import useFunctions from '@/hooks/useFunctions';
 
 const Profile: FC = () => {
-  const { idoQueueDetail } = useContext(AirdropContext);
+  const { idoQueueDetail, stage } = useContext(AirdropContext);
   const iconRefs = useRef<any>({});
   const [showShare, setShowShare] = useState(false);
   const [showMore, setShowMore] = useState(false);
@@ -28,6 +28,7 @@ const Profile: FC = () => {
   const shareUrl = useMemo(() => {
     return `${import.meta.env.VITE_SHARE_URI}airdrop/${idoQueueDetail?.ticker}`;
   }, [idoQueueDetail]);
+
   useEffect(() => {
     (async () => {
       const dexScreenerUrl = `https://dexscreener.com/solana/${idoQueueDetail?.contractAddress}`;
@@ -130,10 +131,19 @@ const Profile: FC = () => {
               { name: 'Bubblemaps', icon: '/create/icon-tool-bubble-maps.png', url: tools[1] },
               { name: 'GeckoTerminal', icon: '/create/icon-tool-gecko-terminal.png', url: tools[2] },
             ].map((token) => (
-              <li key={token.name} className="flex items-center gap-x-1.5 h-8 token_list_hover">
-                <a href={token.url} target="_black" className="flex items-center gap-x-1.5 h-8">
-                  <img className="w-5 object-contain" src={token.icon} /> {token.name}
-                </a>
+              <li
+                key={token.name}
+                className={`flex items-center gap-x-1.5 h-8 ${stage !== 'in-queue' && stage !== 'imo' ? 'token_list_hover' : ''}`}
+              >
+                {stage !== 'in-queue' && stage !== 'imo' ? (
+                  <a href={token.url} target="_black" className="flex items-center gap-x-1.5 h-8">
+                    <img className="w-5 object-contain" src={token.icon} /> {token.name}
+                  </a>
+                ) : (
+                  <p className="flex items-center gap-x-1.5 h-8">
+                    <img className="w-5 object-contain" src={token.icon} /> {token.name}
+                  </p>
+                )}
               </li>
             ))}
           </ul>

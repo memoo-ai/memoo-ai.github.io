@@ -213,8 +213,10 @@ const CreatorRankingShareModal = ({ children, memooScore, meMessage }: any) => {
             </div>
             <div className=" flex  justify-center flex-col">
               {/* <img className="w-[96px] h-[96px] rounded-full mt-[36px]" src={base64Image} alt="" /> */}
-              <h3 className="text-[#fff] text-[24px] font-404px text-left">{idoQueueDetail?.tokenName}</h3>
-              <h5 className="text-[#fff] text-[14px] font-OCR text-left">{idoQueueDetail?.ticker}</h5>
+              <h3 className="text-[#fff] text-[24px] font-404px text-left leading-[20px] mt-[14px]">
+                {idoQueueDetail?.tokenName}
+              </h3>
+              <h5 className="text-[#fff] text-[14px] font-OCR text-left leading-[20px]">{idoQueueDetail?.ticker}</h5>
               <h5 className="text-[#fff] text-[14px] font-OCR text-left mt-[36px]">Check out this meme token at</h5>
               <div className="w-fit text-[#07E993] bg-[#29455b] font-OCR text-xl font-normal rounded-[7px] px-[16px] py-[6px] mt-[7px]">
                 {shareUrl}
