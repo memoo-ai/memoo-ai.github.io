@@ -296,7 +296,7 @@ const Gecko = () => {
               },
             };
           }}
-          scroll={data.length !== 0 && !isProd() ? { x: '100vw' } : {}}
+          // scroll={data.length !== 0 || isProd() ? { x: '100vw' } : {}}
           locale={{
             emptyText: <Empty showBorder={false} />,
           }}
