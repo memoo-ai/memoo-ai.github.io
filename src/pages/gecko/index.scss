@@ -33,14 +33,22 @@
   background-color: #1F3B4F;
 }
 .gecko-table{
-  ::-webkit-scrollbar {
+  &::-webkit-scrollbar {
     width: 0px !important;
     background: transparent !important;
   }
 
-  ::-webkit-scrollbar-horizontal {
+  &::-webkit-scrollbar-horizontal {
     height: 0px !important;
     background: transparent !important;
+  }
+}
+.ant-table-content {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
 .ant-table-wrapper .ant-table-ping-right:not(.ant-table-has-fix-right) .ant-table-container::after{

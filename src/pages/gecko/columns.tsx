@@ -11,6 +11,7 @@ import { TrendingTokens } from '@/types';
 import { formatDecimals, formatRatioToPercentage } from '@/utils';
 import { IconCollect } from '@/components/icons';
 import Wallet from '@/components/SolanaWallet';
+import IPopover from '@/components/IPopover';
 
 const { collection } = useFunctions();
 
@@ -158,22 +159,31 @@ export const columns = (triggerRefresh: Function) => [
     key: 'tokenAudit',
     sorter: false,
     render: (price: number, record: TrendingTokens) => (
-      <div className="flex items-center">
-        <div>
-          <p className="font-OCR text-[18px] leading-[20px] text-[#FE6D6D]">30.6%</p>
-          <h5>Top10 Hold</h5>
+      <div className="flex items-center gap-x-[22px]">
+        <div className="flex flex-col gap-y-[14px]">
+          <p
+            className={`font-OCR text-[18px] leading-[20px]  ${Number(record.vol1h) > 0 ? 'text-green' : 'text-[#FE6D6D]'}`}
+          >
+            30.6%
+          </p>
+          <h5 className="font-OCR text-[18px] leading-[20px] text-[#7D83B5]">Top10 Hold</h5>
         </div>
-        <div>
-          <p>Yes</p>
-          <h5>No Mint</h5>
+        <div className="flex flex-col gap-y-[14px]">
+          <p className="font-OCR text-[18px] leading-[20px] text-green">Yes</p>
+          <h5 className="font-OCR text-[18px] leading-[20px] text-[#7D83B5]">No Mint</h5>
         </div>
-        <div>
-          <p>No</p>
-          <h5>Blacklist</h5>
+        <div className="flex flex-col gap-y-[14px]">
+          <p className="font-OCR text-[18px] leading-[20px] text-green">No</p>
+          <h5 className="font-OCR text-[18px] leading-[20px] text-[#7D83B5]">Blacklist</h5>
         </div>
-        <div>
-          <p>Yes</p>
-          <h5>Burnt</h5>
+        <div className="flex flex-col gap-y-[14px]">
+          <p className="font-OCR text-[18px] leading-[20px] text-green flex gap-x-[10px]">
+            Yes{' '}
+            <IPopover trigger="hover" content="X% Liquidity Burnt">
+              <img className="w-[16px] h-[20px]" src="/gecko/fire.png" />
+            </IPopover>
+          </p>
+          <h5 className="font-OCR text-[18px] leading-[20px] text-[#7D83B5]">Burnt</h5>
         </div>
       </div>
     ),

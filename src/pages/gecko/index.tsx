@@ -53,43 +53,43 @@ const Gecko = () => {
       const { data } = tab === 'trending' ? await getTrendingTokens(params) : await getTopTokens(params);
       // console.log(data);
       if (data) {
-        // setData(data.records ?? []);
-        setData([
-          {
-            icon: 'string',
-            increase1H: 1,
-            increase24H: 1,
-            marketCap: 1,
-            memooScore: 100,
-            price: 1,
-            ticker: '1',
-            tokenName: 'string',
-            volume24H: 1,
-            totalScore: 1,
-            created: '196d',
-            liquidity: '6.5m',
-            holders: '114k',
+        setData(data.records ?? []);
+        // setData([
+        //   {
+        //     icon: 'https://memoo-resource.s3.ap-southeast-2.amazonaws.com/test/26295ffe-612a-4147-8ece-437c31fcccbf.jpg',
+        //     increase1H: 1,
+        //     increase24H: 1,
+        //     marketCap: 1,
+        //     memooScore: 100,
+        //     price: 1,
+        //     ticker: '1',
+        //     tokenName: 'string',
+        //     volume24H: 1,
+        //     totalScore: 1,
+        //     created: '196d',
+        //     liquidity: '6.5m',
+        //     holders: '114k',
 
-            vol1h: '235m',
-          },
-          {
-            icon: 'string',
-            increase1H: 1,
-            increase24H: 1,
-            marketCap: 1,
-            memooScore: 100,
-            price: 1,
-            ticker: '1',
-            tokenName: 'string',
-            volume24H: 1,
-            totalScore: 1,
-            created: '196d',
-            liquidity: '6.5m',
-            holders: '114k',
+        //     vol1h: '235m',
+        //   },
+        //   {
+        //     icon: 'https://memoo-resource.s3.ap-southeast-2.amazonaws.com/test/26295ffe-612a-4147-8ece-437c31fcccbf.jpg',
+        //     increase1H: 1,
+        //     increase24H: 1,
+        //     marketCap: 1,
+        //     memooScore: 100,
+        //     price: 1,
+        //     ticker: '1',
+        //     tokenName: 'string',
+        //     volume24H: 1,
+        //     totalScore: 1,
+        //     created: '196d',
+        //     liquidity: '6.5m',
+        //     holders: '114k',
 
-            vol1h: '235m',
-          },
-        ]);
+        //     vol1h: '235m',
+        //   },
+        // ]);
         setPagination({
           ...pagination,
           total: data.total_record ?? 0,
