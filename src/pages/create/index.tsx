@@ -55,6 +55,7 @@ import { useProportion } from '@/hooks/useProportion';
 import { IconMinus, IconPlus, IconDiscord, IconTelegram } from '@/components/icons';
 import ImgCrop from '@/components/ImgCrop';
 import useSolanaWallet from '@/utils/solanaWeb3/solanaWallet';
+import { PinnedTwitterData } from '@/types';
 
 const twitterClientId = import.meta.env.VITE_TWITTER_CLIENT_ID;
 const twitterRedirectUri = import.meta.env.VITE_TWITTER_REDIRECT_URI;
@@ -159,6 +160,9 @@ export default function Create() {
       pinnedTwitterUrl: '',
     },
   ]);
+  const [telegram, setTelegram] = useState('');
+  const [discord, setDiscord] = useState('');
+  const [website, setWebsite] = useState('');
   const [preMarketAcquisition, setPreMarketAcquisition] = useState(0);
   const { getMemeAddressWithSymbol } = useMemeFactoryContract();
   const navigate = useNavigate();
@@ -344,6 +348,27 @@ export default function Create() {
           setTwitter(res.data.twitter);
           setTwitterAccessToken(res.data.twitterAccessToken);
           setPreMarketAcquisition(res.data.preMarketAcquisition);
+          let pinnedTwitterUrls = [];
+
+          if (res.data?.pinnedTwitterData) {
+            pinnedTwitterUrls = res.data.pinnedTwitterData.map((item: PinnedTwitterData) => {
+              return {
+                id: item.id ?? 0,
+                pinnedTwitterUrl: item.pinnedTwitterUrl,
+              };
+            });
+
+            while (pinnedTwitterUrls.length < 4) {
+              pinnedTwitterUrls.push({
+                id: 0,
+                pinnedTwitterUrl: '',
+              });
+            }
+          }
+          setPinnedTwitterUrl(pinnedTwitterUrls.length > 0 ? pinnedTwitterUrls : ['', '', '', '']);
+          setTelegram(res.data.telegram ?? '');
+          setDiscord(res.data.discord ?? '');
+          setWebsite(res.data.website ?? '');
           form.setFieldsValue({
             ...res.data,
             icon: res.data.oldIcon,
@@ -495,6 +520,9 @@ export default function Create() {
         data.accessToken = twitterAccessToken;
         // data.pinnedTwitterUrl = pinnedTwitterUrl;
         data.pinnedTwitterData = pinnedTwitterUrl;
+        data.website = website || '';
+        data.discord = discord || '';
+        data.telegram = telegram || '';
         if (!data.preMarketAcquisition) data.preMarketAcquisition = 0;
         // data.twitter = 'twitter';
         // data.accessToken = 'twitterAccessToken';
@@ -960,19 +988,31 @@ export default function Create() {
                   </Form.Item>
                   <Form.Item label={<p className="whitespace-pre-wrap">{`Project\nWebsite`}</p>} name="website">
                     <div className="reactive">
-                      <Input className="custom-input rounded-[7px] px-8" />
+                      <Input
+                        className="custom-input rounded-[7px] px-8"
+                        value={website}
+                        onChange={(e) => setWebsite(e.target.value)}
+                      />
                       <img className="website-logo" src="/create/icon-website.png" alt="" />
                     </div>
                   </Form.Item>
                   <Form.Item label={<p className="whitespace-pre-wrap">{`Project\nTelegram`}</p>} name="telegram">
                     <div className="reactive">
-                      <Input className="custom-input rounded-[7px] px-8" />
+                      <Input
+                        className="custom-input rounded-[7px] px-8"
+                        value={telegram}
+                        onChange={(e) => setTelegram(e.target.value)}
+                      />
                       <IconTelegram className="website-logo w-[17px] h-[15px]" hoverColor="#07E993" />
                     </div>
                   </Form.Item>
                   <Form.Item label={<p className="whitespace-pre-wrap">{`Project\nDiscord`}</p>} name="discord">
                     <div className="reactive">
-                      <Input className="custom-input rounded-[7px] px-8" />
+                      <Input
+                        className="custom-input rounded-[7px] px-8"
+                        value={discord}
+                        onChange={(e) => setDiscord(e.target.value)}
+                      />
                       <IconDiscord className="website-logo w-[17px] h-[15px]" color="#07E993" hoverColor="#07E993" />
                     </div>
                   </Form.Item>
