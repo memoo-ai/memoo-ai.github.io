@@ -14,7 +14,6 @@ import BigNumber from 'bignumber.js';
 const CreatorRankingModal = ({ children, ticker }: any) => {
   const [open, setOpen] = useState(false);
   const [idoLaunchedDetail, setIdoLaunchedDetail] = useState<any>(null);
-  const { airdropClaim } = useManageContract();
   const [confirming, setConfirming] = useState(false);
   const { getSign } = useSign();
   useEffect(() => {
@@ -23,7 +22,7 @@ const CreatorRankingModal = ({ children, ticker }: any) => {
   }, [ticker]);
 
   const onConfirm = useCallback(async () => {
-    if (!airdropClaim || !idoLaunchedDetail) return;
+    if (!idoLaunchedDetail) return;
     try {
       setConfirming(true);
       // TODO
@@ -33,7 +32,7 @@ const CreatorRankingModal = ({ children, ticker }: any) => {
     } finally {
       setConfirming(false);
     }
-  }, [airdropClaim, idoLaunchedDetail]);
+  }, [idoLaunchedDetail]);
   return (
     <div>
       <Modal

@@ -139,7 +139,7 @@ const Airdrop: FC = () => {
   // }>();
   const [totalPurchased, setTotalPurchased] = useState('0');
   const [totalAmount, setTotalAmount] = useState('0');
-  const { config, unlockMeme, getCanUnlockCount, memeUnlockPeriods } = useManageContract();
+  // const { config, unlockMeme, getCanUnlockCount, memeUnlockPeriods } = useManageContract();
   const navigate = useNavigate();
   const mine = useMemo(
     () => compareAddrs(idoQueueDetail?.creatorAddress as Address, address! as any),
@@ -171,7 +171,7 @@ const Airdrop: FC = () => {
       ticker,
       memooConfig,
       idoBuy,
-      unlockMeme,
+      // unlockMeme,
       airdropClaim,
       idoClaim,
       creatorClaimAll,
@@ -197,9 +197,9 @@ const Airdrop: FC = () => {
       idoQueueDetail,
       mine,
       ticker,
-      config,
+      // config,
       idoBuy,
-      unlockMeme,
+      // unlockMeme,
       airdropClaim,
       idoClaim,
       creatorClaimAll,

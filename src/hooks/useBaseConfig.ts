@@ -10,12 +10,12 @@ export const useBaseConfig = () => {
   // const { address } = useAccount();
   const { publicKey } = useWallet();
   useEffect(() => {
-    getBaseConfig().then((res) => {
-      setBaseConfig(res.data);
-    });
-    getSolanaConfig().then((res) => {
-      setSolanaConfig(res.data);
-    });
+    // getBaseConfig().then((res) => {
+    //   setBaseConfig(res.data);
+    // });
+    // getSolanaConfig().then((res) => {
+    //   setSolanaConfig(res.data);
+    // });
   }, [publicKey]);
 
   return {

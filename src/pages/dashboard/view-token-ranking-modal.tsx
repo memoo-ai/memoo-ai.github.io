@@ -15,7 +15,7 @@ import {
 } from '@/components/icons';
 import { getIDOLaunchedDetail } from '@/api/airdrop';
 import { getTokenDetail } from '@/api/token';
-import { useManageContract } from '@/hooks/useManageContract';
+// import { useManageContract } from '@/hooks/useManageContract';
 import { useSign } from '@/hooks/useEthers';
 import { myAirdropDetail } from '@/api/airdrop';
 import BigNumber from 'bignumber.js';
@@ -23,7 +23,7 @@ import BigNumber from 'bignumber.js';
 const ViewTokenRankingModal = ({ children, ticker }: any) => {
   const [open, setOpen] = useState(false);
   const [idoLaunchedDetail, setIdoLaunchedDetail] = useState<any>(null);
-  const { airdropClaim } = useManageContract();
+  // const { airdropClaim } = useManageContract();
   const [confirming, setConfirming] = useState(false);
   const { getSign } = useSign();
   useEffect(() => {
@@ -32,7 +32,7 @@ const ViewTokenRankingModal = ({ children, ticker }: any) => {
   }, [ticker]);
 
   const onConfirm = useCallback(async () => {
-    if (!airdropClaim || !idoLaunchedDetail) return;
+    if (!idoLaunchedDetail) return;
     try {
       setConfirming(true);
       // TODO
@@ -44,7 +44,7 @@ const ViewTokenRankingModal = ({ children, ticker }: any) => {
     } finally {
       setConfirming(false);
     }
-  }, [airdropClaim, idoLaunchedDetail]);
+  }, [idoLaunchedDetail]);
   return (
     <div>
       <Modal
