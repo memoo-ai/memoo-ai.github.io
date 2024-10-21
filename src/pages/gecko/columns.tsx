@@ -46,11 +46,12 @@ export const columns = (triggerRefresh: Function) => [
     render: (collectionFlag: boolean, record: TrendingTokens) => (
       <Wallet>
         <div
-          onClick={async () => {
+          onClick={async (e) => {
             // if (!address) {
             //   message.info('Please connect wallet first.', { key: 'Please connect wallet first.' });
             //   return;
             // }
+            e.stopPropagation();
             await collection(record.ticker, collectionFlag, triggerRefresh?.(), 135);
           }}
         >
