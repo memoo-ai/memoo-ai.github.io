@@ -108,13 +108,13 @@ export const useAccount = () => {
   // const connection = new Connection(clusterApiUrl(network));
   const programId = new PublicKey(import.meta.env.VITE_PROGRAM_ID);
   const globalMemeConfigId = import.meta.env.VITE_GLOBAL_MEMOO_CONFIG_ID;
-  const { solanaConfig } = useBaseConfig();
+  // const { solanaConfig } = useBaseConfig();
   const program = useAnchorProgram(programId, IDL as Idl);
   const [memooConfig, setMemooConfig] = useState<MemooConfig>();
   // const memooConfigPda = new PublicKey(import.meta.env.VITE_MEMOO_CONFIG_PDA);
   // const memooConfigPda = import.meta.env.VITE_MEMOO_CONFIG_PDA;
   const memooConfigPda = useMemo(() => {
-    if (!solanaConfig) return;
+    // if (!solanaConfig) return;
     // const globalMemeConfigId = '4b6bXbodnZH1K1kPipZzTAUn93SNYhRidyuz79Uoy4HW';
     // const globalMemeConfigId = solanaConfig?.globalMemooConfigId;
     const config = PublicKey.findProgramAddressSync(
@@ -125,7 +125,7 @@ export const useAccount = () => {
     console.log('memooConfigPda:', config);
     return config;
     // return new PublicKey(import.meta.env.VITE_MEMOO_CONFIG_PDA);
-  }, [solanaConfig]);
+  }, [globalMemeConfigId]);
 
   // const getMemooConfig = useCallback(async () => {
   //   if (!memooConfigPda || !program) return;
@@ -154,7 +154,7 @@ export const useAccount = () => {
 
   const registerTokenMint = useCallback(
     async (memeId: string, totalPay: string, paySol: number) => {
-      if (!solanaConfig || !publicKey || !signTransaction || !program || !memooConfig) return;
+      if (!publicKey || !signTransaction || !program || !memooConfig) return;
       // console.log('totalPay', Number(new BN(totalPay).add(memooConfig?.platformFeeCreateMemeSol)));
       try {
         // console.log('memooConfigPda:', memooConfigPda);
@@ -275,7 +275,7 @@ export const useAccount = () => {
         // throw error;
       }
     },
-    [connection, signTransaction, solanaConfig, publicKey, program, memooConfig],
+    [connection, signTransaction, publicKey, program, memooConfig],
   );
 
   const idoBuy = useCallback(
