@@ -154,7 +154,7 @@ export const Collector = () => {
                     //   {item?.claimFlag === '0' && (
                     //     <div className="flex">
                     //       <IconAwaiting className="IconAwaiting" />{' '}
-                    //       <span className="font-404px text-[#07E993] ml-[11px]">AWAITING</span>
+                    //       <span className="font-404px text-[#07E993] ml-[11px]">PENDING</span>
                     //     </div>
                     //     // <div className="flex">
                     //     //   <img src="/dashboard/claimed.png" alt="" />
@@ -215,7 +215,7 @@ export const Collector = () => {
                       ) : (
                         <div className="flex">
                           <IconAwaiting className="IconAwaiting" />{' '}
-                          <span className="font-404px text-[#07E993] ml-[11px]">AWAITING</span>
+                          <span className="font-404px text-[#07E993] ml-[11px]">PENDING</span>
                         </div>
                       )}
                     </div>
@@ -226,7 +226,7 @@ export const Collector = () => {
                   {item?.claimedFlag === '0' && (
                     <div className="flex">
                       <IconAwaiting className="IconAwaiting" />{' '}
-                      <span className="font-404px text-[#07E993] ml-[11px]">AWAITING</span>
+                      <span className="font-404px text-[#07E993] ml-[11px]">PENDING</span>
                     </div>
                   )}
                   {item?.claimedFlag === '1' && (
@@ -281,7 +281,7 @@ export const Collector = () => {
                       ) : (
                         <div className="flex">
                           <IconAwaiting className="IconAwaiting" />{' '}
-                          <span className="font-404px text-[#07E993] ml-[11px]">AWAITING</span>
+                          <span className="font-404px text-[#07E993] ml-[11px]">PENDING</span>
                         </div>
                       )}
                     </div>
