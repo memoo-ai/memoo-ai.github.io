@@ -202,12 +202,15 @@ const Header = () => {
             />
           </div>
           <div className="flex items-center gap-x-[25px] mr-[15px]">
-            {menusTop.map((item, index) => (
-              <NavLink to={item.path} key={index} className="relative h-100% font-404px text-[10px] text-[#131522]">
-                {item.name}
-                {item.isActive && <IconTriangle className={`${styles.triangle}`} color="#131522" />}
-              </NavLink>
-            ))}
+            {menusTop.map(
+              (item, index) =>
+                item.showMenu && (
+                  <NavLink to={item.path} key={index} className="relative h-100% font-404px text-[10px] text-[#131522]">
+                    {item.name}
+                    {item.isActive && <IconTriangle className={`${styles.triangle}`} color="#131522" />}
+                  </NavLink>
+                ),
+            )}
           </div>
         </div>
       ) : (
