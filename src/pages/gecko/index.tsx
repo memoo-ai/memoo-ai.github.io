@@ -261,10 +261,14 @@ const Gecko = () => {
       <div className="flex justify-between">
         <div />
         <div className="flex  gap-x-[40px]">
-          <div className="flex items-center justify-center gap-x-[11px] scroll-more w-[231px] h-[46px]">
-            <img className="w-[37px] h-[14.82px]" src="/gecko/scroll-more.png" alt="" />{' '}
-            <span className="font-OCR text-[12px] leading-[20px] text-green">Scroll right for more</span>
-          </div>
+          {isProd() ? (
+            <div />
+          ) : (
+            <div className="flex items-center justify-center gap-x-[11px] scroll-more w-[231px] h-[46px]">
+              <img className="w-[37px] h-[14.82px]" src="/gecko/scroll-more.png" alt="" />{' '}
+              <span className="font-OCR text-[12px] leading-[20px] text-green">Scroll right for more</span>
+            </div>
+          )}
           <ISelect
             options={tokenSelectOptions}
             onSelectChange={(key, orderBy) => {
@@ -283,8 +287,10 @@ const Gecko = () => {
         // ref={tableRef}
       >
         <Table
-          className="common-table mb-10 hide-scrollbar"
-          columns={isProd() ? columnsOld(triggerRefresh) : columns(triggerRefresh)}
+          // className="common-table mb-10 hide-scrollbar"
+          className="mb-10"
+          // columns={isProd() ? columnsOld() : columns(triggerRefresh)}
+          columns={columnsOld(triggerRefresh)}
           dataSource={data}
           pagination={false}
           // loading={loading}
