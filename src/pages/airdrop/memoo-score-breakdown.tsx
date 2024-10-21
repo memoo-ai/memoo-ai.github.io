@@ -33,7 +33,7 @@ const MeMooScoreBreakdown: FC = () => {
   };
 
   return (
-    <div className="memoo-score-breakdown px-[22px] pt-[33px] pb-[37px] mt-[11px]">
+    <div className="memoo-score-breakdown flex-auto px-[22px] pt-[33px] pb-[37px] mt-[11px]">
       <div className="font-404px text-[18px]   text-green">MeMoo Score Breakdown</div>
       <div>
         <ul className="basic_list mt-14 flex flex-col gap-y-3">

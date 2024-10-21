@@ -9,7 +9,7 @@ import { Button } from 'antd';
 import Countdown from '@/pages/airdrop/countdown';
 import { useNavigate } from 'react-router-dom';
 import Empty from '@/components/Empty';
-import { formatNumberToFixed, formatTs, formatRatioToPercentage } from '@/utils';
+import { formatNumberToFixed, formatTs, formatRatioToPercentage, isProd } from '@/utils';
 import Sample from '../Sample';
 import useFunctions from '@/hooks/useFunctions';
 import IPopover from '@/components/IPopover';
@@ -71,29 +71,32 @@ const KingsCards = ({
                   <div className="flex items-center  box-border">
                     <img className="w-[87px] h-[84px] rounded-[50%] mr-[12px]" src={item.icon} alt="" />
                     <div>
-                      <div className="flex gap-x-[12px] mb-[16px]">
-                        <Wallet>
-                          <IconCollect
-                            className=""
-                            color={item.collectionFlag ? '#B53BFF' : '#6D4F71'}
-                            hoverColor={item.collectionFlag ? '#6D4F71' : '#B53BFF'}
-                            onClick={async () => {
-                              const result = await useAddress('!mt-[130px]');
-                              if (result) {
-                                await collection(item.ticker, item.collectionFlag, triggerRefresh?.(), 135);
-                              }
-                            }}
-                          />
-                        </Wallet>
-                        {Number(item.creatorTotalRaisedNumerator ?? 0) > 0 && (
-                          <IPopover
-                            trigger="hover"
-                            content={`${formatRatioToPercentage(item.creatorTotalRaisedNumerator, item.creatorTotalRaisedDenominator)}% Increased acquisition`}
-                          >
-                            <img className="w-[28px] h-[23px]" src="/create/topupicon.png" />
-                          </IPopover>
-                        )}
-                      </div>
+                      {!isProd() && (
+                        <div className="flex gap-x-[12px] mb-[16px]">
+                          <Wallet>
+                            <IconCollect
+                              className=""
+                              color={item.collectionFlag ? '#B53BFF' : '#6D4F71'}
+                              hoverColor={item.collectionFlag ? '#6D4F71' : '#B53BFF'}
+                              onClick={async () => {
+                                const result = await useAddress('!mt-[130px]');
+                                if (result) {
+                                  await collection(item.ticker, item.collectionFlag, triggerRefresh?.(), 135);
+                                }
+                              }}
+                            />
+                          </Wallet>
+                          {Number(item.creatorTotalRaisedNumerator ?? 0) > 0 && (
+                            <IPopover
+                              trigger="hover"
+                              content={`${formatRatioToPercentage(item.creatorTotalRaisedNumerator, item.creatorTotalRaisedDenominator)}% Increased acquisition`}
+                            >
+                              <img className="w-[28px] h-[23px]" src="/create/topupicon.png" />
+                            </IPopover>
+                          )}
+                        </div>
+                      )}
+
                       <h5 className="font-OCR text-[18px] text-[#fff]">{item.tokenName}</h5>
                       <h5 className="font-OCR text-[12px] text-green">{item.ticker}</h5>
                     </div>

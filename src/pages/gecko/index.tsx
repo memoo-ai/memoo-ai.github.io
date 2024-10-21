@@ -2,7 +2,7 @@ import './index.scss';
 import CommonBanner from '@/components/Banner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SetStateAction, useCallback, useEffect, useState, useRef } from 'react';
-import { columns, tokenSelectOptions } from './columns';
+import { columns, columnsOld, tokenSelectOptions } from './columns';
 import IPagination from '@/components/IPagination';
 import { useNavigate } from 'react-router-dom';
 import { Table, Spin } from 'antd';
@@ -21,6 +21,7 @@ import memooGeckoIcon from '@/assets/imgs/memoogecko.png';
 import createRankIcon from '@/assets/imgs/creatorrankcup .png';
 import { IconHorn } from '@/components/icons';
 import { useAccount } from '@/hooks/useWeb3';
+import { isProd } from '@/utils';
 
 export type GeckoType = 'trending' | 'top';
 const Gecko = () => {
@@ -283,7 +284,7 @@ const Gecko = () => {
       >
         <Table
           className="common-table mb-10 hide-scrollbar"
-          columns={columns(triggerRefresh)}
+          columns={isProd() ? columnsOld(triggerRefresh) : columns(triggerRefresh)}
           dataSource={data}
           pagination={false}
           // loading={loading}

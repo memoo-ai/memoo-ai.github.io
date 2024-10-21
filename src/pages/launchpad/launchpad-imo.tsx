@@ -5,12 +5,13 @@ import Empty from '@/components/Empty';
 import { Table, Spin } from 'antd';
 import KingsCards from '@/components/KingsCards';
 import IPagination from '@/components/IPagination';
-import { columns, imoSelectOptions } from './columns';
+import { columns, columnsOld, imoSelectOptions } from './columns';
 import { useNavigate } from 'react-router-dom';
 import { getLaunchpadImo, getImoPvCard } from '@/api/launchpad';
 import { LaunchpadIMO, ImoPvCard } from '@/types';
 import ISelect from '@/components/ISelect';
 import { useAccount } from '@/hooks/useWeb3';
+import { isProd } from '@/utils';
 
 const LaunchPadImo = () => {
   const navigate = useNavigate();
@@ -94,7 +95,7 @@ const LaunchPadImo = () => {
       </div>
       <div className={data.length === 0 ? 'table-no-data' : ''}>
         <Table
-          columns={columns(navigate, triggerRefresh)}
+          columns={isProd() ? columnsOld(navigate, triggerRefresh) : columns(navigate, triggerRefresh)}
           dataSource={data as LaunchpadIMO[]}
           pagination={false}
           // loading={loading}

@@ -320,3 +320,6 @@ export function formatAddress(address: string, startLength = 4, endLength = 4): 
 export function isEven(number: number) {
   return number % 2 === 0;
 }
+export function isProd() {
+  return import.meta.env.MODE === 'production';
+}

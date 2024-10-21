@@ -6,7 +6,7 @@ import { Collector } from './collector';
 import { WatchList } from './watchlist';
 import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 import MyProfile from './my-profile';
-
+import { isProd } from '@/utils';
 const DashboardContent: FC<{ onChangeType: (type: string) => void }> = ({ onChangeType, ...rest }) => {
   const [activeKey, setActiveKey] = useState('Creator');
   const location = useLocation();

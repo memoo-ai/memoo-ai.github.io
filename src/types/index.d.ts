@@ -392,6 +392,11 @@ declare interface TrendingTokens {
   liquidity: string;
   holders: string;
   vol1h: string;
+  topTenHoder: string;
+  mintAuthDisable: boolean;
+  blackList: boolean;
+  burnt: boolean;
+  burntProgress: number;
 }
 declare interface TrendingCreators {
   collectiveHolders: number;

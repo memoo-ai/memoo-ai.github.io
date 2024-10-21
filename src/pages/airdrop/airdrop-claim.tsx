@@ -97,8 +97,8 @@ export default function AirdropClaim() {
       authorizeTwitter(clientId, twitterRedirectUri);
 
       console.assert(!!twitter, 'twitter is not found');
-      setFollowing(true);
-      await follow(twitter!);
+      // setFollowing(true);
+      // await follow(twitter!);
     } catch (error) {
       console.error(error);
     } finally {

@@ -345,6 +345,14 @@ const Airdrop: FC = () => {
     return preAmountBN.toNumber();
   }, [memeCreatorUserData, memooConfig]);
 
+  const pinned = useMemo(() => {
+    if (!idoQueueDetail?.pinnedTwitterData) {
+      return true;
+    }
+
+    return idoQueueDetail.pinnedTwitterData.every((item) => !item.username);
+  }, [idoQueueDetail]);
+
   return (
     <div className="airdrop pb-16">
       <Spin spinning={loading} fullscreen />
@@ -393,7 +401,7 @@ const Airdrop: FC = () => {
           <Banner />
           <Profile />
           <MeMooScoreBreakdown />
-          <PinnedTweet />
+          {!pinned && <PinnedTweet />}
         </AirdropContext.Provider>
       </div>
     </div>

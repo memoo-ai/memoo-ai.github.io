@@ -5,12 +5,13 @@ import Empty from '@/components/Empty';
 import { Table, Spin } from 'antd';
 import KingsCards from '@/components/KingsCards';
 import IPagination from '@/components/IPagination';
-import { columnsAirdrop, airdropSelectOptions } from './columns';
+import { columnsAirdrop, columnsAirdropOld, airdropSelectOptions } from './columns';
 import { useNavigate } from 'react-router-dom';
 import { getLaunchpadAirdrop, getAirdropCard } from '@/api/launchpad';
 import { LaunchpadAirdrop, AirdropCard } from '@/types';
 import ISelect from '@/components/ISelect';
 import { useAccount } from '@/hooks/useWeb3';
+import { isProd } from '@/utils';
 const LaunchPadAirdrop = () => {
   const navigate = useNavigate();
   const [activeKey, setActiveKey] = useState('');
@@ -89,7 +90,7 @@ const LaunchPadAirdrop = () => {
       </div>
       <div className={data.length === 0 ? 'table-no-data' : ''}>
         <Table
-          columns={columnsAirdrop(navigate, triggerRefresh)}
+          columns={isProd() ? columnsAirdropOld(navigate, triggerRefresh) : columnsAirdrop(navigate, triggerRefresh)}
           dataSource={data as LaunchpadAirdrop[]}
           pagination={false}
           // loading={loading}
