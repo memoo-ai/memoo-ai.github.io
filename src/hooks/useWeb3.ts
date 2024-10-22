@@ -10,6 +10,7 @@ import {
   Transaction,
   sendAndConfirmTransaction,
   LAMPORTS_PER_SOL,
+  ComputeBudgetProgram,
 } from '@solana/web3.js';
 import {
   createAssociatedTokenAccountInstruction,
@@ -222,7 +223,11 @@ export const useAccount = () => {
         console.log('totalPay:', Number(totalPay));
         console.log('platformFeeCreateMemeSol: ', platformFeeBN.toString());
         console.log('totalPayWithFee:', totalPayWithFee.toString());
-
+        const priorityFee = 50;
+        const priorityFeeInstruction = ComputeBudgetProgram.setComputeUnitPrice({
+          microLamports: priorityFee,
+        });
+        transaction.add(priorityFeeInstruction);
         const registerTokenMintIx = await program.methods
           .registerTokenMint(memeConfigId, new BN(totalPayWithFee.toString()), new BN(0))
           // .registerTokenMint(memeConfigId, new BN(18000000).add(memooConfig?.platformFeeCreateMemeSol), new BN(0), 9)
@@ -239,36 +244,41 @@ export const useAccount = () => {
             userWsolAccount: userWsolAddress,
             wsolMint: NATIVE_MINT,
           })
-          .rpc();
-        return registerTokenMintIx;
+          .instruction();
+        //   .rpc();
+        // return registerTokenMintIx;
 
-        // transaction.add(registerTokenMintIx);
-        // const latestBlockhash = await connection.getLatestBlockhash('finalized');
-        // transaction.recentBlockhash = latestBlockhash.blockhash;
-        // transaction.feePayer = publicKey;
-        // const signedTransaction = await signTransaction(transaction);
-        // const fee = await transaction.getEstimatedFee(connection);
-        // console.log('fee:', fee);
-        // console.log('latestBlockhash:', latestBlockhash);
-        // // const signature = await connection.sendRawTransaction(signedTransaction.serialize());
-        // const signature = await connection.sendRawTransaction(signedTransaction.serialize(), {
-        //   skipPreflight: true,
-        // });
+        transaction.add(registerTokenMintIx);
+        const latestBlockhash = await connection.getLatestBlockhash('finalized');
+        transaction.recentBlockhash = latestBlockhash.blockhash;
+        transaction.feePayer = publicKey;
+        const signedTransaction = await signTransaction(transaction);
+        const fee = await transaction.getEstimatedFee(connection);
+        console.log('fee:', fee);
+        console.log('latestBlockhash:', latestBlockhash);
+        // const signature = await connection.sendRawTransaction(signedTransaction.serialize());
+        const signature = await connection.sendRawTransaction(signedTransaction.serialize(), {
+          skipPreflight: false,
+          maxRetries: 150000,
+        });
 
-        // console.log('Transaction sent. Signature:', signature);
-        // const confirmationStrategy = {
-        //   signature: signature,
-        //   blockhash: latestBlockhash.blockhash,
-        //   lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
-        // };
+        console.log('Transaction sent. Signature:', signature);
+        const confirmationStrategy = {
+          signature: signature,
+          blockhash: latestBlockhash.blockhash,
+          lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+        };
 
-        // const confirmation = await connection.confirmTransaction(confirmationStrategy, 'finalized');
-        // console.log('confirmation:', confirmation);
+        const confirmation = await connection.confirmTransaction(confirmationStrategy, 'finalized');
+        console.log('confirmation:', confirmation);
 
-        // if (confirmation.value.err) {
-        //   throw new Error(`Transaction failed: ${confirmation.value.err.toString()}`);
-        // }
+        if (confirmation.value.err) {
+          console.log('Transaction failed: ', confirmation.value.err.toString());
+          return 'error';
+          // throw new Error(`Transaction failed: ${confirmation.value.err.toString()}`);
+        }
         // return confirmation;
+        return signature;
       } catch (error) {
         console.error('Error in registerTokenMint:', error);
         return null;
