@@ -29,7 +29,7 @@ export const getIDOLaunchedDetailTop10 = (params: {
   ticker: string;
   address?: any;
 }) => {
-  return http.get<IDOLaunchedDetailTop10[]>(`${prefix}/web-unauthorized/ido-launched-detail-top10`, { params });
+  return http.get(`${prefix}/web-unauthorized/ido-launched-detail-top10`, { params });
 };
 
 export const getIDOQueueDetail = (ticker: string, address?: any) => {

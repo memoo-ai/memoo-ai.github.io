@@ -265,7 +265,7 @@ const Airdrop: FC = () => {
             getUnlockTimestamp(ticker),
           ]);
           setIDOLaunchedDetail(p1.data);
-          setIDOLaunchedDetailTop10(p2.data);
+          setIDOLaunchedDetailTop10(p2.data.records);
         } else if (data.status === 'IDO') {
           const { data } = await getIDOActiveDetail(ticker, address ?? 'default');
           console.log('data.status:IDO');
