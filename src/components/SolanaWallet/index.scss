@@ -126,3 +126,36 @@
 .wallet-adapter-dropdown-list{
   display: none;
 }
+@media not all and (min-width: 1024px){
+  .wallet-adapter-modal-wrapper {
+    background: #1f3b4f !important;
+    min-width: 86vw !important;
+    padding: 28px !important;
+    box-sizing: border-box !important;
+  }
+  .wallet-adapter-modal-list {
+    // border-radius: 10px !important;
+    // background-color: #2B526E !important;
+    // overflow: hidden;
+    background: transparent !important;
+
+    li {
+      border: none;
+      border-radius: 7px !important;
+      margin-bottom: 5px;
+      background-color: #2B526E;
+      &:hover {
+        background: #07e993 !important;
+      }
+
+      button {
+        padding: 0 13px !important;
+
+        &:hover {
+          background: #07e993 !important;
+          color: #2B526E !important;
+        }
+      }
+    }
+  }
+}

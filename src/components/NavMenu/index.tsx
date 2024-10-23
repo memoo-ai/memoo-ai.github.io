@@ -27,6 +27,7 @@ const MobileNavMenu: React.FC<MobileNavMenuProps> = ({ menus, handleOpen, showSw
 
   useEffect(() => {
     setIsOpen(false);
+    handleOpen?.(false);
   }, [location]);
 
   return (

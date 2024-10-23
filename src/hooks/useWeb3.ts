@@ -88,16 +88,16 @@ export const useAccount = () => {
   const RPC_URL = import.meta.env.VITE_RPC_URL;
   const connection = new Connection(RPC_URL);
 
-  useEffect(() => {
-    if (!publicKey || !connection) return;
+  // useEffect(() => {
+  //   if (!publicKey || !connection) return;
 
-    (async () => {
-      // Query balance
-      const balance = await connection.getBalance(publicKey);
-      const result = new BigNumber(balance).dividedBy(LAMPORTS_PER_SOL);
-      setBalance(Number(result ?? 0));
-    })();
-  }, [publicKey, connection]);
+  //   (async () => {
+  //     // Query balance
+  //     const balance = await connection.getBalance(publicKey);
+  //     const result = new BigNumber(balance).dividedBy(LAMPORTS_PER_SOL);
+  //     setBalance(Number(result ?? 0));
+  //   })();
+  // }, [publicKey, connection]);
 
   const getBalance = async () => {
     if (!connection || !publicKey) return 0;
@@ -139,6 +139,7 @@ export const useAccount = () => {
       if (!memooConfigPda || !program) return;
       // const config = (await program.account.globalMemooConfig.fetch(memooConfigPda)) as any;
       const config: MemooConfig = (await program.account.globalMemooConfig.fetch(memooConfigPda)) as any;
+      // debugger;
       console.log('memooConfig:', config);
       setMemooConfig(config);
     })();

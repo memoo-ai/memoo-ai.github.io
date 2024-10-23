@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import { useMemo, useCallback } from 'react';
 import { useConnection, useAnchorWallet } from '@solana/wallet-adapter-react';
 import { AnchorProvider, Wallet, Program, BN, Idl } from '@coral-xyz/anchor';
@@ -12,7 +13,7 @@ export function useAnchorProgram(programId: PublicKey, idl: Idl) {
   const provider = useMemo(() => {
     if (!wallet) return null;
     return new AnchorProvider(connection, wallet, AnchorProvider.defaultOptions());
-  }, [connection, wallet]);
+  }, [connection, wallet, AnchorProvider]);
 
   // const program = useMemo<Program<Memoo> | null>(() => {
   //   if (!provider) return null;

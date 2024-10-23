@@ -23,6 +23,7 @@ import { SolanaPortalTop, SolanaPortalBottom } from '@/components/SolanaPortal';
 import WalletLogo from '@/assets/imgs/wallet-logo.png';
 import Wallet from '@/components/SolanaWallet';
 import isMobile from 'is-mobile';
+import { formatAddress } from '@/utils';
 
 // const explorerURL = import.meta.env.VITE_EXPLORER_URL;
 const opts = [
@@ -86,7 +87,8 @@ const ConnectWallet = () => {
 
   const address = useMemo(() => {
     const base58 = publicKey?.toBase58();
-    return base58 ? base58.slice(0, 6) + '...' + base58.slice(-4) : '';
+    const result = isMobile() ? formatAddress(base58 ?? '', 3, 3) : formatAddress(base58 ?? '', 6, 4);
+    return result;
   }, [publicKey]);
 
   return (
@@ -94,7 +96,7 @@ const ConnectWallet = () => {
       {connected ? (
         <div className="flex items-center">
           {connected && (
-            <div className=" wallet-border flex items-center justify-center w-[192px] h-[46px] bg-[#1F3B4F] rounded-lg mr-[12px] font-404px font-[400] text-[#07E993] text-lg">
+            <div className=" wallet-border flex items-center justify-center w-[192px] h-[46px] bg-[#1F3B4F] rounded-lg mr-[12px] font-404px font-[400] text-[#07E993] text-lg max-lg:w-[73px]  max-lg:text-[12px] max-lg:leading-[12px] max-lg:rounded-[4px] max-lg:h-[30px] max-lg:bg-green max-lg:text-[#1F3B4F] max-lg:mr-0">
               {address}
             </div>
           )}
