@@ -1461,6 +1461,58 @@ export const IconFollow = forwardRef(
     );
   },
 );
+export const IconHamburgerMenu = forwardRef(
+  (
+    { className, iconColor, color = '#07E993', hoverColor = '#07E993', bgColor = '#1F3B4F', ...rest }: IconProps,
+    ref,
+  ) => {
+    const [hovered, setHovered] = useState(false);
+    return (
+      <svg
+        width="30"
+        height="30"
+        viewBox="0 0 30 30"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        onMouseOver={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        className={className}
+        {...rest}
+      >
+        <rect x="0.5" y="0.5" width="29" height="29" rx="3.5" fill={bgColor} stroke={hovered ? hoverColor : color} />
+        <line x1="5.76929" y1="8" x2="24.2308" y2="8" stroke={hovered ? hoverColor : color} strokeWidth="2" />
+        <line x1="5.76929" y1="15.001" x2="24.2308" y2="15.001" stroke={hovered ? hoverColor : color} strokeWidth="2" />
+        <line x1="5.76929" y1="22" x2="24.2308" y2="22" stroke={hovered ? hoverColor : color} strokeWidth="2" />
+      </svg>
+    );
+  },
+);
+export const IconCross = forwardRef(
+  (
+    { className, iconColor, color = '#07E993', hoverColor = '#07E993', bgColor = '#1F3B4F', ...rest }: IconProps,
+    ref,
+  ) => {
+    const [hovered, setHovered] = useState(false);
+    return (
+      <svg
+        width="30"
+        height="30"
+        viewBox="0 0 30 30"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        onMouseOver={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        className={className}
+        {...rest}
+      >
+        <rect x="0.5" y="0.5" width="29" height="29" rx="3.5" fill={bgColor} stroke={hovered ? hoverColor : color} />
+        <line x1="5.76929" y1="8" x2="24.2308" y2="8" stroke={hovered ? hoverColor : color} strokeWidth="2" />
+        <line x1="5.76929" y1="15.001" x2="24.2308" y2="15.001" stroke={hovered ? hoverColor : color} strokeWidth="2" />
+        <line x1="5.76929" y1="22" x2="24.2308" y2="22" stroke={hovered ? hoverColor : color} strokeWidth="2" />
+      </svg>
+    );
+  },
+);
 export const IconJoin = forwardRef(
   ({ className, iconColor, color = '#B53BFF', hoverColor = '#B53BFF', ...rest }: IconProps, ref) => {
     const [hovered, setHovered] = useState(false);
