@@ -53,7 +53,7 @@ const PublicSale: FC = () => {
         // value: `${totalSupplyPrice * idoUserBuyLimit} ${tokenSymbol}`,
         value: `${idoQueueDetail?.contributed} ${tokenSymbol}`,
         // tip: `Contributed per wallet\nis capped at ${Number(totalSupplyPrice * idoUserBuyLimit).toFixed(3)} ${tokenSymbol}`,
-        tip: `Your contributions to the IMO. Max supply per wallet capped at ${idoUserBuyLimit}% (~${Number(totalSupplyPrice * idoUserBuyLimit).toFixed(3)} SOL)`,
+        tip: `Your contributions to the IMO. Max supply per wallet capped at ${idoUserBuyLimit * 100}% (~${Number(totalSupplyPrice * idoUserBuyLimit).toFixed(3)} SOL)`,
         big: true,
         progress: null,
       },
