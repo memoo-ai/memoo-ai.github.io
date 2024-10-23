@@ -388,15 +388,15 @@ declare interface TrendingTokens {
   tokenName: string;
   volume24H: number;
   totalScore: number;
-  created: string;
   liquidity: string;
   holders: string;
-  vol1h: string;
   topTenHoder: string;
   mintAuthDisable: boolean;
   blackList: boolean;
   burnt: boolean;
   burntProgress: number;
+  volume1H: string;
+  createdAt: string;
 }
 declare interface TrendingCreators {
   collectiveHolders: number;

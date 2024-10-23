@@ -144,10 +144,10 @@ export const columns = (triggerRefresh: Function) => [
   },
   {
     title: 'Created',
-    dataIndex: 'created',
-    key: 'created',
+    dataIndex: 'createdAt',
+    key: 'createdAt',
     sorter: false,
-    render: (price: number) => <div className="font-normal text-lg ">196d</div>,
+    render: (createdAt: number) => <div className="font-normal text-lg ">{createdAt}</div>,
     width: 120,
   },
   {
@@ -162,7 +162,7 @@ export const columns = (triggerRefresh: Function) => [
     dataIndex: 'liquidity',
     key: 'liquidity',
     sorter: false,
-    render: (price: number) => <div className="font-normal text-lg ">196d</div>,
+    render: (liquidity: number) => <div className="font-normal text-lg ">{liquidity}</div>,
     width: 120,
   },
   {
@@ -178,7 +178,7 @@ export const columns = (triggerRefresh: Function) => [
     dataIndex: 'holders',
     key: 'holders',
     sorter: false,
-    render: (price: number) => <div className="font-normal text-lg ">196d</div>,
+    render: (holders: number) => <div className="font-normal text-lg ">{holders}</div>,
     width: 120,
   },
   {
@@ -197,12 +197,12 @@ export const columns = (triggerRefresh: Function) => [
 
   {
     title: '1h Vol',
-    dataIndex: 'vol1h',
-    key: 'vol1h',
+    dataIndex: 'volume1H',
+    key: 'volume1H',
     sorter: false,
-    render: (vol1h: number) => (
-      <span className={`font-normal text-lg ${vol1h < 0 ? 'text-red' : 'text-green'}`}>
-        {vol1h}
+    render: (volume1H: number) => (
+      <span className={`font-normal text-lg ${volume1H < 0 ? 'text-red' : 'text-green'}`}>
+        {volume1H}
         {/* {increase24H > 0 ? '+' : ''}
         {increase24H * 100}% */}
       </span>
