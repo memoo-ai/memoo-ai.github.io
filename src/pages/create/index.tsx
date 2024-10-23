@@ -1094,6 +1094,7 @@ export default function Create() {
               className="w-[322px] h-[50px] uppercase ml-[16px]"
               onClick={() => handleSave(true)}
               loading={confirmLoading}
+              disabled={confirmLoading}
             >
               {/* {invalidChain ? 'Switch Chain' : 'Confirm'} */}
               Confirm
