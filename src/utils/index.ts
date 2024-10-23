@@ -156,7 +156,7 @@ export const formatDecimals = (source: BigNumber.Value, decimals = 10, stripZero
 };
 
 export function calculateDaysDifference(a: number, b: number): number {
-  const millisecondsPerDay = 24 * 60 * 60 * 1000; // 一天的毫秒数
+  const millisecondsPerDay = 24 * 60 * 60 * 1000;
   const dateA = new Date(a);
   const dateB = new Date(b);
   const timeDifference = Math.abs(dateB.getTime() - dateA.getTime());
