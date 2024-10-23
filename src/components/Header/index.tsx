@@ -286,60 +286,62 @@ const Header = () => {
           </div>
         )}
         <div className="flex items-center gap-x-[12px] flex-1 justify-end">
-          {/* <div
-            ref={searchRef}
-            className="flex-1 flex justify-end h-[46px]"
-            onMouseLeave={() => {
-              if (!keyword) {
-                setShowSearch(false);
-              }
-            }}
-          >
-            {showSearch ? (
-              <div
-                className={`bg-[#1f3b4f] flex items-center justify-center p-[10px] ${
-                  showSearch ? styles.search : ''
-                } rounded-[7px]`}
-              >
-                <IconSearch />
-                <Input
-                  className={`border text-[14px] font-OCR pl-[10px] ${styles.searchInput}`}
-                  placeholder="Search Meme Tokens, Creators"
-                  value={keyword}
-                  onChange={(e) => {
-                    setKeywords(e.currentTarget.value);
-                  }}
-                />
+          {!isProd() && (
+            <div
+              ref={searchRef}
+              className="flex-1 flex justify-end h-[46px]"
+              onMouseLeave={() => {
+                if (!keyword) {
+                  setShowSearch(false);
+                }
+              }}
+            >
+              {showSearch ? (
                 <div
-                  className="cursor-pointer"
-                  onClick={() => {
-                    setKeywords('');
-                    setShowSearchResult(false);
-                  }}
+                  className={`bg-[#1f3b4f] flex items-center justify-center p-[10px] ${
+                    showSearch ? styles.search : ''
+                  } rounded-[7px]`}
                 >
-                  {keyword ? <IconClose className="w-[10px] h-[10px] mr-[10px]" /> : <IconClear />}
-                </div>
-                {showSearchResult && (
-                  <div className={`${styles.searchResult} rounded-[15px] bg-[#1f3b4f]`}>
-                    {memeTokens}
-                    {creators}
-                    {!searchList && (
-                      <div
-                        className={`${styles.noData} w-full font-OCR text-center text-[14px] text-[#fff]`}
-                      >{`Your search didn't match any records`}</div>
-                    )}
+                  <IconSearch />
+                  <Input
+                    className={`border text-[14px] font-OCR pl-[10px] ${styles.searchInput}`}
+                    placeholder="Search Meme Tokens, Creators"
+                    value={keyword}
+                    onChange={(e) => {
+                      setKeywords(e.currentTarget.value);
+                    }}
+                  />
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => {
+                      setKeywords('');
+                      setShowSearchResult(false);
+                    }}
+                  >
+                    {keyword ? <IconClose className="w-[10px] h-[10px] mr-[10px]" /> : <IconClear />}
                   </div>
-                )}
-              </div>
-            ) : (
-              <div
-                className={`bg-[#1f3b4f] flex items-center justify-center p-[10px] ${styles.searchIcon}  rounded-[7px]`}
-                onMouseOver={() => setShowSearch(true)}
-              >
-                <IconSearch />
-              </div>
-            )}
-          </div> */}
+                  {showSearchResult && (
+                    <div className={`${styles.searchResult} rounded-[15px] bg-[#1f3b4f]`}>
+                      {memeTokens}
+                      {creators}
+                      {!searchList && (
+                        <div
+                          className={`${styles.noData} w-full font-OCR text-center text-[14px] text-[#fff]`}
+                        >{`Your search didn't match any records`}</div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div
+                  className={`bg-[#1f3b4f] flex items-center justify-center p-[10px] ${styles.searchIcon}  rounded-[7px]`}
+                  onMouseOver={() => setShowSearch(true)}
+                >
+                  <IconSearch />
+                </div>
+              )}
+            </div>
+          )}
           <ConnectWallet />
           <NavMenu menus={menus} />
         </div>

@@ -147,8 +147,8 @@ const ConnectWallet = () => {
       ) : (
         <div className="wallet_button_border p-0" onClick={() => setUpdatePortal((count) => count + 1)}>
           <Wallet>
-            <div className="green-border font-404px font-normal w-[189px] text-[16px] leading-[20px] flex items-center justify-center rounded-[7px] h-full text-green bg-[#1F3B4F] hover:text-[#1F3B4F] hover:bg-green">
-              Connect Wallet
+            <div className="green-border font-404px font-normal w-[189px] text-[16px] leading-[20px] rounded-[7px] max-lg:w-[73px]  max-lg:text-[12px] max-lg:leading-[12px] max-lg:rounded-[4px] max-lg:h-[30px] flex items-center justify-center h-full text-green bg-[#1F3B4F] hover:text-[#1F3B4F] hover:bg-green">
+              {isMobile() ? 'Connect' : 'Connect Wallet'}
             </div>
           </Wallet>
           {/* <WalletMultiButton className="w-[192px]">

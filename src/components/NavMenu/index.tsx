@@ -13,9 +13,10 @@ interface MenuItem {
 interface MobileNavMenuProps {
   menus: MenuItem[];
   handleOpen?: (isOpen: boolean) => void;
+  showSwipe?: boolean;
 }
 
-const MobileNavMenu: React.FC<MobileNavMenuProps> = ({ menus, handleOpen }) => {
+const MobileNavMenu: React.FC<MobileNavMenuProps> = ({ menus, handleOpen, showSwipe }) => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
@@ -43,7 +44,7 @@ const MobileNavMenu: React.FC<MobileNavMenuProps> = ({ menus, handleOpen }) => {
       </div>
       {isOpen && (
         <nav
-          className={`${styles.easeAnimation} text-white fixed left-0 right-0 bottom-0 top-[81px] bg-[#1F3B4F] p-8 gap-4 "`}
+          className={`${styles.easeAnimation} text-white fixed left-0 right-0 bottom-0 ${showSwipe ? 'top-[81px]' : 'top-[51px]'} bg-[#1F3B4F] p-8 gap-4 "`}
         >
           <ul className="flex flex-col">
             {menus.map((item, index: number) => (

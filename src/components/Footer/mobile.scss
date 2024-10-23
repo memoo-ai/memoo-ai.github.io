@@ -1,0 +1,14 @@
+.mobile-footer {
+  // position: fixed;
+  position: relative;
+  flex-direction: column;
+  left: 50%;
+  transform: translate(-50%, 0);
+  bottom: 0;
+  margin: 0 auto;
+  width: 100%;
+  color: $color;
+  background-color: #131522;
+  height: 3.125rem;
+  border-top: 1px solid #5D64A2;
+}

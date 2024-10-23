@@ -5,6 +5,7 @@ import Header from '@/components/Header';
 import MobileHeader from '@/components/Header/mobile';
 import Toast from '@/components/Toast';
 import Footer from '@/components/Footer';
+import MobileFooter from '@/components/Footer/mobile';
 import MobilePage from './mobile';
 import isMobile from 'is-mobile';
 import { useEthersSigner } from '@/hooks/useEthers';
@@ -15,6 +16,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import useSPLToken from '@/utils/solanaWeb3/slpToken';
 import { PublicKey } from '@solana/web3.js';
 import useStore from '@/store';
+import { isProd } from '@/utils';
 const BasicLayout: React.FC = () => {
   const signer = useEthersSigner({ chainId: Number(import.meta.env.VITE_NODE_CHAIN_ID) });
   // const [connected, setConnected] = useState(false);
@@ -76,17 +78,19 @@ const BasicLayout: React.FC = () => {
 
   return (
     <div>
-      {isMobile() && (
-        // <MobilePage />
-        <>
-          <MobileHeader />
-          <Toast />
-          <div className={styles.content}>
-            <Outlet />
-          </div>
-          <Footer />
-        </>
-      )}
+      {isMobile() &&
+        (isProd() ? (
+          <MobilePage />
+        ) : (
+          <>
+            <MobileHeader />
+            <Toast />
+            <div className={styles.content}>
+              <Outlet />
+            </div>
+            <MobileFooter />
+          </>
+        ))}
       {!isMobile() && (
         <>
           <Header />

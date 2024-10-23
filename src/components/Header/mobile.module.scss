@@ -44,7 +44,6 @@
 .active {
   // color: #07E993;
   color: #8c31c8;
-  ;
   font-weight: 700;
   // background: #1F3B4F;
   // border: 1px solid #07E993;
@@ -134,4 +133,10 @@
   bottom: -7px;
   left: 50%;
   transform: translateX(-50%);
+}
+.header_border_bottom_default{
+  border-bottom: 1px solid #5d64a2;
+}
+.header_border_bottom_green{
+  border-bottom: 1px solid #07E993;
 }

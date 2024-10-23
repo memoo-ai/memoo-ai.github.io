@@ -62,7 +62,9 @@ const MobileHeader = () => {
   return (
     <header className={`${styles.header} z-[9999]`}>
       {showSwipe && <Swipe direction="left" />}
-      <div className={`${styles.headerContent} flex justify-between items-center gap-x-[24px]`}>
+      <div
+        className={`${styles.headerContent} flex justify-between items-center memoo_border_bottom ${showMenu && 'bg-[#1F3B4F]'} ${showMenu ? styles.headerBorderBottomGreen : styles.headerBorderBottomDefault}`}
+      >
         <Spin spinning={loading} />
         <div className="flex items-center  gap-[3rem]">
           <a href="/home" className="flex items-center justify-center">
@@ -75,44 +77,16 @@ const MobileHeader = () => {
           </div>
         </div>
         <div className="flex items-center gap-[1rem]">
-          <IconSearch />
+          <IconSearch className=" cursor-pointer" />
           <ConnectWallet />
           <NavMenu
+            showSwipe={showSwipe}
             menus={menus}
             handleOpen={(e) => {
               setShowMenu(e);
             }}
           />
         </div>
-      </div>
-      <div className="w-full h-[1px] bg-[#5D64A2]" />
-
-      <div className="flex items-center gap-x-[25px] mr-[80px]">
-        {/* <img src="./SVG/icon-twitter.svg" className="w-8 cursor-pointer" alt="" /> */}
-        <IconBook
-          color="#131522"
-          hoverColor="#131522"
-          className="cursor-pointer w-[16px] h-[10px]"
-          onClick={() => {
-            window.open(gitBook, '_blank');
-          }}
-        />
-        <IconTelegram
-          className="cursor-pointer w-[12px] h-[10px]"
-          color="#131522"
-          hoverColor="#131522"
-          onClick={() => {
-            window.open(telegram, '_blank');
-          }}
-        />{' '}
-        <IconTwitter
-          className="cursor-pointer w-[13px] h-[10px]"
-          color="#131522"
-          hoverColor="#131522"
-          onClick={() => {
-            window.open(twitter, '_blank');
-          }}
-        />
       </div>
     </header>
   );
