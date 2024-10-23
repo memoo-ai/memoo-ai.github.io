@@ -102,7 +102,7 @@ const Gecko = () => {
     } finally {
       setLoading(false);
     }
-  }, [address, refresh]);
+  }, [address, refresh, pagination]);
   const triggerRefresh = useCallback(async () => {
     await setRefresh((v) => v + 1);
     await fetchData();
