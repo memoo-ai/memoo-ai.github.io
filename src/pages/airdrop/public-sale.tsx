@@ -29,7 +29,13 @@ const PublicSale: FC = () => {
         progress: null,
       },
 
-      { key: 'Price', value: `$${formatDecimals(idoQueueDetail?.price ?? 0)}`, tip: null, big: false, progress: null },
+      {
+        key: 'Price per token',
+        value: `${formatDecimals(idoQueueDetail?.price ? idoQueueDetail?.price : 0) ?? 0} ${stage === 'imo' ? tokenSymbol : ''}`,
+        tip: null,
+        big: false,
+        progress: null,
+      },
 
       {
         key: 'Total Raised',
@@ -46,7 +52,8 @@ const PublicSale: FC = () => {
         // value: `${idoQueueDetail?.contributed ?? 'NA'}/${idoQueueDetail?.maxContributed ?? 'NA'} ${tokenSymbol}`,
         // value: `${totalSupplyPrice * idoUserBuyLimit} ${tokenSymbol}`,
         value: `${idoQueueDetail?.contributed} ${tokenSymbol}`,
-        tip: `Contributed per wallet\nis capped at ${totalSupplyPrice * idoUserBuyLimit} ${tokenSymbol}`,
+        // tip: `Contributed per wallet\nis capped at ${Number(totalSupplyPrice * idoUserBuyLimit).toFixed(3)} ${tokenSymbol}`,
+        tip: `Your contributions to the IMO. Max supply per wallet capped at ${idoUserBuyLimit}% (~${Number(totalSupplyPrice * idoUserBuyLimit).toFixed(3)} SOL)`,
         big: true,
         progress: null,
       },

@@ -24,7 +24,7 @@ const IMOParticipate: FC = () => {
   const params = useMemo(
     () => [
       {
-        key: 'Price',
+        key: 'Price per token',
         value: `${formatDecimals(idoActiveDetail?.price ? idoActiveDetail?.price : 0) ?? 0} ${stage === 'imo' ? tokenSymbol : ''}`,
         tip: null,
         big: false,
@@ -46,7 +46,7 @@ const IMOParticipate: FC = () => {
         // value: `${idoQueueDetail?.contributed ?? 'NA'}/${idoQueueDetail?.maxContributed ?? 'NA'} ${tokenSymbol}`,
         // value: `${totalSupplyPrice * idoUserBuyLimit} ${tokenSymbol}`,
         value: `${idoQueueDetail?.contributed} ${tokenSymbol}`,
-        tip: `Contribution per wallet\nis capped at ${totalSupplyPrice * idoUserBuyLimit} ${tokenSymbol}`,
+        tip: `Contribution per wallet\nis capped at ${Number(totalSupplyPrice * idoUserBuyLimit).toFixed(3)} ${tokenSymbol}`,
         big: true,
         progress: null,
       },

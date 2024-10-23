@@ -147,7 +147,9 @@ const Airdrop: FC = () => {
   );
   console.log('idoQueueDetail: ', idoQueueDetail, address);
   const triggerRefresh = useCallback(() => {
-    setRefresh((v) => v + 1);
+    setTimeout(() => {
+      setRefresh(refresh + 1);
+    }, 1500);
   }, []);
 
   const userCanClaimCount = useMemo(() => {
