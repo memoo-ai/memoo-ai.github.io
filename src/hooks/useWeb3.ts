@@ -216,7 +216,11 @@ export const useAccount = () => {
       maxRetries: 3,
     });
     console.log('TransactionHash: ', hash);
-    return hash;
+    return {
+      hash,
+      blockhash: recentBlockhash.blockhash,
+      lastValidBlockHeight: recentBlockhash.lastValidBlockHeight,
+    };
   };
 
   const registerTokenMint = useCallback(
@@ -310,11 +314,30 @@ export const useAccount = () => {
             userWsolAccount: userWsolAddress,
             wsolMint: NATIVE_MINT,
           })
-          .rpc();
+          .instruction();
 
-        return registerTokenMintIx;
-        // .instruction();
-        // const hash = await sendMyTransaction(publicKey, signTransaction, registerTokenMintIx);
+        const { hash, blockhash, lastValidBlockHeight } = await sendMyTransaction(
+          publicKey,
+          signTransaction,
+          registerTokenMintIx,
+        );
+        return hash;
+
+        // const confirmationStrategy = {
+        //   signature: hash,
+        //   blockhash,
+        //   lastValidBlockHeight,
+        // };
+
+        // const confirmation = await connection.confirmTransaction(confirmationStrategy, 'finalized');
+        // console.log('confirmation:', confirmation);
+
+        // if (confirmation.value.err) {
+        //   console.log('Transaction failed: ', confirmation.value.err.toString());
+        //   return 'error';
+        //   // throw new Error(`Transaction failed: ${confirmation.value.err.toString()}`);
+        // }
+        // return confirmation;
         // return hash;
         // if (hash) return hash;
         //   .rpc();
