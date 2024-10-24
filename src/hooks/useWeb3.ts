@@ -259,7 +259,8 @@ export const useAccount = () => {
         console.log('latestBlockhash:', latestBlockhash);
         // const signature = await connection.sendRawTransaction(signedTransaction.serialize());
         const signature = await connection.sendRawTransaction(signedTransaction.serialize(), {
-          skipPreflight: false,
+          skipPreflight: true,
+          preflightCommitment: 'confirmed',
           maxRetries: 3,
         });
 
