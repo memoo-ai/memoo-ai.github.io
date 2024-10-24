@@ -350,22 +350,61 @@ export const useAccount = () => {
             userWsolAccount: userWsolAddress,
             wsolMint: NATIVE_MINT,
           })
-          .preInstructions(
-            [
-              ComputeBudgetProgram.setComputeUnitLimit({
-                units: 400_000,
-              }),
-              ComputeBudgetProgram.setComputeUnitPrice({
-                // microLamports: new BN(100000),
-                microLamports: 100000,
-              }),
-            ].filter(Boolean),
-          )
-          .rpc({
-            maxRetries: 3,
-          });
+          .instruction();
+
         // .rpc();
-        return registerTokenMintIx;
+        // return registerTokenMintIx;
+        const publickeys = [new PublicKey(memeId), publicKey];
+        const recentPrioritizationFees = await connection.getRecentPrioritizationFees({
+          lockedWritableAccounts: publickeys,
+        });
+        const maxPriceItem = recentPrioritizationFees.reduce(
+          (max, item) => (item.prioritizationFee > max.prioritizationFee ? item : max),
+          recentPrioritizationFees[0],
+        );
+        console.log('maxPriceItem :', maxPriceItem);
+        const priorityFeeInstruction = ComputeBudgetProgram.setComputeUnitPrice({
+          microLamports: maxPriceItem?.prioritizationFee ?? 20000,
+        });
+        // const simulationResult = await connection.simulateTransaction(transaction1);
+        // console.log('simulationResult:', simulationResult);
+        // const modifyComputeUnits = ComputeBudgetProgram.setComputeUnitLimit({
+        //   units: simulationResult.value.unitsConsumed ?? 1000000,
+        // });
+        transaction.add(priorityFeeInstruction);
+        transaction.add(registerTokenMintIx);
+        // const { hash, blockhash, lastValidBlockHeight } = await sendMyTransaction(
+        //   publicKey,
+        //   signTransaction,
+        //   registerTokenMintIx,
+        //   publickeys,
+        // );
+        const latestBlockhash = await connection.getLatestBlockhash();
+        transaction.recentBlockhash = latestBlockhash.blockhash;
+        transaction.lastValidBlockHeight = latestBlockhash.lastValidBlockHeight;
+        transaction.feePayer = publicKey;
+        const signedTransaction = await signTransaction(transaction);
+        const signature = await connection.sendRawTransaction(signedTransaction.serialize(), {
+          skipPreflight: true,
+          preflightCommitment: 'finalized',
+          // maxRetries: 3,
+        });
+        const confirmationStrategy = {
+          signature: signature,
+          blockhash: latestBlockhash.blockhash,
+          lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+        };
+
+        const confirmation = await connection.confirmTransaction(confirmationStrategy, 'finalized');
+        console.log('confirmation:', confirmation);
+
+        if (confirmation.value.err) {
+          console.log('Transaction failed: ', confirmation.value.err.toString());
+          return 'error';
+          // throw new Error(`Transaction failed: ${confirmation.value.err.toString()}`);
+        }
+        return signature;
+        // return confirmation;
         // const confirmationStrategy = {
         //   signature: hash,
         //   blockhash,
@@ -435,7 +474,7 @@ export const useAccount = () => {
         // throw error;
       }
     },
-    [connection, signTransaction, publicKey, program, memooConfig],
+    [connection, signTransaction, publicKey, program, memooConfig, ComputeBudgetProgram],
   );
 
   const idoBuy = useCallback(
