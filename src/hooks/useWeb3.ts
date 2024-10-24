@@ -212,10 +212,10 @@ export const useAccount = () => {
     const signedTransaction = await signTransaction(transaction);
 
     const hash = await connection.sendRawTransaction(signedTransaction.serialize(), {
-      skipPreflight: true,
+      skipPreflight: false,
       maxRetries: 3,
     });
-
+    console.log('TransactionHash: ', hash);
     return hash;
   };
 
@@ -310,9 +310,12 @@ export const useAccount = () => {
             userWsolAccount: userWsolAddress,
             wsolMint: NATIVE_MINT,
           })
-          .instruction();
-        const hash = await sendMyTransaction(publicKey, signTransaction, registerTokenMintIx);
-        return hash;
+          .rpc();
+
+        return registerTokenMintIx;
+        // .instruction();
+        // const hash = await sendMyTransaction(publicKey, signTransaction, registerTokenMintIx);
+        // return hash;
         // if (hash) return hash;
         //   .rpc();
         // return registerTokenMintIx;
