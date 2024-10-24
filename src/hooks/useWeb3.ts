@@ -214,6 +214,7 @@ export const useAccount = () => {
     const hash = await connection.sendRawTransaction(signedTransaction.serialize(), {
       skipPreflight: false,
       maxRetries: 3,
+      preflightCommitment: 'finalized',
     });
     console.log('TransactionHash: ', hash);
     return {
