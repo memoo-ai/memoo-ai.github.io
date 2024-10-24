@@ -393,7 +393,7 @@ export const useAccount = () => {
         console.log('transaction :', transaction);
         const signedTransaction = await signTransaction(transaction);
         const signature = await connection.sendRawTransaction(signedTransaction.serialize(), {
-          skipPreflight: true,
+          skipPreflight: false,
           preflightCommitment: 'finalized',
           // maxRetries: 3,
         });
