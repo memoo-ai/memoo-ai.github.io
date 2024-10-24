@@ -259,7 +259,7 @@ declare interface IDOQueueDetail extends IDOClaimStage {
   collectionFlag: boolean;
 }
 
-declare type IDOStatus = 'Draft' | 'Waiting_for_pay' | 'QUEUE' | 'IDO' | 'Launched' | 'IDOEND';
+declare type IDOStatus = 'Draft' | 'Waiting_for_pay' | 'Paid' | 'QUEUE' | 'IDO' | 'Launched' | 'IDOEND';
 
 declare interface pageParams {
   pageNumber: number;
