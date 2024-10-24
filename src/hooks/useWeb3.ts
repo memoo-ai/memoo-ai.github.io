@@ -238,7 +238,7 @@ export const useAccount = () => {
     //   units = Math.ceil(units * 1.05); // margin of error
     //   transaction.add(ComputeBudgetProgram.setComputeUnitLimit({ units }));
     // }
-    const recentBlockhash = await connection.getLatestBlockhash();
+    const recentBlockhash = await connection.getLatestBlockhash('finalized');
     // 6. Sign and send your transaction
     transaction.feePayer = publicKey;
     transaction.recentBlockhash = recentBlockhash.blockhash;
@@ -354,14 +354,58 @@ export const useAccount = () => {
         // .rpc();
         // return registerTokenMintIx;
         const publickeys = [new PublicKey(memeId), publicKey];
-        const { hash, blockhash, lastValidBlockHeight } = await sendMyTransaction(
-          publicKey,
-          signTransaction,
-          registerTokenMintIx,
-          publickeys,
-        );
-        return hash;
+        const recentPrioritizationFees = await connection.getRecentPrioritizationFees({
+          lockedWritableAccounts: publickeys,
+        });
+        const maxPriceItem = recentPrioritizationFees.length
+          ? recentPrioritizationFees.reduce(
+              (max, item) => (item.prioritizationFee > max.prioritizationFee ? item : max),
+              recentPrioritizationFees[0],
+            )
+          : { prioritizationFee: 20000 };
 
+        const priorityFeeInstruction = ComputeBudgetProgram.setComputeUnitPrice({
+          microLamports: maxPriceItem?.prioritizationFee ?? 20000,
+        });
+        transaction.add(priorityFeeInstruction);
+        transaction.add(registerTokenMintIx);
+        // const { hash, blockhash, lastValidBlockHeight } = await sendMyTransaction(
+        //   publicKey,
+        //   signTransaction,
+        //   registerTokenMintIx,
+        //   publickeys,
+        // );
+        const latestBlockhash = await connection.getLatestBlockhash('finalized');
+        transaction.recentBlockhash = latestBlockhash.blockhash;
+        transaction.lastValidBlockHeight = latestBlockhash.lastValidBlockHeight;
+        transaction.feePayer = publicKey;
+        const signedTransaction = await signTransaction(transaction);
+        const signature = await connection.sendRawTransaction(signedTransaction.serialize(), {
+          skipPreflight: false,
+          preflightCommitment: 'finalized',
+          // maxRetries: 3,
+        });
+        // console.log('Transaction :', signature);
+        // const confirmationStrategy = {
+        //   signature: signature,
+        //   blockhash: latestBlockhash.blockhash,
+        //   lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+        // };
+        // const status = await connection.getSignatureStatus(signature);
+        // // if (status && status?.err) {
+        // if (status) {
+        //   console.log('getSignatureStatus: ', status);
+        // }
+
+        // const confirmation = await connection.confirmTransaction(confirmationStrategy, 'finalized');
+        // console.log('confirmation:', confirmation);
+
+        // if (confirmation.value.err) {
+        //   console.log('Transaction failed: ', confirmation.value.err.toString());
+        //   return 'error';
+        //   // throw new Error(`Transaction failed: ${confirmation.value.err.toString()}`);
+        // }
+        return signature;
         // const confirmationStrategy = {
         //   signature: hash,
         //   blockhash,
@@ -423,7 +467,7 @@ export const useAccount = () => {
         //   return 'error';
         //   // throw new Error(`Transaction failed: ${confirmation.value.err.toString()}`);
         // }
-        // // return confirmation;
+        // return confirmation;
         // return signature;
       } catch (error) {
         console.error('Error in registerTokenMint:', error);
