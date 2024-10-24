@@ -224,7 +224,7 @@ export const useAccount = () => {
         console.log('totalPay:', Number(totalPay));
         console.log('platformFeeCreateMemeSol: ', platformFeeBN.toString());
         console.log('totalPayWithFee:', totalPayWithFee.toString());
-        const priorityFee = 5000;
+        const priorityFee = 20000;
         const priorityFeeInstruction = ComputeBudgetProgram.setComputeUnitPrice({
           microLamports: priorityFee,
         });
