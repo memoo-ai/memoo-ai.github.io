@@ -224,11 +224,11 @@ export const useAccount = () => {
         console.log('totalPay:', Number(totalPay));
         console.log('platformFeeCreateMemeSol: ', platformFeeBN.toString());
         console.log('totalPayWithFee:', totalPayWithFee.toString());
-        const priorityFee = 20000;
-        const priorityFeeInstruction = ComputeBudgetProgram.setComputeUnitPrice({
-          microLamports: priorityFee,
-        });
-        transaction.add(priorityFeeInstruction);
+        // const priorityFee = 20000;
+        // const priorityFeeInstruction = ComputeBudgetProgram.setComputeUnitPrice({
+        //   microLamports: priorityFee,
+        // });
+        // transaction.add(priorityFeeInstruction);
         const registerTokenMintIx = await program.methods
           .registerTokenMint(memeConfigId, new BN(totalPayWithFee.toString()), new BN(0))
           // .registerTokenMint(memeConfigId, new BN(18000000).add(memooConfig?.platformFeeCreateMemeSol), new BN(0), 9)
@@ -248,14 +248,20 @@ export const useAccount = () => {
           .instruction();
         //   .rpc();
         // return registerTokenMintIx;
+        const modifyComputeUnits = ComputeBudgetProgram.setComputeUnitLimit({
+          units: 1000000,
+        });
 
-        transaction.add(registerTokenMintIx);
+        const addPriorityFee = ComputeBudgetProgram.setComputeUnitPrice({
+          microLamports: 1,
+        });
+        transaction.add(modifyComputeUnits).add(addPriorityFee).add(registerTokenMintIx);
         const latestBlockhash = await connection.getLatestBlockhash('finalized');
         transaction.recentBlockhash = latestBlockhash.blockhash;
         transaction.feePayer = publicKey;
         const signedTransaction = await signTransaction(transaction);
         const fee = await transaction.getEstimatedFee(connection);
-        console.log('fee:', fee);
+        console.log(`Estimated SOL transfer cost: ${fee} lamports`);
         console.log('latestBlockhash:', latestBlockhash);
         // const signature = await connection.sendRawTransaction(signedTransaction.serialize());
         const signature = await connection.sendRawTransaction(signedTransaction.serialize(), {
