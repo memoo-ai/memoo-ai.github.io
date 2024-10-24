@@ -361,7 +361,9 @@ export const useAccount = () => {
               }),
             ].filter(Boolean),
           )
-          .rpc();
+          .rpc({
+            maxRetries: 3,
+          });
         // .rpc();
         return registerTokenMintIx;
         // const confirmationStrategy = {
