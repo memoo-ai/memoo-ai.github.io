@@ -160,20 +160,20 @@ const Airdrop: FC = () => {
   //   setRefresh(refresh + 1);
   // }, 5000);
 
-  useEffect(() => {
-    if (
-      idoQueueDetail &&
-      (idoQueueDetail?.status === 'Waiting_for_pay' ||
-        idoQueueDetail?.status === 'Paid' ||
-        idoQueueDetail?.status === 'Draft')
-    ) {
-      setPolling(true);
-    } else {
-      setPolling(false);
-      // clearInterval(timer);
-      // timer = null;
-    }
-  }, [idoQueueDetail]);
+  // useEffect(() => {
+  //   if (
+  //     idoQueueDetail &&
+  //     (idoQueueDetail?.status === 'Waiting_for_pay' ||
+  //       idoQueueDetail?.status === 'Paid' ||
+  //       idoQueueDetail?.status === 'Draft')
+  //   ) {
+  //     setPolling(true);
+  //   } else {
+  //     setPolling(false);
+  //     // clearInterval(timer);
+  //     // timer = null;
+  //   }
+  // }, [idoQueueDetail]);
 
   const userCanClaimCount = useMemo(() => {
     if (!memeUserData) return 0;
@@ -251,8 +251,8 @@ const Airdrop: FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        polling && setLoading(true);
-
+        // polling && setLoading(true);
+        setLoading(true);
         // For testin: BigEgg or NewCake
         const { data } = await getIDOQueueDetail(ticker, address ?? 'default');
         setIDOQueueDetail(data);
