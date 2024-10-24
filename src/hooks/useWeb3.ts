@@ -191,11 +191,11 @@ export const useAccount = () => {
 
     // 4. Create a PriorityFee instruction and add it to your transaction
     const priorityFeeInstruction = ComputeBudgetProgram.setComputeUnitPrice({
-      microLamports: 10000,
+      microLamports: 20000,
     });
 
-    transaction.add(priorityFeeInstruction);
     transaction.add(myTransaction);
+    transaction.add(priorityFeeInstruction);
     // 5. Simulate the transaction and add the compute unit limit instruction to your transaction
     let [units, recentBlockhash] = await Promise.all([
       getSimulationUnits(connection, transaction.instructions, publicKey),
@@ -315,14 +315,14 @@ export const useAccount = () => {
             userWsolAccount: userWsolAddress,
             wsolMint: NATIVE_MINT,
           })
-          .instruction();
-
-        const { hash, blockhash, lastValidBlockHeight } = await sendMyTransaction(
-          publicKey,
-          signTransaction,
-          registerTokenMintIx,
-        );
-        return hash;
+          .rpc();
+        return registerTokenMintIx;
+        // const { hash, blockhash, lastValidBlockHeight } = await sendMyTransaction(
+        //   publicKey,
+        //   signTransaction,
+        //   registerTokenMintIx,
+        // );
+        // return hash;
 
         // const confirmationStrategy = {
         //   signature: hash,
