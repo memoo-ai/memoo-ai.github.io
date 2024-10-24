@@ -11,6 +11,9 @@ import {
   sendAndConfirmTransaction,
   LAMPORTS_PER_SOL,
   ComputeBudgetProgram,
+  VersionedTransaction,
+  TransactionMessage,
+  TransactionInstruction,
 } from '@solana/web3.js';
 import {
   createAssociatedTokenAccountInstruction,
@@ -144,15 +147,77 @@ export const useAccount = () => {
       setMemooConfig(config);
     })();
   }, [memooConfigPda]);
-  // const maxProportion = useMemo(() => Number(memooConfig?.idoCreatorBuyLimit) / 10000, [memooConfig]);
-  // console.log('globalMemooConfig:', memooConfig);
-  // useEffect(() => {
-  //   (async () => {
-  //     if (!memooConfigPda || !program) return;
-  //     const config = await program.account.globalMemooConfig.fetch(memooConfigPda);
-  //     setMemooConfig(config);
-  //   })();
-  // }, [memooConfigPda, program, connection]);
+  const getSimulationUnits = async (
+    connection: Connection,
+    instructions: TransactionInstruction[],
+    payer: PublicKey,
+  ): Promise<number | undefined> => {
+    const Instructions = [ComputeBudgetProgram.setComputeUnitLimit({ units: 1_400_000 }), ...instructions];
+
+    const VersionedTxn = new VersionedTransaction(
+      new TransactionMessage({
+        instructions: Instructions,
+        payerKey: payer,
+        recentBlockhash: PublicKey.default.toString(),
+      }).compileToV0Message(),
+    );
+
+    const simulation = await connection.simulateTransaction(VersionedTxn, {
+      replaceRecentBlockhash: true,
+      sigVerify: false,
+    });
+
+    if (simulation.value.err) {
+      return undefined;
+    }
+
+    return simulation.value.unitsConsumed;
+  };
+  const sendMyTransaction = async (
+    publicKey: PublicKey,
+    signTransaction: any,
+    myTransaction: TransactionInstruction,
+  ) => {
+    // 1. Establish a connection to the Solana cluster
+    // const connection = new Connection(endpoint);
+
+    // 2. Create your transaction
+    const transaction = new Transaction();
+    // ... add instructions to the transaction
+
+    // 3. Fetch the recent priority fees
+    // const { result } = await fetchEstimatePriorityFees({ endpoint });
+    // const priorityFee = result.per_compute_unit['medium']; // Replace with your priority fee level based on your business requirements
+
+    // 4. Create a PriorityFee instruction and add it to your transaction
+    const priorityFeeInstruction = ComputeBudgetProgram.setComputeUnitPrice({
+      microLamports: 10000,
+    });
+
+    transaction.add(priorityFeeInstruction);
+    transaction.add(myTransaction);
+    // 5. Simulate the transaction and add the compute unit limit instruction to your transaction
+    let [units, recentBlockhash] = await Promise.all([
+      getSimulationUnits(connection, transaction.instructions, publicKey),
+      connection.getLatestBlockhash(),
+    ]);
+    if (units) {
+      units = Math.ceil(units * 1.05); // margin of error
+      transaction.add(ComputeBudgetProgram.setComputeUnitLimit({ units }));
+    }
+
+    // 6. Sign and send your transaction
+    transaction.feePayer = publicKey;
+    transaction.recentBlockhash = recentBlockhash.blockhash;
+    const signedTransaction = await signTransaction(transaction);
+
+    const hash = await connection.sendRawTransaction(signedTransaction.serialize(), {
+      skipPreflight: true,
+      maxRetries: 3,
+    });
+
+    return hash;
+  };
 
   const registerTokenMint = useCallback(
     async (memeId: string, totalPay: string, paySol: number) => {
@@ -246,47 +311,56 @@ export const useAccount = () => {
             wsolMint: NATIVE_MINT,
           })
           .instruction();
+        const hash = await sendMyTransaction(publicKey, signTransaction, registerTokenMintIx);
+        return hash;
+        // if (hash) return hash;
         //   .rpc();
         // return registerTokenMintIx;
-        const modifyComputeUnits = ComputeBudgetProgram.setComputeUnitLimit({
-          units: 1000000,
-        });
+        // const transaction1 = new Transaction();
+        // transaction1.add(registerTokenMintIx);
+        // transaction.feePayer = publicKey;
+        // debugger;
+        // const simulationResult = await connection.simulateTransaction(transaction1);
+        // console.log('simulationResult:', simulationResult);
+        // const modifyComputeUnits = ComputeBudgetProgram.setComputeUnitLimit({
+        //   units: simulationResult.value.unitsConsumed ?? 1000000,
+        // });
 
-        const addPriorityFee = ComputeBudgetProgram.setComputeUnitPrice({
-          microLamports: 1,
-        });
-        transaction.add(modifyComputeUnits).add(addPriorityFee).add(registerTokenMintIx);
-        const latestBlockhash = await connection.getLatestBlockhash('finalized');
-        transaction.recentBlockhash = latestBlockhash.blockhash;
-        transaction.feePayer = publicKey;
-        const signedTransaction = await signTransaction(transaction);
-        const fee = await transaction.getEstimatedFee(connection);
-        console.log(`Estimated SOL transfer cost: ${fee} lamports`);
-        console.log('latestBlockhash:', latestBlockhash);
-        // const signature = await connection.sendRawTransaction(signedTransaction.serialize());
-        const signature = await connection.sendRawTransaction(signedTransaction.serialize(), {
-          skipPreflight: true,
-          preflightCommitment: 'confirmed',
-          maxRetries: 3,
-        });
+        // const addPriorityFee = ComputeBudgetProgram.setComputeUnitPrice({
+        //   microLamports: 10000,
+        // });
+        // transaction.add(modifyComputeUnits).add(addPriorityFee).add(registerTokenMintIx);
+        // const latestBlockhash = await connection.getLatestBlockhash('finalized');
+        // transaction.recentBlockhash = latestBlockhash.blockhash;
+        // transaction.feePayer = publicKey;
+        // const signedTransaction = await signTransaction(transaction);
+        // const fee = await transaction.getEstimatedFee(connection);
+        // console.log(`Estimated SOL transfer cost: ${fee} lamports`);
+        // console.log('latestBlockhash:', latestBlockhash);
+        // // const signature = await connection.sendRawTransaction(signedTransaction.serialize());
+        // const signature = await connection.sendRawTransaction(signedTransaction.serialize(), {
+        //   skipPreflight: true,
+        //   preflightCommitment: 'confirmed',
+        //   maxRetries: 3,
+        // });
 
-        console.log('Transaction sent. Signature:', signature);
-        const confirmationStrategy = {
-          signature: signature,
-          blockhash: latestBlockhash.blockhash,
-          lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
-        };
+        // console.log('Transaction sent. Signature:', signature);
+        // const confirmationStrategy = {
+        //   signature: signature,
+        //   blockhash: latestBlockhash.blockhash,
+        //   lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+        // };
 
-        const confirmation = await connection.confirmTransaction(confirmationStrategy, 'finalized');
-        console.log('confirmation:', confirmation);
+        // const confirmation = await connection.confirmTransaction(confirmationStrategy, 'finalized');
+        // console.log('confirmation:', confirmation);
 
-        if (confirmation.value.err) {
-          console.log('Transaction failed: ', confirmation.value.err.toString());
-          return 'error';
-          // throw new Error(`Transaction failed: ${confirmation.value.err.toString()}`);
-        }
-        // return confirmation;
-        return signature;
+        // if (confirmation.value.err) {
+        //   console.log('Transaction failed: ', confirmation.value.err.toString());
+        //   return 'error';
+        //   // throw new Error(`Transaction failed: ${confirmation.value.err.toString()}`);
+        // }
+        // // return confirmation;
+        // return signature;
       } catch (error) {
         console.error('Error in registerTokenMint:', error);
         return null;
