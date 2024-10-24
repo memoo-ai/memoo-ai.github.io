@@ -334,6 +334,14 @@ export const useAccount = () => {
         //   microLamports: priorityFee,
         // });
         // transaction.add(priorityFeeInstruction);
+        const publickeys = [new PublicKey(memeId), publicKey];
+        const recentPrioritizationFees = await connection.getRecentPrioritizationFees({
+          lockedWritableAccounts: publickeys,
+        });
+        const maxPriceItem = recentPrioritizationFees.reduce(
+          (max, item) => (item.prioritizationFee > max.prioritizationFee ? item : max),
+          recentPrioritizationFees[0],
+        );
         const registerTokenMintIx = await program.methods
           .registerTokenMint(memeConfigId, new BN(totalPayWithFee.toString()), new BN(0))
           // .registerTokenMint(memeConfigId, new BN(18000000).add(memooConfig?.platformFeeCreateMemeSol), new BN(0), 9)
@@ -350,28 +358,27 @@ export const useAccount = () => {
             userWsolAccount: userWsolAddress,
             wsolMint: NATIVE_MINT,
           })
-          .instruction();
+          .postInstructions([
+            ComputeBudgetProgram.setComputeUnitPrice({
+              microLamports: maxPriceItem?.prioritizationFee ?? 20000,
+            }),
+          ])
+          .transaction();
+        // .instruction();
 
         // .rpc();
         // return registerTokenMintIx;
-        const publickeys = [new PublicKey(memeId), publicKey];
-        const recentPrioritizationFees = await connection.getRecentPrioritizationFees({
-          lockedWritableAccounts: publickeys,
-        });
-        const maxPriceItem = recentPrioritizationFees.reduce(
-          (max, item) => (item.prioritizationFee > max.prioritizationFee ? item : max),
-          recentPrioritizationFees[0],
-        );
+
         console.log('maxPriceItem :', maxPriceItem);
-        const priorityFeeInstruction = ComputeBudgetProgram.setComputeUnitPrice({
-          microLamports: maxPriceItem?.prioritizationFee ?? 20000,
-        });
+        // const priorityFeeInstruction = ComputeBudgetProgram.setComputeUnitPrice({
+        //   microLamports: maxPriceItem?.prioritizationFee ?? 20000,
+        // });
         // const simulationResult = await connection.simulateTransaction(transaction1);
         // console.log('simulationResult:', simulationResult);
         // const modifyComputeUnits = ComputeBudgetProgram.setComputeUnitLimit({
         //   units: simulationResult.value.unitsConsumed ?? 1000000,
         // });
-        transaction.add(priorityFeeInstruction);
+        // transaction.add(priorityFeeInstruction);
         transaction.add(registerTokenMintIx);
         // const { hash, blockhash, lastValidBlockHeight } = await sendMyTransaction(
         //   publicKey,
