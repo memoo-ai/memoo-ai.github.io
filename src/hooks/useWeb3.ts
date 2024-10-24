@@ -381,28 +381,29 @@ export const useAccount = () => {
         // );
         const latestBlockhash = await connection.getLatestBlockhash();
         transaction.recentBlockhash = latestBlockhash.blockhash;
-        transaction.lastValidBlockHeight = latestBlockhash.lastValidBlockHeight;
+        // transaction.lastValidBlockHeight = latestBlockhash.lastValidBlockHeight;
         transaction.feePayer = publicKey;
+        console.log('transaction :', transaction);
         const signedTransaction = await signTransaction(transaction);
         const signature = await connection.sendRawTransaction(signedTransaction.serialize(), {
           skipPreflight: true,
           preflightCommitment: 'finalized',
           // maxRetries: 3,
         });
-        const confirmationStrategy = {
-          signature: signature,
-          blockhash: latestBlockhash.blockhash,
-          lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
-        };
+        // const confirmationStrategy = {
+        //   signature: signature,
+        //   blockhash: latestBlockhash.blockhash,
+        //   lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+        // };
 
-        const confirmation = await connection.confirmTransaction(confirmationStrategy, 'finalized');
-        console.log('confirmation:', confirmation);
+        // const confirmation = await connection.confirmTransaction(confirmationStrategy, 'finalized');
+        // console.log('confirmation:', confirmation);
 
-        if (confirmation.value.err) {
-          console.log('Transaction failed: ', confirmation.value.err.toString());
-          return 'error';
-          // throw new Error(`Transaction failed: ${confirmation.value.err.toString()}`);
-        }
+        // if (confirmation.value.err) {
+        //   console.log('Transaction failed: ', confirmation.value.err.toString());
+        //   return 'error';
+        //   // throw new Error(`Transaction failed: ${confirmation.value.err.toString()}`);
+        // }
         return signature;
         // return confirmation;
         // const confirmationStrategy = {
