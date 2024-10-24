@@ -358,7 +358,7 @@ export const useAccount = () => {
             userWsolAccount: userWsolAddress,
             wsolMint: NATIVE_MINT,
           })
-          .postInstructions([
+          .preInstructions([
             ComputeBudgetProgram.setComputeUnitPrice({
               microLamports: maxPriceItem?.prioritizationFee ?? 20000,
             }),
