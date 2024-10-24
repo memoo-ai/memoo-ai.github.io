@@ -367,7 +367,11 @@ export const useAccount = () => {
         const priorityFeeInstruction = ComputeBudgetProgram.setComputeUnitPrice({
           microLamports: maxPriceItem?.prioritizationFee ?? 20000,
         });
+        const priorityLimitInstruction = ComputeBudgetProgram.setComputeUnitLimit({
+          units: 400_000,
+        });
         transaction.add(priorityFeeInstruction);
+        transaction.add(priorityLimitInstruction);
         transaction.add(registerTokenMintIx);
         // const { hash, blockhash, lastValidBlockHeight } = await sendMyTransaction(
         //   publicKey,
