@@ -315,14 +315,15 @@ export const useAccount = () => {
             userWsolAccount: userWsolAddress,
             wsolMint: NATIVE_MINT,
           })
-          .rpc();
-        return registerTokenMintIx;
-        // const { hash, blockhash, lastValidBlockHeight } = await sendMyTransaction(
-        //   publicKey,
-        //   signTransaction,
-        //   registerTokenMintIx,
-        // );
-        // return hash;
+          .instruction();
+        //   .rpc();
+        // return registerTokenMintIx;
+        const { hash, blockhash, lastValidBlockHeight } = await sendMyTransaction(
+          publicKey,
+          signTransaction,
+          registerTokenMintIx,
+        );
+        return hash;
 
         // const confirmationStrategy = {
         //   signature: hash,
