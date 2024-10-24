@@ -29,6 +29,7 @@ import { useSolana } from '@/hooks/useSolana';
 import { AirdropTxns } from '@/utils/airdropTxns';
 import { BigNumber } from 'bignumber.js';
 import message from '@/components/IMessage';
+import { connect } from 'http2';
 
 // import { memooConfig } from '@/types';
 export interface MemooConfig {
@@ -165,6 +166,7 @@ export const useAccount = () => {
     const simulation = await connection.simulateTransaction(VersionedTxn, {
       replaceRecentBlockhash: true,
       sigVerify: false,
+      commitment: 'finalized',
     });
 
     if (simulation.value.err) {
@@ -177,6 +179,7 @@ export const useAccount = () => {
     publicKey: PublicKey,
     signTransaction: any,
     myTransaction: TransactionInstruction,
+    publickeys: PublicKey[],
   ) => {
     // 1. Establish a connection to the Solana cluster
     // const connection = new Connection(endpoint);
@@ -188,25 +191,54 @@ export const useAccount = () => {
     // 3. Fetch the recent priority fees
     // const { result } = await fetchEstimatePriorityFees({ endpoint });
     // const priorityFee = result.per_compute_unit['medium']; // Replace with your priority fee level based on your business requirements
-
-    // 4. Create a PriorityFee instruction and add it to your transaction
-    const priorityFeeInstruction = ComputeBudgetProgram.setComputeUnitPrice({
-      microLamports: 20000,
+    const recentPrioritizationFees = await connection.getRecentPrioritizationFees({
+      lockedWritableAccounts: publickeys,
     });
+    const maxPriceItem = recentPrioritizationFees.reduce(
+      (max, item) => (item.prioritizationFee > max.prioritizationFee ? item : max),
+      recentPrioritizationFees[0],
+    );
 
-    transaction.add(myTransaction);
+    console.log('maxPriceItem: ', maxPriceItem);
+
+    const priorityFeeInstruction = ComputeBudgetProgram.setComputeUnitPrice({
+      microLamports: maxPriceItem?.prioritizationFee ?? 20000,
+    });
+    // const recentPrioritizationFees = await connection.getFeeForMessage(
+    //   transaction.serializeMessage().toString('base64'),
+    // );
+
+    // const recentPrioritizationFees = await transaction.getEstimatedFee(connection);
+    // 4. Create a PriorityFee instruction and add it to your transaction
+    // if (recentPrioritizationFees) {
+    // }
+
+    console.log('recentPrioritizationFees: ', recentPrioritizationFees);
+    // console.log('microlamports: ', microlamports);
+    debugger;
+    // if (microlamports) {
+    //   priorityFeeInstruction = ComputeBudgetProgram.setComputeUnitPrice({
+    //     microLamports: microlamports?.prioritizationFee ?? 20000,
+    //   });
+    // } else {
+    //   priorityFeeInstruction = ComputeBudgetProgram.setComputeUnitPrice({
+    //     microLamports: 20000,
+    //   });
+    // }
+
     transaction.add(priorityFeeInstruction);
+    transaction.add(myTransaction);
     // 5. Simulate the transaction and add the compute unit limit instruction to your transaction
-    let [units, recentBlockhash] = await Promise.all([
-      getSimulationUnits(connection, transaction.instructions, publicKey),
-      connection.getLatestBlockhash(),
-    ]);
-    console.log('ComputeUnitLimit-units: ', units, ' recentBlockhash: ', recentBlockhash.blockhash);
-    if (units) {
-      units = Math.ceil(units * 1.05); // margin of error
-      transaction.add(ComputeBudgetProgram.setComputeUnitLimit({ units }));
-    }
-
+    // let [units, recentBlockhash] = await Promise.all([
+    //   getSimulationUnits(connection, transaction.instructions, publicKey),
+    //   connection.getLatestBlockhash(),
+    // ]);
+    // console.log('ComputeUnitLimit-units: ', units, ' recentBlockhash: ', recentBlockhash.blockhash);
+    // if (units) {
+    //   units = Math.ceil(units * 1.05); // margin of error
+    //   transaction.add(ComputeBudgetProgram.setComputeUnitLimit({ units }));
+    // }
+    const recentBlockhash = await connection.getLatestBlockhash();
     // 6. Sign and send your transaction
     transaction.feePayer = publicKey;
     transaction.recentBlockhash = recentBlockhash.blockhash;
@@ -217,7 +249,9 @@ export const useAccount = () => {
       maxRetries: 3,
       preflightCommitment: 'finalized',
     });
+    const transactionStatus = await connection.getTransaction(hash);
     console.log('TransactionHash: ', hash);
+    console.log('transactionStatus: ', transactionStatus);
     return {
       hash,
       blockhash: recentBlockhash.blockhash,
@@ -319,10 +353,12 @@ export const useAccount = () => {
           .instruction();
         //   .rpc();
         // return registerTokenMintIx;
+        const publickeys = [new PublicKey(memeId), publicKey];
         const { hash, blockhash, lastValidBlockHeight } = await sendMyTransaction(
           publicKey,
           signTransaction,
           registerTokenMintIx,
+          publickeys,
         );
         return hash;
 
