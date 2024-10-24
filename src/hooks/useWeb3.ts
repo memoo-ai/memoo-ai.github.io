@@ -215,7 +215,7 @@ export const useAccount = () => {
 
     console.log('recentPrioritizationFees: ', recentPrioritizationFees);
     // console.log('microlamports: ', microlamports);
-    debugger;
+    // debugger;
     // if (microlamports) {
     //   priorityFeeInstruction = ComputeBudgetProgram.setComputeUnitPrice({
     //     microLamports: microlamports?.prioritizationFee ?? 20000,
@@ -351,7 +351,7 @@ export const useAccount = () => {
             wsolMint: NATIVE_MINT,
           })
           .instruction();
-        //   .rpc();
+        // .rpc();
         // return registerTokenMintIx;
         const publickeys = [new PublicKey(memeId), publicKey];
         const { hash, blockhash, lastValidBlockHeight } = await sendMyTransaction(
@@ -384,7 +384,6 @@ export const useAccount = () => {
         // const transaction1 = new Transaction();
         // transaction1.add(registerTokenMintIx);
         // transaction.feePayer = publicKey;
-        // debugger;
         // const simulationResult = await connection.simulateTransaction(transaction1);
         // console.log('simulationResult:', simulationResult);
         // const modifyComputeUnits = ComputeBudgetProgram.setComputeUnitLimit({
