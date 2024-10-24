@@ -201,6 +201,7 @@ export const useAccount = () => {
       getSimulationUnits(connection, transaction.instructions, publicKey),
       connection.getLatestBlockhash(),
     ]);
+    console.log('ComputeUnitLimit-units: ', units, ' recentBlockhash: ', recentBlockhash.blockhash);
     if (units) {
       units = Math.ceil(units * 1.05); // margin of error
       transaction.add(ComputeBudgetProgram.setComputeUnitLimit({ units }));
